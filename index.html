@@ -51,8 +51,11 @@
       background: linear-gradient(145deg, #2f3b4f, #141a24);
       border: 2px solid rgba(180, 210, 255, 0.2);
       box-shadow: 0 10px 25px -5px #00000055, 0 0 0 1px #4b5f7a33 inset;
+      overflow: hidden;
     }
-    body.dark .avatar-frame i { color: #b6cef0; filter: drop-shadow(0 0 8px #5b7fb0); }
+    body.dark .avatar-frame img {
+      filter: brightness(0.95) contrast(1.05);
+    }
 
     body.dark .title-group h1 {
       background: linear-gradient(135deg, #f0f7ff 0%, #b3cef0 100%);
@@ -128,8 +131,8 @@
       background: linear-gradient(145deg, #dae3ef, #c0cfe0);
       border: 2px solid rgba(60, 90, 130, 0.25);
       box-shadow: 0 8px 20px -4px #00000022, 0 0 0 1px #b0c4db inset;
+      overflow: hidden;
     }
-    body.light .avatar-frame i { color: #2c4a6b; filter: drop-shadow(0 0 6px #7f9fc0); }
 
     body.light .title-group h1 {
       background: linear-gradient(135deg, #1d2c40 0%, #2a4b70 100%);
@@ -214,7 +217,13 @@
       justify-content: center;
       transition: 0.25s ease;
     }
-    .avatar-frame i { font-size: 4.8rem; transition: 0.2s; }
+    .avatar-frame img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+    }
 
     .title-group h1 {
       font-size: 2.8rem;
@@ -708,7 +717,6 @@
       .card { padding: 2rem 1.2rem; border-radius: 2rem; margin-top: 1rem; }
       .profile { flex-direction: column; align-items: flex-start; gap: 1rem; }
       .avatar-frame { width: 100px; height: 100px; }
-      .avatar-frame i { font-size: 3.8rem; }
       .title-group h1 { font-size: 2.2rem; }
       .title-group .badge { font-size: 0.7rem; padding: 0.1rem 0.7rem; margin-left: 0.2rem; }
       .grid-2col { grid-template-columns: 1fr; gap: 1rem; }
@@ -774,7 +782,11 @@
     <!-- perfil -->
     <div class="profile">
       <div class="avatar-frame">
-        <i class="fas fa-user-astronaut"></i>
+        <img 
+          src="https://raw.githubusercontent.com/Nilsonlinux/nilsonlinux.github.io/main/img/user.png" 
+          alt="Nilsonlinux"
+          loading="lazy"
+        />
       </div>
       <div class="title-group">
         <h1>
@@ -850,7 +862,7 @@
     <div class="plugins-section">
       <div class="section-title">
         <i class="fas fa-plug"></i> plugins Noctalia
-        <span style="font-size:0.7rem; opacity:0.5; font-weight:400; margin-left:auto;">Unoficial</span>
+        <span style="font-size:0.7rem; opacity:0.5; font-weight:400; margin-left:auto;">oficial</span>
       </div>
       <div id="plugins-container">
         <div class="loading-plugins">
