@@ -407,7 +407,7 @@
 
     .plugins-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
       gap: 1.2rem;
       margin-top: 0.5rem;
     }
@@ -516,28 +516,84 @@
     body.dark .plugin-tag { --tag-bg: #1f2b3f; --tag-text: #9ab0d0; }
     body.light .plugin-tag { --tag-bg: #dce6f2; --tag-text: #3a5a7a; }
 
-    .plugin-version {
+    .plugin-version-badge {
       font-size: 0.65rem;
-      color: var(--text-muted, #5d7496);
-      margin-left: auto;
-      font-weight: 500;
+      padding: 2px 10px;
+      border-radius: 20px;
+      background: var(--version-bg, #1a2b4a);
+      color: var(--version-text, #8ab4f0);
+      font-weight: 600;
+      border: 1px solid var(--version-border, #3a6a9a);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
     }
-    body.light .plugin-version { --text-muted: #6a8aaa; }
-
-    .plugin-author {
-      font-size: 0.65rem;
-      color: var(--text-muted, #5d7496);
-      width: 100%;
-      margin-top: 2px;
+    body.dark .plugin-version-badge {
+      --version-bg: #1a2b4a;
+      --version-text: #8ab4f0;
+      --version-border: #3a6a9a;
+    }
+    body.light .plugin-version-badge {
+      --version-bg: #d4e4f8;
+      --version-text: #1a4a7a;
+      --version-border: #7a9ac0;
     }
 
-    .plugin-deps {
+    .plugin-version-badge.latest {
+      background: var(--latest-bg, #1a4a2a);
+      border-color: var(--latest-border, #3a9a5a);
+      color: var(--latest-text, #8ae0a0);
+    }
+    body.dark .plugin-version-badge.latest {
+      --latest-bg: #1a4a2a;
+      --latest-border: #3a9a5a;
+      --latest-text: #8ae0a0;
+    }
+    body.light .plugin-version-badge.latest {
+      --latest-bg: #d4f0e0;
+      --latest-border: #5aaa7a;
+      --latest-text: #1a5a3a;
+    }
+
+    .plugin-api {
       font-size: 0.6rem;
       color: var(--text-muted, #5d7496);
-      width: 100%;
-      margin-top: 1px;
       opacity: 0.7;
+      padding: 2px 6px;
+      background: var(--api-bg, rgba(60, 80, 120, 0.2));
+      border-radius: 12px;
     }
+    body.light .plugin-api { --text-muted: #6a8aaa; --api-bg: rgba(60, 80, 120, 0.1); }
+
+    .plugin-updated {
+      font-size: 0.6rem;
+      color: var(--text-muted, #5d7496);
+      opacity: 0.6;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+    body.light .plugin-updated { --text-muted: #6a8aaa; }
+
+    .plugin-version-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    .commit-info {
+      font-size: 0.55rem;
+      color: var(--text-muted, #5d7496);
+      opacity: 0.4;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-family: monospace;
+      width: 100%;
+    }
+    body.light .commit-info { --text-muted: #6a8aaa; }
 
     /* ===== CONTATO ===== */
     .contact-links {
@@ -862,7 +918,7 @@
     <div class="plugins-section">
       <div class="section-title">
         <i class="fas fa-plug"></i> plugins Noctalia
-        <span style="font-size:0.7rem; opacity:0.5; font-weight:400; margin-left:auto;">unoficial</span>
+        <span style="font-size:0.7rem; opacity:0.5; font-weight:400; margin-left:auto;">community</span>
       </div>
       <div id="plugins-container">
         <div class="loading-plugins">
@@ -1129,6 +1185,8 @@
                 value = value.slice(1, -1);
               } else if (value.startsWith('[') && value.endsWith(']')) {
                 value = value.slice(1, -1).split(',').map(v => v.trim().replace(/^"|"$/g, ''));
+              } else if (/^-?\d+(\.\d+)?$/.test(value)) {
+                value = Number(value);
               }
               
               currentPlugin[key] = value;
@@ -1149,6 +1207,31 @@
         return `https://raw.githubusercontent.com/Nilsonlinux/noctalia-plugins/main/${folder}/thumbnail.webp`;
       }
 
+      // Função para converter timestamp UNIX para data legível em pt-BR
+      function formatDate(timestamp) {
+        if (!timestamp) return null;
+        const date = new Date(timestamp * 1000);
+        return date.toLocaleDateString('pt-BR', {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric'
+        });
+      }
+
+      // Função para calcular dias desde a data
+      function getDaysAgo(timestamp) {
+        if (!timestamp) return null;
+        const now = Math.floor(Date.now() / 1000);
+        const diff = now - timestamp;
+        const days = Math.floor(diff / 86400);
+        if (days === 0) return 'hoje';
+        if (days === 1) return 'ontem';
+        if (days < 7) return `${days} dias atrás`;
+        if (days < 30) return `${Math.floor(days / 7)} semanas atrás`;
+        if (days < 365) return `${Math.floor(days / 30)} meses atrás`;
+        return `${Math.floor(days / 365)} anos atrás`;
+      }
+
       async function loadPlugins() {
         const container = document.getElementById('plugins-container');
         
@@ -1162,6 +1245,8 @@
           const tomlText = await response.text();
           const plugins = parseTOML(tomlText);
           
+          console.log('Plugins parseados:', plugins);
+          
           if (!plugins || plugins.length === 0) {
             container.innerHTML = `
               <div class="plugins-error">
@@ -1172,6 +1257,7 @@
           }
 
           renderPlugins(plugins);
+          
         } catch (error) {
           console.error('Erro ao carregar plugins:', error);
           container.innerHTML = `
@@ -1185,6 +1271,22 @@
       function renderPlugins(plugins) {
         const container = document.getElementById('plugins-container');
         
+        function getLatestVersion(plugins) {
+          let latest = plugins[0];
+          plugins.forEach(p => {
+            if (!p.version) return;
+            const v1 = p.version.split('.').map(Number);
+            const v2 = latest.version ? latest.version.split('.').map(Number) : [0, 0, 0];
+            for (let i = 0; i < Math.min(v1.length, v2.length); i++) {
+              if (v1[i] > v2[i]) { latest = p; break; }
+              if (v1[i] < v2[i]) break;
+            }
+          });
+          return latest.id;
+        }
+
+        const latestId = getLatestVersion(plugins);
+        
         let html = '<div class="plugins-grid">';
         
         plugins.forEach(plugin => {
@@ -1192,6 +1294,17 @@
           const folder = getPluginFolder(plugin.id);
           const tags = plugin.tags || [];
           const deps = plugin.dependencies || [];
+          const isLatest = plugin.id === latestId;
+          
+          const updatedAt = plugin.updated_at;
+          const addedAt = plugin.added_at;
+          
+          const updatedDate = updatedAt ? formatDate(updatedAt) : null;
+          const addedDate = addedAt ? formatDate(addedAt) : null;
+          const daysAgo = updatedAt ? getDaysAgo(updatedAt) : null;
+          
+          let displayDate = updatedDate || addedDate || 'Data desconhecida';
+          let daysAgoText = daysAgo ? `(${daysAgo})` : '';
           
           html += `
             <div class="plugin-card">
@@ -1207,11 +1320,22 @@
                 <div class="plugin-name">${plugin.name}</div>
                 <div class="plugin-description">${plugin.description || 'Sem descrição'}</div>
                 <div class="plugin-meta">
+                  <div class="plugin-version-row">
+                    <span class="plugin-version-badge ${isLatest ? 'latest' : ''}">
+                      ${isLatest ? '⭐ ' : ''}v${plugin.version || '0.0.0'}
+                      ${isLatest ? ' latest' : ''}
+                    </span>
+                    <span class="plugin-api">API ${plugin.plugin_api || '?'}</span>
+                    <span class="plugin-updated">
+                      <i class="fas fa-calendar-alt"></i> ${displayDate}
+                      ${daysAgoText ? ` ${daysAgoText}` : ''}
+                    </span>
+                  </div>
                   ${tags.slice(0, 3).map(tag => `<span class="plugin-tag">#${tag}</span>`).join('')}
                   ${tags.length > 3 ? `<span class="plugin-tag">+${tags.length - 3}</span>` : ''}
-                  <span class="plugin-version">v${plugin.version || '0.0.0'}</span>
                   <span class="plugin-author">👤 ${plugin.author || 'Desconhecido'}</span>
                   ${deps.length > 0 ? `<span class="plugin-deps">📦 ${deps.join(', ')}</span>` : ''}
+                  ${addedDate && !updatedDate ? `<span class="commit-info">📥 adicionado em ${addedDate}</span>` : ''}
                 </div>
               </div>
             </div>
