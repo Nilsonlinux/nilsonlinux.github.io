@@ -482,8 +482,28 @@
       font-weight: 600;
       color: var(--text-primary, #e6edf5);
       margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
     body.light .plugin-name { --text-primary: #1a2a3a; }
+
+    /* ===== ÍCONES DOS PLUGINS ===== */
+    .plugin-name i {
+      font-size: 0.9rem;
+      width: 1.2rem;
+      text-align: center;
+      color: var(--icon-color, #6e8fb0);
+      flex-shrink: 0;
+    }
+
+    body.dark .plugin-name i {
+      --icon-color: #8ab4f0;
+    }
+
+    body.light .plugin-name i {
+      --icon-color: #4a7aaa;
+    }
 
     .plugin-description {
       font-size: 0.8rem;
@@ -1279,6 +1299,47 @@
       function renderPlugins(plugins) {
         const container = document.getElementById('plugins-container');
         
+        // Mapeamento de ícones do catalog.toml para Font Awesome
+        const iconMap = {
+          'activity': 'fa-bolt',          // activity → bolt (relâmpago)
+          'rss': 'fa-rss',                // rss → rss
+          'package': 'fa-box',            // package → box (caixa)
+          'network': 'fa-network-wired',  // network → network-wired
+          'plug': 'fa-plug',              // plug → plug (padrão)
+          'cog': 'fa-cog',                // cog → cog
+          'heart': 'fa-heart',            // heart → heart
+          'star': 'fa-star',              // star → star
+          'clock': 'fa-clock',            // clock → clock
+          'user': 'fa-user',              // user → user
+          'folder': 'fa-folder',          // folder → folder
+          'file': 'fa-file',              // file → file
+          'code': 'fa-code',              // code → code
+          'terminal': 'fa-terminal',      // terminal → terminal
+          'server': 'fa-server',          // server → server
+          'cloud': 'fa-cloud',            // cloud → cloud
+          'database': 'fa-database',      // database → database
+          'shield': 'fa-shield-alt',      // shield → shield-alt
+          'lock': 'fa-lock',              // lock → lock
+          'unlock': 'fa-unlock',          // unlock → unlock
+          'key': 'fa-key',                // key → key
+          'wrench': 'fa-wrench',          // wrench → wrench
+          'hammer': 'fa-hammer',          // hammer → hammer
+          'pencil': 'fa-pencil-alt',      // pencil → pencil-alt
+          'trash': 'fa-trash',            // trash → trash
+          'plus': 'fa-plus',              // plus → plus
+          'minus': 'fa-minus',            // minus → minus
+          'check': 'fa-check',            // check → check
+          'times': 'fa-times',            // times → times
+          'search': 'fa-search',          // search → search
+          'print': 'fa-print',            // print → print
+          'share': 'fa-share-alt',        // share → share-alt
+          'download': 'fa-download',      // download → download
+          'upload': 'fa-upload',          // upload → upload
+          'refresh': 'fa-sync',           // refresh → sync
+          'settings': 'fa-cog',           // settings → cog
+          'tools': 'fa-tools',            // tools → tools
+        };
+        
         function getLatestVersion(plugins) {
           let latest = plugins[0];
           plugins.forEach(p => {
@@ -1305,6 +1366,10 @@
           const deps = plugin.dependencies || [];
           const isLatest = plugin.id === latestId;
           
+          // Pegar o ícone com fallback
+          const iconKey = plugin.icon || 'plug';
+          const iconClass = iconMap[iconKey] || 'fa-plug';
+          
           const updatedAt = plugin.updated_at;
           const addedAt = plugin.added_at;
           
@@ -1326,7 +1391,10 @@
                 />
               </div>
               <div class="plugin-info">
-                <div class="plugin-name">${plugin.name}</div>
+                <div class="plugin-name">
+                  <i class="fas ${iconClass}"></i>
+                  ${plugin.name}
+                </div>
                 <div class="plugin-description">${plugin.description || 'Sem descrição'}</div>
                 <div class="plugin-meta">
                   <div class="plugin-version-row">
