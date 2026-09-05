@@ -420,6 +420,17 @@
       transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
       display: flex;
       flex-direction: column;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .plugin-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+    body.light .plugin-card:hover {
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
     }
 
     body.dark .plugin-card {
@@ -429,14 +440,6 @@
     body.light .plugin-card {
       --bg-card: rgba(235, 242, 252, 0.7);
       --border-color: rgba(150, 180, 210, 0.25);
-    }
-
-    .plugin-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    }
-    body.light .plugin-card:hover {
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
     }
 
     .plugin-thumbnail {
@@ -1202,6 +1205,11 @@
         return id.split('/').pop();
       }
 
+      function getPluginRepoUrl(pluginId) {
+        const folder = getPluginFolder(pluginId);
+        return `https://github.com/Nilsonlinux/noctalia-plugins/tree/main/${folder}`;
+      }
+
       function getThumbnailUrl(pluginId) {
         const folder = getPluginFolder(pluginId);
         return `https://raw.githubusercontent.com/Nilsonlinux/noctalia-plugins/main/${folder}/thumbnail.webp`;
@@ -1291,6 +1299,7 @@
         
         plugins.forEach(plugin => {
           const thumbnailUrl = getThumbnailUrl(plugin.id);
+          const repoUrl = getPluginRepoUrl(plugin.id);
           const folder = getPluginFolder(plugin.id);
           const tags = plugin.tags || [];
           const deps = plugin.dependencies || [];
@@ -1307,7 +1316,7 @@
           let daysAgoText = daysAgo ? `(${daysAgo})` : '';
           
           html += `
-            <div class="plugin-card">
+            <a href="${repoUrl}" target="_blank" class="plugin-card">
               <div class="plugin-thumbnail">
                 <img 
                   src="${thumbnailUrl}" 
@@ -1336,9 +1345,12 @@
                   <span class="plugin-author">👤 ${plugin.author || 'Desconhecido'}</span>
                   ${deps.length > 0 ? `<span class="plugin-deps">📦 ${deps.join(', ')}</span>` : ''}
                   ${addedDate && !updatedDate ? `<span class="commit-info">📥 adicionado em ${addedDate}</span>` : ''}
+                  <span class="commit-info" style="opacity:0.3;">
+                    <i class="fas fa-external-link-alt"></i> Ver no GitHub
+                  </span>
                 </div>
               </div>
-            </div>
+            </a>
           `;
         });
         
