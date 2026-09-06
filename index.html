@@ -1473,7 +1473,7 @@
       // ===== ATUALIZAÇÃO AUTOMÁTICA DAS REAÇÕES =====
       let pollingInterval = null;
 
-      function startReactionPolling(plugins, intervalMs = 60000) {
+      function startReactionPolling(plugins, intervalMs = 120000) {
         if (pollingInterval) clearInterval(pollingInterval);
 
         pollingInterval = setInterval(async () => {
