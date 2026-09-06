@@ -9,6 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Tabler Icons (para os ícones no estilo Noctalia) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.30.0/dist/tabler-icons.min.css">
   <style>
     /* ===== RESET & BASE ===== */
     * {
@@ -400,23 +402,23 @@
       margin-right: 0.15rem;
     }
 
-    /* ===== PLUGINS ===== */
+    /* ===== PLUGINS (estilo Noctalia) ===== */
     .plugins-section {
       margin: 2.5rem 0 1.5rem;
     }
 
     .plugins-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1.2rem;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
       margin-top: 0.5rem;
     }
 
     .plugin-card {
-      background: var(--bg-card, rgba(20, 28, 44, 0.5));
+      background: rgba(18, 22, 30, 0.5);
+      border: 1px solid rgba(70, 90, 120, 0.2);
       border-radius: 1.2rem;
       overflow: hidden;
-      border: 1px solid var(--border-color, rgba(70, 90, 120, 0.2));
       transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
       display: flex;
       flex-direction: column;
@@ -427,34 +429,20 @@
 
     .plugin-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-    }
-    body.light .plugin-card:hover {
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-    }
-
-    body.dark .plugin-card {
-      --bg-card: rgba(20, 28, 44, 0.5);
-      --border-color: rgba(70, 90, 120, 0.2);
-    }
-    body.light .plugin-card {
-      --bg-card: rgba(235, 242, 252, 0.7);
-      --border-color: rgba(150, 180, 210, 0.25);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+      background: rgba(30, 38, 52, 0.6);
     }
 
     .plugin-thumbnail {
       width: 100%;
       height: 150px;
-      background: var(--placeholder-bg, #1a2233);
+      background: #1a2233;
       overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
-      position: relative;
+      flex-shrink: 0;
     }
-
-    body.dark .plugin-thumbnail { --placeholder-bg: #1a2233; }
-    body.light .plugin-thumbnail { --placeholder-bg: #dce3ed; }
 
     .plugin-thumbnail img {
       width: 100%;
@@ -465,158 +453,148 @@
 
     .plugin-thumbnail .placeholder-icon {
       font-size: 3rem;
-      color: var(--placeholder-color, #4a5a7a);
+      color: #4a5a7a;
     }
-    body.dark .plugin-thumbnail .placeholder-icon { --placeholder-color: #4a5a7a; }
-    body.light .plugin-thumbnail .placeholder-icon { --placeholder-color: #7a8aa0; }
 
     .plugin-info {
-      padding: 1rem 1.2rem 1.2rem;
+      padding: 1rem 1.2rem 1rem;
       flex: 1;
       display: flex;
       flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .plugin-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .plugin-icon-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: rgba(251, 191, 36, 0.08);
+      border: 1px solid rgba(251, 191, 36, 0.15);
+      box-shadow: 0 0 20px rgba(251, 191, 36, 0.03);
+      transition: background 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+
+    .plugin-card:hover .plugin-icon-wrapper {
+      background: rgba(251, 191, 36, 0.12);
+      border-color: rgba(251, 191, 36, 0.25);
+      box-shadow: 0 0 30px rgba(251, 191, 36, 0.08);
+    }
+
+    .plugin-icon-wrapper i {
+      font-size: 1.1rem;
+      color: #fbbf24;
+      line-height: 1;
+      filter: drop-shadow(0 0 6px rgba(251, 191, 36, 0.15));
     }
 
     .plugin-name {
       font-size: 0.95rem;
       font-weight: 600;
-      color: var(--text-primary, #e6edf5);
-      margin-bottom: 4px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    body.light .plugin-name { --text-primary: #1a2a3a; }
-
-    /* ===== ÍCONES DOS PLUGINS ===== */
-    .plugin-name i {
-      font-size: 0.9rem;
-      width: 1.2rem;
-      text-align: center;
-      color: var(--icon-color, #6e8fb0);
-      flex-shrink: 0;
-    }
-
-    body.dark .plugin-name i {
-      --icon-color: #8ab4f0;
-    }
-
-    body.light .plugin-name i {
-      --icon-color: #4a7aaa;
+      color: #e6edf5;
     }
 
     .plugin-description {
       font-size: 0.8rem;
-      color: var(--text-secondary, #9ab0d0);
+      color: #9ab0d0;
       line-height: 1.4;
-      flex: 1;
-      margin-bottom: 8px;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
+      margin-top: 0.2rem;
     }
-    body.light .plugin-description { --text-secondary: #4a6a8a; }
 
-    .plugin-meta {
+    .plugin-badge-community {
+      font-size: 0.55rem;
+      padding: 2px 12px;
+      border-radius: 20px;
+      background: rgba(251, 191, 36, 0.08);
+      border: 1px solid rgba(251, 191, 36, 0.25);
+      color: #fbbf24;
+      font-weight: 500;
+      display: inline-block;
+      width: fit-content;
+      margin-top: 0.2rem;
+      letter-spacing: 0.02em;
+    }
+
+    .plugin-tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 4px 6px;
-      padding-top: 8px;
-      border-top: 1px solid var(--border-color, rgba(70, 90, 120, 0.15));
-      margin-top: auto;
+      gap: 0.3rem 0.5rem;
+      margin-top: 0.4rem;
     }
-    body.light .plugin-meta { --border-color: rgba(100, 130, 170, 0.2); }
 
     .plugin-tag {
       font-size: 0.6rem;
       padding: 2px 8px;
       border-radius: 20px;
-      background: var(--tag-bg, #1f2b3f);
-      color: var(--tag-text, #9ab0d0);
+      background: #1f2b3f;
+      color: #9ab0d0;
       font-weight: 500;
     }
-    body.dark .plugin-tag { --tag-bg: #1f2b3f; --tag-text: #9ab0d0; }
-    body.light .plugin-tag { --tag-bg: #dce6f2; --tag-text: #3a5a7a; }
+
+    .plugin-author-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 0.2rem;
+      flex-wrap: wrap;
+    }
+
+    .plugin-author {
+      font-size: 0.75rem;
+      color: #7d98bd;
+    }
 
     .plugin-version-badge {
-      font-size: 0.65rem;
-      padding: 2px 10px;
-      border-radius: 20px;
-      background: var(--version-bg, #1a2b4a);
-      color: var(--version-text, #8ab4f0);
+      font-size: 0.7rem;
+      padding: 3px 14px;
+      border-radius: 8px;
+      background: rgba(251, 191, 36, 0.08);
+      color: #fbbf24;
       font-weight: 600;
-      border: 1px solid var(--version-border, #3a6a9a);
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
+      white-space: nowrap;
+      font-family: 'Inter', sans-serif;
     }
-    body.dark .plugin-version-badge {
-      --version-bg: #1a2b4a;
-      --version-text: #8ab4f0;
-      --version-border: #3a6a9a;
-    }
-    body.light .plugin-version-badge {
-      --version-bg: #d4e4f8;
-      --version-text: #1a4a7a;
-      --version-border: #7a9ac0;
-    }
-
-    .plugin-version-badge.latest {
-      background: var(--latest-bg, #1a4a2a);
-      border-color: var(--latest-border, #3a9a5a);
-      color: var(--latest-text, #8ae0a0);
-    }
-    body.dark .plugin-version-badge.latest {
-      --latest-bg: #1a4a2a;
-      --latest-border: #3a9a5a;
-      --latest-text: #8ae0a0;
-    }
-    body.light .plugin-version-badge.latest {
-      --latest-bg: #d4f0e0;
-      --latest-border: #5aaa7a;
-      --latest-text: #1a5a3a;
-    }
-
-    .plugin-api {
-      font-size: 0.6rem;
-      color: var(--text-muted, #5d7496);
-      opacity: 0.7;
-      padding: 2px 6px;
-      background: var(--api-bg, rgba(60, 80, 120, 0.2));
-      border-radius: 12px;
-    }
-    body.light .plugin-api { --text-muted: #6a8aaa; --api-bg: rgba(60, 80, 120, 0.1); }
 
     .plugin-updated {
       font-size: 0.6rem;
-      color: var(--text-muted, #5d7496);
+      color: #5d7496;
       opacity: 0.6;
       display: flex;
       align-items: center;
       gap: 3px;
-    }
-    body.light .plugin-updated { --text-muted: #6a8aaa; }
-
-    .plugin-version-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-wrap: wrap;
-      margin-top: 4px;
+      margin-top: 0.2rem;
     }
 
-    .commit-info {
+    .plugin-repo-link {
       font-size: 0.55rem;
-      color: var(--text-muted, #5d7496);
+      color: #5d7496;
       opacity: 0.4;
       display: flex;
       align-items: center;
       gap: 4px;
       font-family: monospace;
-      width: 100%;
+      margin-top: 0.3rem;
+      padding-top: 0.3rem;
+      border-top: 1px solid rgba(70, 90, 120, 0.1);
     }
-    body.light .commit-info { --text-muted: #6a8aaa; }
+
+    .plugin-repo-link i {
+      font-size: 0.5rem;
+    }
 
     /* ===== CONTATO ===== */
     .contact-links {
@@ -937,15 +915,16 @@
       </div>
     </div>
 
-    <!-- ===== PLUGINS SECTION ===== -->
+    <!-- ===== PLUGINS SECTION (estilo Noctalia) ===== -->
     <div class="plugins-section">
       <div class="section-title">
-        <i class="fas fa-plug"></i> plugins Noctalia
+        <i class="ti ti-plug"></i> plugins Noctalia
         <span style="font-size:0.7rem; opacity:0.5; font-weight:400; margin-left:auto;">community</span>
       </div>
       <div id="plugins-container">
         <div class="loading-plugins">
-          <i class="fas fa-spinner fa-spin"></i> Carregando plugins...
+          <i class="ti ti-loader-2" style="animation: spin 1s linear infinite;"></i>
+          <p>Carregando plugins...</p>
         </div>
       </div>
     </div>
@@ -971,6 +950,13 @@
       <i class="fas fa-moon" style="margin-right:0.2rem;"></i> 2026 · Nilsonlinux
     </div>
   </div>
+
+  <style>
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+  </style>
 
   <script>
     (function() {
@@ -1179,65 +1165,19 @@
       fetchRepos();
 
       // ===== PLUGINS =====
-      function parseTOML(toml) {
-        const plugins = [];
-        const lines = toml.split('\n');
-        
-        let currentPlugin = null;
-        let inPlugin = false;
+      // ===== DADOS DOS PLUGINS (extraídos do Noctalia) =====
+      const pluginsData = [
+        {id:"rss-notifier",name:"RSS/Atom Notifier",version:"1.0.4",author:"Nilsonlinux",description:"Monitors RSS/Atom feeds and notifies you when new items appear.",apiVersion:14,updatedAt:1788703076,releases:[],tags:["utility","indicator","panel","bar","service"],source:"community",repo:"community-plugins",icon:"rss"},
+        {id:"link-ip-monitor",name:"Link/IP Monitor",version:"1.0.2",author:"Nilsonlinux",description:"It pings a list of IPs, hosts, or links at intervals and notifies you when one goes down (or comes back up).",apiVersion:14,updatedAt:1788657701,releases:[],tags:["network","indicator","bar","panel","service"],source:"community",repo:"community-plugins",icon:"activity"},
+        {id:"inventory-manager",name:"Inventory Manager",version:"1.0.0",author:"Nilsonlinux",description:"Inventory Manager for managing product inventory with categories, low stock alerts, and data export.",apiVersion:15,updatedAt:1788657701,releases:[],tags:["utility","productivity","service","panel","bar"],source:"community",repo:"community-plugins",icon:"package"}
+      ];
 
-        for (let line of lines) {
-          line = line.trim();
-          
-          if (!line || line.startsWith('#')) continue;
+      // ===== FILTRAR APENAS PLUGINS DO NILSONLINUX =====
+      const myPlugins = pluginsData.filter(p => p.author === 'Nilsonlinux');
 
-          if (line === '[[plugin]]') {
-            if (currentPlugin) plugins.push(currentPlugin);
-            currentPlugin = {};
-            inPlugin = true;
-            continue;
-          }
-
-          if (inPlugin && currentPlugin) {
-            const match = line.match(/^(\w+)\s*=\s*(.+)$/);
-            if (match) {
-              const key = match[1];
-              let value = match[2].trim();
-              
-              if (value.startsWith('"') && value.endsWith('"')) {
-                value = value.slice(1, -1);
-              } else if (value.startsWith('[') && value.endsWith(']')) {
-                value = value.slice(1, -1).split(',').map(v => v.trim().replace(/^"|"$/g, ''));
-              } else if (/^-?\d+(\.\d+)?$/.test(value)) {
-                value = Number(value);
-              }
-              
-              currentPlugin[key] = value;
-            }
-          }
-        }
-
-        if (currentPlugin) plugins.push(currentPlugin);
-        return plugins;
-      }
-
-      function getPluginFolder(id) {
-        return id.split('/').pop();
-      }
-
-      function getPluginRepoUrl(pluginId) {
-        const folder = getPluginFolder(pluginId);
-        return `https://github.com/Nilsonlinux/noctalia-plugins/tree/main/${folder}`;
-      }
-
-      function getThumbnailUrl(pluginId) {
-        const folder = getPluginFolder(pluginId);
-        return `https://raw.githubusercontent.com/Nilsonlinux/noctalia-plugins/main/${folder}/thumbnail.webp`;
-      }
-
-      // Função para converter timestamp UNIX para data legível em pt-BR
+      // ===== FUNÇÕES =====
       function formatDate(timestamp) {
-        if (!timestamp) return null;
+        if (!timestamp) return 'Data desconhecida';
         const date = new Date(timestamp * 1000);
         return date.toLocaleDateString('pt-BR', {
           day: 'numeric',
@@ -1246,187 +1186,187 @@
         });
       }
 
-      // Função para calcular dias desde a data
-      function getDaysAgo(timestamp) {
-        if (!timestamp) return null;
-        const now = Math.floor(Date.now() / 1000);
-        const diff = now - timestamp;
-        const days = Math.floor(diff / 86400);
-        if (days === 0) return 'hoje';
-        if (days === 1) return 'ontem';
-        if (days < 7) return `${days} dias atrás`;
-        if (days < 30) return `${Math.floor(days / 7)} semanas atrás`;
-        if (days < 365) return `${Math.floor(days / 30)} meses atrás`;
-        return `${Math.floor(days / 365)} anos atrás`;
-      }
+      // ===== MAPEAMENTO DE ÍCONES TABLER =====
+      const tablerIconMap = {
+        'rss': 'ti-rss',
+        'activity': 'ti-activity',
+        'package': 'ti-package',
+        'network': 'ti-network',
+        'plug': 'ti-plug',
+        'cog': 'ti-settings',
+        'clock': 'ti-clock',
+        'video': 'ti-video',
+        'photo': 'ti-photo',
+        'lock': 'ti-lock',
+        'world': 'ti-world',
+        'search': 'ti-search',
+        'music': 'ti-music',
+        'keyboard': 'ti-keyboard',
+        'cpu': 'ti-cpu',
+        'brain': 'ti-brain',
+        'bolt': 'ti-bolt',
+        'box': 'ti-box',
+        'puzzle': 'ti-puzzle',
+        'cat': 'ti-cat',
+        'language': 'ti-language',
+        'smile': 'ti-mood-smile',
+        'notes': 'ti-notes',
+        'layer-group': 'ti-layers-subtract',
+        'columns': 'ti-layout-columns',
+        'palette': 'ti-palette',
+        'screen-share': 'ti-screen-share',
+        'laptop': 'ti-device-laptop',
+        'microphone': 'ti-microphone',
+        'image': 'ti-image',
+        'folder-open': 'ti-folder-open',
+        'home': 'ti-smart-home',
+        'sync': 'ti-refresh-dot',
+        'eye': 'ti-eye',
+        'gamepad': 'ti-device-gamepad-2',
+        'robot': 'ti-robot',
+        'mosque': 'ti-building-mosque',
+        'paw': 'ti-paw',
+        'server': 'ti-server-2',
+        'exchange': 'ti-switch-horizontal',
+        'shield': 'ti-shield-lock',
+        'key': 'ti-key',
+        'film': 'ti-movie',
+        'calculator': 'ti-calculator',
+        'battery': 'ti-battery',
+        'router': 'ti-router',
+        'leaf': 'ti-battery-eco',
+        'terminal': 'ti-terminal-2',
+        'bookmark': 'ti-bookmark',
+        'images': 'ti-wallpaper-selector',
+        'tablet': 'ti-devices',
+        'star': 'ti-topology-star-3',
+        'qrcode': 'ti-qrcode',
+        'crosshair': 'ti-crosshair',
+        'wallet': 'ti-wallet',
+        'th-large': 'ti-layout-filled',
+        'th': 'ti-layout-grid',
+        'pie': 'ti-chart-donut-3',
+        'usb': 'ti-device-usb',
+        'file': 'ti-file',
+        'microphone-alt': 'ti-microphone-2',
+        'route': 'ti-route',
+        'book': 'ti-notebook',
+        'circle': 'ti-circles',
+        'mouse': 'ti-mouse',
+        'hexagon': 'ti-hexagon',
+        'code': 'ti-code-circle',
+        'lightbulb': 'ti-bulb',
+        'branch': 'ti-git-pull-request',
+        'cloud': 'ti-cloud-network',
+        'discord': 'ti-brand-discord',
+        'envelope': 'ti-mail',
+        'openai': 'ti-brand-openai',
+        'scan': 'ti-scan',
+        'youtube': 'ti-brand-youtube',
+        'math': 'ti-math',
+        'spotify': 'ti-brand-spotify',
+        'headphones': 'ti-device-airpods',
+        'bug': 'ti-bug',
+        'globe': 'ti-world-plus',
+        'sliders': 'ti-adjustments-horizontal',
+        'globe-americas': 'ti-world-plus',
+        'tint': 'ti-droplet',
+        'rocket': 'ti-launcher',
+        'bitcoin': 'ti-currency-bitcoin',
+        'check-double': 'ti-checks',
+        'printer': 'ti-printer',
+        'github': 'ti-brand-github',
+        'git': 'ti-brand-git'
+      };
 
-      async function loadPlugins() {
-        const container = document.getElementById('plugins-container');
-        
-        try {
-          const response = await fetch('https://raw.githubusercontent.com/Nilsonlinux/noctalia-plugins/main/catalog.toml');
-          
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          
-          const tomlText = await response.text();
-          const plugins = parseTOML(tomlText);
-          
-          console.log('Plugins parseados:', plugins);
-          
-          if (!plugins || plugins.length === 0) {
-            container.innerHTML = `
-              <div class="plugins-error">
-                ⚠️ Nenhum plugin encontrado no catalog.toml
-              </div>
-            `;
-            return;
-          }
-
-          renderPlugins(plugins);
-          
-        } catch (error) {
-          console.error('Erro ao carregar plugins:', error);
-          container.innerHTML = `
-            <div class="plugins-error">
-              ❌ Erro ao carregar plugins: ${error.message}
-            </div>
-          `;
-        }
+      function getIconClass(iconName) {
+        return tablerIconMap[iconName] || 'ti-plug';
       }
 
       function renderPlugins(plugins) {
         const container = document.getElementById('plugins-container');
         
-        // Mapeamento de ícones do catalog.toml para Font Awesome
-        const iconMap = {
-          'activity': 'fa-bolt',          // activity → bolt (relâmpago)
-          'rss': 'fa-rss',                // rss → rss
-          'package': 'fa-box',            // package → box (caixa)
-          'network': 'fa-network-wired',  // network → network-wired
-          'plug': 'fa-plug',              // plug → plug (padrão)
-          'cog': 'fa-cog',                // cog → cog
-          'heart': 'fa-heart',            // heart → heart
-          'star': 'fa-star',              // star → star
-          'clock': 'fa-clock',            // clock → clock
-          'user': 'fa-user',              // user → user
-          'folder': 'fa-folder',          // folder → folder
-          'file': 'fa-file',              // file → file
-          'code': 'fa-code',              // code → code
-          'terminal': 'fa-terminal',      // terminal → terminal
-          'server': 'fa-server',          // server → server
-          'cloud': 'fa-cloud',            // cloud → cloud
-          'database': 'fa-database',      // database → database
-          'shield': 'fa-shield-alt',      // shield → shield-alt
-          'lock': 'fa-lock',              // lock → lock
-          'unlock': 'fa-unlock',          // unlock → unlock
-          'key': 'fa-key',                // key → key
-          'wrench': 'fa-wrench',          // wrench → wrench
-          'hammer': 'fa-hammer',          // hammer → hammer
-          'pencil': 'fa-pencil-alt',      // pencil → pencil-alt
-          'trash': 'fa-trash',            // trash → trash
-          'plus': 'fa-plus',              // plus → plus
-          'minus': 'fa-minus',            // minus → minus
-          'check': 'fa-check',            // check → check
-          'times': 'fa-times',            // times → times
-          'search': 'fa-search',          // search → search
-          'print': 'fa-print',            // print → print
-          'share': 'fa-share-alt',        // share → share-alt
-          'download': 'fa-download',      // download → download
-          'upload': 'fa-upload',          // upload → upload
-          'refresh': 'fa-sync',           // refresh → sync
-          'settings': 'fa-cog',           // settings → cog
-          'tools': 'fa-tools',            // tools → tools
-        };
-        
-        function getLatestVersion(plugins) {
-          let latest = plugins[0];
-          plugins.forEach(p => {
-            if (!p.version) return;
-            const v1 = p.version.split('.').map(Number);
-            const v2 = latest.version ? latest.version.split('.').map(Number) : [0, 0, 0];
-            for (let i = 0; i < Math.min(v1.length, v2.length); i++) {
-              if (v1[i] > v2[i]) { latest = p; break; }
-              if (v1[i] < v2[i]) break;
-            }
-          });
-          return latest.id;
+        if (plugins.length === 0) {
+          container.innerHTML = `
+            <div class="plugins-error">
+              <i class="ti ti-search"></i>
+              <p>Nenhum plugin encontrado.</p>
+            </div>
+          `;
+          return;
         }
 
-        const latestId = getLatestVersion(plugins);
-        
         let html = '<div class="plugins-grid">';
-        
         plugins.forEach(plugin => {
-          const thumbnailUrl = getThumbnailUrl(plugin.id);
-          const repoUrl = getPluginRepoUrl(plugin.id);
-          const folder = getPluginFolder(plugin.id);
+          const iconClass = getIconClass(plugin.icon);
+          const updatedDate = formatDate(plugin.updatedAt);
           const tags = plugin.tags || [];
-          const deps = plugin.dependencies || [];
-          const isLatest = plugin.id === latestId;
-          
-          // Pegar o ícone com fallback
-          const iconKey = plugin.icon || 'plug';
-          const iconClass = iconMap[iconKey] || 'fa-plug';
-          
-          const updatedAt = plugin.updated_at;
-          const addedAt = plugin.added_at;
-          
-          const updatedDate = updatedAt ? formatDate(updatedAt) : null;
-          const addedDate = addedAt ? formatDate(addedAt) : null;
-          const daysAgo = updatedAt ? getDaysAgo(updatedAt) : null;
-          
-          let displayDate = updatedDate || addedDate || 'Data desconhecida';
-          let daysAgoText = daysAgo ? `(${daysAgo})` : '';
-          
+          const repoUrl = `https://github.com/Nilsonlinux/noctalia-plugins/tree/main/${plugin.id}`;
+
           html += `
             <a href="${repoUrl}" target="_blank" class="plugin-card">
               <div class="plugin-thumbnail">
                 <img 
-                  src="${thumbnailUrl}" 
+                  src="https://raw.githubusercontent.com/Nilsonlinux/noctalia-plugins/main/${plugin.id}/thumbnail.webp" 
                   alt="${plugin.name}"
-                  onerror="this.style.display='none'; this.parentElement.innerHTML = '<div class=\\'placeholder-icon\\'>🔌</div>';"
+                  onerror="this.style.display='none'; this.parentElement.innerHTML = '<div class=\\'placeholder-icon\\'><i class=\\'ti ${iconClass}\\' style=\\'font-size:3rem; color:#fbbf24;\\'></i></div>';"
                   loading="lazy"
                 />
               </div>
               <div class="plugin-info">
-                <div class="plugin-name">
-                  <i class="fas ${iconClass}"></i>
-                  ${plugin.name}
-                </div>
-                <div class="plugin-description">${plugin.description || 'Sem descrição'}</div>
-                <div class="plugin-meta">
-                  <div class="plugin-version-row">
-                    <span class="plugin-version-badge ${isLatest ? 'latest' : ''}">
-                      ${isLatest ? '⭐ ' : ''}v${plugin.version || '0.0.0'}
-                      ${isLatest ? ' latest' : ''}
-                    </span>
-                    <span class="plugin-api">API ${plugin.plugin_api || '?'}</span>
-                    <span class="plugin-updated">
-                      <i class="fas fa-calendar-alt"></i> ${displayDate}
-                      ${daysAgoText ? ` ${daysAgoText}` : ''}
-                    </span>
-                  </div>
-                  ${tags.slice(0, 3).map(tag => `<span class="plugin-tag">#${tag}</span>`).join('')}
-                  ${tags.length > 3 ? `<span class="plugin-tag">+${tags.length - 3}</span>` : ''}
-                  <span class="plugin-author">👤 ${plugin.author || 'Desconhecido'}</span>
-                  ${deps.length > 0 ? `<span class="plugin-deps">📦 ${deps.join(', ')}</span>` : ''}
-                  ${addedDate && !updatedDate ? `<span class="commit-info">📥 adicionado em ${addedDate}</span>` : ''}
-                  <span class="commit-info" style="opacity:0.3;">
-                    <i class="fas fa-external-link-alt"></i> Ver no GitHub
+                <!-- LINHA: ÍCONE + NOME DO PLUGIN -->
+                <div class="plugin-header">
+                  <span class="plugin-icon-wrapper">
+                    <i class="ti ${iconClass}"></i>
                   </span>
+                  <span class="plugin-name">${plugin.name}</span>
+                </div>
+
+                <!-- DESCRIÇÃO -->
+                <div class="plugin-description">${plugin.description || 'Sem descrição'}</div>
+
+                <!-- BADGE COMMUNITY -->
+                <span class="plugin-badge-community">Community</span>
+
+                <!-- TAGS -->
+                <div class="plugin-tags">
+                  ${tags.map(tag => `<span class="plugin-tag">${tag}</span>`).join('')}
+                </div>
+
+                <!-- LINHA: AUTOR (esquerda) + VERSÃO (direita) -->
+                <div class="plugin-author-row">
+                  <span class="plugin-author">${plugin.author}</span>
+                  <span class="plugin-version-badge">v${plugin.version}</span>
+                </div>
+
+                <!-- DATA -->
+                <div class="plugin-updated">
+                  <i class="ti ti-calendar"></i> ${updatedDate}
+                </div>
+
+                <!-- LINK -->
+                <div class="plugin-repo-link">
+                  <i class="ti ti-external-link"></i> Ver no GitHub
                 </div>
               </div>
             </a>
           `;
         });
-        
         html += '</div>';
         container.innerHTML = html;
       }
 
-      loadPlugins();
+      // ===== INICIALIZAR =====
+      if (myPlugins.length === 0) {
+        document.getElementById('plugins-container').innerHTML = `
+          <div class="plugins-error">
+            <i class="ti ti-plug-off"></i>
+            <p>Nenhum plugin do Nilsonlinux encontrado no catálogo do Noctalia.</p>
+          </div>
+        `;
+      } else {
+        renderPlugins(myPlugins);
+      }
 
     })();
   </script>
