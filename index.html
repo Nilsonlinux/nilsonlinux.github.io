@@ -495,6 +495,43 @@
       text-align: center;
     }
 
+    /* ===== ANIMAÇÃO DO JOINHA ===== */
+    @keyframes reactionPulse {
+      0% { transform: scale(1); }
+      30% { transform: scale(1.15); }
+      50% { transform: scale(0.95); }
+      70% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes reactionGlow {
+      0% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); }
+      50% { box-shadow: 0 0 20px 4px rgba(251, 191, 36, 0.3); }
+      100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); }
+    }
+
+    .plugin-reaction.animated {
+      animation: reactionPulse 0.5s ease-in-out, reactionGlow 0.5s ease-in-out;
+    }
+
+    .plugin-reaction.count-0.animated {
+      animation: reactionPulse 0.5s ease-in-out;
+    }
+
+    .plugin-reaction.count-11-20.animated {
+      animation: reactionPulse 0.5s ease-in-out, reactionGlow 0.5s ease-in-out;
+    }
+    .plugin-reaction.count-11-20.animated {
+      box-shadow: 0 0 20px 4px rgba(56, 132, 255, 0.3);
+    }
+
+    .plugin-reaction.count-21-plus.animated {
+      animation: reactionPulse 0.5s ease-in-out, reactionGlow 0.5s ease-in-out;
+    }
+    .plugin-reaction.count-21-plus.animated {
+      box-shadow: 0 0 20px 4px rgba(46, 204, 113, 0.3);
+    }
+
     .plugin-description {
       font-size: 0.8rem;
       color: #9ab0d0;
@@ -956,7 +993,7 @@
       </div>
     </div>
 
-    <!-- ===== PLUGINS (primeiro) ===== -->
+    <!-- ===== PLUGINS ===== -->
     <div class="plugins-section">
       <div class="section-title">
         <i class="ti ti-plug"></i> plugins Noctalia
@@ -970,7 +1007,7 @@
       </div>
     </div>
 
-    <!-- ===== REPOSITÓRIOS PÚBLICOS (último) ===== -->
+    <!-- ===== REPOSITÓRIOS PÚBLICOS ===== -->
     <div class="repos-section">
       <div class="section-title">
         <i class="fab fa-github"></i> repositórios públicos
@@ -1331,7 +1368,12 @@
         return tablerIconMap[iconName] || 'ti-plug';
       }
 
-      async function renderPlugins(plugins) {
+      // ===== VARIÁVEIS PARA CONTROLE DE ATUALIZAÇÃO =====
+      let previousCounts = {};
+      let updateInterval = null;
+      let isFirstLoad = true;
+
+      async function renderPlugins(plugins, animate = false) {
         const container = document.getElementById('plugins-container');
         
         if (plugins.length === 0) {
@@ -1360,6 +1402,13 @@
           const issuesUrl = `https://github.com/Nilsonlinux/noctalia-plugins/issues?q=is%3Aissue+is%3Aopen+${plugin.id}`;
           const count = plugin.reactionCount || 0;
           const countClass = getReactionClass(count);
+          
+          // Verificar se houve mudança para animar
+          const prevCount = previousCounts[plugin.id] || 0;
+          const shouldAnimate = animate && count !== prevCount && count > 0;
+          
+          // Atualizar o valor anterior
+          previousCounts[plugin.id] = count;
 
           html += `
             <div class="plugin-card" onclick="window.open('${repoUrl}', '_blank')">
@@ -1379,7 +1428,7 @@
                     </span>
                     <span class="plugin-name">${plugin.name}</span>
                   </div>
-                  <a href="${issuesUrl}" target="_blank" class="plugin-reaction ${countClass}" onclick="event.stopPropagation();">
+                  <a href="${issuesUrl}" target="_blank" class="plugin-reaction ${countClass} ${shouldAnimate ? 'animated' : ''}" onclick="event.stopPropagation();">
                     <i class="ti ti-thumb-up"></i>
                     <span class="reaction-count">${count}</span>
                   </a>
@@ -1411,18 +1460,100 @@
         });
         html += '</div>';
         container.innerHTML = html;
+        
+        // Remover a classe animated após a animação
+        setTimeout(() => {
+          document.querySelectorAll('.plugin-reaction.animated').forEach(el => {
+            el.classList.remove('animated');
+          });
+        }, 600);
       }
 
-      if (myPlugins.length === 0) {
-        document.getElementById('plugins-container').innerHTML = `
-          <div class="error">
-            <i class="ti ti-plug-off"></i>
-            Nenhum plugin do Nilsonlinux encontrado.
-          </div>
-        `;
-      } else {
-        renderPlugins(myPlugins);
+      // ===== FUNÇÃO PARA ATUALIZAR EM TEMPO REAL =====
+      async function updateReactions() {
+        const container = document.getElementById('plugins-container');
+        const cards = container.querySelectorAll('.plugin-card');
+        
+        if (cards.length === 0) return;
+        
+        // Extrair os IDs dos plugins dos cards
+        const pluginIds = myPlugins.map(p => p.id);
+        
+        // Buscar novas contagens
+        const updates = await Promise.all(
+          pluginIds.map(async (id) => {
+            const count = await fetchIssueReactions(id);
+            return { id, count };
+          })
+        );
+        
+        // Atualizar os badges
+        updates.forEach(({ id, count }) => {
+          const card = container.querySelector(`.plugin-card[data-id="${id}"]`);
+          if (!card) return;
+          
+          const reactionEl = card.querySelector('.plugin-reaction');
+          if (!reactionEl) return;
+          
+          const countSpan = reactionEl.querySelector('.reaction-count');
+          const oldCount = parseInt(countSpan.textContent) || 0;
+          
+          if (count !== oldCount) {
+            // Atualizar o número
+            countSpan.textContent = count;
+            
+            // Atualizar a classe de cor
+            const newClass = getReactionClass(count);
+            reactionEl.classList.remove('count-0', 'count-1-10', 'count-11-20', 'count-21-plus');
+            reactionEl.classList.add(newClass);
+            
+            // Adicionar animação se aumentou
+            if (count > oldCount) {
+              reactionEl.classList.remove('animated');
+              // Forçar reflow para reiniciar a animação
+              void reactionEl.offsetWidth;
+              reactionEl.classList.add('animated');
+              setTimeout(() => {
+                reactionEl.classList.remove('animated');
+              }, 600);
+            }
+          }
+        });
       }
+
+      async function initialRender() {
+        if (myPlugins.length === 0) {
+          document.getElementById('plugins-container').innerHTML = `
+            <div class="error">
+              <i class="ti ti-plug-off"></i>
+              Nenhum plugin do Nilsonlinux encontrado.
+            </div>
+          `;
+          return;
+        }
+        
+        // Primeiro carregamento (sem animação)
+        await renderPlugins(myPlugins, false);
+        isFirstLoad = false;
+        
+        // Iniciar atualização em tempo real (a cada 30 segundos)
+        if (updateInterval) {
+          clearInterval(updateInterval);
+        }
+        updateInterval = setInterval(() => {
+          updateReactions();
+        }, 30000); // 30 segundos
+      }
+
+      // ===== INICIAR =====
+      initialRender();
+
+      // Limpar intervalo quando a página for fechada
+      window.addEventListener('beforeunload', function() {
+        if (updateInterval) {
+          clearInterval(updateInterval);
+        }
+      });
 
     })();
   </script>
