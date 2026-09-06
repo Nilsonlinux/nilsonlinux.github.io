@@ -495,6 +495,41 @@
       text-align: center;
     }
 
+    /* ===== ANIMAÇÃO DE CURTIDA ===== */
+    @keyframes reaction-glow {
+      0% {
+        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.6);
+        transform: scale(1);
+      }
+      40% {
+        box-shadow: 0 0 22px 6px rgba(46, 204, 113, 0.55);
+        transform: scale(1.15);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0);
+        transform: scale(1);
+      }
+    }
+
+    @keyframes count-pop {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.5); }
+      100% { transform: scale(1); }
+    }
+
+    .plugin-reaction.liked {
+      animation: reaction-glow 0.9s ease-out;
+    }
+
+    .plugin-reaction.liked .reaction-count {
+      display: inline-block;
+      animation: count-pop 0.5s ease-out;
+    }
+
+    .plugin-reaction.liked i {
+      animation: count-pop 0.5s ease-out;
+    }
+
     .plugin-description {
       font-size: 0.8rem;
       color: #9ab0d0;
@@ -956,7 +991,7 @@
       </div>
     </div>
 
-    <!-- ===== PLUGINS (primeiro) ===== -->
+    <!-- ===== PLUGINS ===== -->
     <div class="plugins-section">
       <div class="section-title">
         <i class="ti ti-plug"></i> plugins Noctalia
@@ -970,7 +1005,7 @@
       </div>
     </div>
 
-    <!-- ===== REPOSITÓRIOS PÚBLICOS (último) ===== -->
+    <!-- ===== REPOSITÓRIOS PÚBLICOS ===== -->
     <div class="repos-section">
       <div class="section-title">
         <i class="fab fa-github"></i> repositórios públicos
@@ -1331,9 +1366,27 @@
         return tablerIconMap[iconName] || 'ti-plug';
       }
 
+      // ===== GUARDA O CONTADOR MAIS RECENTE DE CADA PLUGIN =====
+      const reactionState = {};
+
+      function applyReactionUI(reactionEl, countEl, count, animate) {
+        const countClass = getReactionClass(count);
+        reactionEl.classList.remove('count-0', 'count-1-10', 'count-11-20', 'count-21-plus');
+        reactionEl.classList.add(countClass);
+        countEl.textContent = count;
+
+        if (animate) {
+          reactionEl.classList.remove('liked');
+          // força reflow pra permitir re-disparar a animação em curtidas seguidas
+          void reactionEl.offsetWidth;
+          reactionEl.classList.add('liked');
+          setTimeout(() => reactionEl.classList.remove('liked'), 900);
+        }
+      }
+
       async function renderPlugins(plugins) {
         const container = document.getElementById('plugins-container');
-        
+
         if (plugins.length === 0) {
           container.innerHTML = `
             <div class="error">
@@ -1347,6 +1400,7 @@
         const pluginsWithReactions = await Promise.all(
           plugins.map(async (plugin) => {
             const reactionCount = await fetchIssueReactions(plugin.id);
+            reactionState[plugin.id] = reactionCount;
             return { ...plugin, reactionCount };
           })
         );
@@ -1379,7 +1433,7 @@
                     </span>
                     <span class="plugin-name">${plugin.name}</span>
                   </div>
-                  <a href="${issuesUrl}" target="_blank" class="plugin-reaction ${countClass}" onclick="event.stopPropagation();">
+                  <a href="${issuesUrl}" target="_blank" class="plugin-reaction ${countClass}" data-plugin-id="${plugin.id}" onclick="event.stopPropagation();">
                     <i class="ti ti-thumb-up"></i>
                     <span class="reaction-count">${count}</span>
                   </a>
@@ -1411,6 +1465,34 @@
         });
         html += '</div>';
         container.innerHTML = html;
+
+        // Começa a checar por novas curtidas periodicamente
+        startReactionPolling(plugins);
+      }
+
+      // ===== ATUALIZAÇÃO AUTOMÁTICA DAS REAÇÕES =====
+      let pollingInterval = null;
+
+      function startReactionPolling(plugins, intervalMs = 10000) {
+        if (pollingInterval) clearInterval(pollingInterval);
+
+        pollingInterval = setInterval(async () => {
+          for (const plugin of plugins) {
+            const newCount = await fetchIssueReactions(plugin.id);
+            const oldCount = reactionState[plugin.id] || 0;
+
+            if (newCount === oldCount) continue;
+
+            const reactionEl = document.querySelector(`.plugin-reaction[data-plugin-id="${plugin.id}"]`);
+            if (!reactionEl) continue;
+
+            const countEl = reactionEl.querySelector('.reaction-count');
+            const increased = newCount > oldCount;
+
+            applyReactionUI(reactionEl, countEl, newCount, increased);
+            reactionState[plugin.id] = newCount;
+          }
+        }, intervalMs);
       }
 
       if (myPlugins.length === 0) {
