@@ -1277,17 +1277,13 @@
       // ===== FUNÇÃO PARA BUSCAR REAÇÕES DAS ISSUES =====
       async function fetchIssueReactions(pluginId) {
         try {
-          // Extrai apenas o nome do plugin (ex: "nilsonlinux/inventory-manager" -> "inventory-manager")
           const pluginName = pluginId.split('/').pop();
-          
-          // Busca issues abertas que contenham o nome do plugin no título
           const url = `https://api.github.com/search/issues?q=repo:Nilsonlinux/noctalia-plugins+${pluginName}+is:issue+is:open`;
           const response = await fetch(url);
           if (!response.ok) return 0;
           const data = await response.json();
           
           if (data.items && data.items.length > 0) {
-            // Pega a primeira issue encontrada
             const issue = data.items[0];
             const reactionsUrl = `https://api.github.com/repos/Nilsonlinux/noctalia-plugins/issues/${issue.number}/reactions`;
             const reactionsResponse = await fetch(reactionsUrl);
@@ -1314,7 +1310,6 @@
         });
       }
 
-      // ===== FUNÇÃO PARA COR DO BADGE =====
       function getReactionClass(count) {
         if (count === 0) return 'count-0';
         if (count <= 10) return 'count-1-10';
@@ -1322,6 +1317,7 @@
         return 'count-21-plus';
       }
 
+      // ===== MAPEAMENTO DE ÍCONES TABLER (ATUALIZADO) =====
       const tablerIconMap = {
         'rss': 'ti-rss',
         'activity': 'ti-activity',
@@ -1404,18 +1400,99 @@
         'bug': 'ti-bug',
         'globe': 'ti-world-plus',
         'sliders': 'ti-adjustments-horizontal',
-        'globe-americas': 'ti-world-plus',
         'tint': 'ti-droplet',
         'rocket': 'ti-launcher',
         'bitcoin': 'ti-currency-bitcoin',
         'check-double': 'ti-checks',
         'printer': 'ti-printer',
         'github': 'ti-brand-github',
-        'git': 'ti-brand-git'
+        'git': 'ti-brand-git',
+        // NOVOS ÍCONES
+        'brand-speedtest': 'ti-speed-test',
+        'speedtest': 'ti-speed-test',
+        'wifi': 'ti-wifi',
+        'bluetooth': 'ti-bluetooth',
+        'thermometer': 'ti-thermometer',
+        'fan': 'ti-car-fan',
+        'gpu': 'ti-cpu',
+        'memory': 'ti-devices',
+        'disk': 'ti-hdd',
+        'database': 'ti-database',
+        'unlock': 'ti-unlock',
+        'security': 'ti-shield-lock',
+        'alert': 'ti-alert',
+        'bell': 'ti-bell',
+        'message': 'ti-message',
+        'calendar': 'ti-calendar',
+        'settings': 'ti-settings',
+        'tools': 'ti-tools',
+        'wrench': 'ti-wrench',
+        'hammer': 'ti-hammer',
+        'pencil': 'ti-pencil',
+        'edit': 'ti-edit',
+        'delete': 'ti-trash',
+        'plus': 'ti-plus',
+        'minus': 'ti-minus',
+        'check': 'ti-check',
+        'close': 'ti-x',
+        'filter': 'ti-filter',
+        'sort': 'ti-sort-ascending',
+        'menu': 'ti-menu-2',
+        'user': 'ti-user',
+        'users': 'ti-users',
+        'profile': 'ti-user',
+        'avatar': 'ti-user',
+        'logout': 'ti-logout',
+        'login': 'ti-login',
+        'register': 'ti-user-plus',
+        'help': 'ti-help',
+        'info': 'ti-info-circle',
+        'warning': 'ti-alert-triangle',
+        'error': 'ti-alert-octagon',
+        'success': 'ti-check',
+        'loading': 'ti-loader',
+        'refresh': 'ti-refresh',
+        'download': 'ti-download',
+        'upload': 'ti-upload',
+        'share': 'ti-share',
+        'link': 'ti-link',
+        'unlink': 'ti-unlink',
+        'copy': 'ti-copy',
+        'paste': 'ti-paste',
+        'cut': 'ti-cut',
+        'print': 'ti-print',
+        'export': 'ti-export',
+        'import': 'ti-import',
+        'save': 'ti-save',
+        'open': 'ti-folder-open',
+        'folder': 'ti-folder',
+        'archive': 'ti-archive',
+        'zip': 'ti-file-zip',
+        'pdf': 'ti-file-pdf',
+        'doc': 'ti-file-text',
+        'audio': 'ti-music',
+        'play': 'ti-player-play',
+        'pause': 'ti-player-pause',
+        'stop': 'ti-player-stop',
+        'next': 'ti-player-skip-forward',
+        'prev': 'ti-player-skip-back',
+        'volume': 'ti-volume',
+        'volume-up': 'ti-volume-up',
+        'volume-down': 'ti-volume-down',
+        'mute': 'ti-volume-off'
       };
 
       function getIconClass(iconName) {
-        return tablerIconMap[iconName] || 'ti-plug';
+        if (!iconName) return 'ti-plug';
+        
+        // Se o ícone começar com 'brand-', tenta encontrar o correspondente
+        if (iconName.startsWith('brand-')) {
+          const brandName = iconName.replace('brand-', '');
+          const mapped = tablerIconMap[iconName] || tablerIconMap[brandName] || `ti-${brandName}`;
+          return mapped;
+        }
+        
+        return tablerIconMap[iconName] || `ti-${iconName}` || 'ti-plug';
       }
 
       function getPluginFolder(id) {
@@ -1452,7 +1529,6 @@
           return;
         }
 
-        // Filtrar apenas plugins do Nilsonlinux
         const myPlugins = plugins.filter(p => p.author === 'Nilsonlinux');
 
         if (myPlugins.length === 0) {
@@ -1535,11 +1611,9 @@
         html += '</div>';
         container.innerHTML = html;
 
-        // Começa a checar por novas curtidas periodicamente
         startReactionPolling(pluginsWithReactions);
       }
 
-      // ===== ATUALIZAÇÃO AUTOMÁTICA DAS REAÇÕES =====
       let pollingInterval = null;
 
       function startReactionPolling(plugins, intervalMs = 120000) {
@@ -1564,7 +1638,6 @@
         }, intervalMs);
       }
 
-      // ===== INICIALIZAR PLUGINS =====
       async function initPlugins() {
         const container = document.getElementById('plugins-container');
         container.innerHTML = `
