@@ -1219,23 +1219,75 @@
       fetchRepos();
 
       // ===== PLUGINS =====
-      const pluginsData = [
-        {id:"rss-notifier",name:"RSS/Atom Notifier",version:"1.0.4",author:"Nilsonlinux",description:"Monitors RSS/Atom feeds and notifies you when new items appear.",apiVersion:14,updatedAt:1788703076,releases:[],tags:["utility","indicator","panel","bar","service"],source:"community",icon:"rss"},
-        {id:"link-ip-monitor",name:"Link/IP Monitor",version:"1.0.2",author:"Nilsonlinux",description:"It pings a list of IPs, hosts, or links at intervals and notifies you when one goes down (or comes back up).",apiVersion:14,updatedAt:1788657701,releases:[],tags:["network","indicator","bar","panel","service"],source:"community",icon:"activity"},
-        {id:"inventory-manager",name:"Inventory Manager",version:"1.0.0",author:"Nilsonlinux",description:"Inventory Manager for managing product inventory with categories, low stock alerts, and data export.",apiVersion:15,updatedAt:1788657701,releases:[],tags:["utility","productivity","service","panel","bar"],source:"community",icon:"package"}
-      ];
+      async function fetchCatalog() {
+        try {
+          const url = 'https://raw.githubusercontent.com/Nilsonlinux/noctalia-plugins/main/catalog.toml';
+          const response = await fetch(url);
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const text = await response.text();
+          return parseTOML(text);
+        } catch (error) {
+          console.error('Erro ao buscar catalog.toml:', error);
+          return [];
+        }
+      }
 
-      const myPlugins = pluginsData.filter(p => p.author === 'Nilsonlinux');
+      function parseTOML(toml) {
+        const plugins = [];
+        const lines = toml.split('\n');
+        
+        let currentPlugin = null;
+        let inPlugin = false;
+
+        for (let line of lines) {
+          line = line.trim();
+          
+          if (!line || line.startsWith('#')) continue;
+
+          if (line === '[[plugin]]') {
+            if (currentPlugin) plugins.push(currentPlugin);
+            currentPlugin = {};
+            inPlugin = true;
+            continue;
+          }
+
+          if (inPlugin && currentPlugin) {
+            const match = line.match(/^(\w+)\s*=\s*(.+)$/);
+            if (match) {
+              const key = match[1];
+              let value = match[2].trim();
+              
+              if (value.startsWith('"') && value.endsWith('"')) {
+                value = value.slice(1, -1);
+              } else if (value.startsWith('[') && value.endsWith(']')) {
+                value = value.slice(1, -1).split(',').map(v => v.trim().replace(/^"|"$/g, ''));
+              } else if (/^-?\d+(\.\d+)?$/.test(value)) {
+                value = Number(value);
+              }
+              
+              currentPlugin[key] = value;
+            }
+          }
+        }
+
+        if (currentPlugin) plugins.push(currentPlugin);
+        return plugins;
+      }
 
       // ===== FUNÇÃO PARA BUSCAR REAÇÕES DAS ISSUES =====
       async function fetchIssueReactions(pluginId) {
         try {
-          const url = `https://api.github.com/search/issues?q=repo:Nilsonlinux/noctalia-plugins+${pluginId}+is:issue+is:open`;
+          // Extrai apenas o nome do plugin (ex: "nilsonlinux/inventory-manager" -> "inventory-manager")
+          const pluginName = pluginId.split('/').pop();
+          
+          // Busca issues abertas que contenham o nome do plugin no título
+          const url = `https://api.github.com/search/issues?q=repo:Nilsonlinux/noctalia-plugins+${pluginName}+is:issue+is:open`;
           const response = await fetch(url);
           if (!response.ok) return 0;
           const data = await response.json();
           
           if (data.items && data.items.length > 0) {
+            // Pega a primeira issue encontrada
             const issue = data.items[0];
             const reactionsUrl = `https://api.github.com/repos/Nilsonlinux/noctalia-plugins/issues/${issue.number}/reactions`;
             const reactionsResponse = await fetch(reactionsUrl);
@@ -1366,6 +1418,10 @@
         return tablerIconMap[iconName] || 'ti-plug';
       }
 
+      function getPluginFolder(id) {
+        return id.split('/').pop();
+      }
+
       // ===== GUARDA O CONTADOR MAIS RECENTE DE CADA PLUGIN =====
       const reactionState = {};
 
@@ -1377,7 +1433,6 @@
 
         if (animate) {
           reactionEl.classList.remove('liked');
-          // força reflow pra permitir re-disparar a animação em curtidas seguidas
           void reactionEl.offsetWidth;
           reactionEl.classList.add('liked');
           setTimeout(() => reactionEl.classList.remove('liked'), 900);
@@ -1397,8 +1452,21 @@
           return;
         }
 
+        // Filtrar apenas plugins do Nilsonlinux
+        const myPlugins = plugins.filter(p => p.author === 'Nilsonlinux');
+
+        if (myPlugins.length === 0) {
+          container.innerHTML = `
+            <div class="error">
+              <i class="ti ti-plug-off"></i>
+              Nenhum plugin do Nilsonlinux encontrado.
+            </div>
+          `;
+          return;
+        }
+
         const pluginsWithReactions = await Promise.all(
-          plugins.map(async (plugin) => {
+          myPlugins.map(async (plugin) => {
             const reactionCount = await fetchIssueReactions(plugin.id);
             reactionState[plugin.id] = reactionCount;
             return { ...plugin, reactionCount };
@@ -1408,10 +1476,11 @@
         let html = '<div class="plugins-grid">';
         pluginsWithReactions.forEach(plugin => {
           const iconClass = getIconClass(plugin.icon);
-          const updatedDate = formatDate(plugin.updatedAt);
+          const updatedDate = formatDate(plugin.updated_at);
           const tags = plugin.tags || [];
-          const repoUrl = `https://github.com/Nilsonlinux/noctalia-plugins/tree/main/${plugin.id}`;
-          const issuesUrl = `https://github.com/Nilsonlinux/noctalia-plugins/issues?q=is%3Aissue+is%3Aopen+${plugin.id}`;
+          const folder = getPluginFolder(plugin.id);
+          const repoUrl = `https://github.com/Nilsonlinux/noctalia-plugins/tree/main/${folder}`;
+          const issuesUrl = `https://github.com/Nilsonlinux/noctalia-plugins/issues?q=is%3Aissue+is%3Aopen+${folder}`;
           const count = plugin.reactionCount || 0;
           const countClass = getReactionClass(count);
 
@@ -1419,7 +1488,7 @@
             <div class="plugin-card" onclick="window.open('${repoUrl}', '_blank')">
               <div class="plugin-thumbnail">
                 <img 
-                  src="https://raw.githubusercontent.com/Nilsonlinux/noctalia-plugins/main/${plugin.id}/thumbnail.webp" 
+                  src="https://raw.githubusercontent.com/Nilsonlinux/noctalia-plugins/main/${folder}/thumbnail.webp" 
                   alt="${plugin.name}"
                   onerror="this.style.display='none'; this.parentElement.innerHTML = '<div class=\\'placeholder-icon\\'><i class=\\'ti ${iconClass}\\' style=\\'font-size:3rem; color:#fbbf24;\\'></i></div>';"
                   loading="lazy"
@@ -1467,7 +1536,7 @@
         container.innerHTML = html;
 
         // Começa a checar por novas curtidas periodicamente
-        startReactionPolling(plugins);
+        startReactionPolling(pluginsWithReactions);
       }
 
       // ===== ATUALIZAÇÃO AUTOMÁTICA DAS REAÇÕES =====
@@ -1495,16 +1564,32 @@
         }, intervalMs);
       }
 
-      if (myPlugins.length === 0) {
-        document.getElementById('plugins-container').innerHTML = `
-          <div class="error">
-            <i class="ti ti-plug-off"></i>
-            Nenhum plugin do Nilsonlinux encontrado.
+      // ===== INICIALIZAR PLUGINS =====
+      async function initPlugins() {
+        const container = document.getElementById('plugins-container');
+        container.innerHTML = `
+          <div class="loading">
+            <i class="ti ti-loader-2" style="animation: spin 1s linear infinite;"></i>
+            Carregando plugins...
           </div>
         `;
-      } else {
-        renderPlugins(myPlugins);
+
+        const plugins = await fetchCatalog();
+        
+        if (plugins.length === 0) {
+          container.innerHTML = `
+            <div class="error">
+              <i class="ti ti-plug-off"></i>
+              Nenhum plugin encontrado no catalog.toml.
+            </div>
+          `;
+          return;
+        }
+
+        await renderPlugins(plugins);
       }
+
+      initPlugins();
 
     })();
   </script>
