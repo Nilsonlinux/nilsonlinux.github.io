@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>Nilsonlinux · dev</title>
   <!-- Fontes e ícones -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1047,624 +1050,651 @@
   </style>
 
   <script>
-    (function() {
-      // ===== TEMA =====
-      const toggle = document.getElementById('themeToggle');
-      const icon = document.getElementById('themeIcon');
+(function() {
+  // ===== DADOS DOS PLUGINS (FALLBACK ATUALIZADO) =====
+  const FALLBACK_PLUGINS = [
+    {
+      id: "nilsonlinux/speedtest-meter",
+      name: "Speedtest Meter",
+      version: "1.3.2",
+      updated_at: 1788795076,
+      added_at: 1788730733,
+      author: "Nilsonlinux",
+      license: "MIT",
+      icon: "brand-speedtest",
+      description: "Run an internet speed test with a live speedometer, then show full technical results: ping, jitter, download/upload, server host, location, country and ISP.",
+      plugin_api: 18,
+      tags: ["network", "indicator", "bar", "panel"]
+    },
+    {
+      id: "nilsonlinux/link-ip-monitor",
+      name: "Link/IP Monitor",
+      version: "1.0.2",
+      updated_at: 1788554504,
+      added_at: 1788127260,
+      author: "Nilsonlinux",
+      license: "MIT",
+      icon: "activity",
+      description: "It pings a list of IPs, hosts, or links at intervals and notifies you when one goes down (or comes back up).",
+      plugin_api: 14,
+      tags: ["network", "indicator", "bar", "panel", "service"]
+    },
+    {
+      id: "nilsonlinux/rss-notifier",
+      name: "RSS/Atom Notifier",
+      version: "1.0.4",
+      updated_at: 1788554610,
+      added_at: 1788127260,
+      author: "Nilsonlinux",
+      license: "MIT",
+      icon: "rss",
+      description: "Monitors RSS/Atom feeds and notifies you when new items appear.",
+      plugin_api: 14,
+      tags: ["utility", "indicator", "panel", "bar", "service"]
+    },
+    {
+      id: "nilsonlinux/inventory-manager",
+      name: "Inventory Manager",
+      version: "1.0.0",
+      updated_at: 1788127260,
+      added_at: 1788127260,
+      author: "Nilsonlinux",
+      license: "MIT",
+      icon: "package",
+      description: "Inventory Manager for managing product inventory with categories, low stock alerts, and data export.",
+      plugin_api: 15,
+      tags: ["utility", "productivity", "service", "panel", "bar"]
+    }
+  ];
 
-      let currentTheme = localStorage.getItem('nilson-theme') || 'dark';
-      applyTheme(currentTheme);
+  // ===== TEMA =====
+  const toggle = document.getElementById('themeToggle');
+  const icon = document.getElementById('themeIcon');
 
-      toggle.addEventListener('click', function() {
-        const next = (document.body.classList.contains('dark')) ? 'light' : 'dark';
-        applyTheme(next);
-        localStorage.setItem('nilson-theme', next);
-      });
+  let currentTheme = localStorage.getItem('nilson-theme') || 'dark';
+  applyTheme(currentTheme);
 
-      function applyTheme(theme) {
-        document.body.classList.remove('dark', 'light');
-        document.body.classList.add(theme);
+  toggle.addEventListener('click', function() {
+    const next = (document.body.classList.contains('dark')) ? 'light' : 'dark';
+    applyTheme(next);
+    localStorage.setItem('nilson-theme', next);
+  });
 
-        if (theme === 'dark') {
-          icon.className = 'fas fa-moon';
-        } else {
-          icon.className = 'fas fa-sun';
+  function applyTheme(theme) {
+    document.body.classList.remove('dark', 'light');
+    document.body.classList.add(theme);
+
+    if (theme === 'dark') {
+      icon.className = 'fas fa-moon';
+    } else {
+      icon.className = 'fas fa-sun';
+    }
+  }
+
+  const saved = localStorage.getItem('nilson-theme');
+  if (saved === 'light') {
+    applyTheme('light');
+  } else {
+    applyTheme('dark');
+  }
+
+  // ===== BOTÃO VOLTAR AO TOPO =====
+  const backToTop = document.getElementById('backToTop');
+  let isBackToTopVisible = false;
+
+  window.addEventListener('scroll', function() {
+    const scrollY = window.scrollY || window.pageYOffset;
+    const shouldShow = scrollY > 300;
+
+    if (shouldShow && !isBackToTopVisible) {
+      backToTop.classList.add('visible');
+      isBackToTopVisible = true;
+    } else if (!shouldShow && isBackToTopVisible) {
+      backToTop.classList.remove('visible');
+      isBackToTopVisible = false;
+    }
+  });
+
+  // ===== BUSCAR REPOSITÓRIOS DA API DO GITHUB =====
+  const repoList = document.getElementById('repo-list');
+  const focusContainer = document.getElementById('focus-container');
+  const username = 'Nilsonlinux';
+
+  const langColors = {
+    'C++': '#f34b7d',
+    'C': '#555555',
+    'Luau': '#00a2ff',
+    'Shell': '#89e051',
+    'HTML': '#e34c26',
+    'CSS': '#563d7c',
+    'JavaScript': '#f1e05a',
+    'TypeScript': '#3178c6',
+    'PHP': '#4F5D95',
+    'Python': '#3572A5',
+    'Lua': '#000080',
+    'Rust': '#dea584',
+    'Go': '#00ADD8',
+    'Ruby': '#701516',
+    'Java': '#b07219',
+    'Swift': '#ffac45',
+    'Kotlin': '#A97BFF',
+    'Vue': '#41b883',
+    'Dart': '#00B4AB',
+    'Perl': '#0298c3',
+    'Elixir': '#6e4a7e',
+    'Zig': '#ec915c',
+  };
+
+  const forceLanguage = {
+    'umbriel': 'C++',
+    'noctalia': 'C++',
+    'nsolus': 'Shell',
+    'dotfiles': 'Shell',
+    'pikaos': 'Shell',
+    'rss-notifier': 'Luau',
+    'link-ip-monitor': 'Luau',
+    'community-plugins': 'Luau',
+    'wifi-qr-poster': 'HTML',
+    'nilsonlinux.github.io': 'HTML',
+  };
+
+  async function fetchRepos() {
+    try {
+      const response = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
+      if (!response.ok) throw new Error('Erro ao buscar repositórios');
+      const repos = await response.json();
+
+      if (repos.length === 0) {
+        repoList.innerHTML = '<div class="error">Nenhum repositório público encontrado.</div>';
+        focusContainer.innerHTML = '<div class="error">Nenhum repositório encontrado</div>';
+        return;
+      }
+
+      // ===== FOCO ATUAL (5 últimos) =====
+      const lastFive = repos.slice(0, 5);
+      let focusHtml = '';
+      lastFive.forEach(repo => {
+        let lang = repo.language || 'Outro';
+        if (forceLanguage[repo.name]) {
+          lang = forceLanguage[repo.name];
         }
-      }
-
-      const saved = localStorage.getItem('nilson-theme');
-      if (saved === 'light') {
-        applyTheme('light');
-      } else {
-        applyTheme('dark');
-      }
-
-      // ===== BOTÃO VOLTAR AO TOPO =====
-      const backToTop = document.getElementById('backToTop');
-      let isBackToTopVisible = false;
-
-      window.addEventListener('scroll', function() {
-        const scrollY = window.scrollY || window.pageYOffset;
-        const shouldShow = scrollY > 300;
-
-        if (shouldShow && !isBackToTopVisible) {
-          backToTop.classList.add('visible');
-          isBackToTopVisible = true;
-        } else if (!shouldShow && isBackToTopVisible) {
-          backToTop.classList.remove('visible');
-          isBackToTopVisible = false;
-        }
-      });
-
-      // ===== BUSCAR REPOSITÓRIOS DA API DO GITHUB =====
-      const repoList = document.getElementById('repo-list');
-      const focusContainer = document.getElementById('focus-container');
-      const username = 'Nilsonlinux';
-
-      const langColors = {
-        'C++': '#f34b7d',
-        'C': '#555555',
-        'Luau': '#00a2ff',
-        'Shell': '#89e051',
-        'HTML': '#e34c26',
-        'CSS': '#563d7c',
-        'JavaScript': '#f1e05a',
-        'TypeScript': '#3178c6',
-        'PHP': '#4F5D95',
-        'Python': '#3572A5',
-        'Lua': '#000080',
-        'Rust': '#dea584',
-        'Go': '#00ADD8',
-        'Ruby': '#701516',
-        'Java': '#b07219',
-        'Swift': '#ffac45',
-        'Kotlin': '#A97BFF',
-        'Vue': '#41b883',
-        'Dart': '#00B4AB',
-        'Perl': '#0298c3',
-        'Elixir': '#6e4a7e',
-        'Zig': '#ec915c',
-      };
-
-      const forceLanguage = {
-        'umbriel': 'C++',
-        'noctalia': 'C++',
-        'nsolus': 'Shell',
-        'dotfiles': 'Shell',
-        'pikaos': 'Shell',
-        'rss-notifier': 'Luau',
-        'link-ip-monitor': 'Luau',
-        'community-plugins': 'Luau',
-        'wifi-qr-poster': 'HTML',
-        'nilsonlinux.github.io': 'HTML',
-      };
-
-      async function fetchRepos() {
-        try {
-          const response = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
-          if (!response.ok) throw new Error('Erro ao buscar repositórios');
-          const repos = await response.json();
-
-          if (repos.length === 0) {
-            repoList.innerHTML = '<div class="error">Nenhum repositório público encontrado.</div>';
-            focusContainer.innerHTML = '<div class="error">Nenhum repositório encontrado</div>';
-            return;
-          }
-
-          // ===== FOCO ATUAL (5 últimos) =====
-          const lastFive = repos.slice(0, 5);
-          let focusHtml = '';
-          lastFive.forEach(repo => {
-            let lang = repo.language || 'Outro';
-            if (forceLanguage[repo.name]) {
-              lang = forceLanguage[repo.name];
-            }
-            const color = langColors[lang] || '#6e7681';
-            focusHtml += `
-              <div class="focus-item">
-                <span class="lang-dot" style="background-color: ${color};"></span>
-                <span class="focus-name">${repo.name}</span>
-                <span class="focus-lang">${lang}</span>
-              </div>
-            `;
-          });
-          focusContainer.innerHTML = focusHtml;
-
-          // ===== REPOSITÓRIOS EM CARDS =====
-          let reposHtml = '';
-          repos.forEach(repo => {
-            let lang = repo.language || 'Outro';
-            if (forceLanguage[repo.name]) {
-              lang = forceLanguage[repo.name];
-            }
-            const color = langColors[lang] || '#6e7681';
-            const stars = repo.stargazers_count > 0 ? `<i class="fas fa-star"></i> ${repo.stargazers_count}` : '';
-            const forks = repo.forks_count > 0 ? `<i class="fas fa-code-fork"></i> ${repo.forks_count}` : '';
-            const stats = [stars, forks].filter(Boolean).join(' ');
-
-            reposHtml += `
-              <a href="${repo.html_url}" target="_blank" class="repo-card">
-                <div class="repo-name">
-                  <i class="fas fa-book"></i> ${repo.name}
-                </div>
-                <div class="repo-desc">${repo.description || 'Sem descrição'}</div>
-                <div class="repo-meta">
-                  <span class="repo-lang">
-                    <span class="lang-dot" style="background-color: ${color};"></span>
-                    ${lang}
-                  </span>
-                  ${stats ? `<span class="repo-stats">${stats}</span>` : ''}
-                </div>
-              </a>
-            `;
-          });
-          repoList.innerHTML = reposHtml;
-
-        } catch (error) {
-          console.error('Erro ao carregar repositórios:', error);
-          repoList.innerHTML = `
-            <div class="error">
-              <i class="fas fa-exclamation-triangle"></i> 
-              Não foi possível carregar os repositórios.
-            </div>
-          `;
-          focusContainer.innerHTML = `
-            <div class="error">
-              <i class="fas fa-exclamation-triangle"></i> Erro ao carregar
-            </div>
-          `;
-        }
-      }
-
-      fetchRepos();
-
-      // ===== PLUGINS =====
-      async function fetchCatalog() {
-        try {
-          const url = 'https://raw.githubusercontent.com/Nilsonlinux/noctalia-plugins/main/catalog.toml';
-          const response = await fetch(url);
-          if (!response.ok) throw new Error(`HTTP ${response.status}`);
-          const text = await response.text();
-          return parseTOML(text);
-        } catch (error) {
-          console.error('Erro ao buscar catalog.toml:', error);
-          return [];
-        }
-      }
-
-      function parseTOML(toml) {
-        const plugins = [];
-        const lines = toml.split('\n');
-        
-        let currentPlugin = null;
-        let inPlugin = false;
-
-        for (let line of lines) {
-          line = line.trim();
-          
-          if (!line || line.startsWith('#')) continue;
-
-          if (line === '[[plugin]]') {
-            if (currentPlugin) plugins.push(currentPlugin);
-            currentPlugin = {};
-            inPlugin = true;
-            continue;
-          }
-
-          if (inPlugin && currentPlugin) {
-            const match = line.match(/^(\w+)\s*=\s*(.+)$/);
-            if (match) {
-              const key = match[1];
-              let value = match[2].trim();
-              
-              if (value.startsWith('"') && value.endsWith('"')) {
-                value = value.slice(1, -1);
-              } else if (value.startsWith('[') && value.endsWith(']')) {
-                value = value.slice(1, -1).split(',').map(v => v.trim().replace(/^"|"$/g, ''));
-              } else if (/^-?\d+(\.\d+)?$/.test(value)) {
-                value = Number(value);
-              }
-              
-              currentPlugin[key] = value;
-            }
-          }
-        }
-
-        if (currentPlugin) plugins.push(currentPlugin);
-        return plugins;
-      }
-
-      // ===== FUNÇÃO PARA BUSCAR REAÇÕES DAS ISSUES =====
-      async function fetchIssueReactions(pluginId) {
-        try {
-          const pluginName = pluginId.split('/').pop();
-          const url = `https://api.github.com/search/issues?q=repo:Nilsonlinux/noctalia-plugins+${pluginName}+is:issue+is:open`;
-          const response = await fetch(url);
-          if (!response.ok) return 0;
-          const data = await response.json();
-          
-          if (data.items && data.items.length > 0) {
-            const issue = data.items[0];
-            const reactionsUrl = `https://api.github.com/repos/Nilsonlinux/noctalia-plugins/issues/${issue.number}/reactions`;
-            const reactionsResponse = await fetch(reactionsUrl);
-            if (reactionsResponse.ok) {
-              const reactions = await reactionsResponse.json();
-              const thumbsUp = reactions.filter(r => r.content === '+1');
-              return thumbsUp.length;
-            }
-          }
-          return 0;
-        } catch (error) {
-          console.error(`Erro ao buscar reações para ${pluginId}:`, error);
-          return 0;
-        }
-      }
-
-      function formatDate(timestamp) {
-        if (!timestamp) return 'Data desconhecida';
-        const date = new Date(timestamp * 1000);
-        return date.toLocaleDateString('pt-BR', {
-          day: 'numeric',
-          month: 'short',
-          year: 'numeric'
-        });
-      }
-
-      function getReactionClass(count) {
-        if (count === 0) return 'count-0';
-        if (count <= 10) return 'count-1-10';
-        if (count <= 20) return 'count-11-20';
-        return 'count-21-plus';
-      }
-
-      // ===== MAPEAMENTO DE ÍCONES TABLER (ATUALIZADO) =====
-      const tablerIconMap = {
-        'rss': 'ti-rss',
-        'activity': 'ti-activity',
-        'package': 'ti-package',
-        'network': 'ti-network',
-        'plug': 'ti-plug',
-        'cog': 'ti-settings',
-        'clock': 'ti-clock',
-        'video': 'ti-video',
-        'photo': 'ti-photo',
-        'lock': 'ti-lock',
-        'world': 'ti-world',
-        'search': 'ti-search',
-        'music': 'ti-music',
-        'keyboard': 'ti-keyboard',
-        'cpu': 'ti-cpu',
-        'brain': 'ti-brain',
-        'bolt': 'ti-bolt',
-        'box': 'ti-box',
-        'puzzle': 'ti-puzzle',
-        'cat': 'ti-cat',
-        'language': 'ti-language',
-        'smile': 'ti-mood-smile',
-        'notes': 'ti-notes',
-        'layer-group': 'ti-layers-subtract',
-        'columns': 'ti-layout-columns',
-        'palette': 'ti-palette',
-        'screen-share': 'ti-screen-share',
-        'laptop': 'ti-device-laptop',
-        'microphone': 'ti-microphone',
-        'image': 'ti-image',
-        'folder-open': 'ti-folder-open',
-        'home': 'ti-smart-home',
-        'sync': 'ti-refresh-dot',
-        'eye': 'ti-eye',
-        'gamepad': 'ti-device-gamepad-2',
-        'robot': 'ti-robot',
-        'mosque': 'ti-building-mosque',
-        'paw': 'ti-paw',
-        'server': 'ti-server-2',
-        'exchange': 'ti-switch-horizontal',
-        'shield': 'ti-shield-lock',
-        'key': 'ti-key',
-        'film': 'ti-movie',
-        'calculator': 'ti-calculator',
-        'battery': 'ti-battery',
-        'router': 'ti-router',
-        'leaf': 'ti-battery-eco',
-        'terminal': 'ti-terminal-2',
-        'bookmark': 'ti-bookmark',
-        'images': 'ti-wallpaper-selector',
-        'tablet': 'ti-devices',
-        'star': 'ti-topology-star-3',
-        'qrcode': 'ti-qrcode',
-        'crosshair': 'ti-crosshair',
-        'wallet': 'ti-wallet',
-        'th-large': 'ti-layout-filled',
-        'th': 'ti-layout-grid',
-        'pie': 'ti-chart-donut-3',
-        'usb': 'ti-device-usb',
-        'file': 'ti-file',
-        'microphone-alt': 'ti-microphone-2',
-        'route': 'ti-route',
-        'book': 'ti-notebook',
-        'circle': 'ti-circles',
-        'mouse': 'ti-mouse',
-        'hexagon': 'ti-hexagon',
-        'code': 'ti-code-circle',
-        'lightbulb': 'ti-bulb',
-        'branch': 'ti-git-pull-request',
-        'cloud': 'ti-cloud-network',
-        'discord': 'ti-brand-discord',
-        'envelope': 'ti-mail',
-        'openai': 'ti-brand-openai',
-        'scan': 'ti-scan',
-        'youtube': 'ti-brand-youtube',
-        'math': 'ti-math',
-        'spotify': 'ti-brand-spotify',
-        'headphones': 'ti-device-airpods',
-        'bug': 'ti-bug',
-        'globe': 'ti-world-plus',
-        'sliders': 'ti-adjustments-horizontal',
-        'tint': 'ti-droplet',
-        'rocket': 'ti-launcher',
-        'bitcoin': 'ti-currency-bitcoin',
-        'check-double': 'ti-checks',
-        'printer': 'ti-printer',
-        'github': 'ti-brand-github',
-        'git': 'ti-brand-git',
-        // NOVOS ÍCONES
-        'brand-speedtest': 'ti-brand-speedtest',
-        'speedtest': 'ti-brand-speedtest',
-        'wifi': 'ti-wifi',
-        'bluetooth': 'ti-bluetooth',
-        'thermometer': 'ti-thermometer',
-        'fan': 'ti-car-fan',
-        'gpu': 'ti-cpu',
-        'memory': 'ti-devices',
-        'disk': 'ti-hdd',
-        'database': 'ti-database',
-        'unlock': 'ti-unlock',
-        'security': 'ti-shield-lock',
-        'alert': 'ti-alert',
-        'bell': 'ti-bell',
-        'message': 'ti-message',
-        'calendar': 'ti-calendar',
-        'settings': 'ti-settings',
-        'tools': 'ti-tools',
-        'wrench': 'ti-wrench',
-        'hammer': 'ti-hammer',
-        'pencil': 'ti-pencil',
-        'edit': 'ti-edit',
-        'delete': 'ti-trash',
-        'plus': 'ti-plus',
-        'minus': 'ti-minus',
-        'check': 'ti-check',
-        'close': 'ti-x',
-        'filter': 'ti-filter',
-        'sort': 'ti-sort-ascending',
-        'menu': 'ti-menu-2',
-        'user': 'ti-user',
-        'users': 'ti-users',
-        'profile': 'ti-user',
-        'avatar': 'ti-user',
-        'logout': 'ti-logout',
-        'login': 'ti-login',
-        'register': 'ti-user-plus',
-        'help': 'ti-help',
-        'info': 'ti-info-circle',
-        'warning': 'ti-alert-triangle',
-        'error': 'ti-alert-octagon',
-        'success': 'ti-check',
-        'loading': 'ti-loader',
-        'refresh': 'ti-refresh',
-        'download': 'ti-download',
-        'upload': 'ti-upload',
-        'share': 'ti-share',
-        'link': 'ti-link',
-        'unlink': 'ti-unlink',
-        'copy': 'ti-copy',
-        'paste': 'ti-paste',
-        'cut': 'ti-cut',
-        'print': 'ti-print',
-        'export': 'ti-export',
-        'import': 'ti-import',
-        'save': 'ti-save',
-        'open': 'ti-folder-open',
-        'folder': 'ti-folder',
-        'archive': 'ti-archive',
-        'zip': 'ti-file-zip',
-        'pdf': 'ti-file-pdf',
-        'doc': 'ti-file-text',
-        'audio': 'ti-music',
-        'play': 'ti-player-play',
-        'pause': 'ti-player-pause',
-        'stop': 'ti-player-stop',
-        'next': 'ti-player-skip-forward',
-        'prev': 'ti-player-skip-back',
-        'volume': 'ti-volume',
-        'volume-up': 'ti-volume-up',
-        'volume-down': 'ti-volume-down',
-        'mute': 'ti-volume-off'
-      };
-
-      function getIconClass(iconName) {
-        if (!iconName) return 'ti-plug';
-        
-        // Se o ícone começar com 'brand-', tenta encontrar o correspondente
-        if (iconName.startsWith('brand-')) {
-          const brandName = iconName.replace('brand-', '');
-          const mapped = tablerIconMap[iconName] || tablerIconMap[brandName] || `ti-${brandName}`;
-          return mapped;
-        }
-        
-        return tablerIconMap[iconName] || `ti-${iconName}` || 'ti-plug';
-      }
-
-      function getPluginFolder(id) {
-        return id.split('/').pop();
-      }
-
-      // ===== GUARDA O CONTADOR MAIS RECENTE DE CADA PLUGIN =====
-      const reactionState = {};
-
-      function applyReactionUI(reactionEl, countEl, count, animate) {
-        const countClass = getReactionClass(count);
-        reactionEl.classList.remove('count-0', 'count-1-10', 'count-11-20', 'count-21-plus');
-        reactionEl.classList.add(countClass);
-        countEl.textContent = count;
-
-        if (animate) {
-          reactionEl.classList.remove('liked');
-          void reactionEl.offsetWidth;
-          reactionEl.classList.add('liked');
-          setTimeout(() => reactionEl.classList.remove('liked'), 900);
-        }
-      }
-
-      async function renderPlugins(plugins) {
-        const container = document.getElementById('plugins-container');
-
-        if (plugins.length === 0) {
-          container.innerHTML = `
-            <div class="error">
-              <i class="ti ti-search"></i>
-              Nenhum plugin encontrado.
-            </div>
-          `;
-          return;
-        }
-
-        const myPlugins = plugins.filter(p => p.author === 'Nilsonlinux');
-
-        if (myPlugins.length === 0) {
-          container.innerHTML = `
-            <div class="error">
-              <i class="ti ti-plug-off"></i>
-              Nenhum plugin do Nilsonlinux encontrado.
-            </div>
-          `;
-          return;
-        }
-
-        const pluginsWithReactions = await Promise.all(
-          myPlugins.map(async (plugin) => {
-            const reactionCount = await fetchIssueReactions(plugin.id);
-            reactionState[plugin.id] = reactionCount;
-            return { ...plugin, reactionCount };
-          })
-        );
-
-        let html = '<div class="plugins-grid">';
-        pluginsWithReactions.forEach(plugin => {
-          const iconClass = getIconClass(plugin.icon);
-          const updatedDate = formatDate(plugin.updated_at);
-          const tags = plugin.tags || [];
-          const folder = getPluginFolder(plugin.id);
-          const repoUrl = `https://github.com/Nilsonlinux/noctalia-plugins/tree/main/${folder}`;
-          const issuesUrl = `https://github.com/Nilsonlinux/noctalia-plugins/issues?q=is%3Aissue+is%3Aopen+${folder}`;
-          const count = plugin.reactionCount || 0;
-          const countClass = getReactionClass(count);
-
-          html += `
-            <div class="plugin-card" onclick="window.open('${repoUrl}', '_blank')">
-              <div class="plugin-thumbnail">
-                <img 
-                  src="https://raw.githubusercontent.com/Nilsonlinux/noctalia-plugins/main/${folder}/thumbnail.webp" 
-                  alt="${plugin.name}"
-                  onerror="this.style.display='none'; this.parentElement.innerHTML = '<div class=\\'placeholder-icon\\'><i class=\\'ti ${iconClass}\\' style=\\'font-size:3rem; color:#fbbf24;\\'></i></div>';"
-                  loading="lazy"
-                />
-              </div>
-              <div class="plugin-info">
-                <div class="plugin-header">
-                  <div class="plugin-header-left">
-                    <span class="plugin-icon-wrapper">
-                      <i class="ti ${iconClass}"></i>
-                    </span>
-                    <span class="plugin-name">${plugin.name}</span>
-                  </div>
-                  <a href="${issuesUrl}" target="_blank" class="plugin-reaction ${countClass}" data-plugin-id="${plugin.id}" onclick="event.stopPropagation();">
-                    <i class="ti ti-thumb-up"></i>
-                    <span class="reaction-count">${count}</span>
-                  </a>
-                </div>
-
-                <div class="plugin-description">${plugin.description || 'Sem descrição'}</div>
-
-                <span class="plugin-badge-community">Community</span>
-
-                <div class="plugin-tags">
-                  ${tags.map(tag => `<span class="plugin-tag">${tag}</span>`).join('')}
-                </div>
-
-                <div class="plugin-author-row">
-                  <span class="plugin-author">${plugin.author}</span>
-                  <span class="plugin-version-badge">v${plugin.version}</span>
-                </div>
-
-                <div class="plugin-updated">
-                  <i class="ti ti-calendar"></i> ${updatedDate}
-                </div>
-
-                <div class="plugin-repo-link">
-                  <i class="ti ti-external-link"></i> Ver no GitHub
-                </div>
-              </div>
-            </div>
-          `;
-        });
-        html += '</div>';
-        container.innerHTML = html;
-
-        startReactionPolling(pluginsWithReactions);
-      }
-
-      let pollingInterval = null;
-
-      function startReactionPolling(plugins, intervalMs = 120000) {
-        if (pollingInterval) clearInterval(pollingInterval);
-
-        pollingInterval = setInterval(async () => {
-          for (const plugin of plugins) {
-            const newCount = await fetchIssueReactions(plugin.id);
-            const oldCount = reactionState[plugin.id] || 0;
-
-            if (newCount === oldCount) continue;
-
-            const reactionEl = document.querySelector(`.plugin-reaction[data-plugin-id="${plugin.id}"]`);
-            if (!reactionEl) continue;
-
-            const countEl = reactionEl.querySelector('.reaction-count');
-            const increased = newCount > oldCount;
-
-            applyReactionUI(reactionEl, countEl, newCount, increased);
-            reactionState[plugin.id] = newCount;
-          }
-        }, intervalMs);
-      }
-
-      async function initPlugins() {
-        const container = document.getElementById('plugins-container');
-        container.innerHTML = `
-          <div class="loading">
-            <i class="ti ti-loader-2" style="animation: spin 1s linear infinite;"></i>
-            Carregando plugins...
+        const color = langColors[lang] || '#6e7681';
+        focusHtml += `
+          <div class="focus-item">
+            <span class="lang-dot" style="background-color: ${color};"></span>
+            <span class="focus-name">${repo.name}</span>
+            <span class="focus-lang">${lang}</span>
           </div>
         `;
+      });
+      focusContainer.innerHTML = focusHtml;
 
-        const plugins = await fetchCatalog();
-        
-        if (plugins.length === 0) {
-          container.innerHTML = `
-            <div class="error">
-              <i class="ti ti-plug-off"></i>
-              Nenhum plugin encontrado no catalog.toml.
-            </div>
-          `;
-          return;
+      // ===== REPOSITÓRIOS EM CARDS =====
+      let reposHtml = '';
+      repos.forEach(repo => {
+        let lang = repo.language || 'Outro';
+        if (forceLanguage[repo.name]) {
+          lang = forceLanguage[repo.name];
         }
+        const color = langColors[lang] || '#6e7681';
+        const stars = repo.stargazers_count > 0 ? `<i class="fas fa-star"></i> ${repo.stargazers_count}` : '';
+        const forks = repo.forks_count > 0 ? `<i class="fas fa-code-fork"></i> ${repo.forks_count}` : '';
+        const stats = [stars, forks].filter(Boolean).join(' ');
 
-        await renderPlugins(plugins);
+        reposHtml += `
+          <a href="${repo.html_url}" target="_blank" class="repo-card">
+            <div class="repo-name">
+              <i class="fas fa-book"></i> ${repo.name}
+            </div>
+            <div class="repo-desc">${repo.description || 'Sem descrição'}</div>
+            <div class="repo-meta">
+              <span class="repo-lang">
+                <span class="lang-dot" style="background-color: ${color};"></span>
+                ${lang}
+              </span>
+              ${stats ? `<span class="repo-stats">${stats}</span>` : ''}
+            </div>
+          </a>
+        `;
+      });
+      repoList.innerHTML = reposHtml;
+
+    } catch (error) {
+      console.error('Erro ao carregar repositórios:', error);
+      repoList.innerHTML = `
+        <div class="error">
+          <i class="fas fa-exclamation-triangle"></i> 
+          Não foi possível carregar os repositórios.
+        </div>
+      `;
+      focusContainer.innerHTML = `
+        <div class="error">
+          <i class="fas fa-exclamation-triangle"></i> Erro ao carregar
+        </div>
+      `;
+    }
+  }
+
+  fetchRepos();
+
+  // ===== PLUGINS =====
+  async function fetchCatalog() {
+    try {
+      const timestamp = Date.now();
+      const url = `https://raw.githubusercontent.com/Nilsonlinux/noctalia-plugins/main/catalog.toml?t=${timestamp}`;
+      const response = await fetch(url, {
+        cache: 'no-cache',
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        }
+      });
+      
+      if (!response.ok) {
+        console.warn('Não foi possível buscar catalog.toml, usando fallback');
+        return FALLBACK_PLUGINS;
+      }
+      
+      const text = await response.text();
+      console.log('Catalog TOML carregado, tamanho:', text.length);
+      
+      const plugins = parseTOML(text);
+      if (plugins.length === 0) {
+        console.warn('Nenhum plugin encontrado no catalog.toml, usando fallback');
+        return FALLBACK_PLUGINS;
+      }
+      
+      // Log para debug
+      console.log('Plugins encontrados:');
+      plugins.forEach(p => console.log(`  - ${p.id}: v${p.version}`));
+      
+      return plugins;
+    } catch (error) {
+      console.error('Erro ao buscar catalog.toml:', error);
+      console.log('Usando dados de fallback');
+      return FALLBACK_PLUGINS;
+    }
+  }
+
+  function parseTOML(toml) {
+    const plugins = [];
+    const lines = toml.split('\n');
+    
+    let currentPlugin = null;
+    let inPlugin = false;
+
+    for (let line of lines) {
+      line = line.trim();
+      
+      if (!line || line.startsWith('#')) continue;
+
+      if (line === '[[plugin]]') {
+        if (currentPlugin) plugins.push(currentPlugin);
+        currentPlugin = {};
+        inPlugin = true;
+        continue;
       }
 
-      initPlugins();
+      if (line === '[[plugin.release]]') {
+        continue;
+      }
 
-    })();
-  </script>
+      if (inPlugin && currentPlugin) {
+        const match = line.match(/^(\w+)\s*=\s*(.+)$/);
+        if (match) {
+          const key = match[1];
+          let value = match[2].trim();
+          
+          if (value.startsWith('"') && value.endsWith('"')) {
+            value = value.slice(1, -1);
+          } else if (value.startsWith('[') && value.endsWith(']')) {
+            value = value.slice(1, -1).split(',').map(v => v.trim().replace(/^"|"$/g, ''));
+          } else if (/^-?\d+(\.\d+)?$/.test(value)) {
+            value = Number(value);
+          }
+          
+          currentPlugin[key] = value;
+        }
+      }
+    }
+
+    if (currentPlugin) plugins.push(currentPlugin);
+    return plugins;
+  }
+
+  // ===== FUNÇÃO PARA BUSCAR REAÇÕES DAS ISSUES =====
+  async function fetchIssueReactions(pluginId) {
+    try {
+      const pluginName = pluginId.split('/').pop();
+      const url = `https://api.github.com/search/issues?q=repo:Nilsonlinux/noctalia-plugins+${pluginName}+is:issue+is:open`;
+      const response = await fetch(url);
+      if (!response.ok) return 0;
+      const data = await response.json();
+      
+      if (data.items && data.items.length > 0) {
+        const issue = data.items[0];
+        const reactionsUrl = `https://api.github.com/repos/Nilsonlinux/noctalia-plugins/issues/${issue.number}/reactions`;
+        const reactionsResponse = await fetch(reactionsUrl);
+        if (reactionsResponse.ok) {
+          const reactions = await reactionsResponse.json();
+          const thumbsUp = reactions.filter(r => r.content === '+1');
+          return thumbsUp.length;
+        }
+      }
+      return 0;
+    } catch (error) {
+      console.error(`Erro ao buscar reações para ${pluginId}:`, error);
+      return 0;
+    }
+  }
+
+  function formatDate(timestamp) {
+    if (!timestamp) return 'Data desconhecida';
+    const date = new Date(timestamp * 1000);
+    return date.toLocaleDateString('pt-BR', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric'
+    });
+  }
+
+  function getReactionClass(count) {
+    if (count === 0) return 'count-0';
+    if (count <= 10) return 'count-1-10';
+    if (count <= 20) return 'count-11-20';
+    return 'count-21-plus';
+  }
+
+  // ===== MAPEAMENTO DE ÍCONES TABLER =====
+  const tablerIconMap = {
+    'rss': 'ti-rss',
+    'activity': 'ti-activity',
+    'package': 'ti-package',
+    'network': 'ti-network',
+    'plug': 'ti-plug',
+    'brand-speedtest': 'ti-brand-speedtest',
+    'speedtest': 'ti-brand-speedtest',
+    'cog': 'ti-settings',
+    'clock': 'ti-clock',
+    'video': 'ti-video',
+    'photo': 'ti-photo',
+    'lock': 'ti-lock',
+    'world': 'ti-world',
+    'search': 'ti-search',
+    'music': 'ti-music',
+    'keyboard': 'ti-keyboard',
+    'cpu': 'ti-cpu',
+    'brain': 'ti-brain',
+    'bolt': 'ti-bolt',
+    'box': 'ti-box',
+    'puzzle': 'ti-puzzle',
+    'cat': 'ti-cat',
+    'language': 'ti-language',
+    'smile': 'ti-mood-smile',
+    'notes': 'ti-notes',
+    'layer-group': 'ti-layers-subtract',
+    'columns': 'ti-layout-columns',
+    'palette': 'ti-palette',
+    'screen-share': 'ti-screen-share',
+    'laptop': 'ti-device-laptop',
+    'microphone': 'ti-microphone',
+    'image': 'ti-image',
+    'folder-open': 'ti-folder-open',
+    'home': 'ti-smart-home',
+    'sync': 'ti-refresh-dot',
+    'eye': 'ti-eye',
+    'gamepad': 'ti-device-gamepad-2',
+    'robot': 'ti-robot',
+    'server': 'ti-server-2',
+    'exchange': 'ti-switch-horizontal',
+    'shield': 'ti-shield-lock',
+    'key': 'ti-key',
+    'film': 'ti-movie',
+    'calculator': 'ti-calculator',
+    'battery': 'ti-battery',
+    'router': 'ti-router',
+    'leaf': 'ti-battery-eco',
+    'terminal': 'ti-terminal-2',
+    'bookmark': 'ti-bookmark',
+    'images': 'ti-wallpaper-selector',
+    'tablet': 'ti-devices',
+    'star': 'ti-topology-star-3',
+    'qrcode': 'ti-qrcode',
+    'crosshair': 'ti-crosshair',
+    'wallet': 'ti-wallet',
+    'th-large': 'ti-layout-filled',
+    'th': 'ti-layout-grid',
+    'pie': 'ti-chart-donut-3',
+    'usb': 'ti-device-usb',
+    'file': 'ti-file',
+    'microphone-alt': 'ti-microphone-2',
+    'route': 'ti-route',
+    'book': 'ti-notebook',
+    'circle': 'ti-circles',
+    'mouse': 'ti-mouse',
+    'hexagon': 'ti-hexagon',
+    'code': 'ti-code-circle',
+    'lightbulb': 'ti-bulb',
+    'branch': 'ti-git-pull-request',
+    'cloud': 'ti-cloud-network',
+    'discord': 'ti-brand-discord',
+    'envelope': 'ti-mail',
+    'openai': 'ti-brand-openai',
+    'scan': 'ti-scan',
+    'youtube': 'ti-brand-youtube',
+    'math': 'ti-math',
+    'spotify': 'ti-brand-spotify',
+    'headphones': 'ti-device-airpods',
+    'bug': 'ti-bug',
+    'globe': 'ti-world-plus',
+    'sliders': 'ti-adjustments-horizontal',
+    'tint': 'ti-droplet',
+    'rocket': 'ti-launcher',
+    'bitcoin': 'ti-currency-bitcoin',
+    'check-double': 'ti-checks',
+    'printer': 'ti-printer',
+    'github': 'ti-brand-github',
+    'git': 'ti-brand-git',
+    'wifi': 'ti-wifi',
+    'bluetooth': 'ti-bluetooth',
+    'thermometer': 'ti-thermometer',
+    'fan': 'ti-car-fan',
+    'gpu': 'ti-cpu',
+    'memory': 'ti-devices',
+    'disk': 'ti-hdd',
+    'database': 'ti-database',
+    'unlock': 'ti-unlock',
+    'security': 'ti-shield-lock',
+    'alert': 'ti-alert',
+    'bell': 'ti-bell',
+    'message': 'ti-message',
+    'calendar': 'ti-calendar',
+    'settings': 'ti-settings',
+    'tools': 'ti-tools'
+  };
+
+  function getIconClass(iconName) {
+    if (!iconName) return 'ti-plug';
+    
+    if (iconName.startsWith('brand-')) {
+      const brandName = iconName.replace('brand-', '');
+      const mapped = tablerIconMap[iconName] || tablerIconMap[brandName] || `ti-${brandName}`;
+      return mapped;
+    }
+    
+    return tablerIconMap[iconName] || `ti-${iconName}` || 'ti-plug';
+  }
+
+  function getPluginFolder(id) {
+    return id.split('/').pop();
+  }
+
+  // ===== GUARDA O CONTADOR MAIS RECENTE DE CADA PLUGIN =====
+  const reactionState = {};
+
+  function applyReactionUI(reactionEl, countEl, count, animate) {
+    const countClass = getReactionClass(count);
+    reactionEl.classList.remove('count-0', 'count-1-10', 'count-11-20', 'count-21-plus');
+    reactionEl.classList.add(countClass);
+    countEl.textContent = count;
+
+    if (animate) {
+      reactionEl.classList.remove('liked');
+      void reactionEl.offsetWidth;
+      reactionEl.classList.add('liked');
+      setTimeout(() => reactionEl.classList.remove('liked'), 900);
+    }
+  }
+
+  async function renderPlugins(plugins) {
+    const container = document.getElementById('plugins-container');
+
+    if (plugins.length === 0) {
+      container.innerHTML = `
+        <div class="error">
+          <i class="ti ti-search"></i>
+          Nenhum plugin encontrado.
+        </div>
+      `;
+      return;
+    }
+
+    // Filtra apenas plugins do Nilsonlinux
+    const myPlugins = plugins.filter(p => p.author === 'Nilsonlinux');
+
+    if (myPlugins.length === 0) {
+      container.innerHTML = `
+        <div class="error">
+          <i class="ti ti-plug-off"></i>
+          Nenhum plugin do Nilsonlinux encontrado.
+        </div>
+      `;
+      return;
+    }
+
+    // Busca reações para cada plugin
+    const pluginsWithReactions = await Promise.all(
+      myPlugins.map(async (plugin) => {
+        const reactionCount = await fetchIssueReactions(plugin.id);
+        reactionState[plugin.id] = reactionCount;
+        return { ...plugin, reactionCount };
+      })
+    );
+
+    // Ordena plugins: Speedtest Meter primeiro, depois os outros
+    pluginsWithReactions.sort((a, b) => {
+      if (a.id.includes('speedtest')) return -1;
+      if (b.id.includes('speedtest')) return 1;
+      return a.name.localeCompare(b.name);
+    });
+
+    let html = '<div class="plugins-grid">';
+    pluginsWithReactions.forEach(plugin => {
+      const iconClass = getIconClass(plugin.icon);
+      const updatedDate = formatDate(plugin.updated_at);
+      const tags = plugin.tags || [];
+      const folder = getPluginFolder(plugin.id);
+      const repoUrl = `https://github.com/Nilsonlinux/noctalia-plugins/tree/main/${folder}`;
+      const issuesUrl = `https://github.com/Nilsonlinux/noctalia-plugins/issues?q=is%3Aissue+is%3Aopen+${folder}`;
+      const count = plugin.reactionCount || 0;
+      const countClass = getReactionClass(count);
+
+      html += `
+        <div class="plugin-card" onclick="window.open('${repoUrl}', '_blank')">
+          <div class="plugin-thumbnail">
+            <img 
+              src="https://raw.githubusercontent.com/Nilsonlinux/noctalia-plugins/main/${folder}/thumbnail.webp" 
+              alt="${plugin.name}"
+              onerror="this.style.display='none'; this.parentElement.innerHTML = '<div class=\\'placeholder-icon\\'><i class=\\'ti ${iconClass}\\' style=\\'font-size:3rem; color:#fbbf24;\\'></i></div>';"
+              loading="lazy"
+            />
+          </div>
+          <div class="plugin-info">
+            <div class="plugin-header">
+              <div class="plugin-header-left">
+                <span class="plugin-icon-wrapper">
+                  <i class="ti ${iconClass}"></i>
+                </span>
+                <span class="plugin-name">${plugin.name}</span>
+              </div>
+              <a href="${issuesUrl}" target="_blank" class="plugin-reaction ${countClass}" data-plugin-id="${plugin.id}" onclick="event.stopPropagation();">
+                <i class="ti ti-thumb-up"></i>
+                <span class="reaction-count">${count}</span>
+              </a>
+            </div>
+
+            <div class="plugin-description">${plugin.description || 'Sem descrição'}</div>
+
+            <span class="plugin-badge-community">Community</span>
+
+            <div class="plugin-tags">
+              ${tags.map(tag => `<span class="plugin-tag">${tag}</span>`).join('')}
+            </div>
+
+            <div class="plugin-author-row">
+              <span class="plugin-author">${plugin.author}</span>
+              <span class="plugin-version-badge">v${plugin.version}</span>
+            </div>
+
+            <div class="plugin-updated">
+              <i class="ti ti-calendar"></i> ${updatedDate}
+            </div>
+
+            <div class="plugin-repo-link">
+              <i class="ti ti-external-link"></i> Ver no GitHub
+            </div>
+          </div>
+        </div>
+      `;
+    });
+    html += '</div>';
+    container.innerHTML = html;
+
+    startReactionPolling(pluginsWithReactions);
+  }
+
+  let pollingInterval = null;
+
+  function startReactionPolling(plugins, intervalMs = 120000) {
+    if (pollingInterval) clearInterval(pollingInterval);
+
+    pollingInterval = setInterval(async () => {
+      for (const plugin of plugins) {
+        const newCount = await fetchIssueReactions(plugin.id);
+        const oldCount = reactionState[plugin.id] || 0;
+
+        if (newCount === oldCount) continue;
+
+        const reactionEl = document.querySelector(`.plugin-reaction[data-plugin-id="${plugin.id}"]`);
+        if (!reactionEl) continue;
+
+        const countEl = reactionEl.querySelector('.reaction-count');
+        const increased = newCount > oldCount;
+
+        applyReactionUI(reactionEl, countEl, newCount, increased);
+        reactionState[plugin.id] = newCount;
+      }
+    }, intervalMs);
+  }
+
+  async function initPlugins() {
+    const container = document.getElementById('plugins-container');
+    container.innerHTML = `
+      <div class="loading">
+        <i class="ti ti-loader-2" style="animation: spin 1s linear infinite;"></i>
+        Carregando plugins...
+      </div>
+    `;
+
+    const plugins = await fetchCatalog();
+    await renderPlugins(plugins);
+  }
+
+  // Inicializa os plugins
+  setTimeout(initPlugins, 100);
+
+})();
+</script>
 </body>
 </html>
