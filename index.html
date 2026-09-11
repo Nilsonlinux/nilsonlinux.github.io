@@ -220,6 +220,13 @@
 				radial-gradient(50% 60% at 80% 80%, color-mix(in srgb, var(--accent-3) 18%, transparent), transparent 60%),
 				linear-gradient(135deg, var(--bg2), var(--surface-2));
 		}
+		.plugin-title-row { display: flex; align-items: center; gap: .625rem; }
+		.plugin-title-row > div { min-width: 0; flex: 1; }
+		.plugin-title-row .ti-brand-github { margin-left: auto; }
+		.plugin-icon {
+			width: 1.9rem; height: 1.9rem; border-radius: .55rem; display: grid; place-items: center; flex-shrink: 0;
+			border: 1px solid var(--border); background: color-mix(in srgb, var(--surface-2) 80%, transparent); color: var(--accent); font-size: .98rem;
+		}
 		.plugin-name { font-size: .92rem; font-weight: 700; letter-spacing: -.02em; }
 		.plugin-id {
 			margin-top: 4px; font: 500 .62rem "JetBrains Mono", monospace; color: var(--faint);
@@ -538,7 +545,7 @@
 			<div class="plugin-body">
 				<div class="plugin-title-row">
 					<span class="plugin-icon"><i class="ti ${icon(p.icon)}"></i></span>
-					<div style="min-width:0">
+					<div>
 						<div class="plugin-name">${escapeHTML(p.name)}</div>
 						<div class="plugin-id">${escapeHTML(p.id)}</div>
 					</div>
