@@ -1,433 +1,664 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#070b14">
-<meta name="description" content="Nilsonlinux · desenvolvimento, Noctalia plugins e projetos Linux.">
-<title>Nilsonlinux · Dev</title>
+	<script>
+		(function () {
+			var t = localStorage.getItem('theme');
+			if (t !== 'light' && t !== 'dark')
+				t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+			document.documentElement.setAttribute('data-theme', t);
+		})();
+	</script>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="icon" href="img/user.png" type="image/png" />
+	<meta name="description" content="Nilsonlinux · plugins para Noctalia, projetos Linux e open source." />
+	<meta name="theme-color" content="#070722" />
+	<title>Plugins · Nilsonlinux</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.30.0/dist/tabler-icons.min.css">
+	<style>
+		:root, html[data-theme="dark"] {
+			color-scheme: dark;
+			--bg: #070722;
+			--bg2: #11112d;
+			--surface: #11112deb;
+			--surface-2: #1515388c;
+			--surface-3: #1a1a458c;
+			--border: #21215f;
+			--fg: #f3edf7;
+			--fg-dim: #a8a6c8;
+			--faint: #7c80b4;
+			--accent: #fff59b;
+			--accent-2: #9bfece;
+			--accent-3: #a9aefe;
+			--on-accent: #0e0e43;
+			--shadow-card: 0 1px 2px rgba(0,0,0,.35), 0 12px 32px -12px rgba(0,0,0,.55);
+			--shadow-card-hover: 0 2px 4px rgba(0,0,0,.4), 0 24px 48px -12px rgba(0,0,0,.65);
+		}
+		html[data-theme="light"] {
+			color-scheme: light;
+			--bg: #e6e8fa;
+			--bg2: #eff0ff;
+			--surface: #eff0fff0;
+			--surface-2: #d2d6ff8c;
+			--surface-3: #c6cbfb8c;
+			--border: #a8affc;
+			--fg: #2d3180;
+			--fg-dim: #5057b5;
+			--faint: #6f76c0;
+			--accent: #5d65f5;
+			--accent-2: #c9a32a;
+			--accent-3: #6b74f0;
+			--on-accent: #ffffff;
+			--shadow-card: 0 1px 2px rgba(45,49,128,.1), 0 12px 32px -12px rgba(45,49,128,.22);
+			--shadow-card-hover: 0 2px 4px rgba(45,49,128,.12), 0 24px 48px -12px rgba(45,49,128,.3);
+		}
+		* { box-sizing: border-box; margin: 0; padding: 0; }
+		html { scroll-behavior: smooth; }
+		body {
+			min-height: 100vh; font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+			color: var(--fg); background: var(--bg); overflow-x: hidden;
+			transition: background .3s ease, color .25s ease;
+		}
+		body::before {
+			content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+			background-image:
+				radial-gradient(ellipse 95% 72% at 0% -12%, color-mix(in srgb, var(--accent) 13%, transparent), transparent 52%),
+				radial-gradient(ellipse 85% 58% at 100% 4%, color-mix(in srgb, var(--accent-2) 10%, transparent), transparent 48%),
+				radial-gradient(ellipse 65% 48% at 50% 108%, color-mix(in srgb, var(--accent-3) 11%, transparent), transparent 50%);
+		}
+		a { color: inherit; text-decoration: none; }
+		button { font: inherit; cursor: pointer; }
+		::selection { background: color-mix(in srgb, var(--accent) 24%, transparent); color: var(--fg); }
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.30.0/dist/tabler-icons.min.css">
+		.page-canvas { position: relative; min-height: 100vh; }
+		.main-col { position: relative; z-index: 1; display: flex; min-height: 100vh; flex-direction: column; }
 
-<style>
-:root{
-  color-scheme:dark;
-  --bg:#060912;--bg2:#0b1020;--surface:rgba(12,18,31,.72);--surface-2:rgba(17,25,42,.82);
-  --text:#edf5ff;--muted:#91a4bf;--faint:#647894;--line:rgba(130,163,210,.18);
-  --accent:#68a7ff;--accent2:#9b7cff;--good:#42e6a4;--warn:#ffc857;--danger:#ff6b8a;
-  --shadow:0 24px 70px rgba(0,0,0,.34);--radius:26px;--radius-sm:17px;
-}
-body.light{
-  color-scheme:light;
-  --bg:#f3f7fc;--bg2:#e9f0f8;--surface:rgba(255,255,255,.78);--surface-2:rgba(255,255,255,.94);
-  --text:#172337;--muted:#52657d;--faint:#71839a;--line:rgba(52,78,111,.18);
-  --accent:#236dcc;--accent2:#7753d6;--good:#138c62;--warn:#b87500;--danger:#c7355b;
-  --shadow:0 24px 60px rgba(36,62,95,.14);
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{
-  min-height:100vh;font-family:Inter,system-ui,sans-serif;color:var(--text);
-  background:
-    radial-gradient(circle at 10% 8%,rgba(104,167,255,.13),transparent 28rem),
-    radial-gradient(circle at 88% 16%,rgba(155,124,255,.12),transparent 26rem),
-    linear-gradient(145deg,var(--bg),var(--bg2));
-  transition:background .35s ease,color .25s ease;overflow-x:hidden;
-}
-body:before{
-  content:"";position:fixed;inset:0;pointer-events:none;opacity:.26;
-  background-image:linear-gradient(rgba(120,160,220,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(120,160,220,.045) 1px,transparent 1px);
-  background-size:42px 42px;mask-image:linear-gradient(to bottom,#000,transparent 80%);
-}
-a{color:inherit;text-decoration:none}
-button{font:inherit}
-::selection{background:rgba(104,167,255,.28)}
+		/* ---- Header ---- */
+		.site-header {
+			position: sticky; top: 0; z-index: 50;
+			border-bottom: 1px solid color-mix(in srgb, var(--border) 40%, transparent);
+			background: color-mix(in srgb, var(--bg) 92%, transparent);
+			backdrop-filter: blur(20px); backdrop-filter: saturate(125%);
+		}
+		.site-header:after {
+			content: ""; position: absolute; inset: auto 0 0; height: 1px; pointer-events: none;
+			background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--accent) 22%, transparent), color-mix(in srgb, var(--accent-2) 14%, transparent), color-mix(in srgb, var(--accent) 22%, transparent), transparent);
+			opacity: .6;
+		}
+		.site-header-inner {
+			margin: 0 auto; max-width: 72rem; height: 4rem; padding: 0 1rem;
+			display: flex; align-items: center; justify-content: space-between; gap: .75rem;
+		}
+		.brand { display: flex; align-items: center; gap: .625rem; min-width: 0; }
+		.brand img { width: 2.5rem; height: 2.5rem; border-radius: .75rem; object-fit: cover; }
+		.brand-label { display: flex; flex-direction: column; line-height: 1.15; }
+		.brand-name { font-weight: 600; letter-spacing: -.02em; font-size: 1.05rem; }
+		.brand-tag { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .12em; color: var(--faint); }
+		.main-nav { display: none; align-items: center; gap: .5rem; }
+		.main-nav a {
+			display: inline-flex; height: 2.5rem; min-width: 5rem; align-items: center; justify-content: center;
+			white-space: nowrap; padding: 0 .875rem; border-radius: .5rem;
+			font-size: .875rem; font-weight: 500; color: var(--fg-dim);
+			transition: all .2s; outline: none;
+		}
+		.main-nav a:hover { background: color-mix(in srgb, var(--surface-2) 80%, transparent); color: var(--accent); }
+		.main-nav a.active { background: var(--surface-2); color: var(--accent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 22%, transparent); }
+		.header-actions { display: flex; align-items: center; justify-content: flex-end; gap: .5rem; }
+		.icon-btn {
+			display: inline-flex; width: 2.5rem; height: 2.5rem; align-items: center; justify-content: center;
+			border-radius: .5rem; border: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+			background: color-mix(in srgb, var(--surface-2) 50%, transparent); color: var(--fg);
+			font-size: 1rem; transition: all .2s; outline: none;
+		}
+		.icon-btn:hover { border-color: var(--border); background: var(--surface-2); }
+		.btn-primary {
+			display: inline-flex; height: 2.5rem; min-width: 6rem; align-items: center; justify-content: center;
+			gap: .5rem; padding: 0 1rem; border-radius: .5rem; border: 0;
+			background: var(--accent); color: var(--on-accent); font-size: .875rem; font-weight: 600;
+			box-shadow: 0 8px 28px -6px color-mix(in srgb, var(--accent) 40%, transparent), inset 0 0 0 1px color-mix(in srgb, var(--accent) 20%, transparent);
+			transition: all .2s; outline: none;
+		}
+		.btn-primary:hover { filter: brightness(1.06); transform: translateY(-1px); }
+		@media (min-width: 880px) { .main-nav { display: flex; } .nav-toggle { display: none !important; } }
 
-.shell{width:min(1180px,calc(100% - 28px));margin:0 auto;padding:28px 0 70px;position:relative}
-.topbar{
-  position:sticky;top:14px;z-index:50;display:flex;align-items:center;justify-content:space-between;
-  padding:10px 12px 10px 18px;border:1px solid var(--line);border-radius:18px;
-  background:color-mix(in srgb,var(--surface) 86%,transparent);backdrop-filter:blur(18px);
-  box-shadow:0 12px 40px rgba(0,0,0,.13);margin-bottom:28px;
-}
-.brand{font:600 .82rem "JetBrains Mono",monospace;color:var(--muted);letter-spacing:.08em}
-.nav{display:flex;gap:5px;align-items:center}
-.nav a,.theme-btn,.top-link{
-  border:0;background:transparent;color:var(--muted);padding:9px 11px;border-radius:12px;cursor:pointer;
-  transition:.2s ease;font-size:.78rem;
-}
-.nav a:hover,.theme-btn:hover,.top-link:hover{background:rgba(104,167,255,.1);color:var(--text)}
-.theme-btn{border:1px solid var(--line);display:grid;place-items:center;width:38px;height:38px;padding:0}
+		/* ---- Main / Plugins page ---- */
+		.site-main { flex: 1; position: relative; z-index: 1; }
+		.site-shell { width: min(100% - 2rem, 72rem); margin: 0 auto; padding: 3rem 0 4rem; }
 
-.hero{
-  position:relative;overflow:hidden;border:1px solid var(--line);border-radius:34px;padding:48px 34px 34px;
-  background:linear-gradient(145deg,color-mix(in srgb,var(--surface) 94%,transparent),color-mix(in srgb,var(--surface-2) 70%,transparent));
-  box-shadow:var(--shadow);backdrop-filter:blur(22px);text-align:center;
-}
-.hero:after{
-  content:"";position:absolute;width:360px;height:360px;border-radius:50%;right:-160px;top:-180px;
-  background:radial-gradient(circle,rgba(104,167,255,.18),transparent 68%);pointer-events:none;
-}
-.scanline{position:absolute;inset:0;pointer-events:none;background:linear-gradient(transparent 49%,rgba(104,167,255,.035) 50%,transparent 51%);background-size:100% 8px;opacity:.35}
-.profile{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center}
-.avatar-ring{
-  width:156px;height:156px;padding:5px;border-radius:50%;position:relative;
-  background:conic-gradient(from 0deg,var(--accent),var(--accent2),var(--good),var(--accent));
-  box-shadow:0 0 0 1px rgba(255,255,255,.16),0 0 35px rgba(104,167,255,.24);
-  animation:spinRing 12s linear infinite;
-}
-.avatar-ring:before{content:"";position:absolute;inset:-9px;border-radius:50%;border:1px solid rgba(104,167,255,.24);box-shadow:0 0 28px rgba(104,167,255,.13)}
-.avatar-ring img{width:100%;height:100%;display:block;object-fit:cover;border-radius:50%;border:4px solid var(--bg2);animation:counterSpin 12s linear infinite}
-.status-dot{position:absolute;right:6px;bottom:10px;width:18px;height:18px;border-radius:50%;background:var(--good);border:4px solid var(--bg2);box-shadow:0 0 18px rgba(66,230,164,.75)}
-.profile h1{
-  margin-top:24px;font-size:clamp(2.2rem,6vw,4rem);line-height:1;font-weight:800;letter-spacing:-.06em;
-  background:linear-gradient(120deg,var(--text),var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent;
-}
-.handle{margin-top:11px;font:500 .9rem "JetBrains Mono",monospace;color:var(--muted)}
-.badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:17px}
-.badge{padding:6px 10px;border-radius:999px;border:1px solid var(--line);background:rgba(104,167,255,.07);font-size:.72rem;color:var(--muted)}
-.bio{max-width:760px;margin:25px auto 0;color:var(--muted);font-size:.97rem;line-height:1.75}
-.actions{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-top:23px}
-.action{
-  display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:13px;border:1px solid var(--line);
-  background:rgba(104,167,255,.07);font-size:.8rem;color:var(--text);transition:.22s ease;
-}
-.action:hover{transform:translateY(-2px);border-color:rgba(104,167,255,.45);box-shadow:0 9px 25px rgba(104,167,255,.11)}
+		.page-header { text-align: center; margin-bottom: 2.5rem; }
+		.page-header h1 { font-size: clamp(2.25rem, 6vw, 3rem); font-weight: 600; letter-spacing: -.04em; }
+		.page-subtitle { margin-top: .75rem; color: var(--fg-dim); }
 
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:28px}
-.stat{padding:15px 10px;border:1px solid var(--line);border-radius:16px;background:rgba(104,167,255,.045)}
-.stat b{display:block;font-size:1.25rem}.stat span{display:block;margin-top:3px;font-size:.65rem;color:var(--faint);text-transform:uppercase;letter-spacing:.08em}
+		/* ---- Catalog controls ---- */
+		.catalog-controls {
+			border: 1px solid var(--border); background: var(--surface);
+			border-radius: 1.25rem; padding: 1.25rem;
+			box-shadow: inset 0 1px rgba(255,255,255,.04), var(--shadow-card);
+			margin-bottom: 2rem;
+		}
+		.search-section { margin-bottom: 1.5rem; }
+		.search-container {
+			background: var(--surface); border: 2px solid var(--border);
+			border-radius: 1rem; display: flex; align-items: center; position: relative;
+			max-width: 600px; margin: 0 auto; padding: .75rem 1rem; transition: all .3s;
+		}
+		.search-container:focus-within { border-color: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 10%, transparent); }
+		.search-icon { color: var(--faint); flex-shrink: 0; margin-right: .75rem; font-size: 1.25rem; line-height: 1; }
+		.search-input {
+			color: var(--fg); background: transparent; border: none; outline: none; flex: 1;
+			padding: 0; font-family: inherit; font-size: 1rem; min-width: 0;
+		}
+		.search-input::placeholder { color: var(--faint); opacity: .7; }
+		.filters-heading {
+			border-top: 1px solid var(--border); display: flex; align-items: center;
+			justify-content: space-between; gap: 1rem; padding-top: 1.25rem; flex-wrap: wrap;
+		}
+		.filters-title { display: flex; align-items: center; gap: .5rem; font-weight: 650; font-size: .95rem; }
+		.filters-title .ti { color: var(--accent); font-size: 1.125rem; }
+		.sort-control { display: flex; align-items: center; gap: .625rem; font-size: .875rem; color: var(--fg-dim); }
+		.sort-control select {
+			background: var(--surface-2); color: var(--fg); border: 1px solid var(--border);
+			border-radius: .5rem; padding: .375rem .625rem; font-family: inherit; font-size: .875rem; outline: none;
+		}
+		.filter-group { margin-top: 1rem; }
+		.filter-label {
+			display: block; font-size: .75rem; font-weight: 600; text-transform: uppercase;
+			letter-spacing: .1em; color: var(--faint); margin-bottom: .625rem;
+		}
+		.tag-filters { display: flex; flex-wrap: wrap; gap: .5rem; }
+		.tag-chip {
+			-webkit-backdrop-filter: blur(10px); color: var(--fg-dim); text-align: center;
+			background: var(--bg2); border: 1px solid var(--border); border-radius: 2rem;
+			padding: .375rem .875rem; font-size: .8125rem; transition: all .2s; flex: none;
+		}
+		.tag-chip:hover { color: var(--accent); background: var(--surface-3); border-color: color-mix(in srgb, var(--accent) 35%, transparent); }
+		.tag-chip.selected {
+			background: var(--accent); color: var(--on-accent); border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+			box-shadow: 0 8px 24px -10px color-mix(in srgb, var(--accent) 35%, transparent), inset 0 1px rgba(255,255,255,.25);
+			font-weight: 600;
+		}
 
-.section{margin-top:32px}
-.section-head{display:flex;align-items:end;justify-content:space-between;gap:14px;margin-bottom:14px}
-.kicker{font:600 .68rem "JetBrains Mono",monospace;color:var(--accent);text-transform:uppercase;letter-spacing:.12em}
-.section-title{margin-top:5px;font-size:1.25rem;letter-spacing:-.025em}
-.section-desc{font-size:.75rem;color:var(--muted);text-align:right}
-.panel{
-  border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);backdrop-filter:blur(18px);
-  box-shadow:var(--shadow);padding:18px;
-}
-.focus-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}
-.focus-item{padding:12px;border:1px solid var(--line);border-radius:14px;background:rgba(104,167,255,.035);transition:.2s}
-.focus-item:hover{transform:translateY(-2px);border-color:rgba(104,167,255,.35)}
-.focus-top{display:flex;align-items:center;gap:8px;font-size:.76rem;font-weight:600}
-.lang-dot{width:8px;height:8px;border-radius:50%;box-shadow:0 0 10px currentColor}
-.focus-lang{display:block;color:var(--faint);font-size:.62rem;margin-top:6px;font-family:"JetBrains Mono",monospace}
+		/* ---- Plugins section ---- */
+		.plugins-section { margin-bottom: 2.5rem; }
+		.section-title { display: flex; align-items: center; gap: .75rem; font-size: 1.4rem; font-weight: 650; letter-spacing: -.02em; margin-bottom: 1.25rem; }
+		.section-title .count {
+			font: 500 .75rem "JetBrains Mono", monospace; color: var(--fg-dim);
+			padding: .2rem .6rem; border-radius: 999px; border: 1px solid var(--border); background: var(--surface);
+		}
+		.catalog-status {
+			display: flex; align-items: center; gap: .5rem; margin-bottom: 1rem;
+			font: 500 .72rem "JetBrains Mono", monospace; color: var(--fg-dim);
+		}
+		.pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--accent-2); box-shadow: 0 0 12px var(--accent-2); }
 
-.plugin-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px;flex-wrap:wrap}
-.catalog-status{display:flex;align-items:center;gap:7px;font:500 .68rem "JetBrains Mono",monospace;color:var(--muted)}
-.pulse{width:7px;height:7px;border-radius:50%;background:var(--good);box-shadow:0 0 12px var(--good)}
-.plugins-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-.plugin-card{
-  position:relative;overflow:hidden;border:1px solid var(--line);border-radius:21px;background:var(--surface-2);
-  transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease;isolation:isolate;
-}
-.plugin-card:before{content:"";position:absolute;inset:-1px;background:linear-gradient(120deg,rgba(104,167,255,.16),transparent 35%,rgba(155,124,255,.11));opacity:0;transition:.25s;z-index:-1}
-.plugin-card:hover{transform:translateY(-5px);border-color:rgba(104,167,255,.38);box-shadow:0 20px 55px rgba(0,0,0,.2)}
-.plugin-card:hover:before{opacity:1}
-.plugin-thumb{height:175px;position:relative;overflow:hidden;background:linear-gradient(135deg,rgba(104,167,255,.08),rgba(155,124,255,.08))}
-.plugin-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease}
-.plugin-card:hover .plugin-thumb img{transform:scale(1.045)}
-.thumb-fallback{height:100%;display:grid;place-items:center;font-size:3.5rem;color:var(--accent)}
-.plugin-overlay{position:absolute;inset:auto 0 0;padding:38px 14px 12px;background:linear-gradient(transparent,rgba(0,0,0,.68));display:flex;align-items:end;justify-content:space-between;gap:10px}
-.plugin-icon{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.17);background:rgba(4,8,16,.5);backdrop-filter:blur(8px);color:#fff}
-.version{font:600 .72rem "JetBrains Mono",monospace;color:#fff;padding:7px 9px;border-radius:9px;background:rgba(4,8,16,.55);border:1px solid rgba(255,255,255,.16)}
-.plugin-body{padding:16px}
-.plugin-title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
-.plugin-name{font-size:1rem;font-weight:700;letter-spacing:-.02em}
-.plugin-id{margin-top:4px;font:500 .6rem "JetBrains Mono",monospace;color:var(--faint);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.plugin-desc{font-size:.77rem;line-height:1.55;color:var(--muted);margin-top:10px;min-height:38px}
-.meta-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:13px}
-.meta-box{padding:9px;border:1px solid var(--line);border-radius:11px;background:rgba(104,167,255,.035)}
-.meta-box span{display:block;color:var(--faint);font-size:.58rem;text-transform:uppercase;letter-spacing:.07em}
-.meta-box b{display:block;margin-top:3px;font:600 .72rem "JetBrains Mono",monospace}
-.tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:12px}
-.tag{padding:4px 7px;border-radius:999px;border:1px solid var(--line);color:var(--muted);font-size:.59rem;background:rgba(104,167,255,.035)}
-.plugin-footer{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
-.reaction{
-  display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:10px;border:1px solid var(--line);
-  color:var(--muted);font-size:.7rem;background:rgba(104,167,255,.045);transition:.2s
-}
-.reaction:hover{color:var(--text);border-color:rgba(104,167,255,.42);transform:translateY(-1px)}
-.reaction strong{color:var(--text)}
-.repo-link{font-size:.68rem;color:var(--accent);display:inline-flex;align-items:center;gap:5px}
-.releases{margin-top:12px;border:1px solid var(--line);border-radius:13px;overflow:hidden}
-.releases summary{cursor:pointer;list-style:none;padding:10px 11px;display:flex;justify-content:space-between;align-items:center;font-size:.7rem;color:var(--muted)}
-.releases summary::-webkit-details-marker{display:none}
-.release-count{font:600 .58rem "JetBrains Mono",monospace;color:var(--accent)}
-.release-list{border-top:1px solid var(--line)}
-.release-row{display:grid;grid-template-columns:1.15fr .8fr 1fr;gap:8px;padding:8px 11px;font-size:.62rem;border-bottom:1px solid rgba(130,163,210,.08)}
-.release-row:last-child{border-bottom:0}
-.release-row b{font-family:"JetBrains Mono",monospace}
-.release-row span{color:var(--muted)}
-.latest{color:var(--good)!important}
-.loading,.error{padding:30px;text-align:center;color:var(--muted);font-size:.8rem;border:1px dashed var(--line);border-radius:15px;grid-column:1/-1}
-.spin{animation:spin 1s linear infinite}
+		.plugins-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+		.plugin-card {
+			position: relative; overflow: hidden; display: flex; flex-direction: column;
+			border: 1px solid var(--border); border-radius: 1.25rem; background: var(--surface);
+			box-shadow: var(--shadow-card); transition: all .25s ease; isolation: isolate;
+		}
+		.plugin-card:hover {
+			transform: translateY(-4px); border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+			box-shadow: var(--shadow-card-hover);
+		}
+		.plugin-card:hover::before {
+			content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+			background: radial-gradient(120% 95% at 0% 0%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 45%);
+		}
+		.plugin-thumb { position: relative; overflow: hidden; height: 160px; flex-shrink: 0; }
+		.plugin-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s ease; }
+		.plugin-card:hover .plugin-thumb img { transform: scale(1.045); }
+		.thumb-fallback {
+			height: 100%; display: grid; place-items: center; font-size: 3.25rem; color: var(--accent);
+			background:
+				radial-gradient(50% 60% at 20% 20%, color-mix(in srgb, var(--accent) 18%, transparent), transparent 60%),
+				radial-gradient(50% 60% at 80% 80%, color-mix(in srgb, var(--accent-3) 18%, transparent), transparent 60%),
+				linear-gradient(135deg, var(--bg2), var(--surface-2));
+		}
+		.plugin-overlay {
+			position: absolute; inset: auto 0 0; z-index: 1;
+			padding: 2.25rem 1rem .75rem; display: flex; align-items: flex-end; justify-content: space-between; gap: .625rem;
+			background: linear-gradient(transparent, rgba(0,0,0,.62));
+		}
+		.plugin-icon {
+			width: 2.375rem; height: 2.375rem; border-radius: .75rem; display: grid; place-items: center;
+			border: 1px solid rgba(255,255,255,.18); background: rgba(4,8,16,.55); backdrop-filter: blur(8px); color: #fff; font-size: 1.15rem;
+		}
+		.plugin-version {
+			font: 600 .72rem "JetBrains Mono", monospace; color: #fff; padding: .42rem .6rem;
+			border-radius: .6rem; background: rgba(4,8,16,.6); border: 1px solid rgba(255,255,255,.17);
+		}
+		.plugin-body { padding: 1.1rem; display: flex; flex-direction: column; flex: 1; }
+		.plugin-title-row { display: flex; align-items: flex-start; justify-content: space-between; gap: .625rem; }
+		.plugin-name { font-size: 1.02rem; font-weight: 700; letter-spacing: -.02em; }
+		.plugin-id {
+			margin-top: 4px; font: 500 .62rem "JetBrains Mono", monospace; color: var(--faint);
+			overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+		}
+		.plugin-desc { font-size: .86rem; line-height: 1.55; color: var(--fg-dim); margin-top: .65rem; }
+		.meta-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .45rem; margin-top: .85rem; }
+		.meta-box {
+			padding: .55rem .6rem; border: 1px solid var(--border); border-radius: .7rem;
+			background: color-mix(in srgb, var(--surface-2) 45%, transparent);
+		}
+		.meta-box span { display: block; color: var(--faint); font-size: .58rem; text-transform: uppercase; letter-spacing: .08em; }
+		.meta-box b { display: block; margin-top: 2px; font: 600 .72rem "JetBrains Mono", monospace; }
+		.tags { display: flex; gap: .35rem; flex-wrap: wrap; margin-top: .8rem; }
+		.tag {
+			padding: .25rem .55rem; border-radius: 999px; border: 1px solid var(--border);
+			color: var(--fg-dim); font-size: .66rem; background: color-mix(in srgb, var(--surface-2) 40%, transparent);
+		}
+		.releases { margin-top: .8rem; border: 1px solid var(--border); border-radius: .75rem; overflow: hidden; }
+		.releases summary { cursor: pointer; list-style: none; padding: .65rem .75rem; display: flex; justify-content: space-between; align-items: center; gap: .5rem; font-size: .74rem; color: var(--fg-dim); }
+		.releases summary::-webkit-details-marker { display: none; }
+		.releases summary:hover { background: color-mix(in srgb, var(--surface-2) 60%, transparent); }
+		.release-count { font: 600 .6rem "JetBrains Mono", monospace; color: var(--accent); }
+		.release-list { border-top: 1px solid var(--border); }
+		.release-row {
+			display: grid; grid-template-columns: 1.15fr .8fr 1fr; gap: .5rem;
+			padding: .5rem .75rem; font-size: .66rem; border-bottom: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+		}
+		.release-row:last-child { border-bottom: 0; }
+		.release-row b { font-family: "JetBrains Mono", monospace; }
+		.release-row span { color: var(--fg-dim); }
+		.latest { color: var(--accent-2) !important; }
+		.plugin-footer {
+			display: flex; align-items: center; justify-content: space-between; gap: .625rem;
+			margin-top: auto; padding-top: .9rem; border-top: 1px solid var(--border);
+		}
+		.reaction {
+			display: inline-flex; align-items: center; gap: .4rem; padding: .45rem .65rem;
+			border-radius: .65rem; border: 1px solid var(--border); color: var(--fg-dim);
+			font-size: .76rem; background: color-mix(in srgb, var(--accent) 7%, transparent); transition: all .2s;
+		}
+		.reaction:hover { color: var(--fg); border-color: color-mix(in srgb, var(--accent) 40%, transparent); transform: translateY(-1px); }
+		.reaction strong { color: var(--fg); }
+		.repo-link { font-size: .74rem; color: var(--accent); display: inline-flex; align-items: center; gap: .32rem; font-weight: 600; }
 
-.repos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.repo-card{padding:15px;border:1px solid var(--line);border-radius:17px;background:var(--surface);transition:.22s}
-.repo-card:hover{transform:translateY(-4px);border-color:rgba(104,167,255,.36);box-shadow:0 15px 35px rgba(0,0,0,.12)}
-.repo-name{display:flex;align-items:center;gap:8px;font-weight:700;font-size:.82rem}
-.repo-name i{color:var(--accent)}
-.repo-desc{font-size:.7rem;color:var(--muted);line-height:1.5;margin-top:7px;min-height:32px}
-.repo-meta{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:12px;padding-top:9px;border-top:1px solid var(--line);font-size:.62rem;color:var(--faint)}
-.repo-lang{display:flex;align-items:center;gap:6px}.repo-stats{display:flex;gap:8px}
+		.loading, .empty {
+			grid-column: 1 / -1; padding: 2rem; text-align: center; color: var(--fg-dim);
+			font-size: .85rem; border: 1px dashed var(--border); border-radius: 1rem;
+		}
+		.spin { animation: spin 1s linear infinite; }
+		@keyframes spin { to { transform: rotate(360deg); } }
 
-footer{padding:35px 5px 0;text-align:center;color:var(--faint);font:500 .65rem "JetBrains Mono",monospace}
-.back-top{position:fixed;right:20px;bottom:20px;width:43px;height:43px;border-radius:14px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);display:grid;place-items:center;opacity:0;pointer-events:none;transform:translateY(10px);transition:.25s;backdrop-filter:blur(12px);z-index:60}
-.back-top.visible{opacity:1;pointer-events:auto;transform:none}
+		/* ---- Footer ---- */
+		.site-footer {
+			position: relative; z-index: 1; margin-top: auto;
+			border-top: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
+			background: color-mix(in srgb, var(--bg) 60%, transparent); backdrop-filter: blur(20px);
+		}
+		.site-footer-inner { max-width: 72rem; margin: 0 auto; padding: 2.5rem 1rem; }
+		.footer-grid { display: flex; flex-direction: column; gap: 2.5rem; }
+		@media (min-width: 1024px) { .footer-grid { flex-direction: row; align-items: flex-start; gap: 4rem; } }
+		.footer-brand { max-width: 22rem; flex-shrink: 0; }
+		.footer-brand-logo { display: flex; align-items: center; gap: .75rem; }
+		.footer-brand-logo img { width: 2.5rem; height: 2.5rem; border-radius: .75rem; object-fit: cover; }
+		.footer-blurb { margin-top: 1rem; font-size: .875rem; line-height: 1.6; color: var(--fg-dim); }
+		.footer-links { flex: 1; display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+		@media (min-width: 640px) { .footer-links { grid-template-columns: repeat(4, 1fr); } }
+		.footer-col p { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .14em; color: var(--fg); margin-bottom: .9rem; }
+		.footer-col ul { list-style: none; }
+		.footer-col li { margin-bottom: .35rem; }
+		.footer-col a { font-size: .875rem; color: var(--fg-dim); transition: all .2s; border-radius: .25rem; }
+		.footer-col a:hover { color: var(--accent); }
+		.footer-bottom {
+			margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid color-mix(in srgb, var(--border) 40%, transparent);
+			display: flex; flex-direction: column; gap: .75rem; font-size: .78rem; color: var(--fg-dim);
+		}
+		@media (min-width: 640px) { .footer-bottom { flex-direction: row; align-items: center; justify-content: space-between; } }
 
-.reveal{opacity:0;transform:translateY(16px);transition:opacity .65s ease,transform .65s ease}.reveal.in{opacity:1;transform:none}
-@keyframes spin{to{transform:rotate(360deg)}}@keyframes spinRing{to{transform:rotate(360deg)}}@keyframes counterSpin{to{transform:rotate(-360deg)}}
-@media(max-width:900px){.focus-grid{grid-template-columns:repeat(2,1fr)}.repos-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:680px){
-  .shell{width:min(100% - 18px,1180px);padding-top:12px}.topbar{top:8px}.nav a{display:none}.hero{padding:36px 17px 22px;border-radius:27px}
-  .stats{grid-template-columns:repeat(2,1fr)}.plugins-grid,.repos-grid{grid-template-columns:1fr}.plugin-thumb{height:115px}.meta-grid{grid-template-columns:repeat(2,1fr)}
-  .section-head{align-items:flex-start;flex-direction:column}.section-desc{text-align:left}.panel{padding:12px}
-}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
-</style>
+		.back-top {
+			position: fixed; right: 1.5rem; bottom: 1.5rem; z-index: 60;
+			width: 2.75rem; height: 2.75rem; display: flex; align-items: center; justify-content: center;
+			border-radius: 999px; border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+			background: var(--accent); color: var(--on-accent); font-size: 1.25rem;
+			box-shadow: var(--shadow-card); transition: all .3s;
+			pointer-events: none; opacity: 0; transform: translateY(12px);
+		}
+		.back-top.visible { pointer-events: auto; opacity: 1; transform: none; }
+		.back-top:hover { filter: brightness(1.08); }
+
+		.reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+		.reveal.in { opacity: 1; transform: none; }
+
+		@media (max-width: 680px) {
+			.site-shell { width: min(100% - 1.25rem, 72rem); padding: 2rem 0 3rem; }
+			.plugins-grid { grid-template-columns: 1fr; }
+			.plugin-thumb { height: 150px; }
+			.meta-grid { grid-template-columns: repeat(2, 1fr); }
+			.catalog-controls { padding: 1rem; }
+			.btn-primary span.btn-label { display: none; }
+			.btn-primary { min-width: 2.5rem; width: 2.5rem; padding: 0; }
+		}
+		@media (prefers-reduced-motion: reduce) {
+			*, *:before, *:after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+		}
+	</style>
 </head>
+<body>
+<div class="page-canvas">
+	<div class="main-col">
 
-<body class="dark">
-<div class="shell">
-  <nav class="topbar">
-    <div class="brand">NILSONLINUX / DEV</div>
-    <div class="nav">
-      <a href="#plugins">Plugins</a><a href="#repos">Repos</a>
-      <button class="theme-btn" id="themeToggle" aria-label="Alternar tema"><i class="ti ti-sun-moon"></i></button>
-    </div>
-  </nav>
+		<header class="site-header">
+			<div class="site-header-inner">
+				<a href="#" class="brand">
+					<img src="img/user.png" alt="Nilsonlinux" width="40" height="40" />
+					<span class="brand-label">
+						<span class="brand-name">Nilsonlinux</span>
+						<span class="brand-tag">open source</span>
+					</span>
+				</a>
+				<nav class="main-nav" aria-label="Páginas do site">
+					<a href="#plugins" class="active" aria-current="page"><i class="ti ti-plug"></i>&nbsp;Plugins</a>
+					<a href="#repos">Repos</a>
+					<a href="https://github.com/Nilsonlinux" target="_blank" rel="noopener noreferrer">GitHub</a>
+				</nav>
+				<div class="header-actions">
+					<button type="button" class="icon-btn" id="themeToggle" aria-label="Alternar tema" title="Tema"><i class="ti ti-sun-moon"></i></button>
+					<a class="btn-primary" href="#plugins"><i class="ti ti-rocket"></i><span class="btn-label">Plugins</span></a>
+				</div>
+			</div>
+		</header>
 
-  <header class="hero reveal">
-    <div class="scanline"></div>
-    <div class="profile">
-      <div class="avatar-ring">
-        <img src="img/user.png" alt="Foto de perfil de Nilsonlinux">
-        <span class="status-dot" title="Online"></span>
-      </div>
-      <h1>Nilsonlinux</h1>
-      <div class="handle">@Nilsonlinux · Linux / Noctalia / Open Source</div>
-      <div class="badges">
-        <span class="badge"><i class="ti ti-brand-github"></i> GitHub</span>
-        <span class="badge"><i class="ti ti-code"></i> Developer</span>
-        <span class="badge"><i class="ti ti-terminal-2"></i> Linux</span>
-      </div>
-      <p class="bio">Desenvolvedor focado em Linux, Noctalia e automação. Aqui ficam meus plugins, projetos e experimentos open source — com os dados dos projetos atualizados diretamente das APIs e do <b>catalog.toml</b>.</p>
-      <div class="actions">
-        <a class="action" href="https://github.com/Nilsonlinux" target="_blank" rel="noopener"><i class="ti ti-brand-github"></i> GitHub</a>
-        <a class="action" href="https://github.com/Nilsonlinux/noctalia-plugins" target="_blank" rel="noopener"><i class="ti ti-plug"></i> Noctalia Plugins</a>
-        <a class="action" href="#plugins"><i class="ti ti-rocket"></i> Ver plugins</a>
-      </div>
-    </div>
-    <div class="stats">
-      <div class="stat"><b id="statPlugins">—</b><span>Plugins</span></div>
-      <div class="stat"><b id="statReleases">—</b><span>Releases</span></div>
-      <div class="stat"><b id="statIssues">—</b><span>Joinhas</span></div>
-      <div class="stat"><b id="statRepos">—</b><span>Repos públicos</span></div>
-    </div>
-  </header>
+		<main class="site-main">
+			<div class="site-shell">
+				<div class="page-header reveal">
+					<h1>Plugins</h1>
+					<p class="page-subtitle">Plugins para Noctalia, mantidos pelo Nilsonlinux, com dados direto do <b>catalog.toml</b> e das issues.</p>
+				</div>
 
-  <section class="section reveal">
-    <div class="section-head">
-      <div><div class="kicker">Atividade</div><h2 class="section-title">Projetos em destaque</h2></div>
-      <div class="section-desc">Últimos repositórios atualizados</div>
-    </div>
-    <div class="panel"><div class="focus-grid" id="focus-container"><div class="loading"><i class="ti ti-loader-2 spin"></i> Carregando…</div></div></div>
-  </section>
+				<div class="catalog-controls reveal">
+					<div class="search-section">
+						<div class="search-container">
+							<i class="ti ti-search search-icon" aria-hidden="true"></i>
+							<input type="search" class="search-input" id="searchInput" placeholder="Buscar por nome, descrição ou autor..." aria-label="Buscar plugins" autocomplete="off" />
+						</div>
+					</div>
+					<div class="filters-heading">
+						<div class="filters-title"><i class="ti ti-adjustments-horizontal" aria-hidden="true"></i><span>Filtrar plugins</span></div>
+						<label class="sort-control"><span>Ordenar por</span>
+							<select id="sortSelect">
+								<option value="name" selected>Nome</option>
+								<option value="updated">Atualização recente</option>
+							</select>
+						</label>
+					</div>
+					<div class="filter-group">
+						<span class="filter-label">Tags</span>
+						<div class="tag-filters" id="tagFilters">
+							<button class="tag-chip selected" data-tag="all" aria-pressed="true">Todas</button>
+						</div>
+					</div>
+				</div>
 
-  <section class="section reveal" id="plugins">
-    <div class="section-head">
-      <div><div class="kicker">Noctalia</div><h2 class="section-title">Plugins & releases</h2></div>
-      <div class="section-desc">Fonte: catalog.toml + GitHub Issues</div>
-    </div>
-    <div class="panel">
-      <div class="plugin-toolbar">
-        <div class="catalog-status"><span class="pulse"></span><span id="catalogStatus">Sincronizando catálogo…</span></div>
-        <a class="top-link" href="https://raw.githubusercontent.com/Nilsonlinux/noctalia-plugins/refs/heads/main/catalog.toml" target="_blank" rel="noopener"><i class="ti ti-file-code"></i> catalog.toml</a>
-      </div>
-      <div id="plugins-container" class="plugins-grid"><div class="loading"><i class="ti ti-loader-2 spin"></i> Carregando catálogo…</div></div>
-    </div>
-  </section>
+				<div class="plugins-section reveal" id="plugins">
+					<h2 class="section-title">Plugins <span class="count" id="statPlugins">—</span></h2>
+					<div class="catalog-status"><span class="pulse"></span><span id="catalogStatus">Sincronizando catálogo…</span></div>
+					<div class="plugins-grid" id="plugins-container">
+						<div class="loading"><i class="ti ti-loader-2 spin"></i>&nbsp; Carregando catálogo…</div>
+					</div>
+				</div>
+			</div>
+		</main>
 
-  <section class="section reveal" id="repos">
-    <div class="section-head">
-      <div><div class="kicker">GitHub</div><h2 class="section-title">Repositórios</h2></div>
-      <div class="section-desc">Dados públicos do perfil</div>
-    </div>
-    <div class="repos-grid" id="repo-list"><div class="loading"><i class="ti ti-loader-2 spin"></i> Carregando repositórios…</div></div>
-  </section>
+		<footer class="site-footer" id="repos">
+			<div class="site-footer-inner">
+				<div class="footer-grid">
+					<div class="footer-brand">
+						<div class="footer-brand-logo">
+							<img src="img/user.png" alt="Nilsonlinux" width="40" height="40" />
+							<div>
+								<p style="font-weight:600;letter-spacing:-.01em">Nilsonlinux</p>
+								<p style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.12em;color:var(--faint)">plugins · linux · open source</p>
+							</div>
+						</div>
+						<p class="footer-blurb">Desenvolvedor focado em Linux, Noctalia e automação. Plugins e projetos open source, com dados atualizados diretamente do <b>catalog.toml</b> e das APIs do GitHub.</p>
+					</div>
+					<div class="footer-links">
+						<nav class="footer-col" aria-label="Plugins">
+							<p>Plugins</p>
+							<ul id="footer-plugin-list"></ul>
+						</nav>
+						<nav class="footer-col" aria-label="Projetos">
+							<p>Projetos</p>
+							<ul>
+								<li><a href="https://github.com/Nilsonlinux/noctalia-plugins" target="_blank" rel="noopener noreferrer">noctalia-plugins</a></li>
+								<li><a href="https://github.com/Nilsonlinux?tab=repositories" target="_blank" rel="noopener noreferrer">Repositórios</a></li>
+								<li><a href="https://raw.githubusercontent.com/Nilsonlinux/noctalia-plugins/refs/heads/main/catalog.toml" target="_blank" rel="noopener noreferrer">catalog.toml</a></li>
+							</ul>
+						</nav>
+						<nav class="footer-col" aria-label="Documentação">
+							<p>Docs</p>
+							<ul>
+								<li><a href="https://docs.noctalia.dev" target="_blank" rel="noopener noreferrer">Noctalia Docs</a></li>
+								<li><a href="https://docs.noctalia.dev/plugins" target="_blank" rel="noopener noreferrer">Plugins API</a></li>
+							</ul>
+						</nav>
+						<nav class="footer-col" aria-label="Comunidade">
+							<p>Redes</p>
+							<ul>
+								<li><a href="https://github.com/Nilsonlinux" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+								<li><a href="https://discord.noctalia.dev" target="_blank" rel="noopener noreferrer">Discord Noctalia</a></li>
+							</ul>
+						</nav>
+					</div>
+				</div>
+				<div class="footer-bottom">
+					<p>© <span id="year"></span> Nilsonlinux · feito com código, Linux e curiosidade.</p>
+					<p id="footerStats">— plugins · — releases · — joinhas</p>
+				</div>
+			</div>
+		</footer>
 
-  <footer>© <span id="year"></span> Nilsonlinux · feito com código, Linux e curiosidade.</footer>
+		<button type="button" class="back-top" id="backToTop" aria-label="Voltar ao topo"><i class="ti ti-chevron-up"></i></button>
+	</div>
 </div>
-<button class="back-top" id="backToTop" aria-label="Voltar ao topo"><i class="ti ti-arrow-up"></i></button>
 
 <script>
 (() => {
-  const $ = s => document.querySelector(s);
-  const escapeHTML = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
-  const username = 'Nilsonlinux';
-  const catalogUrl = 'https://raw.githubusercontent.com/Nilsonlinux/noctalia-plugins/refs/heads/main/catalog.toml';
+	const $ = s => document.querySelector(s);
+	const username = 'Nilsonlinux';
+	const catalogUrl = 'https://raw.githubusercontent.com/Nilsonlinux/noctalia-plugins/refs/heads/main/catalog.toml';
 
-  // Tema: um único sistema de variáveis mantém dark/light consistentes.
-  const savedTheme = localStorage.getItem('nilson-theme');
-  document.body.classList.toggle('light', savedTheme === 'light');
-  $('#themeToggle').addEventListener('click', () => {
-    document.body.classList.toggle('light');
-    localStorage.setItem('nilson-theme', document.body.classList.contains('light') ? 'light' : 'dark');
-  });
+	const escapeHTML = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+	const repoFolder = id => id.split('/').pop();
+	const date = ts => ts ? new Date(Number(ts) * 1000).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' }) : '—';
+	const icon = name => `ti-${(name || 'plug').replace(/^brand-/, 'brand-')}`;
 
-  $('#year').textContent = new Date().getFullYear();
+	// ---- Tema (igual ao noctalia.dev) ----
+	$('#themeToggle').addEventListener('click', () => {
+		const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+		document.documentElement.setAttribute('data-theme', next);
+		localStorage.setItem('theme', next);
+	});
+	$('#year').textContent = new Date().getFullYear();
 
-  const langColors = {'C++':'#f34b7d','C':'#555','Luau':'#00a2ff','Shell':'#89e051','HTML':'#e34c26','CSS':'#563d7c','JavaScript':'#f1e05a','TypeScript':'#3178c6','PHP':'#4F5D95','Python':'#3572A5','Rust':'#dea584','Go':'#00ADD8','Zig':'#ec915c'};
-  const forceLanguage = {'umbriel':'C++','noctalia':'C++','nsolus':'Shell','dotfiles':'Shell','pikaos':'Shell','rss-notifier':'Luau','link-ip-monitor':'Luau','community-plugins':'Luau','wifi-qr-poster':'HTML','nilsonlinux.github.io':'HTML'};
+	// ---- Parse do catalog.toml ----
+	function parseValue(raw) {
+		raw = raw.trim();
+		if ((raw.startsWith('"') && raw.endsWith('"')) || (raw.startsWith("'") && raw.endsWith("'"))) return raw.slice(1, -1);
+		if (raw.startsWith('[') && raw.endsWith(']')) {
+			const inner = raw.slice(1, -1); const out = []; let cur = '', quote = false;
+			for (const ch of inner) {
+				if (ch === '"') quote = !quote;
+				if (ch === ',' && !quote) { if (cur.trim()) out.push(parseValue(cur)); cur = ''; }
+				else cur += ch;
+			}
+			if (cur.trim()) out.push(parseValue(cur));
+			return out;
+		}
+		if (/^-?\d+(?:\.\d+)?$/.test(raw)) return Number(raw);
+		return raw;
+	}
+	function parseCatalog(toml) {
+		const plugins = []; let current = null;
+		for (const original of toml.split(/\r?\n/)) {
+			const line = original.trim();
+			if (!line || line.startsWith('#')) continue;
+			if (line === '[[plugin]]') { if (current) plugins.push(current); current = { releases: [] }; continue; }
+			if (line === '[[plugin.release]]') { if (current) current.releases.push({}); continue; }
+			const m = line.match(/^([A-Za-z0-9_]+)\s*=\s*(.*)$/);
+			if (!m || !current) continue;
+			const key = m[1], value = parseValue(m[2]);
+			const target = current.releases.length && /^(plugin_api|version|updated_at|rev|checksum)$/.test(key) ? current.releases[current.releases.length - 1] : current;
+			target[key] = value;
+		}
+		if (current) plugins.push(current);
+		return plugins.filter(p => p.id);
+	}
 
-  function parseValue(raw) {
-    raw = raw.trim();
-    if ((raw.startsWith('"') && raw.endsWith('"')) || (raw.startsWith("'") && raw.endsWith("'"))) return raw.slice(1,-1);
-    if (raw.startsWith('[') && raw.endsWith(']')) {
-      const inner = raw.slice(1,-1); const out=[]; let cur='', quote=false;
-      for (const ch of inner) { if(ch === '"') quote=!quote; if(ch===','&&!quote){if(cur.trim())out.push(parseValue(cur));cur='';}else cur+=ch; }
-      if(cur.trim()) out.push(parseValue(cur)); return out;
-    }
-    if (/^-?\d+(?:\.\d+)?$/.test(raw)) return Number(raw);
-    return raw;
-  }
-  function parseCatalog(toml) {
-    const plugins=[]; let current=null; let release=null;
-    for (const original of toml.split(/\r?\n/)) {
-      const line=original.trim(); if(!line || line.startsWith('#')) continue;
-      if(line==='[[plugin]]'){ if(current) plugins.push(current); current={releases:[]}; release=null; continue; }
-      if(line==='[[plugin.release]]'){ if(current){ release={}; current.releases.push(release); } continue; }
-      const m=line.match(/^([A-Za-z0-9_]+)\s*=\s*(.*)$/); if(!m || !current) continue;
-      const key=m[1], value=parseValue(m[2]);
-      (release ? release : current)[key]=value;
-    }
-    if(current) plugins.push(current);
-    return plugins.filter(p=>p.id);
-  }
-  function date(ts){ return ts ? new Date(Number(ts)*1000).toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'}) : '—'; }
-  function icon(name){ const n=(name||'plug').replace(/^brand-/,'brand-'); return `ti-${n}`; }
-  function repoFolder(id){ return id.split('/').pop(); }
+	// ---- Dados ----
+	async function fetchCatalog() {
+		const r = await fetch(`${catalogUrl}?t=${Date.now()}`, { cache: 'no-store' });
+		if (!r.ok) throw new Error('catalog');
+		return parseCatalog(await r.text());
+	}
+	// Issues API: uma chamada pega todas as issues (com reactions). Título = pasta do plugin.
+	async function fetchAllIssues() {
+		try {
+			const r = await fetch(`https://api.github.com/repos/${username}/noctalia-plugins/issues?state=all&per_page=100&sort=updated&order=desc`, { cache: 'no-store' });
+			if (!r.ok) return [];
+			const data = await r.json();
+			return Array.isArray(data) ? data : [];
+		} catch { return []; }
+	}
+	function matchIssues(issues, slug) {
+		const matched = (issues || []).filter(i => !i.pull_request && i.title === slug);
+		const likes = matched.reduce((sum, i) => sum + Number(i.reactions?.['+1'] || 0), 0);
+		return { likes, issues: matched.length };
+	}
 
-  async function fetchCatalog(){
-    const r=await fetch(`${catalogUrl}?t=${Date.now()}`,{cache:'no-store'});
-    if(!r.ok) throw new Error('catalog');
-    return parseCatalog(await r.text());
-  }
+	function renderReleases(p) {
+		const releases = [...(p.releases || [])].sort((a, b) => Number(b.updated_at || 0) - Number(a.updated_at || 0));
+		if (!releases.length) return '';
+		return `<details class="releases">
+			<summary><span><i class="ti ti-git-branch"></i>&nbsp; Releases do catálogo</span><span class="release-count">${releases.length} versão${releases.length > 1 ? 'ões' : ''}</span></summary>
+			<div class="release-list">${releases.map((r, i) => `<div class="release-row"><b class="${i === 0 ? 'latest' : ''}">v${escapeHTML(r.version)}</b><span>API ${escapeHTML(r.plugin_api)}</span><span>${date(r.updated_at)}</span></div>`).join('')}</div>
+		</details>`;
+	}
 
-  // Issues API: uma única chamada busca todas as issues do repo (já incluindo
-  // o objeto "reactions"). Cada issue tem o título = pasta do plugin, então
-  // casamos por título e somamos os +1 sem rate-limit do Search API.
-  async function fetchAllIssues(){
-    try{
-      const r=await fetch(`https://api.github.com/repos/${username}/noctalia-plugins/issues?state=all&per_page=100&sort=updated&order=desc`,{cache:'no-store'});
-      if(!r.ok) return [];
-      const data=await r.json();
-      return Array.isArray(data)?data:[];
-    }catch{return []}
-  }
-  function matchIssues(issues,slug){
-    const matched=(issues||[]).filter(i=>!i.pull_request && i.title===slug);
-    const likes=matched.reduce((sum,i)=>sum+Number(i.reactions?.['+1']||0),0);
-    return {likes,issues:matched.length};
-  }
+	function cardHTML(p) {
+		const folder = repoFolder(p.id);
+		const url = `https://github.com/${username}/noctalia-plugins/tree/main/${folder}`;
+		const thumb = `https://raw.githubusercontent.com/${username}/noctalia-plugins/main/${folder}/thumbnail.webp`;
+		return `<article class="plugin-card">
+			<a class="plugin-thumb" href="${url}" target="_blank" rel="noopener">
+				<img src="${thumb}" alt="${escapeHTML(p.name)}" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'thumb-fallback',innerHTML:'<i class=&quot;ti ${icon(p.icon)}&quot;></i>'}))">
+				<div class="plugin-overlay"><span class="plugin-icon"><i class="ti ${icon(p.icon)}"></i></span><span class="plugin-version">v${escapeHTML(p.version)}</span></div>
+			</a>
+			<div class="plugin-body">
+				<div class="plugin-title-row">
+					<div>
+						<div class="plugin-name">${escapeHTML(p.name)}</div>
+						<div class="plugin-id">${escapeHTML(p.id)}</div>
+					</div>
+					<i class="ti ti-brand-github" style="color:var(--faint);font-size:1.05rem"></i>
+				</div>
+				<div class="plugin-desc">${escapeHTML(p.description || 'Sem descrição.')}</div>
+				<div class="meta-grid" style="margin-top:.8rem">
+					<div class="meta-box"><span>Autor</span><b>${escapeHTML(p.author || '—')}</b></div>
+					<div class="meta-box"><span>Plugin API</span><b>${escapeHTML(p.plugin_api)}</b></div>
+					<div class="meta-box"><span>Versão</span><b>v${escapeHTML(p.version)}</b></div>
+				</div>
+				<div class="meta-grid">
+					<div class="meta-box"><span>Adicionado</span><b>${date(p.added_at)}</b></div>
+					<div class="meta-box"><span>Atualizado</span><b>${date(p.updated_at)}</b></div>
+					<div class="meta-box"><span>Licença</span><b>${escapeHTML(p.license || '—')}</b></div>
+				</div>
+				<div class="tags">${(p.tags || []).map(t => `<span class="tag">${escapeHTML(t)}</span>`).join('')}</div>
+				${renderReleases(p)}
+				<div class="plugin-footer">
+					<a class="reaction" href="https://github.com/${username}/noctalia-plugins/issues?q=is%3Aissue+${encodeURIComponent(folder)}" target="_blank" rel="noopener"><i class="ti ti-thumb-up"></i><strong>${p.reaction.likes}</strong> joinha${p.reaction.likes === 1 ? '' : 's'} · ${p.reaction.issues} issue${p.reaction.issues === 1 ? '' : 's'}</a>
+					<a class="repo-link" href="${url}" target="_blank" rel="noopener">GitHub <i class="ti ti-arrow-up-right"></i></a>
+				</div>
+			</div>
+		</article>`;
+	}
 
-  function renderReleases(p){
-    const releases=[...(p.releases||[])].sort((a,b)=>Number(b.updated_at||0)-Number(a.updated_at||0));
-    if(!releases.length) return '';
-    return `<details class="releases">
-      <summary><span><i class="ti ti-git-branch"></i> Releases do catálogo</span><span class="release-count">${releases.length} versão${releases.length>1?'ões':''}</span></summary>
-      <div class="release-list">${releases.map((r,i)=>`<div class="release-row"><b class="${i===0?'latest':''}">v${escapeHTML(r.version)}</b><span>API ${escapeHTML(r.plugin_api)}</span><span>${date(r.updated_at)}</span></div>`).join('')}</div>
-    </details>`;
-  }
+	// ---- Filtros (busca, tag, ordenação) ----
+	const state = { query: '', tag: 'all', sort: 'name' };
+	let plugins = [];
 
-  async function renderPlugins(){
-    const status=$('#catalogStatus');
-    try{
-      const all=await fetchCatalog();
-      const plugins=all.filter(p=>(p.author||'').toLowerCase()==='nilsonlinux');
-      const issues=await fetchAllIssues();
-      const data=plugins.map(p=>({...p,reaction:matchIssues(issues,repoFolder(p.id))}));
-      data.sort((a,b)=>(a.id.includes('speedtest')?-1:0)-(b.id.includes('speedtest')?-1:0)||a.name.localeCompare(b.name));
-      let totalReleases=0,totalLikes=0;
-      data.forEach(p=>{totalReleases+=(p.releases||[]).length;totalLikes+=p.reaction.likes});
-      $('#statPlugins').textContent=data.length; $('#statReleases').textContent=totalReleases; $('#statIssues').textContent=totalLikes;
-      status.textContent=`catálogo atualizado · ${data.length} plugins`;
-      $('#plugins-container').innerHTML=data.map(p=>{
-        const folder=repoFolder(p.id), url=`https://github.com/${username}/noctalia-plugins/tree/main/${folder}`;
-        const thumb=`https://raw.githubusercontent.com/${username}/noctalia-plugins/main/${folder}/thumbnail.webp`;
-        return `<article class="plugin-card">
-          <a class="plugin-thumb" href="${url}" target="_blank" rel="noopener">
-            <img src="${thumb}" alt="${escapeHTML(p.name)}" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'thumb-fallback',innerHTML:'<i class=&quot;ti ${icon(p.icon)}&quot;></i>'}))">
-            <div class="plugin-overlay"><span class="plugin-icon"><i class="ti ${icon(p.icon)}"></i></span><span class="version">v${escapeHTML(p.version)}</span></div>
-          </a>
-          <div class="plugin-body">
-            <div class="plugin-title-row"><div><div class="plugin-name">${escapeHTML(p.name)}</div><div class="plugin-id">${escapeHTML(p.id)}</div></div></div>
-            <div class="plugin-desc">${escapeHTML(p.description||'Sem descrição.')}</div>
-            <div class="meta-grid">
-              <div class="meta-box"><span>Autor</span><b>${escapeHTML(p.author||'—')}</b></div>
-              <div class="meta-box"><span>Plugin API</span><b>${escapeHTML(p.plugin_api)}</b></div>
-              <div class="meta-box"><span>Adicionado</span><b>${date(p.added_at)}</b></div>
-              <div class="meta-box"><span>Atualizado</span><b>${date(p.updated_at)}</b></div>
-            </div>
-            <div class="meta-grid" style="margin-top:6px">
-              <div class="meta-box"><span>Licença</span><b>${escapeHTML(p.license||'—')}</b></div>
-              <div class="meta-box"><span>Versão</span><b>v${escapeHTML(p.version)}</b></div>
-              <div class="meta-box"><span>Releases</span><b>${(p.releases||[]).length}</b></div>
-              <div class="meta-box"><span>Issues</span><b>${p.reaction.issues}</b></div>
-            </div>
-            <div class="tags">${(p.tags||[]).map(t=>`<span class="tag">${escapeHTML(t)}</span>`).join('')}</div>
-            ${renderReleases(p)}
-            <div class="plugin-footer">
-              <a class="reaction" href="https://github.com/${username}/noctalia-plugins/issues?q=is%3Aissue+${encodeURIComponent(folder)}" target="_blank" rel="noopener"><i class="ti ti-thumb-up"></i><strong>${p.reaction.likes}</strong> joinha${p.reaction.likes===1?'':'s'} · ${p.reaction.issues} issue${p.reaction.issues===1?'':'s'}</a>
-              <a class="repo-link" href="${url}" target="_blank" rel="noopener">GitHub <i class="ti ti-arrow-up-right"></i></a>
-            </div>
-          </div>
-        </article>`;
-      }).join('');
-    }catch(e){
-      status.textContent='não foi possível sincronizar agora';
-      $('#plugins-container').innerHTML='<div class="error"><i class="ti ti-alert-triangle"></i><br>Não foi possível carregar o catalog.toml.</div>';
-      $('#statPlugins').textContent='—';$('#statReleases').textContent='—';$('#statIssues').textContent='—';
-    }
-  }
+	$('#searchInput').addEventListener('input', e => { state.query = e.target.value.trim().toLowerCase(); render(); });
+	$('#sortSelect').addEventListener('change', e => { state.sort = e.target.value; render(); });
 
-  async function fetchRepos(){
-    try{
-      const r=await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`,{cache:'no-store'});
-      if(!r.ok) throw 0; const repos=await r.json();
-      $('#statRepos').textContent=repos.length;
-      const top=repos.slice(0,5);
-      $('#focus-container').innerHTML=top.map(repo=>{
-        let lang=forceLanguage[repo.name]||repo.language||'Outro', color=langColors[lang]||'#7d8da4';
-        return `<div class="focus-item"><div class="focus-top"><span class="lang-dot" style="background:${color};color:${color}"></span>${escapeHTML(repo.name)}</div><span class="focus-lang">${escapeHTML(lang)}</span></div>`;
-      }).join('')||'<div class="error">Nenhum repositório público.</div>';
-      $('#repo-list').innerHTML=repos.map(repo=>{
-        let lang=forceLanguage[repo.name]||repo.language||'Outro', color=langColors[lang]||'#7d8da4';
-        return `<a class="repo-card" href="${repo.html_url}" target="_blank" rel="noopener">
-          <div class="repo-name"><i class="ti ti-book"></i>${escapeHTML(repo.name)}</div>
-          <div class="repo-desc">${escapeHTML(repo.description||'Sem descrição')}</div>
-          <div class="repo-meta"><span class="repo-lang"><span class="lang-dot" style="background:${color};color:${color}"></span>${escapeHTML(lang)}</span><span class="repo-stats"><span><i class="ti ti-star"></i> ${repo.stargazers_count||0}</span><span><i class="ti ti-git-fork"></i> ${repo.forks_count||0}</span></span></div>
-        </a>`;
-      }).join('');
-    }catch{
-      $('#focus-container').innerHTML='<div class="error">Não foi possível carregar os repositórios.</div>';
-      $('#repo-list').innerHTML='<div class="error">Não foi possível carregar os repositórios do GitHub.</div>';
-    }
-  }
+	function buildTagFilters() {
+		const counts = {};
+		plugins.forEach(p => (p.tags || []).forEach(t => { counts[t] = (counts[t] || 0) + 1; }));
+		const tags = Object.keys(counts).sort();
+		$('#tagFilters').innerHTML = `<button class="tag-chip ${state.tag === 'all' ? 'selected' : ''}" data-tag="all" aria-pressed="${state.tag === 'all'}">Todas</button>` +
+			tags.map(t => `<button class="tag-chip ${state.tag === t ? 'selected' : ''}" data-tag="${escapeHTML(t)}" aria-pressed="${state.tag === t}">${escapeHTML(t)} · ${counts[t]}</button>`).join('');
+		document.querySelectorAll('#tagFilters .tag-chip').forEach(btn => {
+			btn.addEventListener('click', () => {
+				state.tag = btn.dataset.tag;
+				buildTagFilters();
+				render();
+			});
+		});
+	}
 
-  const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.08});
-  document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+	function filtered() {
+		let list = plugins.filter(p => {
+			if (state.tag !== 'all' && !(p.tags || []).includes(state.tag)) return false;
+			if (state.query) {
+				const hay = `${p.name} ${p.description} ${p.author} ${p.id}`.toLowerCase();
+				if (!hay.includes(state.query)) return false;
+			}
+			return true;
+		});
+		if (state.sort === 'updated') list = list.sort((a, b) => Number(b.updated_at || 0) - Number(a.updated_at || 0));
+		else list = list.sort((a, b) => a.name.localeCompare(b.name));
+		return list;
+	}
 
-  const topBtn=$('#backToTop');
-  window.addEventListener('scroll',()=>topBtn.classList.toggle('visible',scrollY>500),{passive:true});
-  topBtn.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
+	function render() {
+		const list = filtered();
+		if (!plugins.length) return;
+		$('#plugins-container').innerHTML = list.length
+			? list.map(cardHTML).join('')
+			: '<div class="empty"><i class="ti ti-filter-off"></i><br>Nenhum plugin corresponde aos filtros.</div>';
+	}
 
-  renderPlugins(); fetchRepos();
+	async function loadPlugins() {
+		const status = $('#catalogStatus');
+		try {
+			const all = await fetchCatalog();
+			plugins = all.filter(p => (p.author || '').toLowerCase() === 'nilsonlinux');
+			const issues = await fetchAllIssues();
+			plugins = plugins.map(p => ({ ...p, reaction: matchIssues(issues, repoFolder(p.id)) }));
+
+			const totalReleases = plugins.reduce((s, p) => s + (p.releases || []).length, 0);
+			const totalLikes = plugins.reduce((s, p) => s + p.reaction.likes, 0);
+			$('#statPlugins').textContent = plugins.length;
+			$('#footerStats').textContent = `${plugins.length} plugins · ${totalReleases} releases · ${totalLikes} joinhas`;
+			status.textContent = `catálogo atualizado · ${plugins.length} plugins`;
+
+			$('#footer-plugin-list').innerHTML = [...plugins].sort((a, b) => a.name.localeCompare(b.name))
+				.map(p => `<li><a href="https://github.com/${username}/noctalia-plugins/tree/main/${encodeURIComponent(repoFolder(p.id))}" target="_blank" rel="noopener noreferrer">${escapeHTML(p.name)}</a></li>`).join('');
+
+			buildTagFilters();
+			render();
+		} catch (e) {
+			status.textContent = 'não foi possível sincronizar agora';
+			$('#plugins-container').innerHTML = '<div class="empty"><i class="ti ti-alert-triangle"></i><br>Não foi possível carregar o catalog.toml.</div>';
+			$('#statPlugins').textContent = '—';
+		}
+	}
+
+	// ---- Reveal + scroll ----
+	const observer = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }), { threshold: .08 });
+	document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+	const topBtn = $('#backToTop');
+	window.addEventListener('scroll', () => topBtn.classList.toggle('visible', scrollY > 500), { passive: true });
+	topBtn.addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
+
+	loadPlugins();
 })();
 </script>
 </body>
