@@ -196,6 +196,7 @@
 		.pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--accent-2); box-shadow: 0 0 12px var(--accent-2); }
 
 		.plugins-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+		@media (min-width: 640px) { .plugins-grid { grid-template-columns: repeat(4, 1fr); gap: 1rem; } }
 		.plugin-card {
 			position: relative; overflow: hidden; display: flex; flex-direction: column;
 			border: 1px solid var(--border); border-radius: 1.25rem; background: var(--surface);
@@ -209,7 +210,7 @@
 			content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
 			background: radial-gradient(120% 95% at 0% 0%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 45%);
 		}
-		.plugin-thumb { position: relative; overflow: hidden; height: 160px; flex-shrink: 0; }
+		.plugin-thumb { position: relative; overflow: hidden; aspect-ratio: 16 / 9; flex-shrink: 0; }
 		.plugin-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s ease; }
 		.plugin-card:hover .plugin-thumb img { transform: scale(1.045); }
 		.thumb-fallback {
@@ -232,14 +233,14 @@
 			font: 600 .72rem "JetBrains Mono", monospace; color: #fff; padding: .42rem .6rem;
 			border-radius: .6rem; background: rgba(4,8,16,.6); border: 1px solid rgba(255,255,255,.17);
 		}
-		.plugin-body { padding: 1.1rem; display: flex; flex-direction: column; flex: 1; }
+		.plugin-body { padding: 1rem; display: flex; flex-direction: column; flex: 1; }
 		.plugin-title-row { display: flex; align-items: flex-start; justify-content: space-between; gap: .625rem; }
-		.plugin-name { font-size: 1.02rem; font-weight: 700; letter-spacing: -.02em; }
+		.plugin-name { font-size: .92rem; font-weight: 700; letter-spacing: -.02em; }
 		.plugin-id {
 			margin-top: 4px; font: 500 .62rem "JetBrains Mono", monospace; color: var(--faint);
 			overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 		}
-		.plugin-desc { font-size: .86rem; line-height: 1.55; color: var(--fg-dim); margin-top: .65rem; }
+		.plugin-desc { font-size: .78rem; line-height: 1.5; color: var(--fg-dim); margin-top: .6rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 		.meta-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .45rem; margin-top: .85rem; }
 		.meta-box {
 			padding: .55rem .6rem; border: 1px solid var(--border); border-radius: .7rem;
@@ -329,7 +330,6 @@
 		@media (max-width: 680px) {
 			.site-shell { width: min(100% - 1.25rem, 72rem); padding: 2rem 0 3rem; }
 			.plugins-grid { grid-template-columns: 1fr; }
-			.plugin-thumb { height: 150px; }
 			.meta-grid { grid-template-columns: repeat(2, 1fr); }
 			.catalog-controls { padding: 1rem; }
 			.btn-primary span.btn-label { display: none; }
