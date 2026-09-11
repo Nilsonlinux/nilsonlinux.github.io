@@ -90,7 +90,7 @@
 			opacity: .6;
 		}
 		.site-header-inner {
-			margin: 0 auto; max-width: 72rem; height: 4rem; padding: 0 1rem;
+			margin: 0 auto; max-width: 90rem; height: 4rem; padding: 0 1rem;
 			display: flex; align-items: center; justify-content: space-between; gap: .75rem;
 		}
 		.brand { display: flex; align-items: center; gap: .625rem; min-width: 0; }
@@ -127,7 +127,7 @@
 
 		/* ---- Main / Plugins page ---- */
 		.site-main { flex: 1; position: relative; z-index: 1; }
-		.site-shell { width: min(100% - 2rem, 72rem); margin: 0 auto; padding: 3rem 0 4rem; }
+		.site-shell { width: min(100% - 2rem, 90rem); margin: 0 auto; padding: 3rem 0 4rem; }
 
 		.page-header { text-align: center; margin-bottom: 2.5rem; }
 		.page-header h1 { font-size: clamp(2.25rem, 6vw, 3rem); font-weight: 600; letter-spacing: -.04em; }
@@ -196,7 +196,7 @@
 		.pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--accent-2); box-shadow: 0 0 12px var(--accent-2); }
 
 		.plugins-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
-		@media (min-width: 640px) { .plugins-grid { grid-template-columns: repeat(4, 1fr); gap: 1rem; } }
+		@media (min-width: 640px) { .plugins-grid { grid-template-columns: repeat(4, 1fr); gap: 1.25rem; } }
 		.plugin-card {
 			position: relative; overflow: hidden; display: flex; flex-direction: column;
 			border: 1px solid var(--border); border-radius: 1.25rem; background: var(--surface);
@@ -285,7 +285,7 @@
 			border-top: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
 			background: color-mix(in srgb, var(--bg) 60%, transparent); backdrop-filter: blur(20px);
 		}
-		.site-footer-inner { max-width: 72rem; margin: 0 auto; padding: 2.5rem 1rem; }
+		.site-footer-inner { max-width: 90rem; margin: 0 auto; padding: 2.5rem 1rem; }
 		.footer-grid { display: flex; flex-direction: column; gap: 2.5rem; }
 		@media (min-width: 1024px) { .footer-grid { flex-direction: row; align-items: flex-start; gap: 4rem; } }
 		.footer-brand { max-width: 22rem; flex-shrink: 0; }
@@ -320,7 +320,7 @@
 		.reveal.in { opacity: 1; transform: none; }
 
 		@media (max-width: 680px) {
-			.site-shell { width: min(100% - 1.25rem, 72rem); padding: 2rem 0 3rem; }
+			.site-shell { width: min(100% - 1.25rem, 90rem); padding: 2rem 0 3rem; }
 			.plugins-grid { grid-template-columns: 1fr; }
 			.meta-grid { grid-template-columns: repeat(2, 1fr); }
 			.catalog-controls { padding: 1rem; }
