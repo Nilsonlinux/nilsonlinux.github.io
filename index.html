@@ -220,21 +220,6 @@
 				radial-gradient(50% 60% at 80% 80%, color-mix(in srgb, var(--accent-3) 18%, transparent), transparent 60%),
 				linear-gradient(135deg, var(--bg2), var(--surface-2));
 		}
-		.plugin-overlay {
-			position: absolute; inset: auto 0 0; z-index: 1;
-			padding: 2.25rem 1rem .75rem; display: flex; align-items: flex-end; justify-content: space-between; gap: .625rem;
-			background: linear-gradient(transparent, rgba(0,0,0,.62));
-		}
-		.plugin-icon {
-			width: 2.375rem; height: 2.375rem; border-radius: .75rem; display: grid; place-items: center;
-			border: 1px solid rgba(255,255,255,.18); background: rgba(4,8,16,.55); backdrop-filter: blur(8px); color: #fff; font-size: 1.15rem;
-		}
-		.plugin-version {
-			font: 600 .72rem "JetBrains Mono", monospace; color: #fff; padding: .42rem .6rem;
-			border-radius: .6rem; background: rgba(4,8,16,.6); border: 1px solid rgba(255,255,255,.17);
-		}
-		.plugin-body { padding: 1rem; display: flex; flex-direction: column; flex: 1; }
-		.plugin-title-row { display: flex; align-items: flex-start; justify-content: space-between; gap: .625rem; }
 		.plugin-name { font-size: .92rem; font-weight: 700; letter-spacing: -.02em; }
 		.plugin-id {
 			margin-top: 4px; font: 500 .62rem "JetBrains Mono", monospace; color: var(--faint);
@@ -246,8 +231,8 @@
 			padding: .55rem .6rem; border: 1px solid var(--border); border-radius: .7rem;
 			background: color-mix(in srgb, var(--surface-2) 45%, transparent);
 		}
-		.meta-box span { display: block; color: var(--faint); font-size: .58rem; text-transform: uppercase; letter-spacing: .08em; }
-		.meta-box b { display: block; margin-top: 2px; font: 600 .72rem "JetBrains Mono", monospace; }
+		.meta-box span { display: block; color: var(--faint); font-size: .54rem; text-transform: uppercase; letter-spacing: .06em; }
+		.meta-box b { display: block; margin-top: 2px; font: 600 .64rem "JetBrains Mono", monospace; }
 		.tags { display: flex; gap: .35rem; flex-wrap: wrap; margin-top: .8rem; }
 		.tag {
 			padding: .25rem .55rem; border-radius: 999px; border: 1px solid var(--border);
@@ -549,11 +534,11 @@
 		return `<article class="plugin-card">
 			<a class="plugin-thumb" href="${url}" target="_blank" rel="noopener">
 				<img src="${thumb}" alt="${escapeHTML(p.name)}" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'thumb-fallback',innerHTML:'<i class=&quot;ti ${icon(p.icon)}&quot;></i>'}))">
-				<div class="plugin-overlay"><span class="plugin-icon"><i class="ti ${icon(p.icon)}"></i></span><span class="plugin-version">v${escapeHTML(p.version)}</span></div>
 			</a>
 			<div class="plugin-body">
 				<div class="plugin-title-row">
-					<div>
+					<span class="plugin-icon"><i class="ti ${icon(p.icon)}"></i></span>
+					<div style="min-width:0">
 						<div class="plugin-name">${escapeHTML(p.name)}</div>
 						<div class="plugin-id">${escapeHTML(p.id)}</div>
 					</div>
