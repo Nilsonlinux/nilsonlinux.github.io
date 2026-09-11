@@ -223,6 +223,7 @@
 		.plugin-title-row { display: flex; align-items: center; gap: .625rem; }
 		.plugin-title-row > div { min-width: 0; flex: 1; }
 		.plugin-title-row .ti-brand-github { margin-left: auto; }
+		.plugin-body { padding: 1rem 1.1rem 1.1rem; display: flex; flex-direction: column; flex: 1; }
 		.plugin-icon {
 			width: 1.9rem; height: 1.9rem; border-radius: .55rem; display: grid; place-items: center; flex-shrink: 0;
 			border: 1px solid var(--border); background: color-mix(in srgb, var(--surface-2) 80%, transparent); color: var(--accent); font-size: .98rem;
@@ -529,7 +530,7 @@
 		const releases = [...(p.releases || [])].sort((a, b) => Number(b.updated_at || 0) - Number(a.updated_at || 0));
 		if (!releases.length) return '';
 		return `<details class="releases">
-			<summary><span><i class="ti ti-git-branch"></i>&nbsp; Releases do catálogo</span><span class="release-count">${releases.length} versão${releases.length > 1 ? 'ões' : ''}</span></summary>
+			<summary><span><i class="ti ti-git-branch"></i>&nbsp; Releases do catálogo</span><span class="release-count">${releases.length} ${releases.length === 1 ? 'versão' : 'versões'}</span></summary>
 			<div class="release-list">${releases.map((r, i) => `<div class="release-row"><b class="${i === 0 ? 'latest' : ''}">v${escapeHTML(r.version)}</b><span>API ${escapeHTML(r.plugin_api)}</span><span>${date(r.updated_at)}</span></div>`).join('')}</div>
 		</details>`;
 	}
