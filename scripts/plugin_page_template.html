@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+	<script>
+		(function () {
+			var t = localStorage.getItem('theme');
+			if (t !== 'light' && t !== 'dark')
+				t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+			document.documentElement.setAttribute('data-theme', t);
+		})();
+	</script>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="icon" href="../../img/user.png" type="image/png" />
+	<meta name="description" content="{{DESCRIPTION}}" />
+	<meta name="theme-color" content="#070722" />
+	<meta property="og:type" content="website" />
+	<meta property="og:site_name" content="Nilsonlinux" />
+	<meta property="og:title" content="{{PLUGIN_NAME}} · Nilsonlinux" />
+	<meta property="og:description" content="{{DESCRIPTION}}" />
+	<meta property="og:image" content="{{THUMB_PATH}}" />
+	<title>{{PLUGIN_NAME}} · Plugins · Nilsonlinux</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.30.0/dist/tabler-icons.min.css">
+	<link rel="stylesheet" href="../shared.css">
+</head>
+<body>
+<div class="page-canvas">
+	<div class="main-col">
+
+		<header class="site-header">
+			<div class="site-header-inner">
+				<a href="../../index.html" class="brand">
+					<img src="../../img/user.png" alt="Nilsonlinux" width="40" height="40" />
+					<span class="brand-label">
+						<span class="brand-name">Nilsonlinux</span>
+						<span class="brand-tag">open source</span>
+					</span>
+				</a>
+				<nav class="main-nav" aria-label="Páginas do site">
+					<a href="../../index.html" class="active" aria-current="page"><i class="ti ti-plug"></i>&nbsp;Plugins</a>
+					<a href="../../index.html#repos">Repos</a>
+					<a href="https://github.com/Nilsonlinux" target="_blank" rel="noopener noreferrer">GitHub</a>
+				</nav>
+				<div class="header-actions">
+					<button type="button" class="icon-btn" id="themeToggle" aria-label="Alternar tema" title="Tema"><i class="ti ti-sun-moon"></i></button>
+					<a class="btn-primary" href="../../index.html"><i class="ti ti-rocket"></i><span class="btn-label">Plugins</span></a>
+				</div>
+			</div>
+		</header>
+
+		<main class="site-main">
+			<div class="plugin-inner">
+				<a href="../../index.html" class="back-btn"><i class="ti ti-arrow-left" style="font-size:1.25rem" aria-hidden="true"></i> Voltar aos plugins</a>
+
+				<div class="hero-section reveal">
+					<div class="hero-image">
+						<img src="{{THUMB_PATH}}" alt="{{PLUGIN_NAME}}" loading="eager" />
+						<div class="preview-placeholder" style="display:none"><div class="placeholder-icon">📦</div></div>
+					</div>
+				</div>
+
+				<div class="badge-row reveal">
+					<span class="badge"><i class="ti ti-edit" aria-hidden="true"></i> v{{VERSION}}</span>
+					<span class="badge"><i class="ti ti-user" aria-hidden="true"></i> {{AUTHOR}}</span>
+				</div>
+
+				<div class="tag-row reveal">{{TAGS}}
+				</div>
+
+				<div class="about-section reveal">
+					<h2 class="section-title">Sobre</h2>
+					<div class="readme-content">
+						{{ABOUT_HTML}}
+					</div>
+				</div>
+
+				<div class="versions-section reveal">
+					<h2 class="section-title">Versões</h2>
+					<table class="versions-table">
+						<thead>
+							<tr><th scope="col">Versão</th><th scope="col">Plugin API</th><th scope="col">Atualização</th></tr>
+						</thead>
+						<tbody>
+							{{VERSIONS_TABLE}}
+						</tbody>
+					</table>
+					<p class="versions-note">Versões antigas continuam instaláveis em uma release do Noctalia cuja plugin API seja inferior à da versão mais recente.</p>
+				</div>
+
+				<div class="actions reveal">
+					<a href="{{GITHUB_URL}}" target="_blank" rel="noopener noreferrer" class="github-btn"><i class="ti ti-brand-github" aria-hidden="true"></i> Ver no GitHub <i class="ti ti-external-link" aria-hidden="true"></i></a>
+				</div>
+			</div>
+		</main>
+
+		<footer class="site-footer">
+			<div class="site-footer-inner">
+				<div class="footer-grid">
+					<div class="footer-brand">
+						<div class="footer-brand-logo">
+							<img src="../../img/user.png" alt="Nilsonlinux" width="40" height="40" />
+							<div>
+								<p style="font-weight:600;letter-spacing:-.01em">Nilsonlinux</p>
+								<p style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.12em;color:var(--faint)">plugins · linux · open source</p>
+							</div>
+						</div>
+						<p class="footer-blurb">Desenvolvedor focado em Linux, Noctalia e automação. Plugins e projetos open source, com dados atualizados diretamente do <b>catalog.toml</b> e das APIs do GitHub.</p>
+					</div>
+					<div class="footer-links">
+						<nav class="footer-col" aria-label="Plugins">
+							<p>Plugins</p>
+							<ul>{{FOOTER_PLUGIN_LIST}}
+							</ul>
+						</nav>
+						<nav class="footer-col" aria-label="Projetos">
+							<p>Projetos</p>
+							<ul>
+								<li><a href="https://github.com/Nilsonlinux/noctalia-plugins" target="_blank" rel="noopener noreferrer">noctalia-plugins</a></li>
+								<li><a href="https://github.com/Nilsonlinux?tab=repositories" target="_blank" rel="noopener noreferrer">Repositórios</a></li>
+								<li><a href="https://raw.githubusercontent.com/Nilsonlinux/noctalia-plugins/refs/heads/main/catalog.toml" target="_blank" rel="noopener noreferrer">catalog.toml</a></li>
+							</ul>
+						</nav>
+						<nav class="footer-col" aria-label="Documentação">
+							<p>Docs</p>
+							<ul>
+								<li><a href="https://docs.noctalia.dev" target="_blank" rel="noopener noreferrer">Noctalia Docs</a></li>
+								<li><a href="https://docs.noctalia.dev/plugins" target="_blank" rel="noopener noreferrer">Plugins API</a></li>
+							</ul>
+						</nav>
+						<nav class="footer-col" aria-label="Comunidade">
+							<p>Redes</p>
+							<ul>
+								<li><a href="https://github.com/Nilsonlinux" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+								<li><a href="https://discord.noctalia.dev" target="_blank" rel="noopener noreferrer">Discord Noctalia</a></li>
+							</ul>
+						</nav>
+					</div>
+				</div>
+				<div class="footer-bottom">
+					<p>© <span id="year"></span> Nilsonlinux · feito com código, Linux e curiosidade.</p>
+					<p>{{PLUGIN_NAME}} · plugin para Noctalia</p>
+				</div>
+			</div>
+		</footer>
+
+		<button type="button" class="back-top" id="backToTop" aria-label="Voltar ao topo"><i class="ti ti-chevron-up"></i></button>
+	</div>
+</div>
+
+<script>
+(() => {
+	const $ = s => document.querySelector(s);
+	document.getElementById('themeToggle').addEventListener('click', () => {
+		const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+		document.documentElement.setAttribute('data-theme', next);
+		localStorage.setItem('theme', next);
+	});
+	$('#year').textContent = new Date().getFullYear();
+	const observer = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }), { threshold: .08 });
+	document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+	const topBtn = $('#backToTop');
+	window.addEventListener('scroll', () => topBtn.classList.toggle('visible', scrollY > 500), { passive: true });
+	topBtn.addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
+})();
+</script>
+</body>
+</html>
