@@ -229,6 +229,8 @@
 			border: 1px solid var(--border); background: color-mix(in srgb, var(--surface-2) 80%, transparent); color: var(--accent); font-size: .98rem;
 		}
 		.plugin-name { font-size: .92rem; font-weight: 700; letter-spacing: -.02em; }
+		a.plugin-name { display: block; }
+		a.plugin-name:hover { color: var(--accent); }
 		.plugin-id {
 			margin-top: 4px; font: 500 .62rem "JetBrains Mono", monospace; color: var(--faint);
 			overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
@@ -540,17 +542,17 @@
 		const url = `https://github.com/${username}/noctalia-plugins/tree/main/${folder}`;
 		const thumb = `https://raw.githubusercontent.com/${username}/noctalia-plugins/main/${folder}/thumbnail.webp`;
 		return `<article class="plugin-card">
-			<a class="plugin-thumb" href="${url}" target="_blank" rel="noopener">
+			<a class="plugin-thumb" href="plugins/${folder}/">
 				<img src="${thumb}" alt="${escapeHTML(p.name)}" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'thumb-fallback',innerHTML:'<i class=&quot;ti ${icon(p.icon)}&quot;></i>'}))">
 			</a>
 			<div class="plugin-body">
 				<div class="plugin-title-row">
 					<span class="plugin-icon"><i class="ti ${icon(p.icon)}"></i></span>
 					<div>
-						<div class="plugin-name">${escapeHTML(p.name)}</div>
+						<a class="plugin-name" href="plugins/${folder}/">${escapeHTML(p.name)}</a>
 						<div class="plugin-id">${escapeHTML(p.id)}</div>
 					</div>
-					<i class="ti ti-brand-github" style="color:var(--faint);font-size:1.05rem"></i>
+					<a href="${url}" target="_blank" rel="noopener" title="Repositório no GitHub" aria-label="Repositório no GitHub"><i class="ti ti-brand-github" style="color:var(--faint);font-size:1.05rem"></i></a>
 				</div>
 				<div class="plugin-desc">${escapeHTML(p.description || 'Sem descrição.')}</div>
 				<div class="meta-grid" style="margin-top:.8rem">
@@ -632,7 +634,7 @@
 			status.textContent = `catálogo atualizado · ${plugins.length} plugins`;
 
 			$('#footer-plugin-list').innerHTML = [...plugins].sort((a, b) => a.name.localeCompare(b.name))
-				.map(p => `<li><a href="https://github.com/${username}/noctalia-plugins/tree/main/${encodeURIComponent(repoFolder(p.id))}" target="_blank" rel="noopener noreferrer">${escapeHTML(p.name)}</a></li>`).join('');
+				.map(p => `<li><a href="plugins/${encodeURIComponent(repoFolder(p.id))}/">${escapeHTML(p.name)}</a></li>`).join('');
 
 			buildTagFilters();
 			render();
