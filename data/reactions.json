@@ -1,5 +1,5 @@
 {
-  "updated_at": 1789230142,
+  "updated_at": 1789241454,
   "source": "Nilsonlinux/noctalia-plugins issues",
   "reactions": {
     "contact-sounds": {
@@ -23,7 +23,7 @@
       "issue": 4
     },
     "speedtest-meter": {
-      "likes": 1,
+      "likes": 0,
       "issues": 1,
       "issue": 6
     }
