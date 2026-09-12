@@ -12,9 +12,11 @@
 	const $ = (s, el = document) => el.querySelector(s);
 	const username = 'Nilsonlinux';
 	const repo = 'noctalia-plugins';
-	const isPluginPage = (location.pathname.split('/').filter(Boolean)[0] === 'plugins');
-	const base = isPluginPage ? '../' : '';
-	const folder = isPluginPage ? location.pathname.split('/').slice(-2, -1)[0] : '';
+	const seg = location.pathname.split('/').filter(Boolean);
+	if (seg[seg.length - 1] === 'index.html') seg.pop();
+	const isPluginPage = seg[0] === 'plugins';
+	const base = isPluginPage ? '../../' : '';
+	const folder = isPluginPage ? seg[1] : '';
 	const reactionsUrl = `${base}data/reactions.json`;
 
 	let reactions = {};
