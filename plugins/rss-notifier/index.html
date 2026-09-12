@@ -65,7 +65,7 @@
 
 				<div class="badge-row reveal">
 					<a class="reaction-btn" data-reaction data-folder="rss-notifier" href="#" target="_blank" rel="noopener noreferrer" title="Curtir no GitHub"><i class="ti ti-thumb-up" aria-hidden="true"></i><strong data-likes>0</strong><span data-likes-word> joinhas</span></a>
-					<span class="badge"><i class="ti ti-edit" aria-hidden="true"></i> v1.0.4</span>
+					<span class="badge"><i class="ti ti-edit" aria-hidden="true"></i> v1.2.1</span>
 					<span class="badge"><i class="ti ti-user" aria-hidden="true"></i> Nilsonlinux</span>
 				</div>
 
@@ -115,12 +115,6 @@ text</p>
 </thead>
 <tbody>
 <tr>
-<td><code>feed_urls</code></td>
-<td>string_list</td>
-<td><code>[]</code></td>
-<td>List of RSS/Atom feed URLs to monitor (one per line)</td>
-</tr>
-<tr>
 <td><code>refresh_minutes</code></td>
 <td>int</td>
 <td><code>30</code></td>
@@ -142,7 +136,7 @@ text</p>
 <td><code>show_feed_images</code></td>
 <td>bool</td>
 <td><code>true</code></td>
-<td>Show each item's cover image (or the site's favicon as a fallback) in the item list.</td>
+<td>Show the feed's photo (logo) on each card, with the item's cover or the site's favicon as a fallback.</td>
 </tr>
 <tr>
 <td><code>glyph</code> (widget)</td>
@@ -152,6 +146,14 @@ text</p>
 </tr>
 </tbody>
 </table>
+<p>Feed URLs are not a plugin setting anymore: add (or remove) feeds directly
+from the panel via the <code>+</code> button next to the refresh button.</p>
+<h2>Post images</h2>
+<p>Each card always tries to show the post's own photo, extracted from the feed:
+<code>&lt;enclosure&gt;</code> (RSS 2.0), <code>media:thumbnail</code>/<code>media:content</code> (Media RSS), or the
+first <code>&lt;img&gt;</code> inside <code>&lt;description&gt;</code>/<code>&lt;content&gt;</code> - scanning the whole item,
+not just its start. If the post has no image, it falls back to the feed's own
+logo and then to the site's favicon.</p>
 <h2>Installation</h2>
 <p>Install via Noctalia Plugin Store.</p>
 <h2>Requirements</h2>
@@ -160,9 +162,9 @@ text</p>
 </ul>
 <h2>Usage</h2>
 <ol>
-<li>Add feed URLs in the plugin settings</li>
-<li>The widget will show a badge with unread count</li>
 <li>Click the widget to open the panel</li>
+<li>Use the <code>+</code> button to add feed URLs (and manage them)</li>
+<li>The widget will show a badge with unread count</li>
 <li>Click an item to open it in your default browser</li>
 </ol>
 <h2>Dependencies</h2>
@@ -181,9 +183,9 @@ text</p>
 						<tbody>
 							
 							<tr>
-								<td><span class="version-cell">v1.0.4 <span class="version-latest">latest</span></span></td>
+								<td><span class="version-cell">v1.2.1 <span class="version-latest">latest</span></span></td>
 								<td>14</td>
-								<td>04 set 2026</td>
+								<td>12 set 2026</td>
 							</tr>
 						</tbody>
 					</table>
