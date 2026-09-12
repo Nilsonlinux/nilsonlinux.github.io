@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+	<script>
+		(function () {
+			var t = localStorage.getItem('theme');
+			if (t !== 'light' && t !== 'dark')
+				t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+			document.documentElement.setAttribute('data-theme', t);
+		})();
+	</script>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="icon" href="../../img/user.png" type="image/png" />
+	<meta name="description" content="Inventory Manager for managing product inventory with categories, low stock alerts, and data export." />
+	<meta name="theme-color" content="#070722" />
+	<meta property="og:type" content="website" />
+	<meta property="og:site_name" content="Nilsonlinux" />
+	<meta property="og:title" content="Inventory Manager · Nilsonlinux" />
+	<meta property="og:description" content="Inventory Manager for managing product inventory with categories, low stock alerts, and data export." />
+	<meta property="og:image" content="https://raw.githubusercontent.com/Nilsonlinux/noctalia-plugins/main/inventory-manager/thumbnail.webp" />
+	<title>Inventory Manager · Plugins · Nilsonlinux</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.30.0/dist/tabler-icons.min.css">
+	<link rel="stylesheet" href="../shared.css">
+</head>
+<body>
+<div class="page-canvas">
+	<div class="main-col">
+
+		<header class="site-header">
+			<div class="site-header-inner">
+				<a href="../../index.html" class="brand">
+					<img src="../../img/user.png" alt="Nilsonlinux" width="40" height="40" />
+					<span class="brand-label">
+						<span class="brand-name">Nilsonlinux</span>
+						<span class="brand-tag">open source</span>
+					</span>
+				</a>
+				<nav class="main-nav" aria-label="Páginas do site">
+					<a href="../../index.html" class="active" aria-current="page"><i class="ti ti-plug"></i>&nbsp;Plugins</a>
+					<a href="../../index.html#repos">Repos</a>
+					<a href="https://github.com/Nilsonlinux" target="_blank" rel="noopener noreferrer">GitHub</a>
+				</nav>
+				<div class="header-actions">
+					<button type="button" class="icon-btn" id="themeToggle" aria-label="Alternar tema" title="Tema"><i class="ti ti-sun-moon"></i></button>
+					<a class="btn-primary" href="../../index.html"><i class="ti ti-rocket"></i><span class="btn-label">Plugins</span></a>
+				</div>
+			</div>
+		</header>
+
+		<main class="site-main">
+			<div class="plugin-inner">
+				<a href="../../index.html" class="back-btn"><i class="ti ti-arrow-left" style="font-size:1.25rem" aria-hidden="true"></i> Voltar aos plugins</a>
+
+				<div class="hero-section reveal">
+					<div class="hero-image">
+						<img src="https://raw.githubusercontent.com/Nilsonlinux/noctalia-plugins/main/inventory-manager/thumbnail.webp" alt="Inventory Manager" loading="eager" />
+						<div class="preview-placeholder" style="display:none"><div class="placeholder-icon">📦</div></div>
+					</div>
+				</div>
+
+				<div class="badge-row reveal">
+					<span class="badge"><i class="ti ti-edit" aria-hidden="true"></i> v1.0.0</span>
+					<span class="badge"><i class="ti ti-user" aria-hidden="true"></i> Nilsonlinux</span>
+				</div>
+
+				<div class="tag-row reveal">
+					<a href="../../index.html" class="tag-badge">utility</a>
+					<a href="../../index.html" class="tag-badge">productivity</a>
+					<a href="../../index.html" class="tag-badge">service</a>
+					<a href="../../index.html" class="tag-badge">panel</a>
+					<a href="../../index.html" class="tag-badge">bar</a>
+				</div>
+
+				<div class="about-section reveal">
+					<h2 class="section-title">Sobre</h2>
+					<div class="readme-content">
+						<h1>Inventory Manager</h1>
+						<p>Inventory Manager tracks product stock across three linked buckets per product - Available, In use, and Damage - plus a computed total, with categories, drag-to-reorder, and low-stock alerts on top. It ships two UI surfaces - a bar widget and a panel - backed by one headless service that owns the product list, persists it to disk, and publishes live state that both surfaces read from.</p>
+						<h2>Plugin</h2>
+						<table>
+							<thead>
+								<tr><th>Field</th><th>Value</th></tr>
+							</thead>
+							<tbody>
+								<tr><td>ID</td><td><code>nilsonlinux/inventory-manager</code></td></tr>
+								<tr><td>Entries</td><td>Service: <code>inventory-service</code>; bar widget: <code>inventory-badge</code>; panel: <code>inventory-panel</code></td></tr>
+							</tbody>
+						</table>
+						<h2>Usage</h2>
+						<h3>Bar Widget</h3>
+						<p>Add the <code>inventory-badge</code> bar widget to your bar. It shows a package icon in the accent color while stock is healthy, and switches to a red icon with a count badge once any product&apos;s Available quantity falls at or below the low-stock threshold. Hovering shows a tooltip with the current status (no products / all stocked / <code>N</code> product(s) low in stock).</p>
+						<ul>
+							<li>Left click opens the Inventory Manager panel.</li>
+							<li>Right click force-refreshes the published state and shows a brief &quot;Refreshing...&quot; notification.</li>
+						</ul>
+						<p>You can also open the panel over IPC:</p>
+						<pre><code>noctalia msg panel-toggle nilsonlinux/inventory-manager:inventory-panel</code></pre>
+						<h3>Panel</h3>
+						<p>The panel opens floating at top-center by default. It lists every product as a card. The name row shows the color dot (auto-detected from a color word in the product name, e.g. &quot;Black&quot;, &quot;Vermelho&quot;), the name in bold, an Available capsule (colored by stock level), and - only while they hold stock - In use and Damage capsules, plus a neutral Total capsule (only shown once a product actually has stock in In use or Damage, since otherwise it would just repeat the Available number; can be turned off entirely, see Settings). Hovering a card - including its action buttons - highlights it.</p>
+						<p>Category tabs above the list (&quot;All&quot; plus one tab per category with stock) filter the visible cards; each tab&apos;s count is the category&apos;s total across all three buckets.</p>
+						<p>The header&apos;s gear button opens this plugin&apos;s settings directly (same as Settings → Plugins → Inventory Manager → gear), without leaving the panel.</p>
+						<p><strong>Adding / editing a product</strong> - the <code>+</code> header button (or &quot;Add your first product&quot; on an empty list) opens the form; the pencil icon on a card opens it pre-filled for editing. Name and Quantity sit on one row, Category on the next, Save/Cancel below. Quantity here only sets the product&apos;s <strong>Available</strong> bucket - In use and Damage start at zero for a new product and are only ever changed from the card itself, never overwritten by editing the form.</p>
+						<ul>
+							<li><strong>Category</strong> switches between two small controls: a dropdown listing every category ever used (even ones with no stock left) with a button next to it to switch to typing a brand-new category instead, and vice-versa. Whichever one is active is the only one shown, keeping the row compact.</li>
+						</ul>
+						<p><strong>Stock buckets</strong> - all three live on the card&apos;s single action row, next to Edit and Delete:</p>
+						<ul>
+							<li><strong>Available</strong> - free stock. <code>+</code> receives new stock (increases the total); <code>-</code> writes stock off (decreases the total).</li>
+							<li><strong>In use</strong> - units currently checked out. Moving a unit here (arrow-right) takes it out of Available; moving it back (arrow-left) returns it. Only enabled while there&apos;s Available stock to draw from.</li>
+							<li><strong>Damage</strong> - damaged/faulty units. Works the same way as In use (the warning-triangle button moves a unit in, circle-minus moves it back to Available).</li>
+						</ul>
+						<p>Available, In use and Damage always add up to the card&apos;s Total - only Available&apos;s own <code>+</code>/<code>-</code> change that total; moving units into or out of In use and Damage just relabels stock that was already counted.</p>
+						<p><strong>Reordering</strong> - when &quot;Manual sorting&quot; is enabled (see Settings), each card shows a drag handle on the left; drag a card and drop it between any two others to move it, even while a category tab is filtering the list - drop targets are matched by the neighboring products&apos; identity, not by a raw position, so the item lands in the right spot in the full list regardless of what&apos;s currently filtered. Turning &quot;Manual sorting&quot; off instead sorts the list alphabetically by name and hides the drag handles.</p>
+						<p><strong>Deleting a product</strong> - the trash icon on a card asks for inline confirmation before removing it.</p>
+						<p><strong>Export / Import</strong> - the header&apos;s download/upload buttons write and read a timestamped <code>estoque_YYYYMMDD_HHMMSS.json</code> snapshot of the whole product list, including all three buckets per product. Both use the <code>export_folder</code> setting below (falling back to the plugin&apos;s data folder if it&apos;s left blank), so exported files stay where import expects them. Import <strong>replaces every current product</strong> with the file&apos;s contents, so it opens an inline confirmation banner first and only runs after you confirm.</p>
+						<p><strong>Low-stock notifications</strong> - whenever a product&apos;s Available quantity drops to or below the threshold, a single notification fires for that product (not repeated on every refresh); it clears once the product is restocked above the threshold and can fire again later if it drops low again. Governed by <code>enable_low_stock_alerts</code> and <code>low_stock_threshold</code> below.</p>
+						<h2>Settings</h2>
+						<h3>Plugin</h3>
+						<table>
+							<thead>
+								<tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr>
+							</thead>
+							<tbody>
+								<tr><td><code>manual_sorting</code></td><td><code>bool</code></td><td><code>true</code></td><td>Enables drag-and-drop reordering; when off, the list sorts alphabetically instead.</td></tr>
+								<tr><td><code>low_stock_threshold</code></td><td><code>int</code></td><td><code>3</code></td><td>Available quantity at or below which a product counts as low stock.</td></tr>
+								<tr><td><code>enable_low_stock_alerts</code></td><td><code>bool</code></td><td><code>true</code></td><td>Whether low-stock notifications are shown.</td></tr>
+								<tr><td><code>show_total_quantity</code></td><td><code>bool</code></td><td><code>true</code></td><td>Shows the Total capsule on cards where a product has stock in In use or Damage. Disable to hide it entirely.</td></tr>
+								<tr><td><code>store_name</code></td><td><code>string</code></td><td><code>""</code></td><td>Store name shown as a header capsule in the panel.</td></tr>
+								<tr><td><code>store_number</code></td><td><code>string</code></td><td><code>""</code></td><td>Store/branch number shown as a header capsule in the panel.</td></tr>
+								<tr><td><code>store_cnpj</code></td><td><code>string</code></td><td><code>""</code></td><td>Store CNPJ shown as a header capsule in the panel.</td></tr>
+								<tr><td><code>ti_name</code></td><td><code>string</code></td><td><code>""</code></td><td>Responsible IT technician&apos;s name, shown as a header capsule in the panel.</td></tr>
+								<tr><td><code>export_folder</code></td><td><code>string</code></td><td><code>""</code></td><td>Folder used by Export/Import. Accepts <code>~</code> for your home folder. Leave blank to use the plugin&apos;s default data folder.</td></tr>
+							</tbody>
+						</table>
+						<h3>Bar Widget</h3>
+						<table>
+							<thead>
+								<tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr>
+							</thead>
+							<tbody>
+								<tr><td><code>glyph</code></td><td><code>glyph</code></td><td><code>"package"</code></td><td>Icon shown on the bar widget.</td></tr>
+								<tr><td><code>show_low_stock_badge</code></td><td><code>bool</code></td><td><code>true</code></td><td>Shows or hides the red count badge when stock is low.</td></tr>
+							</tbody>
+						</table>
+						<h2>Notes</h2>
+						<p>The service also accepts an <code>add</code> IPC event with a JSON payload (<code>{"name": "...", "category": "...", "quantity": 0}</code>) to add a product from outside the panel, e.g. from a shortcut or another plugin. <code>quantity</code> here sets the new product&apos;s Available bucket; In use and Damage start at zero.</p>
+					</div>
+				</div>
+
+				<div class="versions-section reveal">
+					<h2 class="section-title">Versões</h2>
+					<table class="versions-table">
+						<thead>
+							<tr><th scope="col">Versão</th><th scope="col">Plugin API</th><th scope="col">Atualização</th></tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><span class="version-cell">v1.0.0 <span class="version-latest">latest</span></span></td>
+								<td>15</td>
+								<td>30 ago 2026</td>
+							</tr>
+							<tr>
+								<td><span class="version-cell">v1.0.1</span></td>
+								<td>14</td>
+								<td>04 set 2026</td>
+							</tr>
+						</tbody>
+					</table>
+					<p class="versions-note">Versões antigas continuam instaláveis em uma release do Noctalia cuja plugin API seja inferior à da versão mais recente.</p>
+				</div>
+
+				<div class="actions reveal">
+					<a href="https://github.com/Nilsonlinux/noctalia-plugins/tree/main/inventory-manager" target="_blank" rel="noopener noreferrer" class="github-btn"><i class="ti ti-brand-github" aria-hidden="true"></i> Ver no GitHub <i class="ti ti-external-link" aria-hidden="true"></i></a>
+				</div>
+			</div>
+		</main>
+
+		<footer class="site-footer">
+			<div class="site-footer-inner">
+				<div class="footer-grid">
+					<div class="footer-brand">
+						<div class="footer-brand-logo">
+							<img src="../../img/user.png" alt="Nilsonlinux" width="40" height="40" />
+							<div>
+								<p style="font-weight:600;letter-spacing:-.01em">Nilsonlinux</p>
+								<p style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.12em;color:var(--faint)">plugins · linux · open source</p>
+							</div>
+						</div>
+						<p class="footer-blurb">Desenvolvedor focado em Linux, Noctalia e automação. Plugins e projetos open source, com dados atualizados diretamente do <b>catalog.toml</b> e das APIs do GitHub.</p>
+					</div>
+					<div class="footer-links">
+						<nav class="footer-col" aria-label="Plugins">
+							<p>Plugins</p>
+							<ul>
+								<li><a href="../link-ip-monitor/index.html">Link/IP Monitor</a></li>
+								<li><a href="../rss-notifier/index.html">RSS/Atom Notifier</a></li>
+								<li><a href="../inventory-manager/index.html">Inventory Manager</a></li>
+								<li><a href="../speedtest-meter/index.html">Speedtest Meter</a></li>
+								<li><a href="../contact-sounds/index.html">Contact Notification Sounds</a></li>
+							</ul>
+						</nav>
+						<nav class="footer-col" aria-label="Projetos">
+							<p>Projetos</p>
+							<ul>
+								<li><a href="https://github.com/Nilsonlinux/noctalia-plugins" target="_blank" rel="noopener noreferrer">noctalia-plugins</a></li>
+								<li><a href="https://github.com/Nilsonlinux?tab=repositories" target="_blank" rel="noopener noreferrer">Repositórios</a></li>
+								<li><a href="https://raw.githubusercontent.com/Nilsonlinux/noctalia-plugins/refs/heads/main/catalog.toml" target="_blank" rel="noopener noreferrer">catalog.toml</a></li>
+							</ul>
+						</nav>
+						<nav class="footer-col" aria-label="Documentação">
+							<p>Docs</p>
+							<ul>
+								<li><a href="https://docs.noctalia.dev" target="_blank" rel="noopener noreferrer">Noctalia Docs</a></li>
+								<li><a href="https://docs.noctalia.dev/plugins" target="_blank" rel="noopener noreferrer">Plugins API</a></li>
+							</ul>
+						</nav>
+						<nav class="footer-col" aria-label="Comunidade">
+							<p>Redes</p>
+							<ul>
+								<li><a href="https://github.com/Nilsonlinux" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+								<li><a href="https://discord.noctalia.dev" target="_blank" rel="noopener noreferrer">Discord Noctalia</a></li>
+							</ul>
+						</nav>
+					</div>
+				</div>
+				<div class="footer-bottom">
+					<p>© <span id="year"></span> Nilsonlinux · feito com código, Linux e curiosidade.</p>
+					<p>Inventory Manager · plugin para Noctalia</p>
+				</div>
+			</div>
+		</footer>
+
+		<button type="button" class="back-top" id="backToTop" aria-label="Voltar ao topo"><i class="ti ti-chevron-up"></i></button>
+	</div>
+</div>
+
+<script>
+(() => {
+	const $ = s => document.querySelector(s);
+	document.getElementById('themeToggle').addEventListener('click', () => {
+		const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+		document.documentElement.setAttribute('data-theme', next);
+		localStorage.setItem('theme', next);
+	});
+	$('#year').textContent = new Date().getFullYear();
+	const observer = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }), { threshold: .08 });
+	document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+	const topBtn = $('#backToTop');
+	window.addEventListener('scroll', () => topBtn.classList.toggle('visible', scrollY > 500), { passive: true });
+	topBtn.addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
+})();
+</script>
+</body>
+</html>
