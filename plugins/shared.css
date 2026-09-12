@@ -219,6 +219,10 @@ img { max-width: 100%; }
 	font: 600 .62rem "JetBrains Mono", monospace; color: var(--on-accent); background: var(--accent-2);
 	color: #0e0e43; padding: .2rem .55rem; border-radius: 999px; letter-spacing: .03em;
 }
+.version-oldest {
+	font: 600 .62rem "JetBrains Mono", monospace; color: var(--fg); background: var(--surface-2);
+	padding: .2rem .55rem; border-radius: 999px; letter-spacing: .03em; opacity: .85;
+}
 .versions-note { margin-top: .9rem; font-size: .78rem; color: var(--faint); }
 
 .actions { margin-top: 2.5rem; }

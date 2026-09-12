@@ -67,10 +67,11 @@ def versions_rows(plugin) -> str:
     out = []
     for i, row in enumerate(rows):
         latest = '<span class="version-latest">latest</span>' if i == 0 else ""
+        oldest = '<span class="version-oldest">primeira versão</span>' if len(rows) > 1 and i == len(rows) - 1 else ""
         out.append(
             "".join([
                 "\n\t\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t\t<td><span class=\"version-cell\">",
-                f"v{html.escape(str(row['version']))} {latest}",
+                f"v{html.escape(str(row['version']))} {latest} {oldest}",
                 "</span></td>\n\t\t\t\t\t\t\t\t<td>",
                 html.escape(str(row["plugin_api"])),
                 "</td>\n\t\t\t\t\t\t\t\t<td>",
