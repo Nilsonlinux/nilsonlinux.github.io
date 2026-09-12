@@ -1,0 +1,31 @@
+{
+  "updated_at": 1789230142,
+  "source": "Nilsonlinux/noctalia-plugins issues",
+  "reactions": {
+    "contact-sounds": {
+      "likes": 1,
+      "issues": 1,
+      "issue": 7
+    },
+    "inventory-manager": {
+      "likes": 1,
+      "issues": 1,
+      "issue": 5
+    },
+    "link-ip-monitor": {
+      "likes": 1,
+      "issues": 1,
+      "issue": 3
+    },
+    "rss-notifier": {
+      "likes": 1,
+      "issues": 1,
+      "issue": 4
+    },
+    "speedtest-meter": {
+      "likes": 1,
+      "issues": 1,
+      "issue": 6
+    }
+  }
+}

@@ -25,6 +25,7 @@
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.30.0/dist/tabler-icons.min.css">
 	<link rel="stylesheet" href="../shared.css">
+	<script src="../reaction.js" defer></script>
 </head>
 <body>
 <div class="page-canvas">
@@ -67,63 +68,86 @@
 					<span class="badge"><i class="ti ti-user" aria-hidden="true"></i> Nilsonlinux</span>
 				</div>
 
-				<div class="tag-row reveal">
-					<a href="../../index.html" class="tag-badge">network</a>
-					<a href="../../index.html" class="tag-badge">indicator</a>
-					<a href="../../index.html" class="tag-badge">bar</a>
-					<a href="../../index.html" class="tag-badge">panel</a>
+				<div class="tag-row reveal"><a href="../../index.html" class="tag-badge">network</a><a href="../../index.html" class="tag-badge">indicator</a><a href="../../index.html" class="tag-badge">bar</a><a href="../../index.html" class="tag-badge">panel</a>
 				</div>
 
 				<div class="about-section reveal">
 					<h2 class="section-title">Sobre</h2>
 					<div class="readme-content">
 						<h1>Speedtest Meter</h1>
-						<p>Run an internet speed test with a live speedometer and detailed results.</p>
-						<h2>What it does</h2>
-						<p>Speedtest Meter runs a network speed test using the Ookla Speedtest CLI or <code>speedtest-cli</code>, displaying real-time results with a live speedometer gauge. It measures:</p>
-						<ul>
-							<li>Download speed (Mbps)</li>
-							<li>Upload speed (Mbps)</li>
-							<li>Ping (ms)</li>
-							<li>Jitter (ms)</li>
-							<li>Packet loss (%)</li>
-							<li>Server details (name, host, location, country, IP)</li>
-							<li>Connection details (ISP, external IP, city, region, country, organization)</li>
-						</ul>
-						<p>The panel shows a visual speedometer during the test and displays full technical results upon completion.</p>
-						<h2>Plugin</h2>
-						<table>
-							<thead>
-								<tr><th>Field</th><th>Value</th></tr>
-							</thead>
-							<tbody>
-								<tr><td>ID</td><td><code>nilsonlinux/speedtest-meter</code></td></tr>
-								<tr><td>Entries</td><td>Bar widget: <code>speedtest-widget</code>; Panel: <code>speedtest</code></td></tr>
-							</tbody>
-						</table>
-						<p><strong>Entries:</strong></p>
-						<ul>
-							<li><strong>Widget:</strong> <code>speedtest-widget</code> - Shows an icon in the bar; click to open the panel</li>
-							<li><strong>Panel:</strong> <code>speedtest</code> - Runs the speed test and displays the results</li>
-						</ul>
-						<h2>Settings</h2>
-						<table>
-							<thead>
-								<tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr>
-							</thead>
-							<tbody>
-								<tr><td><code>glyph</code> (widget)</td><td><code>glyph</code></td><td><code>brand-speedtest</code></td><td>Icon shown in the bar for the <code>speedtest-widget</code> widget.</td></tr>
-							</tbody>
-						</table>
-						<h2>Requirements</h2>
-						<p>At least one of the following must be installed and on PATH:</p>
-						<ul>
-							<li><strong><code>speedtest</code></strong> (Ookla CLI) - preferred backend; gives a truly live gauge with per-phase progress. <code>speedtest --version</code> is checked for the string &quot;Ookla&quot; before it&apos;s trusted, since some distros&apos; <code>speedtest-cli</code> package also installs a same-named <code>speedtest</code> binary.</li>
-							<li><strong><code>speedtest-cli</code></strong> (Python implementation) - fallback backend. No incremental progress, so the gauge pulses instead of tracking real numbers while it runs — the final result is still complete either way.</li>
-							<li><strong><code>stdbuf</code></strong> (coreutils) - used, when present, to force line-buffered output from the Ookla CLI so the live gauge updates in real time instead of only at the end. Present on virtually every Linux system.</li>
-						</ul>
-						<p>Install the Ookla Speedtest CLI (recommended) or the Python fallback:</p>
-						<pre><code># Arch Linux (AUR) — package name varies, check `yay -Ss speedtest` first
+<p>Run an internet speed test with a live speedometer and detailed results.</p>
+<h2>What it does</h2>
+<p>Speedtest Meter runs a network speed test using the Ookla Speedtest CLI or
+<code>speedtest-cli</code>, displaying real-time results with a live speedometer
+gauge. It measures:</p>
+<ul>
+<li>Download speed (Mbps)</li>
+<li>Upload speed (Mbps)</li>
+<li>Ping (ms)</li>
+<li>Jitter (ms)</li>
+<li>Packet loss (%)</li>
+<li>Server details (name, host, location, country, IP)</li>
+<li>Connection details (ISP, external IP, city, region, country, organization)</li>
+</ul>
+<p>The panel shows a visual speedometer during the test and displays full
+technical results upon completion.</p>
+<h2>Plugin</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ID</td>
+<td><code>nilsonlinux/speedtest-meter</code></td>
+</tr>
+<tr>
+<td>Entries</td>
+<td>Bar widget: <code>speedtest-widget</code>; Panel: <code>speedtest</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Entries:</strong>
+- <strong>Widget:</strong> <code>speedtest-widget</code> - Shows an icon in the bar; click to open the panel
+- <strong>Panel:</strong> <code>speedtest</code> - Runs the speed test and displays the results</p>
+<h2>Settings</h2>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>glyph</code> (widget)</td>
+<td><code>glyph</code></td>
+<td><code>brand-speedtest</code></td>
+<td>Icon shown in the bar for the <code>speedtest-widget</code> widget.</td>
+</tr>
+</tbody>
+</table>
+<h2>Requirements</h2>
+<p>At least one of the following must be installed and on PATH:</p>
+<ul>
+<li><strong><code>speedtest</code></strong> (Ookla CLI) - preferred backend; gives a truly live gauge
+  with per-phase progress. <code>speedtest --version</code> is checked for the string
+  "Ookla" before it's trusted, since some distros' <code>speedtest-cli</code> package
+  also installs a same-named <code>speedtest</code> binary.</li>
+<li><strong><code>speedtest-cli</code></strong> (Python implementation) - fallback backend. No
+  incremental progress, so the gauge pulses instead of tracking real
+  numbers while it runs — the final result is still complete either way.</li>
+<li><strong><code>stdbuf</code></strong> (coreutils) - used, when present, to force line-buffered
+  output from the Ookla CLI so the live gauge updates in real time instead
+  of only at the end. Present on virtually every Linux system.</li>
+</ul>
+<p>Install the Ookla Speedtest CLI (recommended) or the Python fallback:</p>
+<pre><code class="language-bash"># Arch Linux (AUR) — package name varies, check `yay -Ss speedtest` first
 yay -S speedtest-bin
 
 # Ubuntu/Debian
@@ -136,41 +160,52 @@ sudo dnf install speedtest
 
 # Or the Python fallback (also in most distros' official repos, e.g.
 # Arch: pacman -S speedtest-cli, plus Debian/Ubuntu, Fedora, openSUSE, Alpine)
-pip install speedtest-cli</code></pre>
-						<p><code>stdbuf</code> ships as part of coreutils and is already installed on virtually every Linux system — no separate install step needed.</p>
-						<p>If neither speedtest tool is found, the error screen shows the right install command for the detected package manager (pacman/apt/dnf/zypper/apk) automatically.</p>
-						<h2>External dependencies</h2>
-						<h3>Third-party services</h3>
-						<ul>
-							<li><strong>ipapi.co</strong> - After every successful test, the panel sends one request to <code>https://ipapi.co/json/</code> to resolve the client&apos;s public IP into geolocation data (city, region, country, organization) shown alongside the test server&apos;s own location. No data is stored or transmitted beyond that single request.</li>
-						</ul>
-						<h2>Legacy <code>speedtest-cli</code> behavior</h2>
-						<p>The human-readable stream is kept on screen in the original order. When <code>Upload:</code> arrives, the plugin stays on the live Upload phase while the final Upload number animates into place.</p>
-						<p>Only after the bandwidth test has completed does the plugin start the metadata enrichment:</p>
-						<ol>
-							<li>Query the current Speedtest.net server directory using the sponsor/city shown by the completed test.</li>
-							<li>Read the server <code>host</code> and <code>country</code> from that directory.</li>
-							<li>Resolve the server hostname to an IPv4 address.</li>
-							<li>Use <code>ipapi.co/&lt;server-ip&gt;/json/</code> only when Host or Country is still missing.</li>
-							<li>Persist every successful ipapi response in <code>/ipapi-cache.json</code>, keyed by server IP, so the same server IP is never queried again on later tests.</li>
-							<li>If ipapi returns HTTP 429, keep a global cooldown in the cache to avoid sending more requests until the cooldown expires.</li>
-							<li>Show the final result screen only after the Upload animation and metadata phase are complete, with a timeout fallback.</li>
-						</ol>
-						<p>The <code>https://ipapi.co/json/</code> client-IP request is not used for server metadata.</p>
-						<h2>Installation</h2>
-						<p>Install via Noctalia Plugin Store.</p>
-						<h2>Usage</h2>
-						<ol>
-							<li>Click the widget in the bar to open the panel</li>
-							<li>Click &quot;Start test&quot; to run a speed test</li>
-							<li>Watch the gauge while it runs (live numbers with the Ookla backend, a pulse with the legacy backend)</li>
-							<li>Review the results: download/upload, ping, jitter, packet loss, test server details, your ISP and external IP</li>
-						</ol>
-						<h2>Panel IPC Command</h2>
-						<p>To toggle the panel from outside the plugin:</p>
-						<pre><code>noctalia msg panel-toggle nilsonlinux/speedtest-meter:speedtest</code></pre>
-						<h2>License</h2>
-						<p>MIT</p>
+pip install speedtest-cli
+</code></pre>
+<p><code>stdbuf</code> ships as part of coreutils and is already installed on virtually
+every Linux system — no separate install step needed.</p>
+<p>If neither speedtest tool is found, the error screen shows the right
+install command for the detected package manager (pacman/apt/dnf/zypper/apk)
+automatically.</p>
+<h2>External dependencies</h2>
+<h3>Third-party services</h3>
+<ul>
+<li><strong>ipapi.co</strong> - After every successful test, the panel sends one request
+  to <code>https://ipapi.co/json/</code> to resolve the client's public IP into
+  geolocation data (city, region, country, organization) shown alongside
+  the test server's own location. No data is stored or transmitted beyond
+  that single request.  </li>
+</ul>
+<h2>Legacy <code>speedtest-cli</code> behavior</h2>
+<p>The human-readable stream is kept on screen in the original order. When <code>Upload:</code> arrives, the plugin stays on the live Upload phase while the final Upload number animates into place.</p>
+<p>Only after the bandwidth test has completed does the plugin start the metadata enrichment:</p>
+<ol>
+<li>Query the current Speedtest.net server directory using the sponsor/city shown by the completed test.</li>
+<li>Read the server <code>host</code> and <code>country</code> from that directory.</li>
+<li>Resolve the server hostname to an IPv4 address.</li>
+<li>Use <code>ipapi.co/&lt;server-ip&gt;/json/</code> only when Host or Country is still missing.</li>
+<li>Persist every successful ipapi response in <code>/ipapi-cache.json</code>, keyed by server IP, so the same server IP is never queried again on later tests.</li>
+<li>If ipapi returns HTTP 429, keep a global cooldown in the cache to avoid sending more requests until the cooldown expires.</li>
+<li>Show the final result screen only after the Upload animation and metadata phase are complete, with a timeout fallback.</li>
+</ol>
+<p>The <code>https://ipapi.co/json/</code> client-IP request is not used for server metadata.  </p>
+<h2>Installation</h2>
+<p>Install via Noctalia Plugin Store.</p>
+<h2>Usage</h2>
+<ol>
+<li>Click the widget in the bar to open the panel</li>
+<li>Click "Start test" to run a speed test</li>
+<li>Watch the gauge while it runs (live numbers with the Ookla backend, a
+   pulse with the legacy backend)</li>
+<li>Review the results: download/upload, ping, jitter, packet loss, test
+   server details, your ISP and external IP</li>
+</ol>
+<h2>Panel IPC Command</h2>
+<p>To toggle the panel from outside the plugin:</p>
+<pre><code>noctalia msg panel-toggle nilsonlinux/speedtest-meter:speedtest
+</code></pre>
+<h2>License</h2>
+<p>MIT</p>
 					</div>
 				</div>
 
@@ -181,13 +216,14 @@ pip install speedtest-cli</code></pre>
 							<tr><th scope="col">Versão</th><th scope="col">Plugin API</th><th scope="col">Atualização</th></tr>
 						</thead>
 						<tbody>
+							
 							<tr>
 								<td><span class="version-cell">v1.4.5 <span class="version-latest">latest</span></span></td>
 								<td>18</td>
 								<td>10 set 2026</td>
 							</tr>
 							<tr>
-								<td><span class="version-cell">v1.0.0</span></td>
+								<td><span class="version-cell">v1.0.0 </span></td>
 								<td>14</td>
 								<td>06 set 2026</td>
 							</tr>
@@ -197,6 +233,7 @@ pip install speedtest-cli</code></pre>
 				</div>
 
 				<div class="actions reveal">
+					<a class="reaction-btn" data-reaction data-folder="speedtest-meter" href="#" target="_blank" rel="noopener noreferrer" title="Curtir no GitHub"><i class="ti ti-thumb-up" aria-hidden="true"></i><strong data-likes>0</strong><span data-likes-word> joinhas</span></a>
 					<a href="https://github.com/Nilsonlinux/noctalia-plugins/tree/main/speedtest-meter" target="_blank" rel="noopener noreferrer" class="github-btn"><i class="ti ti-brand-github" aria-hidden="true"></i> Ver no GitHub <i class="ti ti-external-link" aria-hidden="true"></i></a>
 				</div>
 			</div>
@@ -219,11 +256,11 @@ pip install speedtest-cli</code></pre>
 						<nav class="footer-col" aria-label="Plugins">
 							<p>Plugins</p>
 							<ul>
+								<li><a href="../contact-sounds/index.html">Contact Notification Sounds</a></li>
+								<li><a href="../inventory-manager/index.html">Inventory Manager</a></li>
 								<li><a href="../link-ip-monitor/index.html">Link/IP Monitor</a></li>
 								<li><a href="../rss-notifier/index.html">RSS/Atom Notifier</a></li>
-								<li><a href="../inventory-manager/index.html">Inventory Manager</a></li>
 								<li><a href="../speedtest-meter/index.html">Speedtest Meter</a></li>
-								<li><a href="../contact-sounds/index.html">Contact Notification Sounds</a></li>
 							</ul>
 						</nav>
 						<nav class="footer-col" aria-label="Projetos">

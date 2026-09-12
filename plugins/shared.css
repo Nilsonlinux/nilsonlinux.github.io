@@ -278,6 +278,25 @@ img { max-width: 100%; }
 	.btn-primary span.btn-label { display: none; }
 	.btn-primary { min-width: 2.5rem; width: 2.5rem; padding: 0; }
 }
+
+/* ---- Reaction / joinha button ---- */
+.reaction-btn {
+	display: inline-flex; align-items: center; gap: .4rem; padding: .5rem .75rem;
+	border-radius: .65rem; border: 1px solid var(--border); color: var(--fg-dim);
+	font-size: .8rem; background: color-mix(in srgb, var(--accent) 7%, transparent);
+	transition: all .2s; position: relative; cursor: pointer; user-select: none;
+	text-decoration: none;
+}
+.reaction-btn:hover { color: var(--fg); border-color: color-mix(in srgb, var(--accent) 40%, transparent); transform: translateY(-1px); }
+.reaction-btn strong { color: var(--fg); }
+.reaction-btn.burst { animation: reaction-pop .4s ease; }
+.reaction-btn .burst-icon {
+	position: absolute; left: 50%; top: 50%; pointer-events: none; font-size: 1.35rem;
+	animation: thumb-burst .7s ease-out forwards;
+}
+@keyframes reaction-pop { 0% { transform: scale(1); } 40% { transform: scale(1.18); } 100% { transform: scale(1); } }
+@keyframes thumb-burst { 0% { opacity: 1; transform: translate(-50%,-50%) scale(.6); } 100% { opacity: 0; transform: translate(-50%,-170%) scale(1.5); } }
+
 @media (prefers-reduced-motion: reduce) {
 	*, *:before, *:after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }

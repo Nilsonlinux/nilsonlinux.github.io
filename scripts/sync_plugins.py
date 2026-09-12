@@ -2,13 +2,15 @@
 """Generate plugin detail pages from the Noctalia plugins catalog.
 
 Reads Nilsonlinux/noctalia-plugins' catalog.toml and, for EVERY plugin by
-Nilsonlinux that still has no local page, creates plugins/<folder>/index.html
-from scripts/plugin_page_template.html (README converted from Markdown, catalog
+Nilsonlinux, regenerates plugins/<folder>/index.html from
+scripts/plugin_page_template.html (README converted from Markdown, catalog
 metadata for versions/badges/tags, thumbnail from the plugin repo).
+Regeneration is idempotent — pages only change when the template or the
+catalog data does.
 
 The index.html catalog grid is rendered client-side from the same catalog.toml
-and already links each card to plugins/<folder>/, so a brand-new plugin only
-needs its page to exist — no index edits required.
+and already links each card to plugins/<folder>/, so a new plugin only needs
+its page to exist — no index edits required.
 
 Run from the repository root:  python3 scripts/sync_plugins.py
 """
@@ -105,6 +107,7 @@ def build_page(plugin, template: str, plugins) -> str:
         "{{THUMB_PATH}}": f"{RAW}/{folder}/thumbnail.webp",
         "{{VERSION}}": html.escape(str(version)),
         "{{AUTHOR}}": html.escape(author),
+        "{{FOLDER}}": html.escape(folder),
         "{{TAGS}}": tag_badges(plugin.get("tags")),
         "{{ABOUT_HTML}}": md_to_html(readme_md),
         "{{VERSIONS_TABLE}}": versions_rows(plugin),
@@ -126,19 +129,26 @@ def main() -> int:
 
     template = TEMPLATE.read_text(encoding="utf-8")
     created = []
+    updated = []
     for plugin in plugins:
         folder = plugin["id"].split("/")[-1]
         dest = PLUGINS_DIR / folder / "index.html"
+        content = build_page(plugin, template, plugins)
         if dest.exists():
-            continue
-        dest.parent.mkdir(parents=True, exist_ok=True)
-        dest.write_text(build_page(plugin, template, plugins), encoding="utf-8")
-        created.append(folder)
+            if dest.read_text(encoding="utf-8") != content:
+                dest.write_text(content, encoding="utf-8")
+                updated.append(folder)
+        else:
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            dest.write_text(content, encoding="utf-8")
+            created.append(folder)
 
     if created:
         print(f"Created plugin pages: {', '.join(created)}")
-    else:
-        print("No new plugins; all pages up to date.")
+    if updated:
+        print(f"Updated plugin pages: {', '.join(updated)}")
+    if not created and not updated:
+        print("All plugin pages up to date.")
     return 0
 
 

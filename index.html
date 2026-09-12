@@ -270,9 +270,17 @@
 			display: inline-flex; align-items: center; gap: .4rem; padding: .45rem .65rem;
 			border-radius: .65rem; border: 1px solid var(--border); color: var(--fg-dim);
 			font-size: .76rem; background: color-mix(in srgb, var(--accent) 7%, transparent); transition: all .2s;
+			position: relative; cursor: pointer;
 		}
 		.reaction:hover { color: var(--fg); border-color: color-mix(in srgb, var(--accent) 40%, transparent); transform: translateY(-1px); }
 		.reaction strong { color: var(--fg); }
+		.reaction.burst { animation: reaction-pop .4s ease; }
+		.reaction .burst-icon {
+			position: absolute; left: 50%; top: 50%; pointer-events: none; font-size: 1.35rem;
+			animation: thumb-burst .7s ease-out forwards;
+		}
+		@keyframes reaction-pop { 0% { transform: scale(1); } 40% { transform: scale(1.18); } 100% { transform: scale(1); } }
+		@keyframes thumb-burst { 0% { opacity: 1; transform: translate(-50%,-50%) scale(.6); } 100% { opacity: 0; transform: translate(-50%,-170%) scale(1.5); } }
 		.repo-link { font-size: .74rem; color: var(--accent); display: inline-flex; align-items: center; gap: .32rem; font-weight: 600; }
 
 		.loading, .empty {
@@ -445,7 +453,7 @@
 				</div>
 				<div class="footer-bottom">
 					<p>© <span id="year"></span> Nilsonlinux · feito com código, Linux e curiosidade.</p>
-					<p id="footerStats">— plugins · — releases · — joinhas</p>
+					<p id="footerStats">— plugins · — releases · <span id="statJoinhas" data-total-likes>0</span> joinhas</p>
 				</div>
 			</div>
 		</footer>
@@ -513,19 +521,22 @@
 		if (!r.ok) throw new Error('catalog');
 		return parseCatalog(await r.text());
 	}
-	// Issues API: uma chamada pega todas as issues (com reactions). Título = pasta do plugin.
-	async function fetchAllIssues() {
+	// reactions.json é estático, gerado via Actions — zero chamadas à API do GitHub no navegador.
+	let reactions = {};
+	async function fetchReactions() {
 		try {
-			const r = await fetch(`https://api.github.com/repos/${username}/noctalia-plugins/issues?state=all&per_page=100&sort=updated&order=desc`, { cache: 'no-store' });
-			if (!r.ok) return [];
+			const r = await fetch(`data/reactions.json?t=${Date.now()}`, { cache: 'no-store' });
+			if (!r.ok) return;
 			const data = await r.json();
-			return Array.isArray(data) ? data : [];
-		} catch { return []; }
+			if (data && typeof data.reactions === 'object') reactions = data.reactions;
+		} catch {}
 	}
-	function matchIssues(issues, slug) {
-		const matched = (issues || []).filter(i => !i.pull_request && i.title === slug);
-		const likes = matched.reduce((sum, i) => sum + Number(i.reactions?.['+1'] || 0), 0);
-		return { likes, issues: matched.length };
+	function reactionOf(folder) { return reactions[folder] || { likes: 0, issues: 0, issue: null }; }
+	function issueUrl(folder) {
+		const r = reactionOf(folder);
+		return r.issue
+			? `https://github.com/${username}/noctalia-plugins/issues/${r.issue}`
+			: `https://github.com/${username}/noctalia-plugins/issues?q=is%3Aissue+${encodeURIComponent(folder)}`;
 	}
 
 	function renderReleases(p) {
@@ -568,7 +579,7 @@
 				<div class="tags">${(p.tags || []).map(t => `<span class="tag">${escapeHTML(t)}</span>`).join('')}</div>
 				${renderReleases(p)}
 				<div class="plugin-footer">
-					<a class="reaction" href="https://github.com/${username}/noctalia-plugins/issues?q=is%3Aissue+${encodeURIComponent(folder)}" target="_blank" rel="noopener"><i class="ti ti-thumb-up"></i><strong>${p.reaction.likes}</strong> joinha${p.reaction.likes === 1 ? '' : 's'} · ${p.reaction.issues} issue${p.reaction.issues === 1 ? '' : 's'}</a>
+					<a class="reaction" data-reaction data-folder="${folder}" href="${issueUrl(folder)}" target="_blank" rel="noopener" title="Curtir no GitHub"><i class="ti ti-thumb-up"></i><strong data-likes>${reactionOf(folder).likes}</strong><span data-likes-word> ${reactionOf(folder).likes === 1 ? 'joinha' : 'joinhas'}</span></a>
 					<a class="repo-link" href="${url}" target="_blank" rel="noopener">GitHub <i class="ti ti-arrow-up-right"></i></a>
 				</div>
 			</div>
@@ -624,13 +635,13 @@
 		try {
 			const all = await fetchCatalog();
 			plugins = all.filter(p => (p.author || '').toLowerCase() === 'nilsonlinux');
-			const issues = await fetchAllIssues();
-			plugins = plugins.map(p => ({ ...p, reaction: matchIssues(issues, repoFolder(p.id)) }));
+			await fetchReactions();
+			plugins = plugins.map(p => ({ ...p, reaction: reactionOf(repoFolder(p.id)) }));
 
 			const totalReleases = plugins.reduce((s, p) => s + (p.releases || []).length, 0);
 			const totalLikes = plugins.reduce((s, p) => s + p.reaction.likes, 0);
 			$('#statPlugins').textContent = plugins.length;
-			$('#footerStats').textContent = `${plugins.length} plugins · ${totalReleases} releases · ${totalLikes} joinhas`;
+			$('#footerStats').innerHTML = `${plugins.length} plugins · ${totalReleases} releases · <span data-total-likes>${totalLikes}</span> joinhas`;
 			status.textContent = `catálogo atualizado · ${plugins.length} plugins`;
 
 			$('#footer-plugin-list').innerHTML = [...plugins].sort((a, b) => a.name.localeCompare(b.name))
@@ -656,5 +667,6 @@
 	loadPlugins();
 })();
 </script>
+<script src="plugins/reaction.js" defer></script>
 </body>
 </html>

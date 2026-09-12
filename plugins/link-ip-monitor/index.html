@@ -25,6 +25,7 @@
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.30.0/dist/tabler-icons.min.css">
 	<link rel="stylesheet" href="../shared.css">
+	<script src="../reaction.js" defer></script>
 </head>
 <body>
 <div class="page-canvas">
@@ -67,55 +68,117 @@
 					<span class="badge"><i class="ti ti-user" aria-hidden="true"></i> Nilsonlinux</span>
 				</div>
 
-				<div class="tag-row reveal">
-					<a href="../../index.html" class="tag-badge">network</a>
-					<a href="../../index.html" class="tag-badge">indicator</a>
-					<a href="../../index.html" class="tag-badge">bar</a>
-					<a href="../../index.html" class="tag-badge">panel</a>
-					<a href="../../index.html" class="tag-badge">service</a>
+				<div class="tag-row reveal"><a href="../../index.html" class="tag-badge">network</a><a href="../../index.html" class="tag-badge">indicator</a><a href="../../index.html" class="tag-badge">bar</a><a href="../../index.html" class="tag-badge">panel</a><a href="../../index.html" class="tag-badge">service</a>
 				</div>
 
 				<div class="about-section reveal">
 					<h2 class="section-title">Sobre</h2>
 					<div class="readme-content">
 						<h1>Link/IP Monitor</h1>
-						<p>Pings a list of IPs, hostnames or links on an interval, tracks each host&apos;s online/offline status and response time, and notifies when one goes down or comes back up.</p>
-						<h2>Plugin</h2>
-						<table>
-							<thead>
-								<tr><th>Field</th><th>Value</th></tr>
-							</thead>
-							<tbody>
-								<tr><td>ID</td><td><code>nilsonlinux/link-ip-monitor</code></td></tr>
-								<tr><td>Entries</td><td>Bar widget: <code>status</code>; panel: <code>panel</code>; service: <code>monitor</code></td></tr>
-							</tbody>
-						</table>
-						<h2>Requirements</h2>
-						<p>Uses the system <code>ping</code> binary (<code>iputils</code>, present on most Linux distros). No other external dependency.</p>
-						<h2>Usage</h2>
-						<p>Add the <code>status</code> widget to the bar: it turns green when every monitored host is responding, red with a count badge when one or more are down, and neutral when the list is empty.</p>
-						<p>Click the widget to open the panel. Use the <code>+</code> button in the panel header to reveal the add-host form — accepts an IP (<code>8.8.8.8</code>), a hostname (<code>example.com</code>) or a full link (scheme, port, path and query are stripped automatically, keeping only the host to ping). An optional description can be set alongside it. The gear icon in the header opens the plugin&apos;s own settings directly.</p>
-						<p>Each row in the panel shows the label (or the host, if no label was set), a status pill, the response time in ms while online — colored green under 100ms, yellow between 100 and 300ms, and red at 300ms or above — a drag handle to reorder the list, a pencil button to edit that entry&apos;s host and description (reuses the same form, pre-filled), and a trash button to remove it (asks for confirmation). Right-click the widget, or use the refresh button in the panel, to force an immediate check.</p>
-						<p>Open the panel directly with:</p>
-						<pre><code>noctalia msg panel-toggle nilsonlinux/link-ip-monitor:panel</code></pre>
-						<p>Force an immediate check via IPC:</p>
-						<pre><code>noctalia msg plugin nilsonlinux/link-ip-monitor:monitor all refresh</code></pre>
-						<p>The host list itself is not stored in plugin settings — it lives in the service&apos;s own persisted state (<code>pluginDataDir()/state.json</code>) and is managed entirely from the panel (add / edit / remove / reorder), since the plugin API has no way to write settings back from a script.</p>
-						<h2>Settings</h2>
-						<table>
-							<thead>
-								<tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr>
-							</thead>
-							<tbody>
-								<tr><td><code>interval_seconds</code></td><td><code>int</code></td><td><code>30</code></td><td>How often each host is checked.</td></tr>
-								<tr><td><code>timeout_seconds</code></td><td><code>int</code></td><td><code>1</code></td><td>How long to wait for a ping reply before treating it as a failure.</td></tr>
-								<tr><td><code>notify_on_recovery</code></td><td><code>bool</code></td><td><code>true</code></td><td>Send a notification when a host that was down responds again.</td></tr>
-								<tr><td><code>colorize_latency</code></td><td><code>bool</code></td><td><code>true</code></td><td>Colors the ms value by latency (green under 100ms, yellow 100-300ms, red 300ms+). Turn off to show it in a neutral color.</td></tr>
-								<tr><td><code>glyph</code> (widget)</td><td><code>glyph</code></td><td><code>activity</code></td><td>Icon shown in the bar for the <code>status</code> widget.</td></tr>
-							</tbody>
-						</table>
-						<h2>Notes</h2>
-						<p>Notification text and panel labels come from <code>translations/&lt;locale&gt;.json</code> via <code>noctalia.tr()</code> (English and <code>pt-BR</code> included; keys sorted alphabetically at every level). <code>noctalia.notify()</code> / <code>noctalia.notifyError()</code> accept only a title and body — the plugin API exposes no urgency parameter, so the &quot;host down&quot; alert&apos;s appearance (the red border from <code>notifyError</code>) can&apos;t be further customized from the plugin. Response time (ms) is parsed from <code>ping</code>&apos;s own text output, so it depends on that output containing a <code>=&lt;number&gt; ms</code> pattern regardless of the system&apos;s locale.</p>
+<p>Pings a list of IPs, hostnames or links on an interval, tracks
+each host's online/offline status and response time, and notifies when one
+goes down or comes back up.</p>
+<h2>Plugin</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ID</td>
+<td><code>nilsonlinux/link-ip-monitor</code></td>
+</tr>
+<tr>
+<td>Entries</td>
+<td>Bar widget: <code>status</code>; panel: <code>panel</code>; service: <code>monitor</code></td>
+</tr>
+</tbody>
+</table>
+<h2>Requirements</h2>
+<p>Uses the system <code>ping</code> binary (<code>iputils</code>, present on most Linux distros).
+No other external dependency.</p>
+<h2>Usage</h2>
+<p>Add the <code>status</code> widget to the bar: it turns green when every monitored
+host is responding, red with a count badge when one or more are down, and
+neutral when the list is empty.</p>
+<p>Click the widget to open the panel. Use the <code>+</code> button in the panel header
+to reveal the add-host form — accepts an IP (<code>8.8.8.8</code>), a hostname
+(<code>example.com</code>) or a full link (scheme, port, path and query are stripped
+automatically, keeping only the host to ping). An optional description can
+be set alongside it. The gear icon in the header opens the plugin's own
+settings directly.</p>
+<p>Each row in the panel shows the label (or the host, if no label was set), a
+status pill, the response time in ms while online — colored green under
+100ms, yellow between 100 and 300ms, and red at 300ms or above — a drag
+handle to reorder the list, a pencil button to edit that entry's host and
+description (reuses the same form, pre-filled), and a trash button to
+remove it (asks for confirmation). Right-click the widget, or use the
+refresh button in the panel, to force an immediate check.</p>
+<p>Open the panel directly with:</p>
+<pre><code class="language-sh">noctalia msg panel-toggle nilsonlinux/link-ip-monitor:panel
+</code></pre>
+<p>Force an immediate check via IPC:</p>
+<pre><code class="language-sh">noctalia msg plugin nilsonlinux/link-ip-monitor:monitor all refresh
+</code></pre>
+<p>The host list itself is not stored in plugin settings — it lives in the
+service's own persisted state (<code>pluginDataDir()/state.json</code>) and is
+managed entirely from the panel (add / edit / remove / reorder), since the
+plugin API has no way to write settings back from a script.</p>
+<h2>Settings</h2>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>interval_seconds</code></td>
+<td><code>int</code></td>
+<td><code>30</code></td>
+<td>How often each host is checked.</td>
+</tr>
+<tr>
+<td><code>timeout_seconds</code></td>
+<td><code>int</code></td>
+<td><code>1</code></td>
+<td>How long to wait for a ping reply before treating it as a failure.</td>
+</tr>
+<tr>
+<td><code>notify_on_recovery</code></td>
+<td><code>bool</code></td>
+<td><code>true</code></td>
+<td>Send a notification when a host that was down responds again.</td>
+</tr>
+<tr>
+<td><code>colorize_latency</code></td>
+<td><code>bool</code></td>
+<td><code>true</code></td>
+<td>Colors the ms value by latency (green under 100ms, yellow 100-300ms, red 300ms+). Turn off to show it in a neutral color.</td>
+</tr>
+<tr>
+<td><code>glyph</code> (widget)</td>
+<td><code>glyph</code></td>
+<td><code>activity</code></td>
+<td>Icon shown in the bar for the <code>status</code> widget.</td>
+</tr>
+</tbody>
+</table>
+<h2>Notes</h2>
+<p>Notification text and panel labels come from <code>translations/&lt;locale&gt;.json</code>
+via <code>noctalia.tr()</code> (English and <code>pt-BR</code> included; keys sorted
+alphabetically at every level). <code>noctalia.notify()</code> / <code>noctalia.notifyError()</code>
+accept only a title and body — the plugin API exposes no urgency
+parameter, so the "host down" alert's appearance (the red border from
+<code>notifyError</code>) can't be further customized from the plugin. Response time
+(ms) is parsed from <code>ping</code>'s own text output, so it depends on that output
+containing a <code>=&lt;number&gt; ms</code> pattern regardless of the system's locale.</p>
 					</div>
 				</div>
 
@@ -126,6 +189,7 @@
 							<tr><th scope="col">Versão</th><th scope="col">Plugin API</th><th scope="col">Atualização</th></tr>
 						</thead>
 						<tbody>
+							
 							<tr>
 								<td><span class="version-cell">v1.0.2 <span class="version-latest">latest</span></span></td>
 								<td>14</td>
@@ -137,6 +201,7 @@
 				</div>
 
 				<div class="actions reveal">
+					<a class="reaction-btn" data-reaction data-folder="link-ip-monitor" href="#" target="_blank" rel="noopener noreferrer" title="Curtir no GitHub"><i class="ti ti-thumb-up" aria-hidden="true"></i><strong data-likes>0</strong><span data-likes-word> joinhas</span></a>
 					<a href="https://github.com/Nilsonlinux/noctalia-plugins/tree/main/link-ip-monitor" target="_blank" rel="noopener noreferrer" class="github-btn"><i class="ti ti-brand-github" aria-hidden="true"></i> Ver no GitHub <i class="ti ti-external-link" aria-hidden="true"></i></a>
 				</div>
 			</div>
@@ -159,11 +224,11 @@
 						<nav class="footer-col" aria-label="Plugins">
 							<p>Plugins</p>
 							<ul>
+								<li><a href="../contact-sounds/index.html">Contact Notification Sounds</a></li>
+								<li><a href="../inventory-manager/index.html">Inventory Manager</a></li>
 								<li><a href="../link-ip-monitor/index.html">Link/IP Monitor</a></li>
 								<li><a href="../rss-notifier/index.html">RSS/Atom Notifier</a></li>
-								<li><a href="../inventory-manager/index.html">Inventory Manager</a></li>
 								<li><a href="../speedtest-meter/index.html">Speedtest Meter</a></li>
-								<li><a href="../contact-sounds/index.html">Contact Notification Sounds</a></li>
 							</ul>
 						</nav>
 						<nav class="footer-col" aria-label="Projetos">

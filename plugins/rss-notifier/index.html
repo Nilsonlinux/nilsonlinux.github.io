@@ -25,6 +25,7 @@
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.30.0/dist/tabler-icons.min.css">
 	<link rel="stylesheet" href="../shared.css">
+	<script src="../reaction.js" defer></script>
 </head>
 <body>
 <div class="page-canvas">
@@ -67,68 +68,106 @@
 					<span class="badge"><i class="ti ti-user" aria-hidden="true"></i> Nilsonlinux</span>
 				</div>
 
-				<div class="tag-row reveal">
-					<a href="../../index.html" class="tag-badge">utility</a>
-					<a href="../../index.html" class="tag-badge">indicator</a>
-					<a href="../../index.html" class="tag-badge">panel</a>
-					<a href="../../index.html" class="tag-badge">bar</a>
-					<a href="../../index.html" class="tag-badge">service</a>
+				<div class="tag-row reveal"><a href="../../index.html" class="tag-badge">utility</a><a href="../../index.html" class="tag-badge">indicator</a><a href="../../index.html" class="tag-badge">panel</a><a href="../../index.html" class="tag-badge">bar</a><a href="../../index.html" class="tag-badge">service</a>
 				</div>
 
 				<div class="about-section reveal">
 					<h2 class="section-title">Sobre</h2>
 					<div class="readme-content">
 						<h1>RSS/Atom Notifier</h1>
-						<p>Monitor RSS/Atom feeds and get notifications for new items.</p>
-						<h2>Plugin</h2>
-						<table>
-							<thead>
-								<tr><th>Field</th><th>Value</th></tr>
-							</thead>
-							<tbody>
-								<tr><td>ID</td><td><code>nilsonlinux/rss-notifier</code></td></tr>
-								<tr><td>Entries</td><td>Bar widget: <code>indicator</code>; Panel: <code>Panel</code></td></tr>
-							</tbody>
-						</table>
-						<p><strong>Entries:</strong></p>
-						<ul>
-							<li><strong>Service:</strong> <code>fetcher</code> - Background service that fetches and parses feeds</li>
-							<li><strong>Widget:</strong> <code>badge</code> - Shows unread count on the bar</li>
-							<li><strong>Panel:</strong> <code>panel</code> - Displays feed items in a panel</li>
-						</ul>
-						<p><strong>IPC Command:</strong></p>
-						<pre><code>noctalia msg panel-toggle nilsonlinux/rss-notifier:Panel</code></pre>
-						<h2>Settings</h2>
-						<table>
-							<thead>
-								<tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr>
-							</thead>
-							<tbody>
-								<tr><td><code>feed_urls</code></td><td>string_list</td><td><code>[]</code></td><td>List of RSS/Atom feed URLs to monitor (one per line)</td></tr>
-								<tr><td><code>refresh_minutes</code></td><td>int</td><td><code>30</code></td><td>How often to check for new items (1-1440 minutes)</td></tr>
-								<tr><td><code>notify_new</code></td><td>bool</td><td><code>true</code></td><td>Display notifications when new items arrive</td></tr>
-								<tr><td><code>max_notifications_per_cycle</code></td><td>int</td><td><code>5</code></td><td>Maximum notifications shown per check (1-50)</td></tr>
-								<tr><td><code>show_feed_images</code></td><td>bool</td><td><code>true</code></td><td>Show each item&#39;s cover image (or the site&#39;s favicon as a fallback) in the item list.</td></tr>
-								<tr><td><code>glyph</code> (widget)</td><td><code>glyph</code></td><td><code>rss</code></td><td>Icon shown in the bar for the <code>status</code> widget.</td></tr>
-							</tbody>
-						</table>
-						<h2>Installation</h2>
-						<p>Install via Noctalia Plugin Store.</p>
-						<h2>Requirements</h2>
-						<ul>
-							<li><code>xdg-open</code> - Required to open feed URLs in your default web browser. Usually pre-installed on most Linux distributions.</li>
-						</ul>
-						<h2>Usage</h2>
-						<ol>
-							<li>Add feed URLs in the plugin settings</li>
-							<li>The widget will show a badge with unread count</li>
-							<li>Click the widget to open the panel</li>
-							<li>Click an item to open it in your default browser</li>
-						</ol>
-						<h2>Dependencies</h2>
-						<p><strong>xdg-open</strong></p>
-						<h2>License</h2>
-						<p>MIT</p>
+<p>Monitor RSS/Atom feeds and get notifications for new items.</p>
+<h2>Plugin</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ID</td>
+<td><code>nilsonlinux/rss-notifier</code></td>
+</tr>
+<tr>
+<td>Entries</td>
+<td>Bar widget: <code>indicator</code>; Panel: <code>Panel</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Entries:</strong>
+- <strong>Service:</strong> <code>fetcher</code> - Background service that fetches and parses feeds
+- <strong>Widget:</strong> <code>badge</code> - Shows unread count on the bar
+- <strong>Panel:</strong> <code>panel</code> - Displays feed items in a panel</p>
+<p><strong>IPC Command:</strong></p>
+<p>noctalia msg panel-toggle nilsonlinux/rss-notifier:Panel
+text</p>
+<h2>Settings</h2>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>feed_urls</code></td>
+<td>string_list</td>
+<td><code>[]</code></td>
+<td>List of RSS/Atom feed URLs to monitor (one per line)</td>
+</tr>
+<tr>
+<td><code>refresh_minutes</code></td>
+<td>int</td>
+<td><code>30</code></td>
+<td>How often to check for new items (1-1440 minutes)</td>
+</tr>
+<tr>
+<td><code>notify_new</code></td>
+<td>bool</td>
+<td><code>true</code></td>
+<td>Display notifications when new items arrive</td>
+</tr>
+<tr>
+<td><code>max_notifications_per_cycle</code></td>
+<td>int</td>
+<td><code>5</code></td>
+<td>Maximum notifications shown per check (1-50)</td>
+</tr>
+<tr>
+<td><code>show_feed_images</code></td>
+<td>bool</td>
+<td><code>true</code></td>
+<td>Show each item's cover image (or the site's favicon as a fallback) in the item list.</td>
+</tr>
+<tr>
+<td><code>glyph</code> (widget)</td>
+<td><code>glyph</code></td>
+<td><code>rss</code></td>
+<td>Icon shown in the bar for the <code>status</code> widget.</td>
+</tr>
+</tbody>
+</table>
+<h2>Installation</h2>
+<p>Install via Noctalia Plugin Store.</p>
+<h2>Requirements</h2>
+<ul>
+<li><code>xdg-open</code> - Required to open feed URLs in your default web browser. Usually pre-installed on most Linux distributions.</li>
+</ul>
+<h2>Usage</h2>
+<ol>
+<li>Add feed URLs in the plugin settings</li>
+<li>The widget will show a badge with unread count</li>
+<li>Click the widget to open the panel</li>
+<li>Click an item to open it in your default browser</li>
+</ol>
+<h2>Dependencies</h2>
+<p><strong>xdg-open</strong> </p>
+<h2>License</h2>
+<p>MIT</p>
 					</div>
 				</div>
 
@@ -139,6 +178,7 @@
 							<tr><th scope="col">Versão</th><th scope="col">Plugin API</th><th scope="col">Atualização</th></tr>
 						</thead>
 						<tbody>
+							
 							<tr>
 								<td><span class="version-cell">v1.0.4 <span class="version-latest">latest</span></span></td>
 								<td>14</td>
@@ -150,6 +190,7 @@
 				</div>
 
 				<div class="actions reveal">
+					<a class="reaction-btn" data-reaction data-folder="rss-notifier" href="#" target="_blank" rel="noopener noreferrer" title="Curtir no GitHub"><i class="ti ti-thumb-up" aria-hidden="true"></i><strong data-likes>0</strong><span data-likes-word> joinhas</span></a>
 					<a href="https://github.com/Nilsonlinux/noctalia-plugins/tree/main/rss-notifier" target="_blank" rel="noopener noreferrer" class="github-btn"><i class="ti ti-brand-github" aria-hidden="true"></i> Ver no GitHub <i class="ti ti-external-link" aria-hidden="true"></i></a>
 				</div>
 			</div>
@@ -172,11 +213,11 @@
 						<nav class="footer-col" aria-label="Plugins">
 							<p>Plugins</p>
 							<ul>
+								<li><a href="../contact-sounds/index.html">Contact Notification Sounds</a></li>
+								<li><a href="../inventory-manager/index.html">Inventory Manager</a></li>
 								<li><a href="../link-ip-monitor/index.html">Link/IP Monitor</a></li>
 								<li><a href="../rss-notifier/index.html">RSS/Atom Notifier</a></li>
-								<li><a href="../inventory-manager/index.html">Inventory Manager</a></li>
 								<li><a href="../speedtest-meter/index.html">Speedtest Meter</a></li>
-								<li><a href="../contact-sounds/index.html">Contact Notification Sounds</a></li>
 							</ul>
 						</nav>
 						<nav class="footer-col" aria-label="Projetos">

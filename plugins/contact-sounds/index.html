@@ -25,6 +25,7 @@
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.30.0/dist/tabler-icons.min.css">
 	<link rel="stylesheet" href="../shared.css">
+	<script src="../reaction.js" defer></script>
 </head>
 <body>
 <div class="page-canvas">
@@ -67,79 +68,135 @@
 					<span class="badge"><i class="ti ti-user" aria-hidden="true"></i> Nilsonlinux</span>
 				</div>
 
-				<div class="tag-row reveal">
-					<a href="../../index.html" class="tag-badge">audio</a>
-					<a href="../../index.html" class="tag-badge">utility</a>
-					<a href="../../index.html" class="tag-badge">bar</a>
-					<a href="../../index.html" class="tag-badge">panel</a>
-					<a href="../../index.html" class="tag-badge">service</a>
+				<div class="tag-row reveal"><a href="../../index.html" class="tag-badge">audio</a><a href="../../index.html" class="tag-badge">utility</a><a href="../../index.html" class="tag-badge">bar</a><a href="../../index.html" class="tag-badge">panel</a><a href="../../index.html" class="tag-badge">service</a>
 				</div>
 
 				<div class="about-section reveal">
 					<h2 class="section-title">Sobre</h2>
 					<div class="readme-content">
 						<h1>Contact Notification Sounds</h1>
-						<p>Plays a <strong>unique sound per person</strong> on your notifications.</p>
-						<p>Configure a map of contact names to sound files in <strong>Settings → Plugins</strong>. When any notification arrives, the plugin checks its app name, title and body for your contacts&apos; names (case-insensitive by default) and plays the assigned sound for the first contact matched.</p>
-						<h2>Plugin</h2>
-						<table>
-							<thead>
-								<tr><th>Field</th><th>Value</th></tr>
-							</thead>
-							<tbody>
-								<tr><td>ID</td><td><code>nilsonlinux/contact-sounds</code></td></tr>
-								<tr><td>Entries</td><td>Service: <code>monitor</code>; Panel: <code>Panel</code>; Shortcut: <code>sounds</code>; Bar widget: <code>contact-sounds-widget</code></td></tr>
-							</tbody>
-						</table>
-						<h2>Features</h2>
-						<ul>
-							<li><strong>Unique notification sounds per contact</strong> — you always know who messaged you before looking.</li>
-							<li><strong>Panel of contacts</strong> — open it from the control-center tile or the bar bell icon: play each sound, <strong>add</strong> a contact by name + sound path, <strong>edit</strong> an existing entry, or <strong>delete</strong> a contact (with an inline confirmation).</li>
-							<li><strong>App filter</strong> — optionally restrict matching to specific notification apps (e.g. Telegram, Discord) so browser spam never matches.</li>
-							<li><strong>OGG or MP3</strong> — any local <code>.ogg</code> or <code>.mp3</code> file with an absolute path.</li>
-							<li><strong>Hide the bar icon</strong> — toggle <code>show_widget</code> off to remove the bell from the bar.</li>
-						</ul>
-						<h2>How it works</h2>
-						<ul>
-							<li><code>service.luau</code> runs <code>scripts/monitor.sh</code>, a <code>dbus-monitor</code> pipeline that watches the <code>org.freedesktop.Notifications</code> session interface and forwards every <code>Notify()</code> call as <code>app \x1e title \x1e body</code>.</li>
-							<li>The service matches contact names in that text and plays the sound through Noctalia&apos;s audio system (<code>noctalia.sound</code>), honoring its volume and DND state.</li>
-							<li><strong>Exclusive sound</strong>: the service also keeps <code>~/.config/noctalia/contact-sounds.toml</code> in sync with a <code>[notification.filter.contact-sounds]</code> rule (<code>play_sound = false</code>) whose regex matches the configured contact names. This silences Noctalia&apos;s system notification sound for exactly those messages, so only the contact&apos;s OGG plays. Notifications that mention nobody keep their normal system sound.</li>
-							<li><code>panel.luau</code> reads the same config to list contacts and test sounds.</li>
-							<li><code>shortcut.luau</code> adds a control-center tile that opens the panel.</li>
-						</ul>
-						<p>Open the panel directly with:</p>
-						<pre><code>noctalia msg panel-toggle nilsonlinux/contact-sounds:Panel</code></pre>
-						<h2>Requirements</h2>
-						<ul>
-							<li><code>dbus-monitor</code>, <code>gawk</code> and <code>python3</code> (all usually present on Arch/Debian).</li>
-						</ul>
-						<h2>Usage</h2>
-						<ol>
-							<li>Open <strong>Settings → Plugins → Contact Notification Sounds</strong>.</li>
-							<li>Add a contact under <code>contacts</code>: the <strong>name</strong> exactly as it appears in a notification, and the <strong>absolute path</strong> to a local <code>.ogg</code> or <code>.mp3</code> file.</li>
-							<li>Click the bar bell (or the control-center tile) to open the panel — play, add, edit or delete contacts from there.</li>
-						</ol>
-						<p>Example:</p>
-						<pre><code>"Maria Souza"  = "/home/you/Documents/Sounds/maria.ogg"
-"João Carlos"  = "/home/you/Documents/Sounds/joao.ogg"</code></pre>
-						<h2>Settings</h2>
-						<table>
-							<thead>
-								<tr><th>Setting</th><th>Type</th><th>Default</th><th>Description</th></tr>
-							</thead>
-							<tbody>
-								<tr><td><code>contacts</code></td><td><code>string_map</code></td><td><code>{}</code></td><td><code>"Person Name" = "/path/to/sound.{ogg,mp3}"</code></td></tr>
-								<tr><td><code>show_widget</code></td><td><code>bool</code></td><td><code>true</code></td><td>Show the bell icon in the bar.</td></tr>
-								<tr><td><code>match_case_sensitive</code></td><td><code>bool</code></td><td><code>false</code></td><td>Match names with exact capitalization.</td></tr>
-								<tr><td><code>only_apps</code></td><td><code>string_list</code></td><td><code>[]</code></td><td>App-name allow-list; empty = all apps.</td></tr>
-								<tr><td><code>glyph</code> (widget)</td><td><code>glyph</code></td><td><code>bell-ringing</code></td><td>Icon shown in the bar for the bell widget.</td></tr>
-							</tbody>
-						</table>
-						<h2>Notes</h2>
-						<p>Notification text and panel labels come from <code>translations/&lt;locale&gt;.json</code> (English and <code>pt-BR</code> included). The panel&apos;s <strong>Add/Delete</strong> controls edit the same <code>contacts</code> map (via <code>scripts/edit_contacts.sh</code>, which writes Noctalia&apos;s <code>settings.toml</code>).</p>
-						<p>Sound files are played at the <a href="https://noctalia.dev" target="_blank" rel="noopener noreferrer">Noctalia</a> audio volume.</p>
-						<h2>License</h2>
-						<p>MIT</p>
+<p>Plays a <strong>unique sound per person</strong> on your notifications.</p>
+<p>Configure a map of contact names to sound files in <strong>Settings → Plugins</strong>.
+When any notification arrives, the plugin checks its app name, title and body
+for your contacts' names (case-insensitive by default) and plays the assigned
+sound for the first contact matched.</p>
+<h2>Plugin</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ID</td>
+<td><code>nilsonlinux/contact-sounds</code></td>
+</tr>
+<tr>
+<td>Entries</td>
+<td>Service: <code>monitor</code>; Panel: <code>Panel</code>; Shortcut: <code>sounds</code>; Bar widget: <code>contact-sounds-widget</code></td>
+</tr>
+</tbody>
+</table>
+<h2>Features</h2>
+<ul>
+<li><strong>Unique notification sounds per contact</strong> — you always know who messaged
+  you before looking.</li>
+<li><strong>Panel of contacts</strong> — open it from the control-center tile or the bar bell
+  icon: play each sound, <strong>add</strong> a contact by name + sound path, <strong>edit</strong> an
+  existing entry, or <strong>delete</strong> a contact (with an inline confirmation).</li>
+<li><strong>App filter</strong> — optionally restrict matching to specific notification apps
+  (e.g. Telegram, Discord) so browser spam never matches.</li>
+<li><strong>OGG or MP3</strong> — any local <code>.ogg</code> or <code>.mp3</code> file with an absolute path.</li>
+<li><strong>Hide the bar icon</strong> — toggle <code>show_widget</code> off to remove the bell from the bar.</li>
+</ul>
+<h2>How it works</h2>
+<ul>
+<li><code>service.luau</code> runs <code>scripts/monitor.sh</code>, a <code>dbus-monitor</code> pipeline that
+  watches the <code>org.freedesktop.Notifications</code> session interface and forwards
+  every <code>Notify()</code> call as <code>app \x1e title \x1e body</code>.</li>
+<li>The service matches contact names in that text and plays the sound through
+  Noctalia's audio system (<code>noctalia.sound</code>), honoring its volume and DND state.</li>
+<li><strong>Exclusive sound</strong>: the service also keeps <code>~/.config/noctalia/contact-sounds.toml</code>
+  in sync with a <code>[notification.filter.contact-sounds]</code> rule
+  (<code>play_sound = false</code>) whose regex matches the configured contact names. This
+  silences Noctalia's system notification sound for exactly those messages, so
+  only the contact's OGG plays. Notifications that mention nobody keep their
+  normal system sound.</li>
+<li><code>panel.luau</code> reads the same config to list contacts and test sounds.</li>
+<li><code>shortcut.luau</code> adds a control-center tile that opens the panel.</li>
+</ul>
+<p>Open the panel directly with:</p>
+<pre><code class="language-sh">noctalia msg panel-toggle nilsonlinux/contact-sounds:Panel
+</code></pre>
+<h2>Requirements</h2>
+<ul>
+<li><code>dbus-monitor</code>, <code>gawk</code> and <code>python3</code> (all usually present on Arch/Debian).</li>
+</ul>
+<h2>Usage</h2>
+<ol>
+<li>Open <strong>Settings → Plugins → Contact Notification Sounds</strong>.</li>
+<li>Add a contact under <code>contacts</code>: the <strong>name</strong> exactly as it appears in a
+   notification, and the <strong>absolute path</strong> to a local <code>.ogg</code> or <code>.mp3</code> file.</li>
+<li>Click the bar bell (or the control-center tile) to open the panel — play,
+   add, edit or delete contacts from there.</li>
+</ol>
+<p>Example:</p>
+<pre><code>&quot;Maria Souza&quot;  = &quot;/home/you/Documents/Sounds/maria.ogg&quot;
+&quot;João Carlos&quot;  = &quot;/home/you/Documents/Sounds/joao.ogg&quot;
+</code></pre>
+<h2>Settings</h2>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>contacts</code></td>
+<td><code>string_map</code></td>
+<td><code>{}</code></td>
+<td><code>"Person Name" = "/path/to/sound.{ogg,mp3}"</code></td>
+</tr>
+<tr>
+<td><code>show_widget</code></td>
+<td><code>bool</code></td>
+<td><code>true</code></td>
+<td>Show the bell icon in the bar.</td>
+</tr>
+<tr>
+<td><code>match_case_sensitive</code></td>
+<td><code>bool</code></td>
+<td><code>false</code></td>
+<td>Match names with exact capitalization.</td>
+</tr>
+<tr>
+<td><code>only_apps</code></td>
+<td><code>string_list</code></td>
+<td><code>[]</code></td>
+<td>App-name allow-list; empty = all apps.</td>
+</tr>
+<tr>
+<td><code>glyph</code> (widget)</td>
+<td><code>glyph</code></td>
+<td><code>bell-ringing</code></td>
+<td>Icon shown in the bar for the bell widget.</td>
+</tr>
+</tbody>
+</table>
+<h2>Notes</h2>
+<p>Notification text and panel labels come from <code>translations/&lt;locale&gt;.json</code>
+(English and <code>pt-BR</code> included). The panel's <strong>Add/Delete</strong> controls edit the
+same <code>contacts</code> map (via <code>scripts/edit_contacts.sh</code>, which writes Noctalia's
+<code>settings.toml</code>).</p>
+<p>Sound files are played at the <a href="https://noctalia.dev">Noctalia</a> audio volume.</p>
+<h2>License</h2>
+<p>MIT</p>
 					</div>
 				</div>
 
@@ -150,6 +207,7 @@
 							<tr><th scope="col">Versão</th><th scope="col">Plugin API</th><th scope="col">Atualização</th></tr>
 						</thead>
 						<tbody>
+							
 							<tr>
 								<td><span class="version-cell">v1.0.0 <span class="version-latest">latest</span></span></td>
 								<td>20</td>
@@ -161,6 +219,7 @@
 				</div>
 
 				<div class="actions reveal">
+					<a class="reaction-btn" data-reaction data-folder="contact-sounds" href="#" target="_blank" rel="noopener noreferrer" title="Curtir no GitHub"><i class="ti ti-thumb-up" aria-hidden="true"></i><strong data-likes>0</strong><span data-likes-word> joinhas</span></a>
 					<a href="https://github.com/Nilsonlinux/noctalia-plugins/tree/main/contact-sounds" target="_blank" rel="noopener noreferrer" class="github-btn"><i class="ti ti-brand-github" aria-hidden="true"></i> Ver no GitHub <i class="ti ti-external-link" aria-hidden="true"></i></a>
 				</div>
 			</div>
@@ -183,11 +242,11 @@
 						<nav class="footer-col" aria-label="Plugins">
 							<p>Plugins</p>
 							<ul>
+								<li><a href="../contact-sounds/index.html">Contact Notification Sounds</a></li>
+								<li><a href="../inventory-manager/index.html">Inventory Manager</a></li>
 								<li><a href="../link-ip-monitor/index.html">Link/IP Monitor</a></li>
 								<li><a href="../rss-notifier/index.html">RSS/Atom Notifier</a></li>
-								<li><a href="../inventory-manager/index.html">Inventory Manager</a></li>
 								<li><a href="../speedtest-meter/index.html">Speedtest Meter</a></li>
-								<li><a href="../contact-sounds/index.html">Contact Notification Sounds</a></li>
 							</ul>
 						</nav>
 						<nav class="footer-col" aria-label="Projetos">
