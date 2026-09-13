@@ -25,6 +25,9 @@ OWNER = "Nilsonlinux"
 REPO = "noctalia-plugins"
 BRANCH = "main"
 RAW = f"https://raw.githubusercontent.com/{OWNER}/{REPO}/{BRANCH}"
+# Official community catalog: a plugin listed there is published on
+# https://noctalia.dev/plugins; otherwise it is still in development.
+COMMUNITY_CATALOG_URL = "https://raw.githubusercontent.com/noctalia-dev/community-plugins/refs/heads/main/catalog.toml"
 ROOT = Path(__file__).resolve().parent.parent
 PLUGINS_DIR = ROOT / "plugins"
 TEMPLATE = ROOT / "scripts" / "plugin_page_template.html"
@@ -44,7 +47,12 @@ def fmt_date(ts) -> str:
 
 
 def md_to_html(md_text: str) -> str:
-    import markdown
+    try:
+        import markdown
+    except ImportError:
+        # Graceful degradation when the optional `markdown` package is missing
+        # (the CI installs it via scripts/requirements.txt and fully re-renders).
+        return "<p>" + html.escape(md_text).replace("\n", "<br>\n") + "</p>"
     return markdown.markdown(md_text, extensions=["tables", "fenced_code", "sane_lists"])
 
 
@@ -94,7 +102,15 @@ def footer_plugin_list(plugins) -> str:
     return "".join(items)
 
 
-def build_page(plugin, template: str, plugins) -> str:
+def community_badge(plugin_id: str, community_ids: set) -> str:
+    """Green badge when the plugin is on the official Noctalia Community
+    catalog, amber "in development" otherwise."""
+    if plugin_id in community_ids:
+        return '<span class="badge badge-community"><i class="ti ti-world" aria-hidden="true"></i> On Noctalia Community</span>'
+    return '<span class="badge badge-dev"><i class="ti ti-tools" aria-hidden="true"></i> Em desenvolvimento</span>'
+
+
+def build_page(plugin, template: str, plugins, community_ids: set) -> str:
     folder = plugin["id"].split("/")[-1]
     name = plugin["name"]
     description = plugin.get("description", "")
@@ -118,6 +134,7 @@ def build_page(plugin, template: str, plugins) -> str:
         "{{VERSIONS_TABLE}}": versions_rows(plugin),
         "{{GITHUB_URL}}": f"https://github.com/{OWNER}/{REPO}/tree/main/{folder}",
         "{{FOOTER_PLUGIN_LIST}}": footer_plugin_list(plugins),
+        "{{COMMUNITY_BADGE}}": community_badge(plugin["id"], community_ids),
     }
     page = template
     for token, value in repl.items():
@@ -127,6 +144,12 @@ def build_page(plugin, template: str, plugins) -> str:
 
 def main() -> int:
     catalog = tomllib.loads(fetch(f"{RAW}/catalog.toml"))
+    community_ids = set()
+    try:
+        community_ids = {p["id"] for p in tomllib.loads(fetch(COMMUNITY_CATALOG_URL)).get("plugin", []) if "id" in p}
+        print(f"Community catalog: {len(community_ids)} plugins loaded")
+    except Exception as exc:
+        print(f"WARNING: could not fetch community catalog ({exc}); all plugins will show 'Em desenvolvimento'", file=sys.stderr)
     plugins = [p for p in catalog.get("plugin", []) if (p.get("author") or "").casefold() == OWNER.casefold()]
     if not plugins:
         print(f"No plugins for {OWNER} in catalog; nothing to do.")
@@ -138,7 +161,7 @@ def main() -> int:
     for plugin in plugins:
         folder = plugin["id"].split("/")[-1]
         dest = PLUGINS_DIR / folder / "index.html"
-        content = build_page(plugin, template, plugins)
+        content = build_page(plugin, template, plugins, community_ids)
         if dest.exists():
             if dest.read_text(encoding="utf-8") != content:
                 dest.write_text(content, encoding="utf-8")

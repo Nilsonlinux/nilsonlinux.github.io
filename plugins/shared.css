@@ -138,6 +138,10 @@ img { max-width: 100%; }
 	color: var(--fg-dim); font-size: .8rem; font-weight: 600;
 }
 .badge .ti { color: var(--accent); }
+.badge-community { border-color: color-mix(in srgb, #3fb950 45%, transparent); }
+.badge-community .ti { color: #3fb950; }
+.badge-dev { border-color: color-mix(in srgb, #d29922 45%, transparent); }
+.badge-dev .ti { color: #d29922; }
 
 .tag-row { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
 .tag-badge {

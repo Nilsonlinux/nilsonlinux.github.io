@@ -235,6 +235,13 @@
 			margin-top: 4px; font: 500 .62rem "JetBrains Mono", monospace; color: var(--faint);
 			overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 		}
+		.card-badge {
+			display: inline-flex; align-items: center; gap: .3rem; margin-top: .45rem;
+			padding: .2rem .5rem; border-radius: 999px; font-size: .56rem; font-weight: 600;
+			border: 1px solid var(--border);
+		}
+		.card-badge.on-community { color: #3fb950; border-color: color-mix(in srgb, #3fb950 40%, transparent); }
+		.card-badge.in-dev { color: #d29922; border-color: color-mix(in srgb, #d29922 40%, transparent); }
 		.plugin-desc { font-size: .78rem; line-height: 1.5; color: var(--fg-dim); margin-top: .6rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 		.meta-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .45rem; margin-top: .85rem; }
 		.meta-box {
@@ -467,6 +474,7 @@
 	const $ = s => document.querySelector(s);
 	const username = 'Nilsonlinux';
 	const catalogUrl = 'https://raw.githubusercontent.com/Nilsonlinux/noctalia-plugins/refs/heads/main/catalog.toml';
+	const communityUrl = 'https://raw.githubusercontent.com/noctalia-dev/community-plugins/refs/heads/main/catalog.toml';
 
 	const escapeHTML = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 	const repoFolder = id => id.split('/').pop();
@@ -521,6 +529,14 @@
 		if (!r.ok) throw new Error('catalog');
 		return parseCatalog(await r.text());
 	}
+	let communityIds = new Set();
+	async function fetchCommunityIds() {
+		try {
+			const r = await fetch(`${communityUrl}?t=${Date.now()}`, { cache: 'no-store' });
+			if (!r.ok) return;
+			communityIds = new Set(parseCatalog(await r.text()).map(p => p.id));
+		} catch {}
+	}
 	// reactions.json é estático, gerado via Actions — zero chamadas à API do GitHub no navegador.
 	let reactions = {};
 	async function fetchReactions() {
@@ -562,6 +578,7 @@
 					<div>
 						<a class="plugin-name" href="plugins/${folder}/">${escapeHTML(p.name)}</a>
 						<div class="plugin-id">${escapeHTML(p.id)}</div>
+					<div class="card-badge ${communityIds.has(p.id) ? 'on-community' : 'in-dev'}" title="${communityIds.has(p.id) ? 'Publicado no Noctalia Community' : 'Em desenvolvimento'}"><i class="ti ${communityIds.has(p.id) ? 'ti-world' : 'ti-tools'}"></i> ${communityIds.has(p.id) ? 'On Community' : 'Em desenvolvimento'}</div>
 					</div>
 					<a href="${url}" target="_blank" rel="noopener" title="Repositório no GitHub" aria-label="Repositório no GitHub"><i class="ti ti-brand-github" style="color:var(--faint);font-size:1.05rem"></i></a>
 				</div>
@@ -637,6 +654,7 @@
 			plugins = all.filter(p => (p.author || '').toLowerCase() === 'nilsonlinux');
 			await fetchReactions();
 			plugins = plugins.map(p => ({ ...p, reaction: reactionOf(repoFolder(p.id)) }));
+			await fetchCommunityIds();
 
 			const totalReleases = plugins.reduce((s, p) => s + (p.releases || []).length, 0);
 			const totalLikes = plugins.reduce((s, p) => s + p.reaction.likes, 0);
