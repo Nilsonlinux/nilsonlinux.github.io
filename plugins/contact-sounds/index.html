@@ -65,7 +65,7 @@
 
 				<div class="badge-row reveal">
 					<a class="reaction-btn" data-reaction data-folder="contact-sounds" href="#" target="_blank" rel="noopener noreferrer" title="Curtir no GitHub"><i class="ti ti-thumb-up" aria-hidden="true"></i><strong data-likes>0</strong><span data-likes-word> joinhas</span></a>
-					<span class="badge"><i class="ti ti-edit" aria-hidden="true"></i> v1.0.0</span>
+					<span class="badge"><i class="ti ti-edit" aria-hidden="true"></i> v1.0.1</span>
 					<span class="badge"><i class="ti ti-user" aria-hidden="true"></i> Nilsonlinux</span>
 				</div>
 
@@ -118,13 +118,17 @@ sound for the first contact matched.</p>
   watches the <code>org.freedesktop.Notifications</code> session interface and forwards
   every <code>Notify()</code> call as <code>app \x1e title \x1e body</code>.</li>
 <li>The service matches contact names in that text and plays the sound through
-  Noctalia's audio system (<code>noctalia.sound</code>), honoring its volume and DND state.</li>
-<li><strong>Exclusive sound</strong>: the service also keeps <code>~/.config/noctalia/contact-sounds.toml</code>
-  in sync with a <code>[notification.filter.contact-sounds]</code> rule
-  (<code>play_sound = false</code>) whose regex matches the configured contact names. This
-  silences Noctalia's system notification sound for exactly those messages, so
-  only the contact's OGG plays. Notifications that mention nobody keep their
-  normal system sound.</li>
+  Noctalia's audio system (<code>noctalia.sound</code>) at the configured volume; plugin
+  sounds are not silenced by Do Not Disturb.</li>
+<li><strong>Exclusive sound</strong>: the service keeps <code>~/.config/noctalia/contact-sounds.toml</code>
+  in sync with <code>[notification.filter.contact-sounds-*]</code> rules that set
+  <code>play_sound = false</code>, so Noctalia's system notification sound is suppressed
+  exactly when the plugin will play a contact's OGG. The rules only cover
+  contact sounds that loaded, are disabled while case-sensitive matching is on
+  (system filters are always case-insensitive), and become one rule per allowed
+  app when <code>only_apps</code> is set. The file is removed when the plugin is disabled
+  or uninstalled, so the system sound can never be left muted. Notifications
+  that match nothing keep their normal system sound.</li>
 <li><code>panel.luau</code> reads the same config to list contacts and test sounds.</li>
 <li><code>shortcut.luau</code> adds a control-center tile that opens the panel.</li>
 </ul>
@@ -195,6 +199,11 @@ sound for the first contact matched.</p>
 (English and <code>pt-BR</code> included). The panel's <strong>Add/Delete</strong> controls edit the
 same <code>contacts</code> map (via <code>scripts/edit_contacts.sh</code>, which writes Noctalia's
 <code>settings.toml</code>).</p>
+<p><code>~/.config/noctalia/contact-sounds.toml</code> is managed by the plugin and should not
+be edited by hand. Matching is always case-insensitive for the exclusive-sound
+suppression; with <code>only_apps</code> set, a contact must appear in the notification
+summary or body (a name that only shows up in the app name is covered only when
+no app allow-list is configured).</p>
 <p>Sound files are played at the <a href="https://noctalia.dev">Noctalia</a> audio volume.</p>
 <h2>License</h2>
 <p>MIT</p>
@@ -210,7 +219,12 @@ same <code>contacts</code> map (via <code>scripts/edit_contacts.sh</code>, which
 						<tbody>
 							
 							<tr>
-								<td><span class="version-cell">v1.0.0 <span class="version-latest">latest</span></span></td>
+								<td><span class="version-cell">v1.0.1 <span class="version-latest">latest</span></span></td>
+								<td>20</td>
+								<td>13 set 2026</td>
+							</tr>
+							<tr>
+								<td><span class="version-cell">v1.0.0 <span class="version-oldest">primeira versão</span></span></td>
 								<td>20</td>
 								<td>11 set 2026</td>
 							</tr>
