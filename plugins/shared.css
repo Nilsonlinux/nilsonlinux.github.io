@@ -142,6 +142,9 @@ img { max-width: 100%; }
 .badge-community .ti { color: #3fb950; }
 .badge-dev { border-color: color-mix(in srgb, #d29922 45%, transparent); }
 .badge-dev .ti { color: #d29922; }
+.badge-version-diff { border-color: color-mix(in srgb, #d29922 45%, transparent); }
+.badge-version-diff .ti { color: #d29922; }
+.badge-version-diff .vs { color: var(--faint); font-weight: 500; margin-inline: .15rem; }
 
 .tag-row { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
 .tag-badge {

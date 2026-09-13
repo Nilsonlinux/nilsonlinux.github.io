@@ -110,7 +110,23 @@ def community_badge(plugin_id: str, community_ids: set) -> str:
     return '<span class="badge badge-dev"><i class="ti ti-tools" aria-hidden="true"></i> Em desenvolvimento</span>'
 
 
-def build_page(plugin, template: str, plugins, community_ids: set) -> str:
+def community_version_badge(plugin, community_versions: dict) -> str:
+    """Compare the version published on the Noctalia Community catalog with the
+    one on this page: green when in sync, amber with the delta when they differ;
+    empty when the plugin is not published on the community."""
+    community_version = community_versions.get(plugin["id"])
+    if community_version is None:
+        return ""
+    my_version = str(plugin.get("version", ""))
+    community_version = str(community_version)
+    if my_version == community_version:
+        return (f'<span class="badge badge-community" title="Versão da Community em dia"><i class="ti ti-checks" aria-hidden="true"></i> '
+                f'Community v{html.escape(community_version)}</span>')
+    return (f'<span class="badge badge-version-diff" title="Versão da Community diferente da desta página"><i class="ti ti-alert-triangle" aria-hidden="true"></i> '
+            f'Community v{html.escape(community_version)} <span class="vs">vs</span> aqui v{html.escape(my_version)}</span>')
+
+
+def build_page(plugin, template: str, plugins, community_versions: dict) -> str:
     folder = plugin["id"].split("/")[-1]
     name = plugin["name"]
     description = plugin.get("description", "")
@@ -134,7 +150,8 @@ def build_page(plugin, template: str, plugins, community_ids: set) -> str:
         "{{VERSIONS_TABLE}}": versions_rows(plugin),
         "{{GITHUB_URL}}": f"https://github.com/{OWNER}/{REPO}/tree/main/{folder}",
         "{{FOOTER_PLUGIN_LIST}}": footer_plugin_list(plugins),
-        "{{COMMUNITY_BADGE}}": community_badge(plugin["id"], community_ids),
+        "{{COMMUNITY_BADGE}}": community_badge(plugin["id"], set(community_versions)),
+        "{{COMMUNITY_VERSION}}": community_version_badge(plugin, community_versions),
     }
     page = template
     for token, value in repl.items():
@@ -144,10 +161,11 @@ def build_page(plugin, template: str, plugins, community_ids: set) -> str:
 
 def main() -> int:
     catalog = tomllib.loads(fetch(f"{RAW}/catalog.toml"))
-    community_ids = set()
+    community_versions = {}
     try:
-        community_ids = {p["id"] for p in tomllib.loads(fetch(COMMUNITY_CATALOG_URL)).get("plugin", []) if "id" in p}
-        print(f"Community catalog: {len(community_ids)} plugins loaded")
+        community_plugins = tomllib.loads(fetch(COMMUNITY_CATALOG_URL)).get("plugin", [])
+        community_versions = {p["id"]: p.get("version") for p in community_plugins if "id" in p}
+        print(f"Community catalog: {len(community_versions)} plugins loaded")
     except Exception as exc:
         print(f"WARNING: could not fetch community catalog ({exc}); all plugins will show 'Em desenvolvimento'", file=sys.stderr)
     plugins = [p for p in catalog.get("plugin", []) if (p.get("author") or "").casefold() == OWNER.casefold()]
@@ -161,7 +179,7 @@ def main() -> int:
     for plugin in plugins:
         folder = plugin["id"].split("/")[-1]
         dest = PLUGINS_DIR / folder / "index.html"
-        content = build_page(plugin, template, plugins, community_ids)
+        content = build_page(plugin, template, plugins, community_versions)
         if dest.exists():
             if dest.read_text(encoding="utf-8") != content:
                 dest.write_text(content, encoding="utf-8")
