@@ -1,5 +1,5 @@
 {
-  "updated_at": 1789343273,
+  "updated_at": 1789352786,
   "source": "Nilsonlinux/noctalia-plugins issues",
   "reactions": {
     "contact-sounds": {
@@ -26,6 +26,11 @@
       "likes": 1,
       "issues": 1,
       "issue": 6
+    },
+    "world-radio": {
+      "likes": 0,
+      "issues": 1,
+      "issue": 8
     }
   }
 }
