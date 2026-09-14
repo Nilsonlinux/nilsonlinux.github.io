@@ -12,14 +12,14 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<link rel="icon" href="../../img/user.png" type="image/png" />
-	<meta name="description" content="Run an internet speed test with a live speedometer and detailed results." />
+	<meta name="description" content="Browse thousands of radio stations from around the world with country flags, play them from a dashboard panel." />
 	<meta name="theme-color" content="#070722" />
 	<meta property="og:type" content="website" />
 	<meta property="og:site_name" content="Nilsonlinux" />
-	<meta property="og:title" content="Speedtest Meter · Nilsonlinux" />
-	<meta property="og:description" content="Run an internet speed test with a live speedometer and detailed results." />
-	<meta property="og:image" content="https://raw.githubusercontent.com/Nilsonlinux/noctalia-plugins/main/speedtest-meter/thumbnail.webp" />
-	<title>Speedtest Meter · Plugins · Nilsonlinux</title>
+	<meta property="og:title" content="World Radio · Nilsonlinux" />
+	<meta property="og:description" content="Browse thousands of radio stations from around the world with country flags, play them from a dashboard panel." />
+	<meta property="og:image" content="https://raw.githubusercontent.com/Nilsonlinux/noctalia-plugins/main/world-radio/thumbnail.webp" />
+	<title>World Radio · Plugins · Nilsonlinux</title>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -58,42 +58,30 @@
 
 				<div class="hero-section reveal">
 					<div class="hero-image">
-						<img src="https://raw.githubusercontent.com/Nilsonlinux/noctalia-plugins/main/speedtest-meter/thumbnail.webp" alt="Speedtest Meter" loading="eager" />
+						<img src="https://raw.githubusercontent.com/Nilsonlinux/noctalia-plugins/main/world-radio/thumbnail.webp" alt="World Radio" loading="eager" />
 						<div class="preview-placeholder" style="display:none"><div class="placeholder-icon">📦</div></div>
 					</div>
 				</div>
 
 				<div class="badge-row reveal">
-					<span class="badge badge-community"><i class="ti ti-world" aria-hidden="true"></i> On Noctalia Community</span>
-					<span class="badge badge-community" title="Versão da Community em dia"><i class="ti ti-checks" aria-hidden="true"></i> Community v1.4.5</span>
-					<a class="reaction-btn" data-reaction data-folder="speedtest-meter" href="#" target="_blank" rel="noopener noreferrer" title="Curtir no GitHub"><i class="ti ti-thumb-up" aria-hidden="true"></i><strong data-likes>0</strong><span data-likes-word> joinhas</span></a>
-					<span class="badge"><i class="ti ti-edit" aria-hidden="true"></i> v1.4.5</span>
+					<span class="badge badge-dev"><i class="ti ti-tools" aria-hidden="true"></i> Em desenvolvimento</span>
+					
+					<a class="reaction-btn" data-reaction data-folder="world-radio" href="#" target="_blank" rel="noopener noreferrer" title="Curtir no GitHub"><i class="ti ti-thumb-up" aria-hidden="true"></i><strong data-likes>0</strong><span data-likes-word> joinhas</span></a>
+					<span class="badge"><i class="ti ti-edit" aria-hidden="true"></i> v1.0.0</span>
 					<span class="badge"><i class="ti ti-user" aria-hidden="true"></i> Nilsonlinux</span>
 				</div>
 
-				<div class="tag-row reveal"><a href="../../index.html" class="tag-badge">network</a><a href="../../index.html" class="tag-badge">indicator</a><a href="../../index.html" class="tag-badge">bar</a><a href="../../index.html" class="tag-badge">panel</a>
+				<div class="tag-row reveal"><a href="../../index.html" class="tag-badge">utility</a><a href="../../index.html" class="tag-badge">service</a><a href="../../index.html" class="tag-badge">panel</a><a href="../../index.html" class="tag-badge">bar</a>
 				</div>
 
 				<div class="about-section reveal">
 					<h2 class="section-title">Sobre</h2>
 					<div class="readme-content">
-						<h1>Speedtest Meter</h1>
-<p>Run an internet speed test with a live speedometer and detailed results.</p>
-<h2>What it does</h2>
-<p>Speedtest Meter runs a network speed test using the Ookla Speedtest CLI or
-<code>speedtest-cli</code>, displaying real-time results with a live speedometer
-gauge. It measures:</p>
-<ul>
-<li>Download speed (Mbps)</li>
-<li>Upload speed (Mbps)</li>
-<li>Ping (ms)</li>
-<li>Jitter (ms)</li>
-<li>Packet loss (%)</li>
-<li>Server details (name, host, location, country, IP)</li>
-<li>Connection details (ISP, external IP, city, region, country, organization)</li>
-</ul>
-<p>The panel shows a visual speedometer during the test and displays full
-technical results upon completion.</p>
+						<h1>World Radio</h1>
+<p>Browse thousands of internet radio stations from around the world and play
+them straight from a Noctalia panel - each country shows its flag, and while a
+station plays, its logo appears in the media widget thanks to mpv's
+<code>--cover-art-files</code>.</p>
 <h2>Plugin</h2>
 <table>
 <thead>
@@ -105,18 +93,87 @@ technical results upon completion.</p>
 <tbody>
 <tr>
 <td>ID</td>
-<td><code>nilsonlinux/speedtest-meter</code></td>
+<td><code>nilsonlinux/world-radio</code></td>
 </tr>
 <tr>
 <td>Entries</td>
-<td>Bar widget: <code>speedtest-widget</code>; Panel: <code>speedtest</code></td>
+<td>Bar widget: <code>radio</code>; Panel: <code>Panel</code></td>
 </tr>
 </tbody>
 </table>
-<p><strong>Entries:</strong>
-- <strong>Widget:</strong> <code>speedtest-widget</code> - Shows an icon in the bar; click to open the panel
-- <strong>Panel:</strong> <code>speedtest</code> - Runs the speed test and displays the results</p>
+<h2>Features</h2>
+<ul>
+<li><strong>Dashboard</strong> - two stat cards (total stations and total countries) fetched
+  from the radio-browser.info stats API, a searchable list of every country
+  sorted by station count, and each country's flag in a small rounded square
+  matching the plugin's cards.</li>
+<li><strong>Per-country stations</strong> - tap a country to list its stations ordered by
+  votes. Rows show the station's favicon (downloaded on demand), name, codec,
+  bitrate and vote count, with a <strong>Load more</strong> button for the next page
+  (100 stations per page).</li>
+<li><strong>Favorites</strong> - star any station to save it; all favorites live in one
+  place and are persisted to disk.</li>
+<li><strong>Local radios</strong> - add your own stations by URL (name is optional and
+  guessed from the host). Each one can be played, favorited, or removed;
+  they persist across restarts in a separate file.</li>
+<li><strong>Playback via mpv</strong> - stations are played through <code>mpv</code> at 85% volume
+  (falls back to <code>ffplay</code> when mpv is missing). Starting a new station stops
+  the previous one.</li>
+<li><strong>Station logo in the media widget</strong> - the playing station's favicon is
+  passed to mpv via <code>--cover-art-files</code>, which makes mpv-mpris publish it as
+  <code>mpris:artUrl</code>; Noctalia's media tab then shows the station's own logo.</li>
+<li><strong>Now playing on the bar</strong> - while a station plays, the bar widget shows its
+  name next to the icon (configurable, see <code>show_now_playing</code>) and a tooltip
+  with "Now playing: <station>".</li>
+<li><strong>Two languages</strong> - English and <code>pt-BR</code> translations.</li>
+</ul>
+<h2>How it works</h2>
+<ul>
+<li><code>panel.luau</code> is the only code entry. It fetches data from
+  <code>radio-browser.info</code> (<code>de1.api.radio-browser.info</code>): <code>/json/countries</code>,
+  <code>/json/stats</code>, and <code>/json/stations/search</code> per country (<code>hidebroken=true</code>,
+  ordered by votes). Responses are cached as <code>countries.json</code> and <code>stats.json</code>
+  for 4 hours.</li>
+<li>Playback runs <code>mpv --no-video --no-terminal --volume=85 &lt;url&gt;</code>; the PID is
+  written to <code>player.pid</code> so the next play (or <strong>Stop</strong>) can kill it
+  cleanly. If the station has a logo and it's already cached, it's added with
+  <code>--cover-art-files</code>; otherwise the favicon downloads in the background so
+  the next play shows it.</li>
+<li>While playing, the plugin publishes <code>{name, uuid, url}</code> on the <code>playing</code>
+  state channel. <code>widget.luau</code> watches that channel to update the bar text,
+  tooltip and widget icon (<code>glyph</code>).</li>
+<li>Favorites and local radios are persisted as <code>favorites.json</code> and
+  <code>custom-stations.json</code>; station logos are stored under <code>thumbs/</code>. All files
+  live in the plugin's data directory, so they survive plugin reloads.</li>
+</ul>
+<p>Open the panel directly with:</p>
+<pre><code class="language-sh">noctalia msg panel-toggle nilsonlinux/world-radio:Panel
+</code></pre>
+<h2>Requirements</h2>
+<ul>
+<li><code>mpv</code> (the plugin's declared dependency). When only <code>ffplay</code> is available,
+  playback falls back to it (<code>-nodisp -loglevel quiet -autoexit -volume 85</code>).</li>
+<li>The panel only works while a network connection is available to reach
+  <code>radio-browser.info</code>.</li>
+</ul>
+<h2>Usage</h2>
+<ol>
+<li>Click the radio widget in the bar (or open the panel via IPC).</li>
+<li><strong>Dashboard</strong> - search or scroll the country list; the stat cards show the
+   total of stations and countries. Tap a country to open it.</li>
+<li><strong>Country view</strong> - tap the play button on a station to start it (it
+   becomes a stop button while playing), the star to favorite it, or <strong>Load
+   more</strong> for the next page.</li>
+<li><strong>Favorites</strong> - the star button in the header lists every station you
+   starred.</li>
+<li><strong>Local radios</strong> - the broadcast button in the header opens your saved
+   stations; <code>+</code> lets you add one with a stream URL (and an optional name).
+   Use the trash button to remove it.</li>
+<li>While a station plays, check the media widget for the station's logo, and
+   the bar for the now-playing name.</li>
+</ol>
 <h2>Settings</h2>
+<h3>Bar Widget</h3>
 <table>
 <thead>
 <tr>
@@ -128,85 +185,28 @@ technical results upon completion.</p>
 </thead>
 <tbody>
 <tr>
-<td><code>glyph</code> (widget)</td>
 <td><code>glyph</code></td>
-<td><code>brand-speedtest</code></td>
-<td>Icon shown in the bar for the <code>speedtest-widget</code> widget.</td>
+<td><code>glyph</code></td>
+<td><code>radio</code></td>
+<td>Icon shown in the bar for the widget.</td>
+</tr>
+<tr>
+<td><code>show_now_playing</code></td>
+<td><code>bool</code></td>
+<td><code>true</code></td>
+<td>Show the currently playing station name next to the icon (the tooltip always keeps it).</td>
 </tr>
 </tbody>
 </table>
-<h2>Requirements</h2>
-<p>At least one of the following must be installed and on PATH:</p>
+<h2>Notes</h2>
 <ul>
-<li><strong><code>speedtest</code></strong> (Ookla CLI) - preferred backend; gives a truly live gauge
-  with per-phase progress. <code>speedtest --version</code> is checked for the string
-  "Ookla" before it's trusted, since some distros' <code>speedtest-cli</code> package
-  also installs a same-named <code>speedtest</code> binary.</li>
-<li><strong><code>speedtest-cli</code></strong> (Python implementation) - fallback backend. No
-  incremental progress, so the gauge pulses instead of tracking real
-  numbers while it runs — the final result is still complete either way.</li>
-<li><strong><code>stdbuf</code></strong> (coreutils) - used, when present, to force line-buffered
-  output from the Ookla CLI so the live gauge updates in real time instead
-  of only at the end. Present on virtually every Linux system.</li>
+<li>The plugin has no background service: all fetching, caching and playback is
+  driven from the panel, so nothing runs while the panel is closed.</li>
+<li><code>countries.json</code>, <code>stats.json</code>, <code>thumbs/</code> and <code>player.pid</code> are runtime data
+  and can be safely deleted to force a refresh.</li>
+<li>Station logos sometimes fail to download (some favicons return 403/404) -
+  playback is never blocked by that; the station just plays without artwork.</li>
 </ul>
-<p>Install the Ookla Speedtest CLI (recommended) or the Python fallback:</p>
-<pre><code class="language-bash"># Arch Linux (AUR) — package name varies, check `yay -Ss speedtest` first
-yay -S speedtest-bin
-
-# Ubuntu/Debian
-curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | sudo bash
-sudo apt-get install speedtest
-
-# Fedora
-curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.rpm.sh | sudo bash
-sudo dnf install speedtest
-
-# Or the Python fallback (also in most distros' official repos, e.g.
-# Arch: pacman -S speedtest-cli, plus Debian/Ubuntu, Fedora, openSUSE, Alpine)
-pip install speedtest-cli
-</code></pre>
-<p><code>stdbuf</code> ships as part of coreutils and is already installed on virtually
-every Linux system — no separate install step needed.</p>
-<p>If neither speedtest tool is found, the error screen shows the right
-install command for the detected package manager (pacman/apt/dnf/zypper/apk)
-automatically.</p>
-<h2>External dependencies</h2>
-<h3>Third-party services</h3>
-<ul>
-<li><strong>ipapi.co</strong> - After every successful test, the panel sends one request
-  to <code>https://ipapi.co/json/</code> to resolve the client's public IP into
-  geolocation data (city, region, country, organization) shown alongside
-  the test server's own location. No data is stored or transmitted beyond
-  that single request.  </li>
-</ul>
-<h2>Legacy <code>speedtest-cli</code> behavior</h2>
-<p>The human-readable stream is kept on screen in the original order. When <code>Upload:</code> arrives, the plugin stays on the live Upload phase while the final Upload number animates into place.</p>
-<p>Only after the bandwidth test has completed does the plugin start the metadata enrichment:</p>
-<ol>
-<li>Query the current Speedtest.net server directory using the sponsor/city shown by the completed test.</li>
-<li>Read the server <code>host</code> and <code>country</code> from that directory.</li>
-<li>Resolve the server hostname to an IPv4 address.</li>
-<li>Use <code>ipapi.co/&lt;server-ip&gt;/json/</code> only when Host or Country is still missing.</li>
-<li>Persist every successful ipapi response in <code>/ipapi-cache.json</code>, keyed by server IP, so the same server IP is never queried again on later tests.</li>
-<li>If ipapi returns HTTP 429, keep a global cooldown in the cache to avoid sending more requests until the cooldown expires.</li>
-<li>Show the final result screen only after the Upload animation and metadata phase are complete, with a timeout fallback.</li>
-</ol>
-<p>The <code>https://ipapi.co/json/</code> client-IP request is not used for server metadata.  </p>
-<h2>Installation</h2>
-<p>Install via Noctalia Plugin Store.</p>
-<h2>Usage</h2>
-<ol>
-<li>Click the widget in the bar to open the panel</li>
-<li>Click "Start test" to run a speed test</li>
-<li>Watch the gauge while it runs (live numbers with the Ookla backend, a
-   pulse with the legacy backend)</li>
-<li>Review the results: download/upload, ping, jitter, packet loss, test
-   server details, your ISP and external IP</li>
-</ol>
-<h2>Panel IPC Command</h2>
-<p>To toggle the panel from outside the plugin:</p>
-<pre><code>noctalia msg panel-toggle nilsonlinux/speedtest-meter:speedtest
-</code></pre>
 <h2>License</h2>
 <p>MIT</p>
 					</div>
@@ -221,14 +221,9 @@ automatically.</p>
 						<tbody>
 							
 							<tr>
-								<td><span class="version-cell">v1.4.5 <span class="version-latest">latest</span></span></td>
-								<td>18</td>
-								<td>10 set 2026</td>
-							</tr>
-							<tr>
-								<td><span class="version-cell">v1.0.0 <span class="version-oldest">primeira versão</span></span></td>
-								<td>14</td>
-								<td>06 set 2026</td>
+								<td><span class="version-cell">v1.0.0 <span class="version-latest">latest</span></span></td>
+								<td>24</td>
+								<td>14 set 2026</td>
 							</tr>
 						</tbody>
 					</table>
@@ -236,7 +231,7 @@ automatically.</p>
 				</div>
 
 				<div class="actions reveal">
-					<a href="https://github.com/Nilsonlinux/noctalia-plugins/tree/main/speedtest-meter" target="_blank" rel="noopener noreferrer" class="github-btn"><i class="ti ti-brand-github" aria-hidden="true"></i> Ver no GitHub <i class="ti ti-external-link" aria-hidden="true"></i></a>
+					<a href="https://github.com/Nilsonlinux/noctalia-plugins/tree/main/world-radio" target="_blank" rel="noopener noreferrer" class="github-btn"><i class="ti ti-brand-github" aria-hidden="true"></i> Ver no GitHub <i class="ti ti-external-link" aria-hidden="true"></i></a>
 				</div>
 			</div>
 		</main>
@@ -292,7 +287,7 @@ automatically.</p>
 				</div>
 				<div class="footer-bottom">
 					<p>© <span id="year"></span> Nilsonlinux · feito com código, Linux e curiosidade.</p>
-					<p>Speedtest Meter · plugin para Noctalia</p>
+					<p>World Radio · plugin para Noctalia</p>
 				</div>
 			</div>
 		</footer>
