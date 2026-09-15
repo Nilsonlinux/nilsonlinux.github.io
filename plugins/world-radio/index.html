@@ -67,7 +67,7 @@
 					<span class="badge badge-dev"><i class="ti ti-tools" aria-hidden="true"></i> Em desenvolvimento</span>
 					
 					<a class="reaction-btn" data-reaction data-folder="world-radio" href="#" target="_blank" rel="noopener noreferrer" title="Curtir no GitHub"><i class="ti ti-thumb-up" aria-hidden="true"></i><strong data-likes>0</strong><span data-likes-word> joinhas</span></a>
-					<span class="badge"><i class="ti ti-edit" aria-hidden="true"></i> v1.0.0</span>
+					<span class="badge"><i class="ti ti-edit" aria-hidden="true"></i> v1.0.3</span>
 					<span class="badge"><i class="ti ti-user" aria-hidden="true"></i> Nilsonlinux</span>
 				</div>
 
@@ -120,18 +120,22 @@ station plays, its logo appears in the media widget thanks to mpv's
 <li><strong>Favorites</strong> - star any station to save it; all favorites live in one
   place and are persisted to disk.</li>
 <li><strong>Local radios</strong> - add your own stations by URL (name is optional and
-  guessed from the host). Each one can be played, favorited, or removed;
-  they persist across restarts in a separate file.</li>
+  guessed from the host), with an optional cover image URL that shows as the
+  station's thumbnail in the list and as its logo in the media widget. Each
+  one can be edited later (name, URL or cover), played, favorited, or
+  removed; they persist across restarts in a separate file.</li>
 <li><strong>Playback via mpv</strong> - stations are played through <code>mpv</code> at 85% volume
   (falls back to <code>ffplay</code> when mpv is missing). Starting a new station stops
   the previous one. The mini player shows a pulsing green live icon while a
-  station is playing.</li>
+  station is playing, with the current track under the station name (when the
+  stream broadcasts song metadata).</li>
 <li><strong>Station logo in the media widget</strong> - the playing station's favicon is
   passed to mpv via <code>--cover-art-files</code>, which makes mpv-mpris publish it as
-  <code>mpris:artUrl</code>; Noctalia's media tab then shows the station's own logo.</li>
+  <code>mpris:artUrl</code>; Noctalia's media tab then shows the station's own logo. For
+  local radios the optional cover URL you set is used as the logo.</li>
 <li><strong>Now playing on the bar</strong> - while a station plays, the bar widget shows its
   name next to the icon (configurable, see <code>show_now_playing</code>) and a tooltip
-  with "Now playing: <code>&lt;station&gt;</code>".</li>
+ with "Now playing: <code>&lt;station&gt;</code>".</li>
 <li><strong>Two languages</strong> - English and <code>pt-BR</code> translations.</li>
 </ul>
 <h2>Requirements</h2>
@@ -142,11 +146,16 @@ automatically falls back to <code>ffplay</code> (provided by <code>ffmpeg</code>
 <li><code>mpv</code> - the primary player used by the plugin (declared dependency).</li>
 <li><code>ffmpeg</code> - only used as the <code>ffplay</code> fallback when <code>mpv</code> is not installed
   (declared dependency).</li>
-<li><code>mpv-mpris</code> - <em>optional</em>. Required only for the station's logo to appear in
-  Noctalia's media widget/tab: mpv embeds the cover via <code>--cover-art-files</code>,
-  but <code>mpv-mpris</code> is what publishes it as <code>mpris:artUrl</code> through MPRIS, and
-  Noctalia reads the artwork from exactly that property. Without it Noctalia
-  sees no MPRIS player, so no now-playing info and no artwork.</li>
+<li><code>mpv-mpris</code> - <em>optional</em>. Required for the station's logo to appear in
+  Noctalia's media widget/tab and for the current track to show in the mini
+  player: mpv embeds the cover via <code>--cover-art-files</code>, but <code>mpv-mpris</code> is
+  what publishes MPRIS (<code>mpris:artUrl</code>, <code>xesam:title</code>), and Noctalia reads
+  the artwork from exactly that property. Without it Noctalia sees no MPRIS
+  player, so no now-playing info and no artwork.</li>
+<li><code>playerctl</code> - <em>optional</em>. Used to query MPRIS for the current track title,
+  shown under the station name in the mini player. Needs <code>mpv-mpris</code> to be
+  present too: without either of them the mini player simply hides the track
+  line.</li>
 <li><strong>Network</strong> - reaching <code>radio-browser.info</code> is required for the country
   list, the stats cards, all station lists and searches. No API key or
   account is needed; the service is a public, free API.</li>
@@ -172,8 +181,9 @@ automatically falls back to <code>ffplay</code> (provided by <code>ffmpeg</code>
 <li><strong>Favorites</strong> - the star button in the header lists every station you
    starred.</li>
 <li><strong>Local radios</strong> - the broadcast button in the header opens your saved
-   stations; <code>+</code> lets you add one with a stream URL (and an optional name).
-   Use the trash button to remove it.</li>
+   stations; <code>+</code> lets you add one with a stream URL (an optional name and an
+   optional cover image URL). Use the pencil button to edit it and the trash
+   button to remove it.</li>
 <li>While a station plays, check the media widget for the station's logo, and
    the bar for the now-playing name.</li>
 </ol>
@@ -232,6 +242,10 @@ the bar text, tooltip and icon.</p>
   player process is still alive; deleting <code>playing.json</code> clears it.</li>
 <li>Station logos sometimes fail to download (some favicons return 403/404) -
   playback is never blocked by that; the station just plays without artwork.</li>
+<li>The track title under the station name depends on the station broadcasting
+  stream metadata (ICY "StreamTitle"): only stations that send it will show a
+  title, and only while <code>playerctl</code> + <code>mpv-mpris</code> are installed. Stations
+  without stream metadata never show a title.</li>
 </ul>
 <h2>License</h2>
 <p>MIT</p>
@@ -247,7 +261,12 @@ the bar text, tooltip and icon.</p>
 						<tbody>
 							
 							<tr>
-								<td><span class="version-cell">v1.0.0 <span class="version-latest">latest</span></span></td>
+								<td><span class="version-cell">v1.0.3 <span class="version-latest">latest</span></span></td>
+								<td>24</td>
+								<td>15 set 2026</td>
+							</tr>
+							<tr>
+								<td><span class="version-cell">v1.0.0 <span class="version-oldest">primeira versão</span></span></td>
 								<td>24</td>
 								<td>14 set 2026</td>
 							</tr>
