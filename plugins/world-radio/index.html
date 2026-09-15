@@ -12,12 +12,12 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<link rel="icon" href="../../img/user.png" type="image/png" />
-	<meta name="description" content="Browse thousands of radio stations from around the world with country flags, play them from a dashboard panel." />
+	<meta name="description" content="Browse thousands of radio stations from around the world with country flags." />
 	<meta name="theme-color" content="#070722" />
 	<meta property="og:type" content="website" />
 	<meta property="og:site_name" content="Nilsonlinux" />
 	<meta property="og:title" content="World Radio · Nilsonlinux" />
-	<meta property="og:description" content="Browse thousands of radio stations from around the world with country flags, play them from a dashboard panel." />
+	<meta property="og:description" content="Browse thousands of radio stations from around the world with country flags." />
 	<meta property="og:image" content="https://raw.githubusercontent.com/Nilsonlinux/noctalia-plugins/main/world-radio/thumbnail.webp" />
 	<title>World Radio · Plugins · Nilsonlinux</title>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -71,7 +71,7 @@
 					<span class="badge"><i class="ti ti-user" aria-hidden="true"></i> Nilsonlinux</span>
 				</div>
 
-				<div class="tag-row reveal"><a href="../../index.html" class="tag-badge">music</a><a href="../../index.html" class="tag-badge">radio</a><a href="../../index.html" class="tag-badge">utility</a><a href="../../index.html" class="tag-badge">panel</a><a href="../../index.html" class="tag-badge">bar</a>
+				<div class="tag-row reveal"><a href="../../index.html" class="tag-badge">music</a><a href="../../index.html" class="tag-badge">utility</a><a href="../../index.html" class="tag-badge">panel</a><a href="../../index.html" class="tag-badge">bar</a>
 				</div>
 
 				<div class="about-section reveal">
@@ -153,6 +153,11 @@ station plays, its logo appears in the media widget thanks to mpv's
 <ul>
 <li><code>mpv</code> (the plugin's declared dependency). When only <code>ffplay</code> is available,
   playback falls back to it (<code>-nodisp -loglevel quiet -autoexit -volume 85</code>).</li>
+<li><code>mpv-mpris</code> - required for the station's logo to show in Noctalia's media
+  widget/tab. mpv only embeds the cover via <code>--cover-art-files</code>; <code>mpv-mpris</code> is
+  what publishes it as <code>mpris:artUrl</code> through MPRIS, and Noctalia reads the
+  artwork from exactly that property. Without it, Noctalia sees no MPRIS
+  player at all, so no now-playing info and no artwork.</li>
 <li>The panel only works while a network connection is available to reach
   <code>radio-browser.info</code>.</li>
 </ul>
@@ -204,6 +209,10 @@ station plays, its logo appears in the media widget thanks to mpv's
   driven from the panel, so nothing runs while the panel is closed.</li>
 <li><code>countries.json</code>, <code>stats.json</code>, <code>thumbs/</code> and <code>player.pid</code> are runtime data
   and can be safely deleted to force a refresh.</li>
+<li>While a station plays, the mini player state is persisted to <code>playing.json</code>.
+  If the plugin reloads (for example after toggling another plugin in
+  Settings), the panel restores the mini player on next open as long as the
+  player process is still alive; deleting <code>playing.json</code> clears it.</li>
 <li>Station logos sometimes fail to download (some favicons return 403/404) -
   playback is never blocked by that; the station just plays without artwork.</li>
 </ul>
