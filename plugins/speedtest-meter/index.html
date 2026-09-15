@@ -65,9 +65,9 @@
 
 				<div class="badge-row reveal">
 					<span class="badge badge-community"><i class="ti ti-world" aria-hidden="true"></i> On Noctalia Community</span>
-					<span class="badge badge-community" title="Versão da Community em dia"><i class="ti ti-checks" aria-hidden="true"></i> Community v1.4.5</span>
+					<span class="badge badge-version-diff" title="Versão da Community diferente da desta página"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Community v1.4.5 <span class="vs">vs</span> aqui v1.5.1</span>
 					<a class="reaction-btn" data-reaction data-folder="speedtest-meter" href="#" target="_blank" rel="noopener noreferrer" title="Curtir no GitHub"><i class="ti ti-thumb-up" aria-hidden="true"></i><strong data-likes>0</strong><span data-likes-word> joinhas</span></a>
-					<span class="badge"><i class="ti ti-edit" aria-hidden="true"></i> v1.4.5</span>
+					<span class="badge"><i class="ti ti-edit" aria-hidden="true"></i> v1.5.1</span>
 					<span class="badge"><i class="ti ti-user" aria-hidden="true"></i> Nilsonlinux</span>
 				</div>
 
@@ -93,7 +93,13 @@ gauge. It measures:</p>
 <li>Connection details (ISP, external IP, city, region, country, organization)</li>
 </ul>
 <p>The panel shows a visual speedometer during the test and displays full
-technical results upon completion.</p>
+technical results upon completion. The speedometer is a circular dial
+(with needle, tick marks and a colored progress arc) rendered live while
+the test runs, using the same ring-gauge drawing core as the official
+Noctalia "processes" plugin. The needle and arc sweep smoothly (eased,
+speedtest.net-style) toward the current speed and the tick marks light up
+as it passes. If <code>python3</code>/<code>Pillow</code> are unavailable it gracefully falls
+back to the simple circular display.</p>
 <h2>Plugin</h2>
 <table>
 <thead>
@@ -149,6 +155,12 @@ technical results upon completion.</p>
   output from the Ookla CLI so the live gauge updates in real time instead
   of only at the end. Present on virtually every Linux system.</li>
 </ul>
+<p>Optional (only for the circular speedometer dial):</p>
+<ul>
+<li><strong><code>python3</code></strong> + <strong><code>Pillow</code></strong> (<code>pip install Pillow</code>) - render the
+  speedometer dial images live. Without them the plugin keeps working but
+  shows the simpler circle display instead.</li>
+</ul>
 <p>Install the Ookla Speedtest CLI (recommended) or the Python fallback:</p>
 <pre><code class="language-bash"># Arch Linux (AUR) — package name varies, check `yay -Ss speedtest` first
 yay -S speedtest-bin
@@ -179,6 +191,19 @@ automatically.</p>
   the test server's own location. No data is stored or transmitted beyond
   that single request.  </li>
 </ul>
+<h3>Local gauge renderer</h3>
+<ul>
+<li><strong><code>python3</code> + <code>Pillow</code> worker</strong> (<code>scripts/speed_gauge.py</code>, which uses
+  <code>scripts/draw_graph.py</code>) - when available, redraws the two speedometer
+  dials live while a test runs, using the same ring-gauge drawing core as
+  the official "processes" plugin. The worker reads a tiny JSON snapshot
+  that the panel writes with the current speeds; the needle sweeps toward
+  the target with easing (speedtest.net style), the tick marks light up as
+  it passes, and re-rendering stops once the value settles. If it cannot
+  start (no <code>python3</code> or <code>Pillow</code>), the plugin falls back to the plain
+  circular display and keeps working normally; nothing is sent over the
+  network besides the usual speedtest/ipapi requests.  </li>
+</ul>
 <h2>Legacy <code>speedtest-cli</code> behavior</h2>
 <p>The human-readable stream is kept on screen in the original order. When <code>Upload:</code> arrives, the plugin stays on the live Upload phase while the final Upload number animates into place.</p>
 <p>Only after the bandwidth test has completed does the plugin start the metadata enrichment:</p>
@@ -191,15 +216,42 @@ automatically.</p>
 <li>If ipapi returns HTTP 429, keep a global cooldown in the cache to avoid sending more requests until the cooldown expires.</li>
 <li>Show the final result screen only after the Upload animation and metadata phase are complete, with a timeout fallback.</li>
 </ol>
-<p>The <code>https://ipapi.co/json/</code> client-IP request is not used for server metadata.  </p>
+<p>The <code>https://ipapi.co/json/</code> client-IP request is not used for server metadata.</p>
+<h2>Notes</h2>
+<p>While a test is running (or a result is being shown), the panel writes a
+few files to the <code>${XDG_RUNTIME_DIR}</code> directory:</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>noctalia_nilsonlinux_speedtest_live.json</code></td>
+<td>Live snapshot (current download/upload speeds and gauge scale) consumed by the gauge worker.</td>
+</tr>
+<tr>
+<td><code>noctalia_nilsonlinux_speedtest_download.png</code></td>
+<td>Download speedometer dial image (160x130).</td>
+</tr>
+<tr>
+<td><code>noctalia_nilsonlinux_speedtest_upload.png</code></td>
+<td>Upload speedometer dial image (160x130).</td>
+</tr>
+</tbody>
+</table>
+<p><code>${XDG_RUNTIME_DIR}</code> is used when set (falling back to <code>${TMPDIR}</code>, then
+<code>/tmp</code>). The files are removed when the panel closes.  </p>
 <h2>Installation</h2>
 <p>Install via Noctalia Plugin Store.</p>
 <h2>Usage</h2>
 <ol>
 <li>Click the widget in the bar to open the panel</li>
 <li>Click "Start test" to run a speed test</li>
-<li>Watch the gauge while it runs (live numbers with the Ookla backend, a
-   pulse with the legacy backend)</li>
+<li>Watch the circular speedometer dial while it runs (live numbers with the
+   Ookla backend, a pulse with the legacy backend)</li>
 <li>Review the results: download/upload, ping, jitter, packet loss, test
    server details, your ISP and external IP</li>
 </ol>
@@ -221,9 +273,9 @@ automatically.</p>
 						<tbody>
 							
 							<tr>
-								<td><span class="version-cell">v1.4.5 <span class="version-latest">latest</span></span></td>
+								<td><span class="version-cell">v1.5.1 <span class="version-latest">latest</span></span></td>
 								<td>18</td>
-								<td>10 set 2026</td>
+								<td>15 set 2026</td>
 							</tr>
 							<tr>
 								<td><span class="version-cell">v1.0.0 <span class="version-oldest">primeira versão</span></span></td>
