@@ -64,8 +64,8 @@
 				</div>
 
 				<div class="badge-row reveal">
-					<span class="badge badge-dev"><i class="ti ti-tools" aria-hidden="true"></i> Em desenvolvimento</span>
-					
+					<span class="badge badge-community"><i class="ti ti-world" aria-hidden="true"></i> On Noctalia Community</span>
+					<span class="badge badge-version-diff" title="Versão da Community diferente da desta página"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Community v1.0.0 <span class="vs">vs</span> aqui v1.0.4</span>
 					<a class="reaction-btn" data-reaction data-folder="world-radio" href="#" target="_blank" rel="noopener noreferrer" title="Curtir no GitHub"><i class="ti ti-thumb-up" aria-hidden="true"></i><strong data-likes>0</strong><span data-likes-word> joinhas</span></a>
 					<span class="badge"><i class="ti ti-edit" aria-hidden="true"></i> v1.0.4</span>
 					<span class="badge"><i class="ti ti-user" aria-hidden="true"></i> Nilsonlinux</span>
@@ -229,13 +229,19 @@ the bar text, tooltip and icon.</p>
   <code>/json/stations/search</code> (<code>hidebroken=true</code>, ordered by votes) with a
   <code>User-Agent</code> of <code>nilsonlinux/world-radio/1.0.0</code>. No credentials are sent.</li>
 <li><strong>Processes</strong> - playback spawns <code>mpv</code> (or <code>ffplay</code>) per station; the PID is
-  stored in <code>player.pid</code> so the next play/Stop kills it cleanly. The debounce
-  and animation timers shell out to <code>sleep</code>, and playback cleanup uses <code>kill</code>.</li>
+  stored in <code>player.pid</code> so the next play/Stop kills it cleanly. Before any
+  <code>kill</code>, the PID is cross-checked against <code>/proc/&lt;pid&gt;/comm</code> and
+  <code>/proc/&lt;pid&gt;/cmdline</code> to confirm the process is actually <code>mpv</code>/<code>ffplay</code>, so
+  a stale pid file that was recycled by an unrelated process is never
+  signalled. The debounce and animation timers shell out to <code>sleep</code>.</li>
 <li><strong>Files</strong> - runtime data lives in the plugin's data directory and survives
   reloads: <code>countries.json</code> and <code>stats.json</code> (4h cache), <code>favorites.json</code>,
   <code>custom-stations.json</code>, <code>playing.json</code> (mini player state), <code>thumbs/</code>
   (downloaded favicons) and <code>player.pid</code>. All of them can be safely deleted
-  to force a refresh.</li>
+  to force a refresh. Favicon file names derive from a sanitised station id
+  (non <code>[A-Za-z0-9_-]</code> characters are stripped) and downloads only accept
+  <code>http(s)://</code> artwork URLs, so a remote station id or favicon cannot write
+  outside <code>thumbs/</code>.</li>
 <li>While a station plays, the mini player state is persisted to <code>playing.json</code>.
   If the plugin reloads (for example after toggling another plugin in
   Settings), the panel restores the mini player on next open as long as the
