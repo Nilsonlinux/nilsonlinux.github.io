@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+	<script>
+		(function () {
+			var t = localStorage.getItem('theme');
+			if (t !== 'light' && t !== 'dark')
+				t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+			document.documentElement.setAttribute('data-theme', t);
+		})();
+	</script>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="icon" href="img/user.png" type="image/png" />
+	<meta name="description" content="Apoie o projeto Nilsonlinux — contribua com Pix ou doação para manter os projetos Linux, NLinux e Noctalia." />
+	<meta name="theme-color" content="#070722" />
+	<meta property="og:title" content="Apoie o projeto · Nilsonlinux" />
+	<meta property="og:description" content="Apoie o projeto Nilsonlinux — contribua com Pix ou doação." />
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://nilsonlinux.github.io/doar.html" />
+	<meta property="og:image" content="https://nilsonlinux.github.io/img/user.png" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<title>Apoie o projeto · Nilsonlinux</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.30.0/dist/tabler-icons.min.css">
+	<style>
+		:root, html[data-theme="dark"] {
+			color-scheme: dark;
+			--bg: #070722;
+			--bg2: #11112d;
+			--surface: #11112deb;
+			--surface-2: #1515388c;
+			--surface-3: #1a1a458c;
+			--border: #21215f;
+			--fg: #f3edf7;
+			--fg-dim: #a8a6c8;
+			--faint: #7c80b4;
+			--accent: #fff59b;
+			--accent-2: #9bfece;
+			--accent-3: #a9aefe;
+			--on-accent: #0e0e43;
+			--shadow-card: 0 1px 2px rgba(0,0,0,.35), 0 12px 32px -12px rgba(0,0,0,.55);
+			--shadow-card-hover: 0 2px 4px rgba(0,0,0,.4), 0 24px 48px -12px rgba(0,0,0,.65);
+		}
+		html[data-theme="light"] {
+			color-scheme: light;
+			--bg: #e6e8fa;
+			--bg2: #eff0ff;
+			--surface: #eff0fff0;
+			--surface-2: #d2d6ff8c;
+			--surface-3: #c6cbfb8c;
+			--border: #a8affc;
+			--fg: #2d3180;
+			--fg-dim: #5057b5;
+			--faint: #6f76c0;
+			--accent: #5d65f5;
+			--accent-2: #c9a32a;
+			--accent-3: #6b74f0;
+			--on-accent: #ffffff;
+			--shadow-card: 0 1px 2px rgba(45,49,128,.1), 0 12px 32px -12px rgba(45,49,128,.22);
+			--shadow-card-hover: 0 2px 4px rgba(45,49,128,.12), 0 24px 48px -12px rgba(45,49,128,.3);
+		}
+		* { box-sizing: border-box; margin: 0; padding: 0; }
+		html { scroll-behavior: smooth; }
+		body {
+			min-height: 100vh; font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+			color: var(--fg); background: var(--bg); overflow-x: hidden;
+			transition: background .3s ease, color .25s ease;
+		}
+		body::before {
+			content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+			background-image:
+				radial-gradient(ellipse 95% 72% at 0% -12%, color-mix(in srgb, var(--accent) 13%, transparent), transparent 52%),
+				radial-gradient(ellipse 85% 58% at 100% 4%, color-mix(in srgb, var(--accent-2) 10%, transparent), transparent 48%),
+				radial-gradient(ellipse 65% 48% at 50% 108%, color-mix(in srgb, var(--accent-3) 11%, transparent), transparent 50%);
+		}
+		a { color: inherit; text-decoration: none; }
+		button { font: inherit; cursor: pointer; }
+		::selection { background: color-mix(in srgb, var(--accent) 24%, transparent); color: var(--fg); }
+
+		.page-canvas { position: relative; min-height: 100vh; }
+		.main-col { position: relative; z-index: 1; display: flex; min-height: 100vh; flex-direction: column; }
+
+		.site-header {
+			position: sticky; top: 0; z-index: 50;
+			border-bottom: 1px solid color-mix(in srgb, var(--border) 40%, transparent);
+			background: color-mix(in srgb, var(--bg) 92%, transparent);
+			backdrop-filter: blur(20px); backdrop-filter: saturate(125%);
+		}
+		.site-header:after {
+			content: ""; position: absolute; inset: auto 0 0; height: 1px; pointer-events: none;
+			background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--accent) 22%, transparent), color-mix(in srgb, var(--accent-2) 14%, transparent), color-mix(in srgb, var(--accent) 22%, transparent), transparent);
+			opacity: .6;
+		}
+		.site-header-inner {
+			margin: 0 auto; max-width: 90rem; height: 4rem; padding: 0 1rem;
+			display: flex; align-items: center; justify-content: space-between; gap: .75rem;
+		}
+		.brand { display: flex; align-items: center; gap: .625rem; min-width: 0; }
+		.brand img { width: 2.5rem; height: 2.5rem; border-radius: .75rem; object-fit: cover; }
+		.brand-label { display: flex; flex-direction: column; line-height: 1.15; }
+		.brand-name { font-weight: 600; letter-spacing: -.02em; font-size: 1.05rem; }
+		.brand-tag { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .12em; color: var(--faint); }
+		.main-nav { display: none; align-items: center; gap: .5rem; }
+		.main-nav a {
+			display: inline-flex; height: 2.5rem; min-width: 5rem; align-items: center; justify-content: center;
+			white-space: nowrap; padding: 0 .875rem; border-radius: .5rem;
+			font-size: .875rem; font-weight: 500; color: var(--fg-dim);
+			transition: all .2s; outline: none;
+		}
+		.main-nav a:hover { background: color-mix(in srgb, var(--surface-2) 80%, transparent); color: var(--accent); }
+		.main-nav a.active { background: var(--surface-2); color: var(--accent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 22%, transparent); }
+		a.has-badge { position: relative; }
+		.nav-badge {
+			position: absolute; top: .3rem; right: .05rem; pointer-events: none;
+			display: inline-flex; align-items: center; justify-content: center;
+			width: .85rem; height: .85rem; line-height: 1;
+			animation: new-pulse 2s ease-in-out infinite;
+		}
+		.nav-badge img { width: 100%; height: 100%; object-fit: contain; display: block; }
+		@keyframes new-pulse {
+			0% { filter: drop-shadow(0 0 1px rgba(255,212,0,.9)); transform: scale(1); }
+			50% { filter: drop-shadow(0 0 6px rgba(255,212,0,.85)); transform: scale(1.15); }
+			100% { filter: drop-shadow(0 0 1px rgba(255,212,0,.9)); transform: scale(1); }
+		}
+		.header-actions { display: flex; align-items: center; justify-content: flex-end; gap: .5rem; }
+		.icon-btn {
+			display: inline-flex; width: 2.5rem; height: 2.5rem; align-items: center; justify-content: center;
+			border-radius: .5rem; border: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+			background: color-mix(in srgb, var(--surface-2) 50%, transparent); color: var(--fg);
+			font-size: 1rem; transition: all .2s; outline: none;
+		}
+		.icon-btn:hover { border-color: var(--border); background: var(--surface-2); }
+		.nav-toggle { display: inline-flex; }
+		@media (min-width: 880px) { .main-nav { display: flex; } .nav-toggle { display: none !important; } }
+		.mobile-nav {
+			position: absolute; top: calc(100% + .55rem); right: 1rem; z-index: 40;
+			display: none; flex-direction: column; gap: .15rem;
+			min-width: 230px; padding: .5rem;
+			border: 1px solid var(--border); border-radius: .9rem;
+			background: color-mix(in srgb, var(--bg) 96%, transparent);
+			backdrop-filter: blur(20px); backdrop-filter: saturate(125%);
+			box-shadow: var(--shadow-card);
+		}
+		.mobile-nav.open { display: flex; }
+		.mobile-nav a {
+			display: flex; align-items: center; gap: .6rem; padding: .75rem .875rem;
+			border-radius: .6rem; font-size: .95rem; font-weight: 500; color: var(--fg-dim);
+			transition: all .2s; outline: none;
+		}
+		.mobile-nav a:hover { background: color-mix(in srgb, var(--surface-2) 80%, transparent); color: var(--accent); }
+		.mobile-nav a.active {
+			background: var(--surface-2); color: var(--accent);
+			box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 22%, transparent);
+		}
+		.btn-primary {
+			display: inline-flex; height: 2.5rem; min-width: 6rem; align-items: center; justify-content: center;
+			gap: .5rem; padding: 0 1rem; border-radius: .5rem; border: 0;
+			background: var(--accent); color: var(--on-accent); font-size: .875rem; font-weight: 600;
+			box-shadow: 0 8px 28px -6px color-mix(in srgb, var(--accent) 40%, transparent), inset 0 0 0 1px color-mix(in srgb, var(--accent) 20%, transparent);
+			transition: all .2s; outline: none;
+		}
+		.btn-primary:hover {
+			filter: brightness(1.05);
+			box-shadow: 0 12px 36px -8px color-mix(in srgb, var(--accent) 55%, transparent), inset 0 0 0 1px color-mix(in srgb, var(--accent) 28%, transparent);
+		}
+		.btn-ghost {
+			display: inline-flex; height: 2.5rem; align-items: center; justify-content: center;
+			gap: .5rem; padding: 0 1rem; border-radius: .5rem;
+			border: 1px solid var(--border); background: var(--surface-2); color: var(--fg);
+			font-size: .875rem; font-weight: 600; transition: all .2s;
+		}
+		.btn-ghost:hover { border-color: color-mix(in srgb, var(--accent) 40%, transparent); color: var(--accent); }
+
+		.site-main { flex: 1; position: relative; z-index: 1; }
+		.site-shell { width: min(100% - 2rem, 90rem); margin: 0 auto; padding: 3rem 0 4rem; }
+
+		.page-header { text-align: center; margin-bottom: 2.5rem; }
+		.page-header h1 { font-size: clamp(2.25rem, 6vw, 3rem); font-weight: 600; letter-spacing: -.04em; }
+		.page-subtitle { margin-top: .75rem; color: var(--fg-dim); }
+		.section-title { display: flex; align-items: center; gap: .75rem; font-size: 1.4rem; font-weight: 650; letter-spacing: -.02em; margin-bottom: 1.25rem; }
+		.section-title .count {
+			font: 500 .75rem "JetBrains Mono", monospace; color: var(--fg-dim);
+			padding: .2rem .6rem; border-radius: 999px; border: 1px solid var(--border); background: var(--surface);
+		}
+		.content-section { margin-bottom: 2.5rem; }
+
+		.cta-panel {
+			border: 1px solid var(--border); border-radius: 1.25rem; background: var(--surface);
+			box-shadow: inset 0 1px rgba(255,255,255,.04), var(--shadow-card);
+			padding: 2.5rem 1.5rem; text-align: center;
+		}
+		.cta-panel h2 { font-size: clamp(1.4rem, 4vw, 1.8rem); font-weight: 650; letter-spacing: -.03em; }
+		.cta-panel p { margin-top: .6rem; color: var(--fg-dim); font-size: .92rem; line-height: 1.6; }
+		.cta-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .75rem; margin-top: 1.4rem; }
+		.cta-heart { font-size: 2.2rem; line-height: 1; }
+
+		.donate-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; margin-top: 2rem; }
+		@media (min-width: 768px) { .donate-grid { grid-template-columns: repeat(2, 1fr); } }
+		.donate-card {
+			border: 1px solid var(--border); border-radius: 1.25rem; background: var(--surface);
+			box-shadow: var(--shadow-card); padding: 1.4rem 1.5rem;
+		}
+		.donate-card h3 { display: flex; align-items: center; gap: .5rem; font-size: 1rem; font-weight: 700; margin-bottom: .9rem; }
+		.donate-card h3 .ti { color: var(--accent); font-size: 1.15rem; }
+		.donate-label { font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; color: var(--faint); margin: 1rem 0 .4rem; }
+		.code-block {
+			border: 1px solid var(--border); border-radius: .75rem;
+			background: color-mix(in srgb, var(--bg2) 85%, transparent); overflow: hidden;
+		}
+		.code-head {
+			display: flex; align-items: center; justify-content: space-between; gap: .5rem;
+			padding: .5rem .75rem; border-bottom: 1px solid var(--border);
+			font: 500 .66rem "JetBrains Mono", monospace; color: var(--faint);
+		}
+		.copy-btn {
+			border: 1px solid var(--border); background: var(--surface-2); color: var(--fg-dim);
+			border-radius: .4rem; padding: .2rem .55rem; font-size: .66rem; font-family: inherit;
+		}
+		.copy-btn:hover { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 35%, transparent); }
+		.code-block pre {
+			padding: .8rem .9rem; overflow-x: auto;
+			font: 500 .8rem/1.6 "JetBrains Mono", monospace; color: var(--fg);
+		}
+		.placeholder-note {
+			margin-top: .6rem; font: 500 .72rem "JetBrains Mono", monospace; color: var(--faint);
+		}
+		.donate-list { list-style: none; display: grid; gap: .5rem; }
+		.donate-list li {
+			font: 500 .78rem/1.6 "JetBrains Mono", monospace; color: var(--fg-dim);
+			padding: .6rem .75rem; border: 1px dashed var(--border); border-radius: .6rem;
+		}
+
+		.site-footer {
+			position: relative; z-index: 1; margin-top: auto;
+			border-top: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
+			background: color-mix(in srgb, var(--bg) 60%, transparent); backdrop-filter: blur(20px);
+		}
+		.site-footer-inner { max-width: 90rem; margin: 0 auto; padding: 2.5rem 1rem; }
+		.footer-grid { display: flex; flex-direction: column; gap: 2.5rem; }
+		@media (min-width: 1024px) { .footer-grid { flex-direction: row; align-items: flex-start; gap: 4rem; } }
+		.footer-brand { max-width: 22rem; flex-shrink: 0; }
+		.footer-brand-logo { display: flex; align-items: center; gap: .75rem; }
+		.footer-brand-logo img { width: 2.5rem; height: 2.5rem; border-radius: .75rem; object-fit: cover; }
+		.footer-blurb { margin-top: 1rem; font-size: .875rem; line-height: 1.6; color: var(--fg-dim); }
+		.footer-links { flex: 1; display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+		@media (min-width: 640px) { .footer-links { grid-template-columns: repeat(4, 1fr); } }
+		.footer-col p { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .14em; color: var(--fg); margin-bottom: .9rem; }
+		.footer-col ul { list-style: none; }
+		.footer-col li { margin-bottom: .35rem; }
+		.footer-col a { font-size: .875rem; color: var(--fg-dim); transition: all .2s; border-radius: .25rem; }
+		.footer-col a:hover { color: var(--accent); }
+		.footer-bottom {
+			margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid color-mix(in srgb, var(--border) 40%, transparent);
+			display: flex; flex-direction: column; gap: .75rem; font-size: .78rem; color: var(--fg-dim);
+		}
+		@media (min-width: 640px) { .footer-bottom { flex-direction: row; align-items: center; justify-content: space-between; } }
+
+		.back-top {
+			position: fixed; right: 1.5rem; bottom: 1.5rem; z-index: 60;
+			width: 2.75rem; height: 2.75rem; display: flex; align-items: center; justify-content: center;
+			border-radius: 999px; border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+			background: var(--accent); color: var(--on-accent); font-size: 1.25rem;
+			box-shadow: var(--shadow-card); transition: all .3s;
+			pointer-events: none; opacity: 0; transform: translateY(12px);
+		}
+		.back-top.visible { pointer-events: auto; opacity: 1; transform: none; }
+		.back-top:hover { filter: brightness(1.08); }
+
+		.reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+		.reveal.in { opacity: 1; transform: none; }
+
+		@media (max-width: 680px) {
+			.site-shell { width: min(100% - 1.25rem, 90rem); padding: 2rem 0 3rem; }
+			.btn-primary span.btn-label { display: none; }
+			.btn-primary { min-width: 2.5rem; width: 2.5rem; padding: 0; }
+		}
+		@media (prefers-reduced-motion: reduce) {
+			*, *:before, *:after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+		}
+	</style>
+</head>
+<body>
+<div class="page-canvas">
+	<div class="main-col">
+
+		<header class="site-header">
+			<div class="site-header-inner">
+				<a href="index.html" class="brand">
+					<img src="img/user.png" alt="Nilsonlinux" width="40" height="40" />
+					<span class="brand-label">
+						<span class="brand-name">Nilsonlinux</span>
+						<span class="brand-tag">open source</span>
+					</span>
+				</a>
+				<nav class="main-nav" aria-label="Páginas do site">
+					<a href="index.html"><i class="ti ti-plug"></i>&nbsp;Plugins</a>
+					<a href="nlinux.html" class="has-badge"><i class="ti ti-disc"></i>&nbsp;NLinux<span class="nav-badge"><img src="img/tux.png" alt="Linux"></span></a>
+					<a href="https://github.com/Nilsonlinux" target="_blank" rel="noopener noreferrer">GitHub</a>
+					<a href="doar.html" class="active" aria-current="page">❤️ Apoie o projeto</a>
+				</nav>
+				<div class="header-actions">
+					<button type="button" class="icon-btn" id="themeToggle" aria-label="Alternar tema" title="Tema"><i class="ti ti-sun-moon"></i></button>
+					<a class="btn-primary" href="doar.html"><i class="ti ti-heart"></i><span class="btn-label">Apoie</span></a>
+					<button type="button" class="icon-btn nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false" title="Menu"><i class="ti ti-menu-2"></i></button>
+				</div>
+			</div>
+			<nav class="mobile-nav" id="mobileMenu" aria-label="Páginas do site (menu móvel)">
+				<a href="index.html"><i class="ti ti-plug"></i>&nbsp;Plugins</a>
+				<a href="nlinux.html" class="has-badge"><i class="ti ti-disc"></i>&nbsp;NLinux<span class="nav-badge"><img src="img/tux.png" alt="Linux"></span></a>
+				<a href="https://github.com/Nilsonlinux" target="_blank" rel="noopener noreferrer"><i class="ti ti-brand-github"></i>&nbsp;GitHub</a>
+				<a href="doar.html" class="active"><i class="ti ti-heart"></i>&nbsp;Apoie o projeto</a>
+			</nav>
+		</header>
+
+		<main class="site-main">
+			<div class="site-shell">
+
+				<div class="page-header reveal">
+					<h1>Apoie o projeto</h1>
+					<p class="page-subtitle">Obrigado por considerar apoiar o trabalho: cada ajuda mantém os projetos Linux, NLinux e Noctalia de pé.</p>
+				</div>
+
+				<section class="content-section reveal">
+					<div class="cta-panel">
+						<div class="cta-heart">❤️</div>
+						<h2>Apoie o projeto</h2>
+						<p>Contribua com uma doação via Pix ou transferência bancária. Qualquer valor faz a diferença.</p>
+						<div class="cta-actions">
+							<a class="btn-primary" href="#pix"><i class="ti ti-qrcode"></i><span>Apoiar com Pix</span></a>
+							<a class="btn-ghost" href="#conta"><i class="ti ti-building-bank"></i> Conta bancária</a>
+						</div>
+					</div>
+				</section>
+
+				<section class="content-section reveal" id="pix">
+					<h2 class="section-title">Pix <span class="count">chave</span></h2>
+					<div class="donate-grid">
+						<div class="donate-card">
+							<h3><i class="ti ti-heart-filled"></i> Doe com Pix</h3>
+							<p class="donate-label">Tipo de chave</p>
+							<div class="code-block">
+								<div class="code-head"><span>pix</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
+								<pre id="pixTipoValue">— (aguardando dados)</pre>
+							</div>
+							<p class="donate-label">Chave Pix</p>
+							<div class="code-block">
+								<div class="code-head"><span>chave</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
+								<pre id="pixChaveValue">— (aguardando dados)</pre>
+							</div>
+							<p class="placeholder-note">Chave Pix disponível em breve.</p>
+						</div>
+					</div>
+				</section>
+
+				<section class="content-section reveal" id="conta">
+					<h2 class="section-title">Conta bancária <span class="count">transferência</span></h2>
+					<div class="donate-grid">
+						<div class="donate-card">
+							<h3><i class="ti ti-building-bank"></i> Transferência</h3>
+							<ul class="donate-list">
+								<li><b>Banco:</b> <span class="lazy">— (aguardando dados)</span></li>
+								<li><b>Agência:</b> <span class="lazy">— (aguardando dados)</span></li>
+								<li><b>Conta:</b> <span class="lazy">— (aguardando dados)</span></li>
+								<li><b>Titular:</b> <span class="lazy">— (aguardando dados)</span></li>
+							</ul>
+							<p class="placeholder-note">Dados bancários disponíveis em breve.</p>
+						</div>
+					</div>
+				</section>
+
+			</div>
+		</main>
+
+		<footer class="site-footer">
+			<div class="site-footer-inner">
+				<div class="footer-grid">
+					<div class="footer-brand">
+						<div class="footer-brand-logo">
+							<img src="img/user.png" alt="Nilsonlinux" width="40" height="40" />
+							<div>
+								<p style="font-weight:600;letter-spacing:-.01em">Nilsonlinux</p>
+								<p style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.12em;color:var(--faint)">plugins · linux · open source</p>
+							</div>
+						</div>
+						<p class="footer-blurb">Desenvolvedor focado em Linux, Noctalia e automação. Se gostou dos projetos, considere apoiar com um Pix.</p>
+					</div>
+					<div class="footer-links">
+						<nav class="footer-col" aria-label="Navegação">
+							<p>Navegação</p>
+							<ul>
+								<li><a href="index.html">Plugins</a></li>
+								<li><a href="nlinux.html">NLinux</a></li>
+								<li><a href="doar.html">Apoie o projeto</a></li>
+							</ul>
+						</nav>
+						<nav class="footer-col" aria-label="Projetos">
+							<p>Projetos</p>
+							<ul>
+								<li><a href="https://github.com/Nilsonlinux/noctalia-plugins" target="_blank" rel="noopener noreferrer">noctalia-plugins</a></li>
+								<li><a href="https://github.com/Nilsonlinux/nlinux" target="_blank" rel="noopener noreferrer">NLinux</a></li>
+								<li><a href="https://github.com/Nilsonlinux" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+							</ul>
+						</nav>
+						<nav class="footer-col" aria-label="Docs">
+							<p>Docs</p>
+							<ul>
+								<li><a href="https://docs.noctalia.dev" target="_blank" rel="noopener noreferrer">Noctalia Docs</a></li>
+								<li><a href="https://docs.noctalia.dev/plugins" target="_blank" rel="noopener noreferrer">Plugins API</a></li>
+							</ul>
+						</nav>
+						<nav class="footer-col" aria-label="Comunidade">
+							<p>Redes</p>
+							<ul>
+								<li><a href="https://github.com/Nilsonlinux" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+								<li><a href="https://discord.noctalia.dev" target="_blank" rel="noopener noreferrer">Discord Noctalia</a></li>
+							</ul>
+						</nav>
+					</div>
+				</div>
+				<div class="footer-bottom">
+					<p>© <span id="year"></span> Nilsonlinux · feito com código, Linux e curiosidade.</p>
+					<p>obrigado por apoiar 💛</p>
+				</div>
+			</div>
+		</footer>
+
+		<button type="button" class="back-top" id="backToTop" aria-label="Voltar ao topo"><i class="ti ti-chevron-up"></i></button>
+	</div>
+</div>
+
+<script>
+(() => {
+	const $ = s => document.querySelector(s);
+
+	const themeBtn = $('#themeToggle');
+	const themeIcon = () => themeBtn.querySelector('i');
+	function syncThemeIcon() {
+		const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+		themeIcon().className = dark ? 'ti ti-sun' : 'ti ti-moon';
+		themeBtn.setAttribute('aria-label', dark ? 'Alternar para tema claro' : 'Alternar para tema escuro');
+	}
+	themeBtn.addEventListener('click', () => {
+		const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+		document.documentElement.setAttribute('data-theme', next);
+		localStorage.setItem('theme', next);
+		syncThemeIcon();
+	});
+	syncThemeIcon();
+	$('#year').textContent = new Date().getFullYear();
+
+	// ---- Menu móvel (sanduíche) ----
+	const navToggle = $('#navToggle');
+	const mobileMenu = $('#mobileMenu');
+	const menuIcon = () => navToggle.querySelector('i');
+	function closeMenu() {
+		mobileMenu.classList.remove('open');
+		navToggle.setAttribute('aria-expanded', 'false');
+		navToggle.setAttribute('aria-label', 'Abrir menu');
+		menuIcon().className = 'ti ti-menu-2';
+	}
+	navToggle.addEventListener('click', () => {
+		const open = mobileMenu.classList.toggle('open');
+		navToggle.setAttribute('aria-expanded', String(open));
+		navToggle.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+		menuIcon().className = open ? 'ti ti-x' : 'ti ti-menu-2';
+	});
+	mobileMenu.addEventListener('click', e => { if (e.target.closest('a')) closeMenu(); });
+	window.addEventListener('resize', () => { if (innerWidth >= 880) closeMenu(); });
+
+	document.querySelectorAll('[data-copy]').forEach(btn => {
+		btn.addEventListener('click', async () => {
+			const pre = btn.closest('.code-block').querySelector('pre');
+			if (pre.textContent.includes('aguardando dados')) return;
+			try {
+				await navigator.clipboard.writeText(pre.innerText.trim());
+				btn.textContent = 'copiado!';
+				setTimeout(() => btn.textContent = 'copiar', 1600);
+			} catch {}
+		});
+	});
+
+	const observer = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }), { threshold: .08 });
+	document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+	const topBtn = $('#backToTop');
+	window.addEventListener('scroll', () => topBtn.classList.toggle('visible', scrollY > 500), { passive: true });
+	topBtn.addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
+})();
+</script>
+</body>
+</html>
