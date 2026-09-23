@@ -212,6 +212,8 @@
 		}
 		.donate-card h3 { display: flex; align-items: center; gap: .5rem; font-size: 1rem; font-weight: 700; margin-bottom: .9rem; }
 		.donate-card h3 .ti { color: var(--accent); font-size: 1.15rem; }
+		.paypal-card { grid-column: 1 / -1; justify-self: center; width: min(100%, 27rem); }
+		.paypal-card iframe { display: block; border: 0; width: 100%; max-width: 382px; height: 550px; }
 		.qr-box {
 			display: flex; justify-content: center; padding: .6rem;
 			border: 1px solid var(--border); border-radius: .9rem; background: transparent;
@@ -351,6 +353,7 @@
 					<div class="donate-head">
 						<h2 class="section-title" id="pix">Pix <span class="count">chave</span></h2>
 						<h2 class="section-title" id="conta">Conta bancária <span class="count">transferência</span></h2>
+						<h2 class="section-title">PayPal <span class="count">cartão</span></h2>
 					</div>
 					<div class="donate-grid">
 						<div class="donate-card">
@@ -380,6 +383,16 @@
 								<li><b>CPF:</b> 023.***.***-95</li>
 							</ul>
 							<p class="placeholder-note">Transferência via TED ou DOC para a conta acima.</p>
+						</div>
+						<div class="donate-card paypal-card">
+							<h3><i class="ti ti-brand-paypal"></i> Doe com PayPal</h3>
+							<iframe
+								src="https://www.paypal.com/giving/campaigns?campaign_id=3S93JA7CM7A5S"
+								title="PayPal donate campaign card"
+								frameborder="0"
+								scrolling="no"
+								loading="lazy"
+							></iframe>
 						</div>
 					</div>
 				</section>
