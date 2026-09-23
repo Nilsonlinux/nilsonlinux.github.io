@@ -325,6 +325,14 @@
 		.reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
 		.reveal.in { opacity: 1; transform: none; }
 
+		.download-panel { position: relative; }
+		.download-panel code {
+			font-family: "JetBrains Mono", monospace; font-size: .82em; color: var(--accent);
+			background: color-mix(in srgb, var(--surface-2) 60%, transparent);
+			padding: .05em .35em; border-radius: .4rem;
+		}
+		.download-meta { margin-top: 1rem; font: 500 .7rem "JetBrains Mono", monospace; color: var(--faint); }
+
 		@media (max-width: 680px) {
 			.site-shell { width: min(100% - 1.25rem, 90rem); padding: 2rem 0 3rem; }
 			.specs-grid { grid-template-columns: 1fr 1fr; }
@@ -352,12 +360,13 @@
 				<nav class="main-nav" aria-label="Páginas do site">
 					<a href="index.html">Plugins</a>
 					<a href="#recursos">Recursos</a>
+					<a href="#baixar">Baixar</a>
 					<a href="#instalar" class="active" aria-current="page">Instalar</a>
 					<a href="https://github.com/Nilsonlinux/nlinux" target="_blank" rel="noopener noreferrer">GitHub</a>
 				</nav>
 				<div class="header-actions">
 					<button type="button" class="icon-btn" id="themeToggle" aria-label="Alternar tema" title="Tema"><i class="ti ti-sun-moon"></i></button>
-					<a class="btn-primary" href="#instalar"><i class="ti ti-download"></i><span class="btn-label">Instalar</span></a>
+					<a class="btn-primary" href="#baixar"><i class="ti ti-download"></i><span class="btn-label">Baixar ISO</span></a>
 				</div>
 			</div>
 		</header>
@@ -377,11 +386,23 @@
 					</div>
 				</div>
 
-				<div class="hero-banner reveal">
-					<img src="img/nlinux.jpg" alt="Arte do NLinux" loading="lazy" />
-				</div>
+<div class="hero-banner reveal">
+				<img src="img/nlinux.jpg" alt="Arte do NLinux" loading="lazy" />
+			</div>
 
-				<section class="content-section reveal" id="specs">
+			<section class="content-section reveal" id="baixar">
+				<div class="cta-panel download-panel">
+					<h2>Baixar a ISO NLinux</h2>
+					<p>ISO ao vivo x86_64 — grave no pendrive com <code>dd</code> ou <code>balenaEtcher</code> e boote: o desktop do live abre direto com o instalador web de 10 passos.</p>
+					<div class="cta-actions">
+						<a class="btn-primary" href="https://drive.google.com/file/d/1R1m5rNXfoXwZDW2BGqormTRVvhY9RPaz/view?usp=sharing" target="_blank" rel="noopener noreferrer"><i class="ti ti-download"></i><span>Baixar ISO</span></a>
+						<a class="btn-ghost" href="https://github.com/Nilsonlinux/nlinux" target="_blank" rel="noopener noreferrer"><i class="ti ti-brand-github"></i> Fonte / build</a>
+					</div>
+					<p class="download-meta"><i class="ti ti-link" style="margin-right:.3rem"></i>hospedado no Google Drive</p>
+				</div>
+			</section>
+
+			<section class="content-section reveal" id="specs">
 					<h2 class="section-title">Especificação <span class="count">stack</span></h2>
 					<div class="specs-grid">
 						<div class="spec-box"><span>Base</span><b>Arch Linux</b></div>
