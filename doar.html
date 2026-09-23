@@ -207,6 +207,11 @@
 		}
 		.donate-card h3 { display: flex; align-items: center; gap: .5rem; font-size: 1rem; font-weight: 700; margin-bottom: .9rem; }
 		.donate-card h3 .ti { color: var(--accent); font-size: 1.15rem; }
+		.qr-box {
+			display: flex; justify-content: center; padding: 1rem;
+			border: 1px solid var(--border); border-radius: .9rem; background: #fff;
+		}
+		.qr-box img { width: 11rem; height: 11rem; object-fit: contain; display: block; border-radius: .4rem; }
 		.donate-label { font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; color: var(--faint); margin: 1rem 0 .4rem; }
 		.code-block {
 			border: 1px solid var(--border); border-radius: .75rem;
@@ -342,6 +347,9 @@
 					<div class="donate-grid">
 						<div class="donate-card">
 							<h3><i class="ti ti-heart-filled"></i> Doe com Pix</h3>
+							<div class="qr-box">
+								<img src="img/qr-code.png" alt="QR Code Pix" width="176" height="176" />
+							</div>
 							<p class="donate-label">Tipo de chave</p>
 							<div class="code-block">
 								<div class="code-head"><span>pix</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
