@@ -127,10 +127,10 @@
 		.icon-btn:hover { border-color: var(--border); background: var(--surface-2); }
 		.nav-toggle { display: inline-flex; }
 		.mobile-nav {
-			position: absolute; top: 100%; left: 0; right: 0; z-index: 40;
+			position: absolute; top: calc(100% + .55rem); right: 1rem; z-index: 40;
 			display: none; flex-direction: column; gap: .15rem;
-			padding: .5rem .75rem 1rem;
-			border-bottom: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+			min-width: 230px; padding: .5rem;
+			border: 1px solid var(--border); border-radius: .9rem;
 			background: color-mix(in srgb, var(--bg) 96%, transparent);
 			backdrop-filter: blur(20px); backdrop-filter: saturate(125%);
 			box-shadow: var(--shadow-card);
@@ -387,9 +387,9 @@
 					<a href="https://github.com/Nilsonlinux/nlinux" target="_blank" rel="noopener noreferrer">GitHub</a>
 				</nav>
 				<div class="header-actions">
-					<button type="button" class="icon-btn nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false" title="Menu"><i class="ti ti-menu-2"></i></button>
 					<button type="button" class="icon-btn" id="themeToggle" aria-label="Alternar tema" title="Tema"><i class="ti ti-sun-moon"></i></button>
 					<a class="btn-primary" href="#baixar"><i class="ti ti-download"></i><span class="btn-label">Baixar ISO</span></a>
+					<button type="button" class="icon-btn nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false" title="Menu"><i class="ti ti-menu-2"></i></button>
 				</div>
 			</div>
 			<nav class="mobile-nav" id="mobileMenu" aria-label="Páginas do site (menu móvel)">
