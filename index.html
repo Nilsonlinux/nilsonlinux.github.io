@@ -168,9 +168,10 @@
 			transition: all .2s; outline: none;
 		}
 		.btn-primary:hover {
-			filter: brightness(1.05);
+			filter: brightness(1.05); transform: translateY(-2px);
 			box-shadow: 0 12px 36px -8px color-mix(in srgb, var(--accent) 55%, transparent), inset 0 0 0 1px color-mix(in srgb, var(--accent) 28%, transparent);
 		}
+		.btn-primary:active { transform: translateY(0); }
 		@media (min-width: 880px) { .main-nav { display: flex; } .nav-toggle { display: none !important; } }
 
 		/* ---- Main / Plugins page ---- */

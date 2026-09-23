@@ -163,16 +163,18 @@
 			transition: all .2s; outline: none;
 		}
 		.btn-primary:hover {
-			filter: brightness(1.05);
+			filter: brightness(1.05); transform: translateY(-2px);
 			box-shadow: 0 12px 36px -8px color-mix(in srgb, var(--accent) 55%, transparent), inset 0 0 0 1px color-mix(in srgb, var(--accent) 28%, transparent);
 		}
+		.btn-primary:active { transform: translateY(0); }
 		.btn-ghost {
 			display: inline-flex; height: 2.5rem; align-items: center; justify-content: center;
 			gap: .5rem; padding: 0 1rem; border-radius: .5rem;
 			border: 1px solid var(--border); background: var(--surface-2); color: var(--fg);
 			font-size: .875rem; font-weight: 600; transition: all .2s;
 		}
-		.btn-ghost:hover { border-color: color-mix(in srgb, var(--accent) 40%, transparent); color: var(--accent); }
+		.btn-ghost:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--accent) 40%, transparent); color: var(--accent); }
+		.btn-ghost:active { transform: translateY(0); }
 
 		.site-main { flex: 1; position: relative; z-index: 1; }
 		.site-shell { width: min(100% - 2rem, 90rem); margin: 0 auto; padding: 3rem 0 4rem; }
