@@ -119,20 +119,16 @@
 		.main-nav a.active { background: var(--surface-2); color: var(--accent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 22%, transparent); }
 		a.has-badge { position: relative; }
 		.nav-badge {
-			position: absolute; top: .35rem; right: .1rem; pointer-events: none;
+			position: absolute; top: .28rem; right: .05rem; pointer-events: none;
 			display: inline-flex; align-items: center; justify-content: center;
-			width: .6rem; height: .6rem; border-radius: 50%;
-			background: #fff59b; color: #0e0e43;
-			box-shadow: 0 0 0 0 rgba(255,245,155,0.8);
-			animation: new-pulse 2s infinite;
+			width: .7rem; height: .7rem; font-size: .85rem; line-height: 1;
+			color: #ffd400;
+			animation: new-pulse 2s ease-in-out infinite;
 		}
 		@keyframes new-pulse {
-			0% { box-shadow: 0 0 0 0 rgba(255,245,155,0.9); transform: scale(1); }
-			70% { box-shadow: 0 0 0 6px rgba(255,245,155,0); transform: scale(1.05); }
-			100% { box-shadow: 0 0 0 0 rgba(255,245,155,0); transform: scale(1); }
-		}
-		.nav-badge::before {
-			content: '\e645'; font-family: "tabler-icons"; font-size: .55rem; line-height: 1;
+			0% { filter: drop-shadow(0 0 1px rgba(255,212,0,.9)); transform: scale(1); }
+			50% { filter: drop-shadow(0 0 6px rgba(255,212,0,.85)); transform: scale(1.15); }
+			100% { filter: drop-shadow(0 0 1px rgba(255,212,0,.9)); transform: scale(1); }
 		}
 		.header-actions { display: flex; align-items: center; justify-content: flex-end; gap: .5rem; }
 		.icon-btn {
@@ -397,7 +393,7 @@
 				</a>
 				<nav class="main-nav" aria-label="Páginas do site">
 <a href="index.html"><i class="ti ti-plug"></i>&nbsp;Plugins</a>
-					<a href="nlinux.html" class="active has-badge" aria-current="page"><i class="ti ti-disc"></i>&nbsp;NLinux<span class="nav-badge"></span></a>
+					<a href="nlinux.html" class="active has-badge" aria-current="page"><i class="ti ti-disc"></i>&nbsp;NLinux<span class="nav-badge"><i class="ti ti-star"></i></span></a>
 					<a href="#baixar"><i class="ti ti-download"></i>&nbsp;Baixar</a>
 					<a href="#recursos"><i class="ti ti-adjustments-horizontal"></i>&nbsp;Recursos</a>
 					<a href="#instalar">Instalar</a>
@@ -411,7 +407,7 @@
 			</div>
 			<nav class="mobile-nav" id="mobileMenu" aria-label="Páginas do site (menu móvel)">
 				<a href="index.html"><i class="ti ti-plug"></i>&nbsp;Plugins</a>
-				<a href="nlinux.html" class="active has-badge"><i class="ti ti-disc"></i>&nbsp;NLinux<span class="nav-badge"></span></a>
+				<a href="nlinux.html" class="active has-badge"><i class="ti ti-disc"></i>&nbsp;NLinux<span class="nav-badge"><i class="ti ti-star"></i></span></a>
 				<a href="#baixar"><i class="ti ti-download"></i>&nbsp;Baixar</a>
 				<a href="#recursos"><i class="ti ti-adjustments-horizontal"></i>&nbsp;Recursos</a>
 				<a href="#instalar"><i class="ti ti-tool"></i>&nbsp;Instalar</a>
