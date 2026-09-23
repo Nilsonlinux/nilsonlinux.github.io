@@ -216,8 +216,8 @@
 		}
 		.donate-card h3 { display: flex; align-items: center; gap: .5rem; font-size: 1rem; font-weight: 700; margin-bottom: .9rem; }
 		.donate-card h3 .ti { color: var(--accent); font-size: 1.15rem; }
-		.paypal-card { width: 100%; }
-		.paypal-card iframe { display: block; border: 0; }
+		.paypal-card { justify-self: center; width: 100%; max-width: 26rem; }
+		.paypal-card iframe { display: block; margin-inline: auto; width: 100%; max-width: 382px; height: auto; aspect-ratio: 382 / 550; border: 0; }
 		.qr-box {
 			display: flex; justify-content: center; padding: .6rem;
 			border: 1px solid var(--border); border-radius: .9rem; background: transparent;
@@ -356,8 +356,8 @@
 				<section class="content-section reveal">
 					<div class="donate-head">
 						<h2 class="section-title" id="pix">Pix <span class="count">chave</span></h2>
-						<h2 class="section-title" id="conta">Conta bancária <span class="count">transferência</span></h2>
 						<h2 class="section-title">PayPal <span class="count">cartão</span></h2>
+						<h2 class="section-title" id="conta">Conta bancária <span class="count">transferência</span></h2>
 					</div>
 					<div class="donate-grid">
 						<div class="donate-card">
@@ -377,17 +377,6 @@
 							</div>
 							<p class="placeholder-note">Use o e-mail acima como chave Pix em qualquer banco.</p>
 						</div>
-						<div class="donate-card">
-							<h3><i class="ti ti-building-bank"></i> Transferência</h3>
-							<ul class="donate-list">
-								<li><b>Banco:</b> BTG Pactual S.A. (208)</li>
-								<li><b>Agência:</b> 0020</li>
-								<li><b>Conta:</b> 270475-4</li>
-								<li><b>Titular:</b> Josenilson Da Costa Santos</li>
-								<li><b>CPF:</b> 023.***.***-95</li>
-							</ul>
-							<p class="placeholder-note">Transferência via TED ou DOC para a conta acima.</p>
-						</div>
 						<div class="donate-card paypal-card">
 							<h3><i class="ti ti-brand-paypal"></i> Doe com PayPal</h3>
 							<iframe
@@ -398,6 +387,17 @@
 								height="550"
 								scrolling="no"
 							></iframe>
+						</div>
+						<div class="donate-card">
+							<h3><i class="ti ti-building-bank"></i> Transferência</h3>
+							<ul class="donate-list">
+								<li><b>Banco:</b> BTG Pactual S.A. (208)</li>
+								<li><b>Agência:</b> 0020</li>
+								<li><b>Conta:</b> 270475-4</li>
+								<li><b>Titular:</b> Josenilson Da Costa Santos</li>
+								<li><b>CPF:</b> 023.***.***-95</li>
+							</ul>
+							<p class="placeholder-note">Transferência via TED ou DOC para a conta acima.</p>
 						</div>
 					</div>
 				</section>
