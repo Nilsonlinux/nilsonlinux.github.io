@@ -402,7 +402,6 @@
 					<a href="nlinux.html" class="active has-badge" aria-current="page"><i class="ti ti-disc"></i>&nbsp;NLinux<span class="nav-badge"><img src="img/tux.png" alt="Linux"></span></a>
 					<a href="#baixar"><i class="ti ti-download"></i>&nbsp;Baixar</a>
 					<a href="#recursos"><i class="ti ti-adjustments-horizontal"></i>&nbsp;Recursos</a>
-					<a href="#instalar">Instalar</a>
 					<a href="https://github.com/Nilsonlinux/nlinux" target="_blank" rel="noopener noreferrer">GitHub</a>
 					<a href="doar.html">❤️ Apoie o projeto</a>
 				</nav>
@@ -417,7 +416,6 @@
 				<a href="nlinux.html" class="active has-badge"><i class="ti ti-disc"></i>&nbsp;NLinux<span class="nav-badge"><img src="img/tux.png" alt="Linux"></span></a>
 				<a href="#baixar"><i class="ti ti-download"></i>&nbsp;Baixar</a>
 				<a href="#recursos"><i class="ti ti-adjustments-horizontal"></i>&nbsp;Recursos</a>
-				<a href="#instalar"><i class="ti ti-tool"></i>&nbsp;Instalar</a>
 				<a href="https://github.com/Nilsonlinux/nlinux" target="_blank" rel="noopener noreferrer"><i class="ti ti-brand-github"></i>&nbsp;GitHub</a>
 				<a href="doar.html">❤️&nbsp;Apoie o projeto</a>
 			</nav>
@@ -584,57 +582,6 @@
 					</div>
 				</section>
 
-				<section class="content-section reveal" id="instalar">
-					<h2 class="section-title">Como instalar <span class="count">3 formas</span></h2>
-					<div class="steps">
-						<div class="step-row">
-							<div class="step-num">1</div>
-							<div>
-								<h3>Gerar a ISO (máquina Arch)</h3>
-								<p>O script instala o <code>archiso</code>, regera o perfil, aplica o branding NLinux, transforma o boot (systemd-boot + GRUB + syslinux) e roda o <code>mkarchiso</code>. Compila a AUR no chroot — build lento, precisa de internet.</p>
-								<div class="code-block">
-									<div class="code-head"><span>bash</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
-									<pre><span class="c"># clone e gere a ISO</span>
-git clone https://github.com/Nilsonlinux/nlinux.git
-cd nlinux
-./build-iso.sh
-<span class="c"># grave no pendrive</span>
-sudo dd if=iso/out/nlinux-*-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync</pre>
-								</div>
-							</div>
-						</div>
-						<div class="step-row">
-							<div class="step-num">2</div>
-							<div>
-								<h3>Instalar pelo live (instalador web)</h3>
-								<p>Boote a ISO, clique em <b>Instalar NLinux</b> no desktop — o Firefox abre em kiosk apontando para <code>http://127.0.0.1:8765</code>. Siga os 10 passos do assistente e acompanhe a barra de progresso. Não há instalador TUI.</p>
-								<div class="code-block">
-									<div class="code-head"><span>login do live</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
-									<pre>usuário: <span class="p">nlinux</span>
-senha:   <span class="p">nlinux</span>
-host:    <span class="p">nlinux</span> · fuso <span class="p">America/Sao_Paulo</span></pre>
-								</div>
-							</div>
-						</div>
-						<div class="step-row">
-							<div class="step-num">3</div>
-							<div>
-								<h3>Sem ISO: instalador direto</h3>
-								<p>Monte o projeto na máquina alvo e execute como root. Pré-checagens exigem root, UEFI e internet (avisa sem rede). Para não-interativo, exporte as variáveis antes.</p>
-								<div class="code-block">
-									<div class="code-head"><span>bash</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
-									<pre>sudo ./install.sh
-
-<span class="c"># ou não-interativo:</span>
-sudo env INSTALL_USER=felipe INSTALL_USER_PASS=senha123 \
-  ROOT_PASS=senha123 INSTALL_DISK=/dev/nvme0n1 \
-  FS_TYPE=btrfs USE_LUKS=1 GPU=amd ./install.sh</pre>
-								</div>
-							</div>
-						</div>
-					</div>
-				</section>
-
 				<section class="content-section reveal">
 					<div class="cta-panel">
 						<h2>Quer experimentar o NLinux?</h2>
@@ -669,7 +616,6 @@ sudo env INSTALL_USER=felipe INSTALL_USER_PASS=senha123 \
 							<ul>
 								<li><a href="#recursos">Recursos</a></li>
 								<li><a href="#stack">Pacotes</a></li>
-								<li><a href="#instalar">Instalar</a></li>
 								<li><a href="#specs">Especificação</a></li>
 							</ul>
 						</nav>
