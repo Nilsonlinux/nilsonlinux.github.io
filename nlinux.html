@@ -125,6 +125,27 @@
 			font-size: 1rem; transition: all .2s; outline: none;
 		}
 		.icon-btn:hover { border-color: var(--border); background: var(--surface-2); }
+		.nav-toggle { display: inline-flex; }
+		.mobile-nav {
+			position: absolute; top: 100%; left: 0; right: 0; z-index: 40;
+			display: none; flex-direction: column; gap: .15rem;
+			padding: .5rem .75rem 1rem;
+			border-bottom: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+			background: color-mix(in srgb, var(--bg) 96%, transparent);
+			backdrop-filter: blur(20px); backdrop-filter: saturate(125%);
+			box-shadow: var(--shadow-card);
+		}
+		.mobile-nav.open { display: flex; }
+		.mobile-nav a {
+			display: flex; align-items: center; gap: .6rem; padding: .75rem .875rem;
+			border-radius: .6rem; font-size: .95rem; font-weight: 500; color: var(--fg-dim);
+			transition: all .2s; outline: none;
+		}
+		.mobile-nav a:hover { background: color-mix(in srgb, var(--surface-2) 80%, transparent); color: var(--accent); }
+		.mobile-nav a.active {
+			background: var(--surface-2); color: var(--accent);
+			box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 22%, transparent);
+		}
 		.btn-primary {
 			display: inline-flex; height: 2.5rem; min-width: 6rem; align-items: center; justify-content: center;
 			gap: .5rem; padding: 0 1rem; border-radius: .5rem; border: 0;
@@ -366,10 +387,19 @@
 					<a href="https://github.com/Nilsonlinux/nlinux" target="_blank" rel="noopener noreferrer">GitHub</a>
 				</nav>
 				<div class="header-actions">
+					<button type="button" class="icon-btn nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false" title="Menu"><i class="ti ti-menu-2"></i></button>
 					<button type="button" class="icon-btn" id="themeToggle" aria-label="Alternar tema" title="Tema"><i class="ti ti-sun-moon"></i></button>
 					<a class="btn-primary" href="#baixar"><i class="ti ti-download"></i><span class="btn-label">Baixar ISO</span></a>
 				</div>
 			</div>
+			<nav class="mobile-nav" id="mobileMenu" aria-label="Páginas do site (menu móvel)">
+				<a href="index.html"><i class="ti ti-plug"></i>&nbsp;Plugins</a>
+				<a href="nlinux.html" class="active"><i class="ti ti-disc"></i>&nbsp;NLinux</a>
+				<a href="#recursos"><i class="ti ti-adjustments-horizontal"></i>&nbsp;Recursos</a>
+				<a href="#baixar"><i class="ti ti-download"></i>&nbsp;Baixar</a>
+				<a href="#instalar"><i class="ti ti-tool"></i>&nbsp;Instalar</a>
+				<a href="https://github.com/Nilsonlinux/nlinux" target="_blank" rel="noopener noreferrer"><i class="ti ti-brand-github"></i>&nbsp;GitHub</a>
+			</nav>
 		</header>
 
 		<main class="site-main">
@@ -672,6 +702,25 @@ sudo env INSTALL_USER=felipe INSTALL_USER_PASS=senha123 \
 		localStorage.setItem('theme', next);
 	});
 	$('#year').textContent = new Date().getFullYear();
+
+	// ---- Menu móvel (sanduíche) ----
+	const navToggle = $('#navToggle');
+	const mobileMenu = $('#mobileMenu');
+	const menuIcon = () => navToggle.querySelector('i');
+	function closeMenu() {
+		mobileMenu.classList.remove('open');
+		navToggle.setAttribute('aria-expanded', 'false');
+		navToggle.setAttribute('aria-label', 'Abrir menu');
+		menuIcon().className = 'ti ti-menu-2';
+	}
+	navToggle.addEventListener('click', () => {
+		const open = mobileMenu.classList.toggle('open');
+		navToggle.setAttribute('aria-expanded', String(open));
+		navToggle.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+		menuIcon().className = open ? 'ti ti-x' : 'ti ti-menu-2';
+	});
+	mobileMenu.addEventListener('click', e => { if (e.target.closest('a')) closeMenu(); });
+	window.addEventListener('resize', () => { if (innerWidth >= 880) closeMenu(); });
 
 	document.querySelectorAll('[data-copy]').forEach(btn => {
 		btn.addEventListener('click', async () => {
