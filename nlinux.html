@@ -12,17 +12,17 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<link rel="icon" href="img/nlinux-logo.png" type="image/png" />
-	<meta name="description" content="NLinux · distribuição Arch Linux com compositor Umbriel, greetd e shell Noctalia V5." />
+	<meta name="description" content="NLinux · distribuição Arch Linux com compositor Umbriel, greetd, shell Noctalia V5 e a loja nativa NLinux Software." />
 	<meta name="theme-color" content="#070722" />
 	<meta property="og:title" content="NLinux · Nilsonlinux" />
-	<meta property="og:description" content="NLinux · distribuição Arch Linux com compositor Umbriel, greetd e shell Noctalia V5." />
+	<meta property="og:description" content="NLinux · distribuição Arch Linux com compositor Umbriel, greetd, shell Noctalia V5 e a loja nativa NLinux Software." />
 	<meta property="og:type" content="website" />
 	<meta property="og:url" content="https://nilsonlinux.github.io/nlinux.html" />
 	<meta property="og:image" content="https://nilsonlinux.github.io/img/nlinux-logo.png" />
 	<meta property="og:image:alt" content="Logo do NLinux" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content="NLinux · Nilsonlinux" />
-	<meta name="twitter:description" content="NLinux · distribuição Arch Linux com compositor Umbriel, greetd e shell Noctalia V5." />
+	<meta name="twitter:description" content="NLinux · distribuição Arch Linux com compositor Umbriel, greetd, shell Noctalia V5 e a loja nativa NLinux Software." />
 	<meta name="twitter:image" content="https://nilsonlinux.github.io/img/nlinux-logo.png" />
 	<title>NLinux · Nilsonlinux</title>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -173,6 +173,14 @@
 		.btn-primary:active { transform: translateY(0); }
 		.site-header .btn-primary:hover, .site-header .btn-primary:active { transform: none; }
 		@media (min-width: 880px) { .main-nav { display: flex; } .nav-toggle { display: none !important; } }
+		/* Faixa intermediária: o nav completo + wordmark não cabem; encolhe os links
+		   e mantém só a logo, evitando espremer/estourar o cabeçalho. */
+		@media (min-width: 880px) and (max-width: 1179px) {
+			.brand-label { display: none; }
+			.main-nav { gap: .25rem; }
+			.main-nav a { min-width: 0; padding: 0 .6rem; font-size: .8rem; }
+			.btn-primary { min-width: 0; padding: 0 .75rem; }
+		}
 
 		/* ---- Main ---- */
 		.site-main { flex: 1; position: relative; z-index: 1; }
@@ -307,6 +315,32 @@
 		.stack-card li:last-child { border-bottom: 0; }
 		.stack-card li b { color: var(--fg); font-weight: 600; }
 
+		/* ---- Loja ---- */
+		.block-title { display: flex; align-items: center; gap: .5rem; font-size: 1.05rem; font-weight: 650; letter-spacing: -.01em; margin: 2.25rem 0 1rem; }
+		.block-title .ti { color: var(--accent); }
+		.store-lead {
+			display: grid; grid-template-columns: auto 1fr; gap: 1.25rem; align-items: start;
+			border: 1px solid var(--border); border-radius: 1.25rem; background: var(--surface);
+			box-shadow: var(--shadow-card); padding: 1.5rem;
+		}
+		.store-lead img { width: 3.5rem; height: 3.5rem; border-radius: 1rem; object-fit: cover; }
+		.store-lead h3 { font-size: 1.1rem; font-weight: 700; letter-spacing: -.02em; }
+		.store-lead p { margin-top: .5rem; font-size: .88rem; line-height: 1.6; color: var(--fg-dim); }
+		.store-lead p code { font-family: "JetBrains Mono", monospace; font-size: .82em; color: var(--accent); }
+		.store-lead .cta-actions { justify-content: flex-start; margin-top: 1.15rem; }
+		.note {
+			display: flex; gap: .75rem; align-items: flex-start; margin-top: 1.25rem;
+			border: 1px solid var(--border); border-left: 2px solid var(--accent);
+			border-radius: .9rem; background: color-mix(in srgb, var(--surface-2) 55%, transparent);
+			padding: .9rem 1.1rem; font-size: .82rem; line-height: 1.6; color: var(--fg-dim);
+		}
+		.note .ti { color: var(--accent); font-size: 1.05rem; flex-shrink: 0; margin-top: .15rem; }
+		.link-accent { color: var(--accent); border-bottom: 1px solid color-mix(in srgb, var(--accent) 35%, transparent); }
+		.link-accent:hover { border-bottom-color: var(--accent); }
+		@media (max-width: 520px) {
+			.store-lead { grid-template-columns: 1fr; padding: 1.15rem 1.2rem; }
+		}
+
 		/* ---- CTA ---- */
 		.cta-panel {
 			border: 1px solid var(--border); border-radius: 1.25rem; background: var(--surface);
@@ -376,8 +410,8 @@
 		@media (max-width: 680px) {
 			.site-shell { width: min(100% - 1.25rem, 90rem); padding: 2rem 0 3rem; }
 			.specs-grid { grid-template-columns: 1fr 1fr; }
-			.btn-primary span.btn-label { display: none; }
-			.btn-primary { min-width: 2.5rem; width: 2.5rem; padding: 0; }
+			.site-header .btn-primary span.btn-label { display: none; }
+			.site-header .btn-primary { min-width: 2.5rem; width: 2.5rem; padding: 0; }
 		}
 		@media (prefers-reduced-motion: reduce) {
 			*, *:before, *:after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
@@ -402,6 +436,7 @@
 					<a href="nlinux.html" class="active has-badge" aria-current="page"><i class="ti ti-disc"></i>&nbsp;NLinux<span class="nav-badge"><img src="img/tux.png" alt="Linux"></span></a>
 					<a href="#baixar"><i class="ti ti-download"></i>&nbsp;Baixar</a>
 					<a href="#recursos"><i class="ti ti-adjustments-horizontal"></i>&nbsp;Recursos</a>
+					<a href="#loja"><i class="ti ti-shopping-bag"></i>&nbsp;Loja</a>
 					<a href="doar.html">❤️ Apoie o projeto</a>
 				</nav>
 				<div class="header-actions">
@@ -415,6 +450,7 @@
 				<a href="nlinux.html" class="active has-badge"><i class="ti ti-disc"></i>&nbsp;NLinux<span class="nav-badge"><img src="img/tux.png" alt="Linux"></span></a>
 				<a href="#baixar"><i class="ti ti-download"></i>&nbsp;Baixar</a>
 				<a href="#recursos"><i class="ti ti-adjustments-horizontal"></i>&nbsp;Recursos</a>
+				<a href="#loja"><i class="ti ti-shopping-bag"></i>&nbsp;Loja</a>
 				<a href="doar.html">❤️&nbsp;Apoie o projeto</a>
 			</nav>
 		</header>
@@ -431,6 +467,7 @@
 						<span class="page-badge"><i class="ti ti-login-2"></i> greetd + noctalia-greeter</span>
 						<span class="page-badge"><i class="ti ti-moon"></i> Noctalia V5</span>
 						<span class="page-badge"><i class="ti ti-terminal-2"></i> fish + kitty</span>
+						<span class="page-badge"><i class="ti ti-shopping-bag"></i> Loja nativa NLinux Software</span>
 					</div>
 				</div>
 
@@ -461,14 +498,14 @@
 						<div class="spec-box"><span>Criptografia</span><b>LUKS2 opcional</b></div>
 						<div class="spec-box"><span>Shell usuário</span><b>fish</b></div>
 						<div class="spec-box"><span>Terminal</span><b>kitty</b></div>
-						<div class="spec-box"><span>Loja</span><b>gnome-software</b></div>
+						<div class="spec-box"><span>Loja</span><b>nlinux-software</b></div>
 						<div class="spec-box"><span>Hostname</span><b>nlinux</b></div>
 						<div class="spec-box"><span>Idioma</span><b>pt-BR</b></div>
 					</div>
 				</section>
 
 				<section class="content-section reveal" id="recursos">
-					<h2 class="section-title">Recursos <span class="count">8</span></h2>
+					<h2 class="section-title">Recursos <span class="count">9</span></h2>
 					<div class="features-grid">
 						<article class="feature-card">
 							<div class="feature-icon"><i class="ti ti-disc"></i></div>
@@ -501,10 +538,10 @@
 							<div class="feature-tags"><span class="tag">wayland</span><span class="tag">noctalia</span><span class="tag">umbriel</span></div>
 						</article>
 						<article class="feature-card">
-							<div class="feature-icon"><i class="ti ti-app-window"></i></div>
-							<h3 class="feature-name">App Center + Flatpak</h3>
-							<p class="feature-desc">gnome-software com PackageKit, metadados AppStream e Flathub já configurados. Firefox, Discord, Telegram, Spotify, Nautilus e mais no primeiro login.</p>
-							<div class="feature-tags"><span class="tag">flatpak</span><span class="tag">appstream</span><span class="tag">flathub</span></div>
+							<div class="feature-icon"><i class="ti ti-shopping-bag"></i></div>
+							<h3 class="feature-name">Loja nativa + Flatpak</h3>
+							<p class="feature-desc">A <a class="link-accent" href="#loja">NLinux Software</a> já vem na ISO (159 apps, busca, categorias e instalação via polkit), com gnome-software + PackageKit, AppStream e Flathub configurados ao lado. Firefox, Discord, Telegram, Spotify e Nautilus no primeiro login.</p>
+							<div class="feature-tags"><span class="tag">nlinux-software</span><span class="tag">flatpak</span><span class="tag">flathub</span></div>
 						</article>
 						<article class="feature-card">
 							<div class="feature-icon"><i class="ti ti-terminal"></i></div>
@@ -524,6 +561,177 @@
 							<p class="feature-desc">Locale <code>pt_BR</code>, <code>en_US</code>, <code>pt_PT</code>, <code>es</code>, <code>fr</code>, <code>de</code>, <code>it</code>, <code>ja_JP</code> e teclado de <code>br-abnt2</code> a <code>ja</code> — aplicados no live e no instalado.</p>
 							<div class="feature-tags"><span class="tag">locale</span><span class="tag">keymap</span></div>
 						</article>
+					</div>
+				</section>
+
+				<section class="content-section reveal" id="loja">
+					<h2 class="section-title">Loja NLinux Software <span class="count">v128 · 159 apps</span></h2>
+
+					<div class="store-lead">
+						<img src="img/nlinux-logo.png" alt="NLinux Software" width="56" height="56" loading="lazy" />
+						<div>
+							<h3>Loja nativa de aplicativos, já inclusa na ISO</h3>
+							<p>A <b>NLinux Software</b> é a loja que acompanha a distribuição: uma janela <b>GTK 3 + WebKit2GTK 4.1</b> de verdade, servida por um servidor local em <code>127.0.0.1</code> — não é uma aba de navegador. O catálogo reúne <b>159 aplicativos</b> em <b>12 categorias</b>, curados pelo Nilsonlinux, com ícone e capturas de tela de cada app.</p>
+							<div class="cta-actions">
+								<a class="btn-primary" href="https://github.com/Nilsonlinux/nlinux-software" target="_blank" rel="noopener noreferrer"><i class="ti ti-brand-github"></i><span>Código no GitHub</span></a>
+								<a class="btn-ghost" href="#loja-como-usar"><i class="ti ti-terminal-2"></i> Como usar</a>
+							</div>
+						</div>
+					</div>
+
+					<div class="specs-grid">
+						<div class="spec-box"><span>Aplicativos</span><b>159 no catálogo</b></div>
+						<div class="spec-box"><span>Categorias</span><b>12</b></div>
+						<div class="spec-box"><span>Interface</span><b>GTK3 · WebKit2GTK</b></div>
+						<div class="spec-box"><span>Backend</span><b>python-gobject</b></div>
+						<div class="spec-box"><span>Permissões</span><b>polkit + pkexec</b></div>
+						<div class="spec-box"><span>Publicação</span><b>assinatura GPG</b></div>
+					</div>
+
+					<h3 class="block-title"><i class="ti ti-sparkles"></i> O que a loja faz</h3>
+					<div class="features-grid">
+						<article class="feature-card">
+							<div class="feature-icon"><i class="ti ti-window"></i></div>
+							<h3 class="feature-name">Janela nativa, não é site</h3>
+							<p class="feature-desc">Abre como aplicativo do menu, com barra de título e botões próprios (minimizar, maximizar, fechar) — sem aba de navegador piscando nem <code>xdg-open</code> no meio da instalação.</p>
+							<div class="feature-tags"><span class="tag">gtk3</span><span class="tag">webkit2gtk</span><span class="tag">localhost</span></div>
+						</article>
+						<article class="feature-card">
+							<div class="feature-icon"><i class="ti ti-shield-lock"></i></div>
+							<h3 class="feature-name">Instalar e remover com polkit</h3>
+							<p class="feature-desc">O botão <b>Instalar</b> abre o diálogo de autenticação do polkit via <code>pkexec</code> e a barra de progresso acompanha a saída do <code>pacman</code> em tempo real. Remover usa <code>pacman -Rns</code> e preserva os arquivos de configuração.</p>
+							<div class="feature-tags"><span class="tag">polkit</span><span class="tag">pkexec</span><span class="tag">pacman</span></div>
+						</article>
+						<article class="feature-card">
+							<div class="feature-icon"><i class="ti ti-search"></i></div>
+							<h3 class="feature-name">Busca, categorias e detalhes</h3>
+							<p class="feature-desc">Busca instantânea (tecla <code>/</code>), filtro <b>Instalados</b> e as 12 categorias na barra superior. Cada ficha traz resumo, desenvolvedor, pacotes, arquiteturas, link do site oficial ou do AUR e galeria de capturas com visualizador.</p>
+							<div class="feature-tags"><span class="tag">busca</span><span class="tag">ficha</span><span class="tag">screenshots</span></div>
+						</article>
+						<article class="feature-card">
+							<div class="feature-icon"><i class="ti ti-refresh"></i></div>
+							<h3 class="feature-name">Catálogo que se atualiza sozinho</h3>
+							<p class="feature-desc">A cada 15 s a loja pergunta ao GitHub qual é o commit atual da <code>main</code> e só baixa o catálogo quando ele muda — sempre pela URL travada naquele commit, com os assets conferidos por SHA-256. A tela recarrega sozinha.</p>
+							<div class="feature-tags"><span class="tag">auto-update</span><span class="tag">sha256</span><span class="tag">git</span></div>
+						</article>
+						<article class="feature-card">
+							<div class="feature-icon"><i class="ti ti-world-download"></i></div>
+							<h3 class="feature-name">AUR com paru ou yay</h3>
+							<p class="feature-desc">Apps marcados como <b>AUR</b> compilam com o <code>paru</code> (ou <code>yay</code>) já instalado na distro. A elevação é só no passo final do <code>pacman</code> e a regra temporária de <code>sudo</code> é removida ao terminar.</p>
+							<div class="feature-tags"><span class="tag">aur</span><span class="tag">paru</span><span class="tag">yay</span></div>
+						</article>
+						<article class="feature-card">
+							<div class="feature-icon"><i class="ti ti-shield-check"></i></div>
+							<h3 class="feature-name">Pacote assinado e verificado</h3>
+							<p class="feature-desc">O pacote da loja é distribuído com assinatura GPG destacada: o instalador importa a chave pública e aborta se a assinatura não bater, avisando para baixar de novo. O catálogo publicado também é assinado.</p>
+							<div class="feature-tags"><span class="tag">gpg</span><span class="tag">sha256</span><span class="tag">gnupg</span></div>
+						</article>
+						<article class="feature-card">
+							<div class="feature-icon"><i class="ti ti-language"></i></div>
+							<h3 class="feature-name">7 idiomas e tema claro/escuro</h3>
+							<p class="feature-desc">Interface em <b>pt, en, es, fr, de, it e ja</b> — o idioma vem do locale escolhido no instalador, com queda para pt-BR quando falta tradução. O tema claro/escuro alterna pelo botão na barra superior.</p>
+							<div class="feature-tags"><span class="tag">i18n</span><span class="tag">locale</span><span class="tag">tema</span></div>
+						</article>
+						<article class="feature-card">
+							<div class="feature-icon"><i class="ti ti-photo"></i></div>
+							<h3 class="feature-name">Ícone e capturas de verdade</h3>
+							<p class="feature-desc">Cada aplicativo do catálogo tem o próprio ícone e até três capturas de tela, servidas localmente pela loja — a galeria abre em tela cheia e navega com as setas do teclado.</p>
+							<div class="feature-tags"><span class="tag">mídia</span><span class="tag">lightbox</span><span class="tag">offline</span></div>
+						</article>
+					</div>
+
+					<h3 class="block-title" id="loja-como-usar"><i class="ti ti-terminal-2"></i> Como usar</h3>
+					<div class="steps">
+						<div class="step-row">
+							<div class="step-num">1</div>
+							<div>
+								<h3>Abra pelo menu do sistema</h3>
+								<p>A loja entra como <b>Loja de aplicativos</b> em Menu → NLinux Software. Nada de instalar nada antes: ela já vem na ISO. No terminal, <code>nlinux-software</code> faz o mesmo.</p>
+							</div>
+						</div>
+						<div class="step-row">
+							<div class="step-num">2</div>
+							<div>
+								<h3>Encontre o aplicativo</h3>
+								<p>Digite na busca (ou tecle <code>/</code>) para filtrar por nome, ou escolha uma das 12 categorias. O chip <b>✓ instalado</b> marca o que já está na máquina e o filtro <b>Instalados</b> mostra só esses.</p>
+							</div>
+						</div>
+						<div class="step-row">
+							<div class="step-num">3</div>
+							<div>
+								<h3>Instale com um clique</h3>
+								<p>O <code>pacman -Sy</code> só roda no momento da instalação — abrir a loja não atualizar os bancos. Confirme a senha no diálogo do polkit e acompanhe o progresso; o cartão de status mostra o log da transação e pode ser fechado sem interromper.</p>
+							</div>
+						</div>
+						<div class="step-row">
+							<div class="step-num">4</div>
+							<div>
+								<h3>Offline, sem medo</h3>
+								<p>Sem internet, a loja continua abrindo com o catálogo local e mostra o selo <b>Offline</b>. Apps com marca <b>Proprietário</b> ou sem pacote no AUR abrem o site oficial em vez de instalar.</p>
+							</div>
+						</div>
+					</div>
+
+					<div class="code-block">
+						<div class="code-head"><span>terminal</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
+						<pre><code><span class="c"># abre a loja nativa (atalho do menu: "Loja de aplicativos")</span>
+<span class="p">nlinux-software</span>
+
+<span class="c"># a loja checa o catálogo a cada 15s; para olhar mais de perto:</span>
+NLINUX_CATALOG_CHECK=5 <span class="p">nlinux-software</span></code></pre>
+					</div>
+
+					<div class="note">
+						<i class="ti ti-info-circle"></i>
+						<p>Curadoria separada da instalação: a versão que vai na ISO é só cliente do catálogo. O painel de curadoria (fora da distro) edita os aplicativos, gera o pacote e assina com GPG o <code>tar.gz</code> publicado no repositório <a class="link-accent" href="https://github.com/Nilsonlinux/nlinux-software" target="_blank" rel="noopener noreferrer">Nilsonlinux/nlinux-software</a>, que é de onde a loja baixa o catálogo — por isso o update chega sem reinstalar a ISO.</p>
+					</div>
+
+					<h3 class="block-title"><i class="ti ti-box"></i> Por dentro</h3>
+					<div class="stack-grid">
+						<div class="stack-card">
+							<h3><i class="ti ti-app-window"></i> nlinux-software</h3>
+							<ul>
+								<li><b>janela</b> GTK 3 + WebKit2GTK 4.1</li>
+								<li>UI em HTML/CSS/JS + Tabler Icons</li>
+								<li><b>python</b> + python-gobject</li>
+								<li>servidor HTTP em 127.0.0.1</li>
+								<li>7 idiomas, tema claro/escuro</li>
+								<li>atalho <b>nlinux-software</b></li>
+							</ul>
+						</div>
+						<div class="stack-card">
+							<h3><i class="ti ti-settings-2"></i> instalação</h3>
+							<ul>
+								<li><b>pkexec</b> para elevar</li>
+								<li>diálogo de senha do <b>polkit</b></li>
+								<li>pacman -Sy --needed (oficial)</li>
+								<li>pacman -Rns (remoção)</li>
+								<li><b>paru</b> ou yay (AUR)</li>
+								<li>log da transação ao vivo</li>
+							</ul>
+						</div>
+						<div class="stack-card">
+							<h3><i class="ti ti-database"></i> catálogo</h3>
+							<ul>
+								<li><b>159</b> aplicativos curados</li>
+								<li><b>12</b> categorias</li>
+								<li>applications-*.json por idioma</li>
+								<li>assets com hash <b>SHA-256</b></li>
+								<li>ícones e capturas de tela</li>
+								<li>marca proprietary / oficial</li>
+							</ul>
+						</div>
+						<div class="stack-card">
+							<h3><i class="ti ti-git-branch"></i> atualização</h3>
+							<ul>
+								<li>checa a main a cada <b>15s</b></li>
+								<li>URL travada no commit</li>
+								<li>catálogo local em cache</li>
+								<li>funciona <b>offline</b></li>
+								<li>recarga automática da tela</li>
+								<li>pacote assinado com <b>GPG</b></li>
+							</ul>
+						</div>
 					</div>
 				</section>
 
@@ -582,9 +790,10 @@
 				<section class="content-section reveal">
 					<div class="cta-panel">
 						<h2>Quer experimentar o NLinux?</h2>
-						<p>Baixe a ISO ao vivo, grave no pendrive e aproveite o instalador web de 10 passos.</p>
+						<p>Baixe a ISO ao vivo, grave no pendrive e aproveite o instalador web de 10 passos — com a <a class="link-accent" href="#loja">loja NLinux Software</a> já instalada.</p>
 						<div class="cta-actions">
 							<a class="btn-primary" href="https://drive.google.com/file/d/1Mq5qLgSA6CJFZmife81-7ARtWMxqs2z0/view?usp=sharing" target="_blank" rel="noopener noreferrer"><i class="ti ti-download"></i><span>Baixar a ISO</span></a>
+							<a class="btn-ghost" href="#loja"><i class="ti ti-shopping-bag"></i> Loja NLinux Software</a>
 							<a class="btn-ghost" href="index.html"><i class="ti ti-plug"></i> Plugins Noctalia</a>
 						</div>
 					</div>
@@ -604,13 +813,14 @@
 								<p style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.12em;color:var(--faint)">arch · umbriel · noctalia v5</p>
 							</div>
 						</div>
-						<p class="footer-blurb">Distribuição Arch Linux do Nilsonlinux: compositor Umbriel, login greetd e shell Noctalia V5, com ISO ao vivo e instalador web — tudo open source.</p>
+						<p class="footer-blurb">Distribuição Arch Linux do Nilsonlinux: compositor Umbriel, login greetd e shell Noctalia V5, com ISO ao vivo, instalador web e a loja nativa NLinux Software — tudo open source.</p>
 					</div>
 					<div class="footer-links">
 						<nav class="footer-col" aria-label="NLinux">
 							<p>NLinux</p>
 							<ul>
 								<li><a href="#recursos">Recursos</a></li>
+								<li><a href="#loja">Loja NLinux Software</a></li>
 								<li><a href="#stack">Pacotes</a></li>
 								<li><a href="#specs">Especificação</a></li>
 							</ul>
@@ -620,6 +830,7 @@
 							<ul>
 								<li><a href="index.html">Plugins</a></li>
 								<li><a href="#baixar">Download ISO</a></li>
+								<li><a href="https://github.com/Nilsonlinux/nlinux-software" target="_blank" rel="noopener noreferrer">Loja (GitHub)</a></li>
 								<li><a href="https://github.com/Nilsonlinux?tab=repositories" target="_blank" rel="noopener noreferrer">Repositórios</a></li>
 							</ul>
 						</nav>
