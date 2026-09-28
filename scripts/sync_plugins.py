@@ -8,7 +8,7 @@ metadata for versions/badges/tags, thumbnail from the plugin repo).
 Regeneration is idempotent — pages only change when the template or the
 catalog data does.
 
-The index.html catalog grid is rendered client-side from the same catalog.toml
+The plugins.html catalog grid is rendered client-side from the same catalog.toml
 and already links each card to plugins/<folder>/, so a new plugin only needs
 its page to exist — no index edits required.
 
@@ -57,7 +57,7 @@ def md_to_html(md_text: str) -> str:
 
 
 def tag_badges(tags) -> str:
-    return "".join(f'<a href="../../index.html" class="tag-badge">{html.escape(t)}</a>' for t in tags or [])
+    return "".join(f'<a href="../../plugins.html" class="tag-badge">{html.escape(t)}</a>' for t in tags or [])
 
 
 def versions_rows(plugin) -> str:
