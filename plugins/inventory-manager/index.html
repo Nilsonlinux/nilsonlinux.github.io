@@ -50,8 +50,16 @@
 				<div class="header-actions">
 					<button type="button" class="icon-btn" id="themeToggle" aria-label="Alternar tema" title="Tema"><i class="ti ti-sun-moon"></i></button>
 					<a class="btn-primary" href="../../plugins.html"><i class="ti ti-rocket"></i><span class="btn-label">Plugins</span></a>
+					<button type="button" class="icon-btn nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false" title="Menu"><i class="ti ti-menu-2"></i></button>
 				</div>
 			</div>
+			<nav class="mobile-nav" id="mobileMenu" aria-label="Páginas do site (menu móvel)">
+				<a href="../../index.html" class="has-badge"><i class="ti ti-disc"></i>&nbsp;NLinux<span class="nav-badge"><img src="../../img/tux.png" alt="Linux"></span></a>
+				<a href="../../plugins.html#repos">Repos</a>
+				<a href="https://github.com/Nilsonlinux" target="_blank" rel="noopener noreferrer"><i class="ti ti-brand-github"></i>&nbsp;GitHub</a>
+				<a href="../../plugins.html" class="active"><i class="ti ti-plug"></i>&nbsp;Plugins</a>
+				<a href="../../doar.html">❤️&nbsp;Apoie o projeto</a>
+			</nav>
 		</header>
 
 		<main class="site-main">
@@ -285,24 +293,26 @@ sets the new product's Available bucket; In use and Damage start at zero.</p>
 
 				<div class="versions-section reveal">
 					<h2 class="section-title">Versões</h2>
-					<table class="versions-table">
-						<thead>
-							<tr><th scope="col">Versão</th><th scope="col">Plugin API</th><th scope="col">Atualização</th></tr>
-						</thead>
-						<tbody>
-							
-							<tr>
-								<td><span class="version-cell">v1.0.1 <span class="version-latest">latest</span></span></td>
-								<td>15</td>
-								<td>04 set 2026</td>
-							</tr>
-							<tr>
-								<td><span class="version-cell">v1.0.0 <span class="version-oldest">primeira versão</span></span></td>
-								<td>14</td>
-								<td>30 ago 2026</td>
-							</tr>
-						</tbody>
-					</table>
+					<div class="tbl-wrap">
+						<table class="versions-table">
+							<thead>
+								<tr><th scope="col">Versão</th><th scope="col">Plugin API</th><th scope="col">Atualização</th></tr>
+							</thead>
+							<tbody>
+								
+								<tr>
+									<td><span class="version-cell">v1.0.1 <span class="version-latest">latest</span></span></td>
+									<td>15</td>
+									<td>04 set 2026</td>
+								</tr>
+								<tr>
+									<td><span class="version-cell">v1.0.0 <span class="version-oldest">primeira versão</span></span></td>
+									<td>14</td>
+									<td>30 ago 2026</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 					<p class="versions-note">Versões antigas continuam instaláveis em uma release do Noctalia cuja plugin API seja inferior à da versão mais recente.</p>
 				</div>
 
@@ -381,6 +391,25 @@ sets the new product's Available bucket; In use and Damage start at zero.</p>
 		localStorage.setItem('theme', next);
 	});
 	$('#year').textContent = new Date().getFullYear();
+
+	// ---- Menu móvel (sanduíche) ----
+	const navToggle = $('#navToggle');
+	const mobileMenu = $('#mobileMenu');
+	const menuIcon = () => navToggle.querySelector('i');
+	function closeMenu() {
+		mobileMenu.classList.remove('open');
+		navToggle.setAttribute('aria-expanded', 'false');
+		navToggle.setAttribute('aria-label', 'Abrir menu');
+		menuIcon().className = 'ti ti-menu-2';
+	}
+	navToggle.addEventListener('click', () => {
+		const open = mobileMenu.classList.toggle('open');
+		navToggle.setAttribute('aria-expanded', String(open));
+		navToggle.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+		menuIcon().className = open ? 'ti ti-x' : 'ti ti-menu-2';
+	});
+	mobileMenu.addEventListener('click', e => { if (e.target.closest('a')) closeMenu(); });
+	window.addEventListener('resize', () => { if (innerWidth >= 880) closeMenu(); });
 	const observer = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }), { threshold: .08 });
 	document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 	const topBtn = $('#backToTop');

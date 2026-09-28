@@ -107,6 +107,27 @@ a.has-badge { position: relative; }
 	font-size: 1rem; transition: all .2s; outline: none;
 }
 .icon-btn:hover { border-color: var(--border); background: var(--surface-2); }
+.nav-toggle { display: inline-flex; }
+.mobile-nav {
+	position: absolute; top: calc(100% + .55rem); right: 1rem; z-index: 40;
+	display: none; flex-direction: column; gap: .15rem;
+	min-width: 230px; padding: .5rem;
+	border: 1px solid var(--border); border-radius: .9rem;
+	background: color-mix(in srgb, var(--bg) 96%, transparent);
+	backdrop-filter: blur(20px); backdrop-filter: saturate(125%);
+	box-shadow: var(--shadow-card);
+}
+.mobile-nav.open { display: flex; }
+.mobile-nav a {
+	display: flex; align-items: center; gap: .6rem; padding: .75rem .875rem;
+	border-radius: .6rem; font-size: .95rem; font-weight: 500; color: var(--fg-dim);
+	transition: all .2s; outline: none;
+}
+.mobile-nav a:hover { background: color-mix(in srgb, var(--surface-2) 80%, transparent); color: var(--accent); }
+.mobile-nav a.active {
+	background: var(--surface-2); color: var(--accent);
+	box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 22%, transparent);
+}
 .btn-primary {
 	display: inline-flex; height: 2.5rem; min-width: 6rem; align-items: center; justify-content: center;
 	gap: .5rem; padding: 0 1rem; border-radius: .5rem; border: 0;
@@ -219,6 +240,10 @@ a.has-badge { position: relative; }
 .readme-content table {
 	width: 100%; border-collapse: collapse; margin: .9rem 0; font-size: .85rem;
 }
+/* Tabelas do README: sem isso, colunas com <code> longo (ex.:
+   show_now_playing) impedem a tabela de caber e a página inteira passa
+   a rolar para o lado no celular. */
+.readme-content th, .readme-content td { overflow-wrap: anywhere; }
 .readme-content th {
 	text-align: left; font-size: .7rem; text-transform: uppercase; letter-spacing: .08em;
 	color: var(--faint); padding: .6rem .8rem; border-bottom: 2px solid var(--border);
@@ -232,10 +257,15 @@ a.has-badge { position: relative; }
 }
 
 .versions-section { margin-top: 2.5rem; }
+/* Wrapper com rolagem horizontal: no celular a tabela de versões não cabe
+   em 3 colunas, e antes disso o conteúdo era cortado (overflow: hidden). */
+.tbl-wrap {
+	overflow-x: auto; border: 1px solid var(--border); border-radius: 1.25rem;
+	background: var(--surface); box-shadow: var(--shadow-card);
+	-webkit-overflow-scrolling: touch;
+}
 .versions-table {
-	width: 100%; border-collapse: collapse; overflow: hidden;
-	border: 1px solid var(--border); border-radius: 1.25rem; background: var(--surface);
-	box-shadow: var(--shadow-card); font-size: .9rem;
+	width: 100%; min-width: 30rem; border-collapse: collapse; font-size: .9rem;
 }
 .versions-table thead th {
 	text-align: left; font-size: .7rem; text-transform: uppercase; letter-spacing: .08em;

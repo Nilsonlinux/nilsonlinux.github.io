@@ -82,13 +82,13 @@ def versions_rows(plugin) -> str:
             cell += " " + badges
         out.append(
             "".join([
-                "\n\t\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t\t<td><span class=\"version-cell\">",
+                "\n\t\t\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t\t\t<td><span class=\"version-cell\">",
                 cell,
-                "</span></td>\n\t\t\t\t\t\t\t\t<td>",
+                "</span></td>\n\t\t\t\t\t\t\t\t\t<td>",
                 html.escape(str(row["plugin_api"])),
-                "</td>\n\t\t\t\t\t\t\t\t<td>",
+                "</td>\n\t\t\t\t\t\t\t\t\t<td>",
                 fmt_date(row["updated_at"]),
-                "</td>\n\t\t\t\t\t\t\t</tr>",
+                "</td>\n\t\t\t\t\t\t\t\t</tr>",
             ])
         )
     return "".join(out)
