@@ -546,10 +546,10 @@
 							<div class="feature-tags"><span class="tag">wayland</span><span class="tag">noctalia</span><span class="tag">umbriel</span></div>
 						</article>
 						<article class="feature-card">
-							<div class="feature-icon"><i class="ti ti-shopping-bag"></i></div>
-							<h3 class="feature-name">Loja nativa + Flatpak</h3>
-							<p class="feature-desc">A <a class="link-accent" href="#loja">NLinux Software</a> já vem na ISO (159 apps, busca, categorias e instalação via polkit), com gnome-software + PackageKit, AppStream e Flathub configurados ao lado. Firefox, Discord, Telegram, Spotify e Nautilus no primeiro login.</p>
-							<div class="feature-tags"><span class="tag">nlinux-software</span><span class="tag">flatpak</span><span class="tag">flathub</span></div>
+							<div class="feature-icon"><img src="img/nlinux-software.png" alt="" width="30" height="29" loading="lazy" /></div>
+							<h3 class="feature-name">Loja de aplicativos já na ISO</h3>
+							<p class="feature-desc">A <a class="link-accent" href="#loja">NLinux Software</a> vem instalada, com o ícone já fixado na dock: janela própria, busca e instalação via polkit. Firefox, Discord, Telegram, Spotify e Nautilus no primeiro login.</p>
+							<div class="feature-tags"><span class="tag">nlinux-software</span><span class="tag">gtk3</span><span class="tag">polkit</span></div>
 						</article>
 						<article class="feature-card">
 							<div class="feature-icon"><i class="ti ti-terminal"></i></div>
@@ -579,13 +579,13 @@
 				</section>
 
 				<section class="content-section reveal" id="loja">
-					<h2 class="section-title">Loja NLinux Software <span class="count">v128 · 159 apps</span></h2>
+					<h2 class="section-title">Loja NLinux Software <span class="count"><span data-cat="revision">v128</span> · <span data-cat="apps">159</span> apps</span></h2>
 
 					<div class="store-lead">
-						<img src="img/nlinux-logo.png" alt="NLinux Software" width="56" height="56" loading="lazy" />
+						<img src="img/nlinux-software.png" alt="NLinux Software" width="56" height="54" loading="lazy" />
 						<div>
 							<h3>Loja nativa de aplicativos, já inclusa na ISO</h3>
-							<p>A <b>NLinux Software</b> é a loja que acompanha a distribuição: uma janela <b>GTK 3 + WebKit2GTK 4.1</b> de verdade, servida por um servidor local em <code>127.0.0.1</code> — não é uma aba de navegador. O catálogo reúne <b>159 aplicativos</b> em <b>12 categorias</b>, curados pelo Nilsonlinux, com ícone e capturas de tela de cada app.</p>
+							<p>A <b>NLinux Software</b> é a loja que acompanha a distribuição: uma janela de verdade, servida por um servidor local em <code>127.0.0.1</code> — não é uma aba de navegador nem depende de serviço externo. O catálogo é curado pelo Nilsonlinux, com ícone e capturas de tela de cada app, e a ISO leva só o cliente: as atualizações chegam sozinhas, sem reinstalar.</p>
 							<div class="cta-actions">
 								<a class="btn-primary" href="https://github.com/Nilsonlinux/nlinux-software" target="_blank" rel="noopener noreferrer"><i class="ti ti-brand-github"></i><span>Código no GitHub</span></a>
 								<a class="btn-ghost" href="#loja-como-usar"><i class="ti ti-terminal-2"></i> Como usar</a>
@@ -594,8 +594,8 @@
 					</div>
 
 					<div class="specs-grid">
-						<div class="spec-box"><span>Aplicativos</span><b>159 no catálogo</b></div>
-						<div class="spec-box"><span>Categorias</span><b>12</b></div>
+						<div class="spec-box"><span>Aplicativos</span><b><span data-cat="apps">159</span> no catálogo</b></div>
+						<div class="spec-box"><span>Categorias</span><b data-cat="categories">12</b></div>
 						<div class="spec-box"><span>Interface</span><b>GTK3 · WebKit2GTK</b></div>
 						<div class="spec-box"><span>Backend</span><b>python-gobject</b></div>
 						<div class="spec-box"><span>Permissões</span><b>polkit + pkexec</b></div>
@@ -607,7 +607,7 @@
 						<article class="feature-card">
 							<div class="feature-icon"><i class="ti ti-window"></i></div>
 							<h3 class="feature-name">Janela nativa, não é site</h3>
-							<p class="feature-desc">Abre como aplicativo do menu, com barra de título e botões próprios (minimizar, maximizar, fechar) — sem aba de navegador piscando nem <code>xdg-open</code> no meio da instalação.</p>
+							<p class="feature-desc">Abre como aplicativo do sistema — ícone fixado na dock ou atalho <b>Loja de Software NLinux</b> no menu —, com barra de título e botões próprios (minimizar, maximizar, fechar): sem aba de navegador piscando nem <code>xdg-open</code> no meio da instalação.</p>
 							<div class="feature-tags"><span class="tag">gtk3</span><span class="tag">webkit2gtk</span><span class="tag">localhost</span></div>
 						</article>
 						<article class="feature-card">
@@ -619,7 +619,7 @@
 						<article class="feature-card">
 							<div class="feature-icon"><i class="ti ti-search"></i></div>
 							<h3 class="feature-name">Busca, categorias e detalhes</h3>
-							<p class="feature-desc">Busca instantânea (tecla <code>/</code>), filtro <b>Instalados</b> e as 12 categorias na barra superior. Cada ficha traz resumo, desenvolvedor, pacotes, arquiteturas, link do site oficial ou do AUR e galeria de capturas com visualizador.</p>
+							<p class="feature-desc">Busca instantânea (tecla <code>/</code>), filtro <b>Instalados</b> e as <span data-cat="categories">12</span> categorias na barra superior. Cada ficha traz resumo, desenvolvedor, pacotes, arquiteturas, link do site oficial ou do AUR e galeria de capturas com visualizador.</p>
 							<div class="feature-tags"><span class="tag">busca</span><span class="tag">ficha</span><span class="tag">screenshots</span></div>
 						</article>
 						<article class="feature-card">
@@ -659,15 +659,15 @@
 						<div class="step-row">
 							<div class="step-num">1</div>
 							<div>
-								<h3>Abra pelo menu do sistema</h3>
-								<p>A loja entra como <b>Loja de aplicativos</b> em Menu → NLinux Software. Nada de instalar nada antes: ela já vem na ISO. No terminal, <code>nlinux-software</code> faz o mesmo.</p>
+								<h3>Abra pelo ícone na dock</h3>
+								<p>O ícone da loja já vem fixado na dock. O mesmo atalho aparece no menu do sistema como <b>Loja de Software NLinux</b>. Nada de instalar nada antes: ela já vem na ISO. No terminal, <code>nlinux-software</code> faz o mesmo.</p>
 							</div>
 						</div>
 						<div class="step-row">
 							<div class="step-num">2</div>
 							<div>
 								<h3>Encontre o aplicativo</h3>
-								<p>Digite na busca (ou tecle <code>/</code>) para filtrar por nome, ou escolha uma das 12 categorias. O chip <b>✓ instalado</b> marca o que já está na máquina e o filtro <b>Instalados</b> mostra só esses.</p>
+								<p>Digite na busca (ou tecle <code>/</code>) para filtrar por nome, ou escolha uma das <span data-cat="categories">12</span> categorias. O chip <b>✓ instalado</b> marca o que já está na máquina e o filtro <b>Instalados</b> mostra só esses.</p>
 							</div>
 						</div>
 						<div class="step-row">
@@ -688,7 +688,7 @@
 
 					<div class="code-block">
 						<div class="code-head"><span>terminal</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
-						<pre><code><span class="c"># abre a loja nativa (atalho do menu: "Loja de aplicativos")</span>
+						<pre><code><span class="c"># abre a loja nativa (atalho do menu: "Loja de Software NLinux")</span>
 <span class="p">nlinux-software</span>
 
 <span class="c"># a loja checa o catálogo a cada 15s; para olhar mais de perto:</span>
@@ -697,7 +697,10 @@ NLINUX_CATALOG_CHECK=5 <span class="p">nlinux-software</span></code></pre>
 
 					<div class="note">
 						<i class="ti ti-info-circle"></i>
-						<p>Curadoria separada da instalação: a versão que vai na ISO é só cliente do catálogo. O painel de curadoria (fora da distro) edita os aplicativos, gera o pacote e assina com GPG o <code>tar.gz</code> publicado no repositório <a class="link-accent" href="https://github.com/Nilsonlinux/nlinux-software" target="_blank" rel="noopener noreferrer">Nilsonlinux/nlinux-software</a>, que é de onde a loja baixa o catálogo — por isso o update chega sem reinstalar a ISO.</p>
+						<div>
+							<p>Curadoria separada da instalação: a versão que vai na ISO é só cliente do catálogo. O painel de curadoria (fora da distro) edita os aplicativos, gera o pacote e assina com GPG o <code>tar.gz</code> publicado no repositório <a class="link-accent" href="https://github.com/Nilsonlinux/nlinux-software" target="_blank" rel="noopener noreferrer">Nilsonlinux/nlinux-software</a>, que é de onde a loja baixa o catálogo — por isso o update chega sem reinstalar a ISO.</p>
+							<p>E os números desta página (<b data-cat="revision">v128</b>, <b data-cat="apps">159</b> apps, <b data-cat="categories">12</b> categorias) são lidos desse mesmo repositório no carregamento: quando a curadoria publica um catálogo novo, esta página muda sozinha, sem ninguém editar o site.</p>
+						</div>
 					</div>
 
 					<h3 class="block-title"><i class="ti ti-box"></i> Por dentro</h3>
@@ -710,7 +713,7 @@ NLINUX_CATALOG_CHECK=5 <span class="p">nlinux-software</span></code></pre>
 								<li><b>python</b> + python-gobject</li>
 								<li>servidor HTTP em 127.0.0.1</li>
 								<li>7 idiomas, tema claro/escuro</li>
-								<li>atalho <b>nlinux-software</b></li>
+								<li>atalho <b>Loja de Software NLinux</b></li>
 							</ul>
 						</div>
 						<div class="stack-card">
@@ -727,8 +730,8 @@ NLINUX_CATALOG_CHECK=5 <span class="p">nlinux-software</span></code></pre>
 						<div class="stack-card">
 							<h3><i class="ti ti-database"></i> catálogo</h3>
 							<ul>
-								<li><b>159</b> aplicativos curados</li>
-								<li><b>12</b> categorias</li>
+								<li><b><span data-cat="apps">159</span></b> aplicativos curados</li>
+								<li><b><span data-cat="categories">12</span></b> categorias</li>
 								<li>applications-*.json por idioma</li>
 								<li>assets com hash <b>SHA-256</b></li>
 								<li>ícones e capturas de tela</li>
@@ -769,7 +772,7 @@ NLINUX_CATALOG_CHECK=5 <span class="p">nlinux-software</span></code></pre>
 							<ul>
 								<li><b>noctalia</b>, greetd</li>
 								<li>kitty, fish, starship</li>
-								<li>gnome-software + flatpak</li>
+								<li>gnome-text-editor, eartag</li>
 								<li>firefox, discord, telegram, nautilus</li>
 								<li>spotify-launcher</li>
 								<li>swaylock, swayidle, grim</li>
@@ -795,7 +798,7 @@ NLINUX_CATALOG_CHECK=5 <span class="p">nlinux-software</span></code></pre>
 								<li>btrfs-progs, python</li>
 								<li>noctalia, greetd, NetworkManager</li>
 								<li>mesmos apps do desktop</li>
-								<li>flatpak + appstream</li>
+								<li>webkit2gtk-4.1, polkit</li>
 							</ul>
 						</div>
 					</div>
@@ -937,6 +940,47 @@ NLINUX_CATALOG_CHECK=5 <span class="p">nlinux-software</span></code></pre>
 	const topBtn = $('#backToTop');
 	window.addEventListener('scroll', () => topBtn.classList.toggle('visible', scrollY > 500), { passive: true });
 	topBtn.addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
+})();
+
+/* Catálogo da NLinux Software: revisão, apps e categorias saem do repositório,
+   não do HTML. Publicar um catálogo novo atualiza a página sem editar o site.
+   O catalog-head.json (143 B) vem sempre fresco; o catálogo completo (230 kB)
+   só é baixado quando o sha1 muda e fica guardado no localStorage. */
+(() => {
+	const RAW = 'https://raw.githubusercontent.com/Nilsonlinux/nlinux-software/main/';
+	const CACHE = 'nlinux-catalog-v1';
+	const META = ['stats', 'distro', 'supported'];
+
+	const paint = data => {
+		document.querySelectorAll('[data-cat]').forEach(el => {
+			const v = data[el.dataset.cat];
+			if (v === undefined || v === null) return;
+			el.textContent = el.dataset.cat === 'revision' ? 'v' + v : String(v);
+		});
+	};
+
+	let cached = null;
+	try { cached = JSON.parse(localStorage.getItem(CACHE) || 'null'); } catch {}
+	if (cached) paint(cached);
+
+	fetch(RAW + 'catalog-head.json', { cache: 'no-store' })
+		.then(r => r.ok ? r.json() : null)
+		.then(head => {
+			if (!head || head.revision == null) return;
+			if (cached && cached.sha === head.sha1 && cached.categories != null) { paint(cached); return; }
+			const next = { revision: head.revision, apps: head.apps, sha: head.sha1 };
+			return fetch(RAW + 'src/apps/applications-en.json')
+				.then(r => r.ok ? r.json() : null)
+				.then(cat => {
+					if (cat) {
+						next.categories = Object.keys(cat)
+							.filter(k => !META.includes(k) && cat[k] && typeof cat[k] === 'object').length;
+						try { localStorage.setItem(CACHE, JSON.stringify(next)); } catch {}
+					}
+					paint(next);
+				});
+		})
+		.catch(() => {});
 })();
 </script>
 </body>
