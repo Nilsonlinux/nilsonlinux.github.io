@@ -142,6 +142,15 @@
 			font-size: 1rem; transition: all .2s; outline: none;
 		}
 		.icon-btn:hover { border-color: var(--border); background: var(--surface-2); }
+
+		/* GitHub no cabecalho: amarelo da marca no hover */
+		.icon-btn .ti { transition: transform .22s cubic-bezier(.34, 1.56, .64, 1); }
+		.icon-btn-gh:hover, .icon-btn-gh:focus-visible {
+			color: #f5c518; border-color: color-mix(in srgb, #f5c518 55%, transparent);
+			background: color-mix(in srgb, #f5c518 13%, transparent);
+			box-shadow: 0 0 0 3px color-mix(in srgb, #f5c518 12%, transparent);
+		}
+		.icon-btn-gh:hover .ti, .icon-btn-gh:focus-visible .ti { transform: scale(1.16) rotate(-9deg); }
 		.nav-toggle { display: inline-flex; }
 		.mobile-nav {
 			position: absolute; top: calc(100% + .55rem); right: 1rem; z-index: 40;
@@ -510,6 +519,7 @@
 				</nav>
 				<div class="header-actions">
 					<button type="button" class="icon-btn" id="themeToggle" aria-label="Alternar tema" title="Tema"><i class="ti ti-sun-moon"></i></button>
+					<a class="icon-btn icon-btn-gh" href="https://github.com/Nilsonlinux" target="_blank" rel="noopener noreferrer" aria-label="GitHub do NLinux" title="GitHub"><i class="ti ti-brand-github"></i></a>
 					<a class="btn-primary" href="baixar.html"><i class="ti ti-download"></i><span class="btn-label">Baixar ISO</span></a>
 					<button type="button" class="icon-btn nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false" title="Menu"><i class="ti ti-menu-2"></i></button>
 				</div>
