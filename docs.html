@@ -501,21 +501,25 @@
 				</a>
 				<nav class="main-nav" aria-label="Páginas do site">
 					<a href="index.html" class="has-badge"><i class="ti ti-disc"></i>&nbsp;NLinux<span class="nav-badge"><img src="img/tux.png" alt="Linux"></span></a>
-					<a href="index.html#baixar"><i class="ti ti-download"></i>&nbsp;Baixar</a>
+					<a href="baixar.html"><i class="ti ti-download"></i>&nbsp;Baixar</a>
+					<a href="recursos.html"><i class="ti ti-adjustments-horizontal"></i>&nbsp;Recursos</a>
+					<a href="loja.html"><i class="ti ti-shopping-bag"></i>&nbsp;Loja</a>
 					<a href="docs.html" class="active" aria-current="page"><i class="ti ti-book-2"></i>&nbsp;Docs</a>
 					<a href="plugins.html"><i class="ti ti-plug"></i>&nbsp;Plugins</a>
 					<a href="doar.html">❤️ Apoie o projeto</a>
 				</nav>
 				<div class="header-actions">
 					<button type="button" class="icon-btn" id="themeToggle" aria-label="Alternar tema" title="Tema"><i class="ti ti-sun-moon"></i></button>
-					<a class="btn-primary" href="index.html#baixar"><i class="ti ti-download"></i><span class="btn-label">Baixar ISO</span></a>
+					<a class="btn-primary" href="baixar.html"><i class="ti ti-download"></i><span class="btn-label">Baixar ISO</span></a>
 					<button type="button" class="icon-btn nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false" title="Menu"><i class="ti ti-menu-2"></i></button>
 				</div>
 			</div>
 			<nav class="mobile-nav" id="mobileMenu" aria-label="Páginas do site (menu móvel)">
 				<a href="index.html" class="has-badge"><i class="ti ti-disc"></i>&nbsp;NLinux<span class="nav-badge"><img src="img/tux.png" alt="Linux"></span></a>
-				<a href="index.html#baixar"><i class="ti ti-download"></i>&nbsp;Baixar</a>
-				<a href="docs.html" class="active"><i class="ti ti-book-2"></i>&nbsp;Documentação</a>
+				<a href="baixar.html"><i class="ti ti-download"></i>&nbsp;Baixar</a>
+				<a href="recursos.html"><i class="ti ti-adjustments-horizontal"></i>&nbsp;Recursos</a>
+				<a href="loja.html"><i class="ti ti-shopping-bag"></i>&nbsp;Loja</a>
+				<a href="docs.html" class="active"><i class="ti ti-book-2"></i>&nbsp;Docs</a>
 				<a href="plugins.html"><i class="ti ti-plug"></i>&nbsp;Plugins</a>
 				<a href="doar.html">❤️&nbsp;Apoie o projeto</a>
 			</nav>
@@ -558,7 +562,7 @@
 								<li><a href="#pos-instalacao"><i class="ti ti-circle-check"></i> Depois de instalar</a></li>
 								<li class="toc-group">Usando o NLinux</li>
 								<li><a href="#atalhos"><i class="ti ti-keyboard"></i> Atalhos de teclado</a></li>
-								<li><a href="#loja"><i class="ti ti-shopping-bag"></i> Loja de software</a></li>
+								<li><a href="loja.html"><i class="ti ti-shopping-bag"></i> Loja de software</a></li>
 								<li><a href="#faq"><i class="ti ti-help-circle"></i> Problemas comuns</a></li>
 								<li class="toc-group">Para desenvolver</li>
 								<li><a href="#build"><i class="ti ti-hammer"></i> Gerar a ISO</a></li>
@@ -593,7 +597,7 @@
 								<div class="spec-box"><span>Hostname</span><b>nlinux</b></div>
 								<div class="spec-box"><span>Locale</span><b>9 opções</b></div>
 							</div>
-							<p class="doc-p">O sistema instalado já vem com a <a class="link-accent" href="index.html#loja">Loja NLinux Software</a> em <code>/opt/nlinux-software</code>, `yay` para AUR e a janela de boas-vindas no primeiro login.</p>
+							<p class="doc-p">O sistema instalado já vem com a <a class="link-accent" href="loja.html">Loja NLinux Software</a> em <code>/opt/nlinux-software</code>, `yay` para AUR e a janela de boas-vindas no primeiro login.</p>
 							<div class="callout">
 								<i class="ti ti-info-circle"></i>
 								<p>Guia rápido: <a class="link-accent" href="#gravar">grave a ISO</a> → <a class="link-accent" href="#live">boote no live</a> → abra o <strong>Instalar NLinux</strong> na tela inicial → siga os <a class="link-accent" href="#instalar">10 passos</a> → reinicie e escolha <strong>NLinux</strong> na lista de boot.</p>
@@ -627,8 +631,8 @@
 							<h2 class="doc-h2"><i class="ti ti-device-floppy"></i> Gravar a ISO no pendrive<a class="anchor ti ti-link" href="#gravar" aria-label="Link para esta seção"></a></h2>
 							<p class="doc-p">Baixe a ISO, verifique o pendrive e grave. O <code>dd</code> apaga o dispositivo inteiro — confira a letra do disco duas vezes.</p>
 							<div class="foot-links">
-								<a class="btn-primary" href="index.html#baixar" data-iso-download target="_blank" rel="noopener noreferrer"><i class="ti ti-download"></i><span>Baixar a ISO</span></a>
-								<a class="btn-ghost" href="index.html#baixar"><i class="ti ti-info-circle"></i> Detalhes da release</a>
+								<a class="btn-primary" href="baixar.html" data-iso-download target="_blank" rel="noopener noreferrer"><i class="ti ti-download"></i><span>Baixar a ISO</span></a>
+								<a class="btn-ghost" href="baixar.html"><i class="ti ti-info-circle"></i> Detalhes da release</a>
 							</div>
 							<p class="download-meta"><i class="ti ti-calendar-event" style="margin-right:.3rem"></i>ISO atualizada em <time data-iso-date datetime="2026-09-28">segunda-feira, 28 de setembro de 2026</time></p>
 							<div class="code-block">
@@ -866,7 +870,7 @@ sudo dd if=nlinux-ISO-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync
 
 						<!-- ---------- Loja ---------- -->
 						<section class="doc-sec reveal" id="loja">
-							<h2 class="doc-h2"><i class="ti ti-shopping-bag"></i> Loja de software<span class="pill">catálogo <span data-cat="revision">…</span></span><a class="anchor ti ti-link" href="#loja" aria-label="Link para esta seção"></a></h2>
+							<h2 class="doc-h2"><i class="ti ti-shopping-bag"></i> Loja de software<span class="pill">catálogo <span data-cat="revision">…</span></span><a class="anchor ti ti-link" href="loja.html" aria-label="Link para esta seção"></a></h2>
 							<div class="doc-lead">
 								<img src="img/nlinux-software.png" alt="NLinux Software" width="54" height="52" loading="lazy" />
 								<p class="doc-p">A <strong>NLinux Software</strong> já vem instalada na ISO e no sistema instalado (<code>/opt/nlinux-software</code>, comando <code>nlinux-software</code>, atalho <em>Loja de Software NLinux</em> no menu e ícone já fixado na dock). O app fica somente-leitura em <code>/opt</code> e trabalha com uma cópia própria em <code>~/.local/share/nlinux/store/apps</code>, já semeada na instalação — é lá que o catálogo e as mídias são atualizados. O catálogo reúne <strong><span data-cat="apps">…</span> aplicativos</strong> em <strong><span data-cat="categories">…</span> categorias</strong>, com busca, ficha do app, capturas de tela e instalação via polkit.</p>
@@ -883,7 +887,7 @@ sudo dd if=nlinux-ISO-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync
 							<p class="doc-p">O catálogo é atualizado sozinho: a cada 15 s a loja confere o commit da <code>main</code> no GitHub e só baixa o catálogo quando ele muda. Sem internet, continua funcionando com o catálogo local.</p>
 							<p class="doc-p">A revisão e as contagens desta página (<b data-cat="revision">…</b>, <b data-cat="apps">…</b> apps, <b data-cat="categories">…</b> categorias) também saem desse repositório: esta doc lê o <a class="link-accent" href="https://github.com/Nilsonlinux/nlinux-software/blob/main/catalog-head.json" target="_blank" rel="noopener noreferrer">catalog-head.json</a> no carregamento e conta as categorias no catálogo completo, guardando o resultado em cache. Publicar um catálogo novo atualiza a página sem ninguém editar o site.</p>
 							<div class="foot-links">
-								<a class="btn-ghost" href="index.html#loja"><i class="ti ti-book-2"></i> Detalhes completos da loja</a>
+								<a class="btn-ghost" href="loja.html"><i class="ti ti-book-2"></i> Detalhes completos da loja</a>
 								<a class="btn-ghost" href="https://github.com/Nilsonlinux/nlinux-software" target="_blank" rel="noopener noreferrer"><i class="ti ti-brand-github"></i> Código no GitHub</a>
 							</div>
 						</section>
@@ -981,7 +985,7 @@ gpg --verify /tmp/loja/nlinux-software-v&lt;N&gt;.tar.gz.asc /tmp/loja/nlinux-so
 								<i class="ti ti-alert-triangle"></i>
 								<p>Não rode dois builds ao mesmo tempo: o script roda em um namespace de mounts privado e desmonta mounts deixados por builds interrompidos antes de começar. A camada do live compila os pacotes AUR via <code>yay</code> em duas etapas (<code>noctalia-greeter</code>, <code>xdg-desktop-portal-umbriel-git</code> e <code>xwayland-satellite-git</code> primeiro; depois <code>umbriel-git</code> e <code>whatsapp-linux-desktop-bin</code>, que dependem do portal) — por isso o build é <strong>lento</strong> (Rust/cargo) e precisa de internet.</p>
 							</div>
-							<p class="doc-p">Depois de gerar, grave a ISO com <code>dd</code> ou balenaEtcher e valide na máquina de destino. Detalhes da release na <a class="link-accent" href="index.html#baixar">página do NLinux</a>.</p>
+							<p class="doc-p">Depois de gerar, grave a ISO com <code>dd</code> ou balenaEtcher e valide na máquina de destino. Detalhes da release na <a class="link-accent" href="baixar.html">página do NLinux</a>.</p>
 						</section>
 
 						<!-- ---------- Estrutura ---------- -->
@@ -1112,8 +1116,8 @@ NLinux.jpg / splash.png   arte do menu de boot</code></pre>
 
 						<section class="doc-sec reveal">
 							<div class="foot-links">
-								<a class="btn-primary" href="index.html#baixar"><i class="ti ti-download"></i><span>Baixar a ISO</span></a>
-								<a class="btn-ghost" href="index.html#loja"><i class="ti ti-shopping-bag"></i> Sobre a loja</a>
+								<a class="btn-primary" href="baixar.html"><i class="ti ti-download"></i><span>Baixar a ISO</span></a>
+								<a class="btn-ghost" href="loja.html"><i class="ti ti-shopping-bag"></i> Sobre a loja</a>
 								<a class="btn-ghost" href="https://github.com/Nilsonlinux" target="_blank" rel="noopener noreferrer"><i class="ti ti-brand-github"></i> Código-fonte</a>
 							</div>
 						</section>
@@ -1151,9 +1155,9 @@ NLinux.jpg / splash.png   arte do menu de boot</code></pre>
 							<p>NLinux</p>
 							<ul>
 								<li><a href="index.html">Visão geral</a></li>
-								<li><a href="index.html#loja">Loja de software</a></li>
-								<li><a href="index.html#recursos">Recursos</a></li>
-								<li><a href="index.html#baixar">Download ISO</a></li>
+								<li><a href="loja.html">Loja de software</a></li>
+								<li><a href="recursos.html">Recursos</a></li>
+								<li><a href="baixar.html">Download ISO</a></li>
 							</ul>
 						</nav>
 						<nav class="footer-col" aria-label="Projeto">

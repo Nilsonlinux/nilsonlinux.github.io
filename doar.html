@@ -200,34 +200,80 @@
 		.cta-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .75rem; margin-top: 1.4rem; }
 		.cta-heart { font-size: 2.2rem; line-height: 1; }
 
-		.donate-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; margin-top: 2rem; align-items: start; }
-		@media (min-width: 640px) and (max-width: 1299px) {
-			.donate-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-			.paypal-card { grid-column: 1 / -1; justify-self: center; width: fit-content; }
+		/* ---- Abas de doação ---- */
+		.tabs { margin-top: 2rem; }
+		.tablist {
+			display: flex; flex-wrap: wrap; gap: .5rem; justify-content: center;
+			border-bottom: 1px solid var(--border); padding-bottom: .75rem;
 		}
-		@media (min-width: 1300px) {
-			.donate-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+		.tab {
+			display: inline-flex; align-items: center; gap: .5rem;
+			height: 2.6rem; padding: 0 1.1rem; border: 1px solid var(--border);
+			border-radius: .6rem; background: var(--surface); color: var(--fg-dim);
+			font: 600 .875rem Inter, system-ui, sans-serif; cursor: pointer;
+			transition: all .2s ease; outline: none;
 		}
-		.donate-head { display: flex; flex-wrap: wrap; align-items: center; gap: .25rem 2.5rem; margin-bottom: .25rem; }
-		.donate-head .section-title { margin-bottom: 0; }
-		.donate-card {
-			position: relative; overflow: hidden; isolation: isolate;
+		.tab:hover { color: var(--fg); border-color: color-mix(in srgb, var(--accent) 35%, transparent); }
+		.tab[aria-selected="true"] {
+			background: color-mix(in srgb, var(--accent) 14%, transparent);
+			border-color: color-mix(in srgb, var(--accent) 45%, transparent); color: var(--accent);
+		}
+		.tab:focus-visible { box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 50%, transparent); }
+		.tab .ti { font-size: 1.1rem; }
+		.tabpanel { display: none; }
+		.tabpanel.on { display: block; animation: tabIn .25s ease; }
+		@keyframes tabIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+		@media (prefers-reduced-motion: reduce) {
+			.tabpanel.on { animation: none; }
+		}
+
+		.donate-body { display: grid; grid-template-columns: 1fr; gap: 2rem; align-items: start; padding-top: 1.75rem; }
+		@media (min-width: 860px) { .donate-body { grid-template-columns: auto 1fr; } }
+		.qr-side { display: grid; gap: 1rem; justify-items: center; text-align: center; }
+		.donate-body .qr-box img { max-width: 260px; }
+		.donate-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 1rem 1.25rem; }
+		.donate-fields .donate-label { margin: 0 0 .4rem; }
+		.paypal-wrap { display: grid; place-items: center; padding-top: 1.75rem; }
+		.paypal-wrap iframe { border: 0; border-radius: 1rem; background: var(--surface); }
+
+		/* ---- Cards de apoio ---- */
+		.features-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
+		@media (min-width: 640px) { .features-grid { grid-template-columns: repeat(2, 1fr); } }
+		@media (min-width: 1024px) { .features-grid { grid-template-columns: repeat(3, 1fr); } }
+		.feature-card {
+			position: relative; overflow: hidden; display: flex; flex-direction: column;
 			border: 1px solid var(--border); border-radius: 1.25rem; background: var(--surface);
-			box-shadow: var(--shadow-card); padding: 1.4rem 1.5rem; transition: all .25s ease;
+			box-shadow: var(--shadow-card); transition: all .25s ease; isolation: isolate; padding: 1.25rem 1.3rem;
 		}
-		.donate-card:hover {
+		.feature-card:hover {
 			transform: translateY(-4px); border-color: color-mix(in srgb, var(--accent) 35%, transparent);
 			box-shadow: var(--shadow-card-hover);
 		}
-		.donate-card:hover::before {
+		.feature-card:hover::before {
 			content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
 			background: radial-gradient(120% 95% at 0% 0%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 45%);
 		}
-		.donate-card h3 { display: flex; align-items: center; gap: .5rem; font-size: 1rem; font-weight: 700; margin-bottom: .9rem; }
-		.donate-card h3 .ti { color: var(--accent); font-size: 1.15rem; }
-		.paypal-card { justify-self: center; width: 100%; max-width: 26rem; }
-		.paypal-card iframe { display: block; margin-inline: auto; width: 100%; max-width: 382px; height: auto; aspect-ratio: 382 / 550; border: 0; }
-		.qr-box {
+		.feature-card > * { position: relative; z-index: 1; }
+		.feature-icon {
+			width: 2.4rem; height: 2.4rem; border-radius: .7rem; display: grid; place-items: center;
+			border: 1px solid var(--border); background: color-mix(in srgb, var(--surface-2) 80%, transparent);
+			color: var(--accent); font-size: 1.2rem; margin-bottom: .9rem;
+		}
+		.feature-name { font-size: 1rem; font-weight: 700; letter-spacing: -.02em; }
+		.feature-desc { font-size: .84rem; line-height: 1.55; color: var(--fg-dim); margin-top: .5rem; }
+		.feature-tags { display: flex; gap: .35rem; flex-wrap: wrap; margin-top: .9rem; }
+		.tag {
+			padding: .25rem .55rem; border-radius: 999px; border: 1px solid var(--border);
+			color: var(--fg-dim); font-size: .66rem; background: color-mix(in srgb, var(--surface-2) 40%, transparent);
+		}
+		.card-cta { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: auto; padding-top: 1.1rem; }
+		.btn-view {
+			display: inline-flex; align-items: center; gap: .4rem; padding: .45rem .7rem;
+			border: 1px solid var(--border); border-radius: .5rem; background: var(--surface-2);
+			color: var(--fg-dim); font-size: .74rem; font-weight: 600; text-decoration: none; transition: all .2s ease;
+		}
+		.btn-view:hover { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 35%, transparent); }
+
 			display: flex; justify-content: center; padding: .6rem;
 			border: 1px solid var(--border); border-radius: .9rem; background: transparent;
 		}
@@ -253,11 +299,6 @@
 		}
 		.placeholder-note {
 			margin-top: .6rem; font: 500 .72rem "JetBrains Mono", monospace; color: var(--faint);
-		}
-		.donate-list { list-style: none; display: grid; gap: .5rem; }
-		.donate-list li {
-			font: 500 .78rem/1.6 "JetBrains Mono", monospace; color: var(--fg-dim);
-			padding: .6rem .75rem; border: 1px dashed var(--border); border-radius: .6rem;
 		}
 
 		.site-footer {
@@ -332,8 +373,10 @@
 				</a>
 				<nav class="main-nav" aria-label="Páginas do site">
 					<a href="index.html" class="has-badge"><i class="ti ti-disc"></i>&nbsp;NLinux<span class="nav-badge"><img src="img/tux.png" alt="Linux"></span></a>
+					<a href="baixar.html"><i class="ti ti-download"></i>&nbsp;Baixar</a>
+					<a href="recursos.html"><i class="ti ti-adjustments-horizontal"></i>&nbsp;Recursos</a>
+					<a href="loja.html"><i class="ti ti-shopping-bag"></i>&nbsp;Loja</a>
 					<a href="docs.html"><i class="ti ti-book-2"></i>&nbsp;Docs</a>
-					<a href="https://github.com/Nilsonlinux" target="_blank" rel="noopener noreferrer">GitHub</a>
 					<a href="plugins.html"><i class="ti ti-plug"></i>&nbsp;Plugins</a>
 					<a href="doar.html" class="active" aria-current="page">❤️ Apoie o projeto</a>
 				</nav>
@@ -345,10 +388,12 @@
 			</div>
 			<nav class="mobile-nav" id="mobileMenu" aria-label="Páginas do site (menu móvel)">
 				<a href="index.html" class="has-badge"><i class="ti ti-disc"></i>&nbsp;NLinux<span class="nav-badge"><img src="img/tux.png" alt="Linux"></span></a>
-				<a href="docs.html"><i class="ti ti-book-2"></i>&nbsp;Documentação</a>
-				<a href="https://github.com/Nilsonlinux" target="_blank" rel="noopener noreferrer"><i class="ti ti-brand-github"></i>&nbsp;GitHub</a>
+				<a href="baixar.html"><i class="ti ti-download"></i>&nbsp;Baixar</a>
+				<a href="recursos.html"><i class="ti ti-adjustments-horizontal"></i>&nbsp;Recursos</a>
+				<a href="loja.html"><i class="ti ti-shopping-bag"></i>&nbsp;Loja</a>
+				<a href="docs.html"><i class="ti ti-book-2"></i>&nbsp;Docs</a>
 				<a href="plugins.html"><i class="ti ti-plug"></i>&nbsp;Plugins</a>
-				<a href="doar.html" class="active"><i class="ti ti-heart"></i>&nbsp;Apoie o projeto</a>
+				<a href="doar.html" class="active">❤️&nbsp;Apoie o projeto</a>
 			</nav>
 		</header>
 
@@ -357,85 +402,170 @@
 
 				<div class="page-header reveal">
 					<h1>Apoie o projeto</h1>
-					<p class="page-subtitle">Obrigado por considerar apoiar o trabalho: cada ajuda mantém os projetos Linux, NLinux e Noctalia de pé.</p>
+					<p class="page-subtitle">Obrigado por considerar apoiar o trabalho: cada ajuda mantém o NLinux, os plugins e a Noctalia de pé — nos servidores, nos builds da ISO e no tempo de desenvolvimento.</p>
 				</div>
 
 				<section class="content-section reveal">
 					<div class="cta-panel">
 						<div class="cta-heart">❤️</div>
-						<h2>Apoie o projeto</h2>
-						<p>Contribua com uma doação via Pix ou transferência bancária. Qualquer valor faz a diferença.</p>
+						<h2>Três formas de doar</h2>
+						<p>Escolha Pix, PayPal ou transferência bancária. Qualquer valor faz a diferença — e não precisa ser todo mês.</p>
 						<div class="cta-actions">
-							<a class="btn-primary" href="#pix"><i class="ti ti-qrcode"></i><span>Apoiar com Pix</span></a>
-							<a class="btn-ghost" href="#paypal"><i class="ti ti-brand-paypal"></i> PayPal</a>
-							<a class="btn-ghost" href="#conta"><i class="ti ti-building-bank"></i> Conta bancária</a>
+							<a class="btn-primary" href="#doar-pix" data-tab-go="pix"><i class="ti ti-qrcode"></i><span>Apoiar com Pix</span></a>
+							<a class="btn-ghost" href="#doar-paypal" data-tab-go="paypal"><i class="ti ti-brand-paypal"></i> PayPal</a>
+							<a class="btn-ghost" href="#doar-conta" data-tab-go="conta"><i class="ti ti-building-bank"></i> Transferência</a>
 						</div>
 					</div>
 				</section>
 
 				<section class="content-section reveal">
-					<div class="donate-head">
-						<h2 class="section-title" id="pix">Pix <span class="count">chave</span></h2>
-						<h2 class="section-title" id="paypal">PayPal <span class="count">cartão</span></h2>
-						<h2 class="section-title" id="conta">Conta bancária <span class="count">transferência</span></h2>
+					<div class="tabs">
+						<div class="tablist" role="tablist" aria-label="Formas de doar">
+							<button type="button" class="tab" role="tab" id="tab-pix" aria-controls="doar-pix" aria-selected="true" data-tab="pix"><i class="ti ti-qrcode"></i> Pix</button>
+							<button type="button" class="tab" role="tab" id="tab-paypal" aria-controls="doar-paypal" aria-selected="false" data-tab="paypal"><i class="ti ti-brand-paypal"></i> PayPal</button>
+							<button type="button" class="tab" role="tab" id="tab-conta" aria-controls="doar-conta" aria-selected="false" data-tab="conta"><i class="ti ti-building-bank"></i> Transferência</button>
+						</div>
+
+						<div class="tabpanel on" role="tabpanel" id="doar-pix" aria-labelledby="tab-pix" tabindex="0">
+							<div class="donate-body">
+								<div class="qr-side">
+									<div class="qr-box">
+										<img src="img/qr-code.png" alt="QR Code Pix" width="285" height="286" />
+									</div>
+									<p class="placeholder-note">Abra o app do seu banco, aponte a câmera e pronto.</p>
+								</div>
+								<div>
+									<h3 class="section-title">Chave Pix <span class="count">qualquer banco</span></h3>
+									<div class="donate-fields">
+										<div>
+											<p class="donate-label">Chave</p>
+											<div class="code-block">
+												<div class="code-head"><span>chave</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
+												<pre id="pixChaveValue">nilsonlinux@gmail.com</pre>
+											</div>
+										</div>
+										<div>
+											<p class="donate-label">Tipo de chave</p>
+											<div class="code-block">
+												<div class="code-head"><span>pix</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
+												<pre id="pixTipoValue">e-mail</pre>
+											</div>
+										</div>
+										<div>
+											<p class="donate-label">Titular</p>
+											<div class="code-block">
+												<div class="code-head"><span>titular</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
+												<pre>Josenilson Da Costa Santos</pre>
+											</div>
+										</div>
+									</div>
+									<p class="placeholder-note">Use o e-mail acima como chave Pix — funciona em qualquer banco ou fintech.</p>
+								</div>
+							</div>
+						</div>
+
+						<div class="tabpanel" role="tabpanel" id="doar-paypal" aria-labelledby="tab-paypal" tabindex="0" hidden>
+							<div class="paypal-wrap">
+								<iframe
+									src="https://www.paypal.com/giving/campaigns?campaign_id=3S93JA7CM7A5S"
+									title="PayPal donate campaign card"
+									frameborder="0"
+									width="382"
+									height="550"
+									loading="lazy"
+								></iframe>
+							</div>
+						</div>
+
+						<div class="tabpanel" role="tabpanel" id="doar-conta" aria-labelledby="tab-conta" tabindex="0" hidden>
+							<div style="padding-top:1.75rem">
+								<h3 class="section-title">Transferência bancária <span class="count">TED ou DOC</span></h3>
+								<div class="donate-fields">
+									<div>
+										<p class="donate-label">Banco</p>
+										<div class="code-block">
+											<div class="code-head"><span>banco</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
+											<pre>BTG Pactual S.A. (208)</pre>
+										</div>
+									</div>
+									<div>
+										<p class="donate-label">Agência</p>
+										<div class="code-block">
+											<div class="code-head"><span>agência</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
+											<pre>0020</pre>
+										</div>
+									</div>
+									<div>
+										<p class="donate-label">Conta</p>
+										<div class="code-block">
+											<div class="code-head"><span>conta</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
+											<pre>270475-4</pre>
+										</div>
+									</div>
+									<div>
+										<p class="donate-label">Titular</p>
+										<div class="code-block">
+											<div class="code-head"><span>titular</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
+											<pre>Josenilson Da Costa Santos</pre>
+										</div>
+									</div>
+									<div>
+										<p class="donate-label">CPF</p>
+										<div class="code-block">
+											<div class="code-head"><span>cpf</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
+											<pre>023.***.***-95</pre>
+										</div>
+									</div>
+								</div>
+								<p class="placeholder-note">Transferência via TED ou DOC para a conta acima.</p>
+							</div>
+						</div>
 					</div>
-					<div class="donate-grid">
-						<div class="donate-card">
-							<h3><i class="ti ti-heart-filled"></i> Doe com Pix</h3>
-							<div class="qr-box">
-								<img src="img/qr-code.png" alt="QR Code Pix" width="285" height="286" />
+				</section>
+
+				<section class="content-section reveal">
+					<h2 class="section-title">Outras formas de apoiar <span class="count">sem gastar nada</span></h2>
+					<div class="features-grid">
+						<article class="feature-card">
+							<div class="feature-icon"><i class="ti ti-star"></i></div>
+							<h3 class="feature-name">Dê uma estrela</h3>
+							<p class="feature-desc">A estrela é o sinal que mais ajuda a chegar em quem está procurando uma distribuição nova. Leva dez segundos em cada repositório.</p>
+							<div class="feature-tags"><span class="tag">nlinux-iso-build</span><span class="tag">noctalia-plugins</span></div>
+							<div class="card-cta">
+								<a class="btn-view" href="https://github.com/Nilsonlinux/nlinux-iso-build" target="_blank" rel="noopener noreferrer"><i class="ti ti-star"></i>NLinux no GitHub</a>
+								<a class="btn-view" href="https://github.com/Nilsonlinux/noctalia-plugins" target="_blank" rel="noopener noreferrer"><i class="ti ti-star"></i>Plugins</a>
 							</div>
-							<p class="donate-label">Tipo de chave</p>
-							<div class="code-block">
-								<div class="code-head"><span>pix</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
-								<pre id="pixTipoValue">e-mail</pre>
+						</article>
+						<article class="feature-card">
+							<div class="feature-icon"><i class="ti ti-share-3"></i></div>
+							<h3 class="feature-name">Compartilhe</h3>
+							<p class="feature-desc">Um post, um vídeo, uma mensagem no grupo de amigos. A indicação é o que faz a comunidade crescer sem gastar nada.</p>
+							<div class="feature-tags"><span class="tag">ISO</span><span class="tag">loja</span><span class="tag">plugins</span></div>
+							<div class="card-cta">
+								<a class="btn-view" href="baixar.html"><i class="ti ti-download"></i>Ver a ISO</a>
+								<a class="btn-view" href="loja.html"><i class="ti ti-shopping-bag"></i>Ver a loja</a>
 							</div>
-							<p class="donate-label">Chave Pix</p>
-							<div class="code-block">
-								<div class="code-head"><span>chave</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
-								<pre id="pixChaveValue">nilsonlinux@gmail.com</pre>
+						</article>
+						<article class="feature-card">
+							<div class="feature-icon"><i class="ti ti-bug"></i></div>
+							<h3 class="feature-name">Reporte problemas</h3>
+							<p class="feature-desc">Achou um bug, uma tradução quebrada ou um app faltando na loja? A issue é a contribuição mais valiosa que existe — e sai de graça.</p>
+							<div class="feature-tags"><span class="tag">bug</span><span class="tag">issue</span><span class="tag">tradução</span></div>
+							<div class="card-cta">
+								<a class="btn-view" href="https://github.com/Nilsonlinux" target="_blank" rel="noopener noreferrer"><i class="ti ti-brand-github"></i>Abrir uma issue</a>
 							</div>
-							<p class="placeholder-note">Use o e-mail acima como chave Pix em qualquer banco.</p>
-						</div>
-						<div class="donate-card paypal-card">
-							<h3><i class="ti ti-brand-paypal"></i> Doe com PayPal</h3>
-							<iframe
-								src="https://www.paypal.com/giving/campaigns?campaign_id=3S93JA7CM7A5S"
-								title="PayPal donate campaign card"
-								frameborder="0"
-								width="382"
-								height="550"
-								scrolling="no"
-							></iframe>
-						</div>
-						<div class="donate-card">
-							<h3><i class="ti ti-building-bank"></i> Transferência</h3>
-							<p class="donate-label">Banco</p>
-							<div class="code-block">
-								<div class="code-head"><span>banco</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
-								<pre>BTG Pactual S.A. (208)</pre>
-							</div>
-							<p class="donate-label">Agência</p>
-							<div class="code-block">
-								<div class="code-head"><span>agência</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
-								<pre>0020</pre>
-							</div>
-							<p class="donate-label">Conta</p>
-							<div class="code-block">
-								<div class="code-head"><span>conta</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
-								<pre>270475-4</pre>
-							</div>
-							<p class="donate-label">Titular</p>
-							<div class="code-block">
-								<div class="code-head"><span>titular</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
-								<pre>Josenilson Da Costa Santos</pre>
-							</div>
-							<p class="donate-label">CPF</p>
-							<div class="code-block">
-								<div class="code-head"><span>cpf</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
-								<pre>023.***.***-95</pre>
-							</div>
-							<p class="placeholder-note">Transferência via TED ou DOC para a conta acima.</p>
+						</article>
+					</div>
+				</section>
+
+				<section class="content-section reveal">
+					<div class="cta-panel">
+						<h2>Obrigado de verdade</h2>
+						<p>Qualquer valor — R$ 5, R$ 20, um ano de builds — faz diferença. E se o Pix não couber no seu orçamento hoje, as estrelas e o compartilhamento também ajudam.</p>
+						<div class="cta-actions">
+							<a class="btn-primary" href="#doar-pix" data-tab-go="pix"><i class="ti ti-heart"></i><span>Doar agora</span></a>
+							<a class="btn-ghost" href="index.html"><i class="ti ti-disc"></i> Conhecer o NLinux</a>
+							<a class="btn-ghost" href="docs.html"><i class="ti ti-book-2"></i> Documentação</a>
 						</div>
 					</div>
 				</section>
@@ -552,6 +682,49 @@
 			} catch {}
 		});
 	});
+
+	const tabs = [...document.querySelectorAll('[data-tab]')];
+	const panels = [...document.querySelectorAll('.tabpanel')];
+	const tablist = document.querySelector('.tablist');
+
+	function ativar(chave, focar) {
+		tabs.forEach(t => {
+			const on = t.dataset.tab === chave;
+			t.setAttribute('aria-selected', String(on));
+			t.tabIndex = on ? 0 : -1;
+			if (on && focar) t.focus();
+		});
+		panels.forEach(p => {
+			const on = p.id === 'doar-' + chave;
+			p.classList.toggle('on', on);
+			p.hidden = !on;
+		});
+	}
+
+	tabs.forEach(t => t.addEventListener('click', () => ativar(t.dataset.tab)));
+	tablist.addEventListener('keydown', e => {
+		const i = tabs.findIndex(t => t.getAttribute('aria-selected') === 'true');
+		const passo = { ArrowRight: 1, ArrowLeft: -1, Home: -i, End: tabs.length - 1 - i }[e.key];
+		if (passo === undefined) return;
+		e.preventDefault();
+		ativar(tabs[(i + passo + tabs.length) % tabs.length].dataset.tab, true);
+	});
+
+	// links "Apoiar com Pix" e afins: trocam a aba e levam até ela
+	document.querySelectorAll('[data-tab-go]').forEach(a => {
+		a.addEventListener('click', e => {
+			e.preventDefault();
+			ativar(a.dataset.tabGo);
+			history.replaceState(null, '', '#doar-' + a.dataset.tabGo);
+			tablist.scrollIntoView({ behavior: 'smooth', block: 'center' });
+		});
+	});
+
+	// deep link: /doar.html#doar-paypal já abre na aba certa
+	if (location.hash.startsWith('#doar-')) {
+		const alvo = location.hash.slice('#doar-'.length);
+		if (tabs.some(t => t.dataset.tab === alvo)) ativar(alvo);
+	}
 
 	const observer = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }), { threshold: .08 });
 	document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
