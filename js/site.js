@@ -12,14 +12,14 @@
    O conteúdo no HTML é só a reserva para quando o JS não carrega:
    nunca aponta para um arquivo ou uma data desatualizada.
    ============================================================ */
-const NLINUX_ISO_URL = 'https://drive.google.com/file/d/1zGJ86ML3gBFnjlN5i1PFcHlyG2e9id2x/view?usp=sharing';
-const NLINUX_ISO_DATE = '2026-09-28';
+const NLINUX_ISO_URL = 'https://drive.google.com/file/d/1ZYcKrgaz_z_o4JO5O_LyaeEyySESUAbY/view?usp=sharing';
+const NLINUX_ISO_DATE = '2026-09-29';
 
 document.querySelectorAll('[data-iso-download]').forEach(link => {
 	link.href = NLINUX_ISO_URL;
 });
 
-/* "2026-09-28" → "segunda-feira, 28 de setembro de 2026". A data é montada
+/* "2026-09-29" → "segunda-feira, 29 de setembro de 2026". A data é montada
    na mão (ano/mês/dia) para o fuso não escorregar para o dia anterior. */
 const isoDateBr = iso => {
 	const [y, m, d] = String(iso).split('-').map(Number);
