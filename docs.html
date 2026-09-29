@@ -408,6 +408,7 @@
 
 		.anchor-target { scroll-margin-top: 5.5rem; }
 		.foot-links { margin-top: 1.25rem; display: flex; flex-wrap: wrap; gap: .6rem; }
+		.download-meta { margin-top: .8rem; font: 500 .7rem "JetBrains Mono", monospace; color: var(--faint); }
 		.btn-ghost {
 			display: inline-flex; height: 2.5rem; align-items: center; justify-content: center;
 			gap: .5rem; padding: 0 1rem; border-radius: .5rem;
@@ -482,6 +483,8 @@
 		gtag('js', new Date());
 		gtag('config', 'G-S0GS6KKPB3');
 	</script>
+	<!-- variáveis do site (link único de download da ISO em js/site.js) -->
+	<script src="js/site.js" defer></script>
 </head>
 <body>
 <div class="page-canvas">
@@ -624,9 +627,10 @@
 							<h2 class="doc-h2"><i class="ti ti-device-floppy"></i> Gravar a ISO no pendrive<a class="anchor ti ti-link" href="#gravar" aria-label="Link para esta seção"></a></h2>
 							<p class="doc-p">Baixe a ISO, verifique o pendrive e grave. O <code>dd</code> apaga o dispositivo inteiro — confira a letra do disco duas vezes.</p>
 							<div class="foot-links">
-								<a class="btn-primary" href="https://drive.google.com/file/d/1zGJ86ML3gBFnjlN5i1PFcHlyG2e9id2x/view?usp=sharing" target="_blank" rel="noopener noreferrer"><i class="ti ti-download"></i><span>Baixar a ISO</span></a>
+								<a class="btn-primary" href="index.html#baixar" data-iso-download target="_blank" rel="noopener noreferrer"><i class="ti ti-download"></i><span>Baixar a ISO</span></a>
 								<a class="btn-ghost" href="index.html#baixar"><i class="ti ti-info-circle"></i> Detalhes da release</a>
 							</div>
+							<p class="download-meta"><i class="ti ti-calendar-event" style="margin-right:.3rem"></i>ISO atualizada em <time data-iso-date datetime="2026-09-28">segunda-feira, 28 de setembro de 2026</time></p>
 							<div class="code-block">
 								<div class="code-head"><span>terminal · identificar o pendrive</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
 								<pre><code><span class="c"># lista os discos epartições (use o nome em /dev/...)</span>
@@ -862,22 +866,22 @@ sudo dd if=nlinux-ISO-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync
 
 						<!-- ---------- Loja ---------- -->
 						<section class="doc-sec reveal" id="loja">
-							<h2 class="doc-h2"><i class="ti ti-shopping-bag"></i> Loja de software<span class="pill">catálogo <span data-cat="revision">v128</span></span><a class="anchor ti ti-link" href="#loja" aria-label="Link para esta seção"></a></h2>
+							<h2 class="doc-h2"><i class="ti ti-shopping-bag"></i> Loja de software<span class="pill">catálogo <span data-cat="revision">…</span></span><a class="anchor ti ti-link" href="#loja" aria-label="Link para esta seção"></a></h2>
 							<div class="doc-lead">
 								<img src="img/nlinux-software.png" alt="NLinux Software" width="54" height="52" loading="lazy" />
-								<p class="doc-p">A <strong>NLinux Software</strong> já vem instalada na ISO e no sistema instalado (<code>/opt/nlinux-software</code>, comando <code>nlinux-software</code>, atalho <em>Loja de Software NLinux</em> no menu e ícone já fixado na dock). O catálogo reúne <strong><span data-cat="apps">159</span> aplicativos</strong> em <strong><span data-cat="categories">12</span> categorias</strong>, com busca, ficha do app, capturas de tela e instalação via polkit.</p>
+								<p class="doc-p">A <strong>NLinux Software</strong> já vem instalada na ISO e no sistema instalado (<code>/opt/nlinux-software</code>, comando <code>nlinux-software</code>, atalho <em>Loja de Software NLinux</em> no menu e ícone já fixado na dock). O app fica somente-leitura em <code>/opt</code> e trabalha com uma cópia própria em <code>~/.local/share/nlinux/store/apps</code>, já semeada na instalação — é lá que o catálogo e as mídias são atualizados. O catálogo reúne <strong><span data-cat="apps">…</span> aplicativos</strong> em <strong><span data-cat="categories">…</span> categorias</strong>, com busca, ficha do app, capturas de tela e instalação via polkit.</p>
 							</div>
 							<div class="pill-row">
 								<span class="pill">busca com /</span>
 								<span class="pill">filtro instalados</span>
-								<span class="pill"><span data-cat="categories">12</span> categorias</span>
+								<span class="pill"><span data-cat="categories">…</span> categorias</span>
 								<span class="pill">polkit + pkexec</span>
 								<span class="pill">AUR via paru/yay</span>
 								<span class="pill">7 idiomas</span>
 								<span class="pill">offline</span>
 							</div>
 							<p class="doc-p">O catálogo é atualizado sozinho: a cada 15 s a loja confere o commit da <code>main</code> no GitHub e só baixa o catálogo quando ele muda. Sem internet, continua funcionando com o catálogo local.</p>
-							<p class="doc-p">A revisão e as contagens desta página (<b data-cat="revision">v128</b>, <b data-cat="apps">159</b> apps, <b data-cat="categories">12</b> categorias) também saem desse repositório: esta doc lê o <a class="link-accent" href="https://github.com/Nilsonlinux/nlinux-software/blob/main/catalog-head.json" target="_blank" rel="noopener noreferrer">catalog-head.json</a> no carregamento e conta as categorias no catálogo completo, guardando o resultado em cache. Publicar um catálogo novo atualiza a página sem ninguém editar o site.</p>
+							<p class="doc-p">A revisão e as contagens desta página (<b data-cat="revision">…</b>, <b data-cat="apps">…</b> apps, <b data-cat="categories">…</b> categorias) também saem desse repositório: esta doc lê o <a class="link-accent" href="https://github.com/Nilsonlinux/nlinux-software/blob/main/catalog-head.json" target="_blank" rel="noopener noreferrer">catalog-head.json</a> no carregamento e conta as categorias no catálogo completo, guardando o resultado em cache. Publicar um catálogo novo atualiza a página sem ninguém editar o site.</p>
 							<div class="foot-links">
 								<a class="btn-ghost" href="index.html#loja"><i class="ti ti-book-2"></i> Detalhes completos da loja</a>
 								<a class="btn-ghost" href="https://github.com/Nilsonlinux/nlinux-software" target="_blank" rel="noopener noreferrer"><i class="ti ti-brand-github"></i> Código no GitHub</a>
@@ -951,10 +955,28 @@ sudo dd if=nlinux-ISO-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync
 								<li class="doc-li">Instala o <code>archiso</code> se faltar e <strong>regenera</strong> <code>iso/profile/</code> a partir do perfil releng instalado (compatível com a versão do <code>mkarchiso</code>).</li>
 								<li class="doc-li">Aplica os metadados de <code>iso/profiledef.sh</code> (nome/label/versão = <code>nlinux</code>, publisher <code>NLinux &lt;https://nlinux.dev&gt;</code>).</li>
 								<li class="doc-li">Anexa <code>iso/packages.live</code> à lista de pacotes do live e copia a camada <code>iso/airootfs/</code> (autologin, auto-run, branding, serviços do live).</li>
-								<li class="doc-li">Embute o projeto em <code>/opt/noctalia-installer</code> no live (<code>install.sh</code>, <code>install/</code>, <code>config/</code>, <code>packages/</code>).</li>
+								<li class="doc-li">Embute o projeto em <code>/opt/noctalia-installer</code> no live (<code>install.sh</code>, <code>install/</code>, <code>config/</code>, <code>packages/</code>) e a <strong>Loja NLinux Software</strong> em <code>/opt/nlinux-software</code>, a partir da cópia publicada em <code>nlinux-software/</code>.</li>
 								<li class="doc-li">Transforma o boot: <strong>systemd-boot</strong> (UEFI), <strong>GRUB</strong> (UEFI) e <strong>syslinux</strong> (BIOS), com títulos, itens e a splash do NLinux.</li>
 								<li class="doc-li">Roda <code>mkarchiso -v</code> — que executa a camada <code>iso/airootfs/root/customize_airootfs.sh</code> no chroot do build (AUR, greetd, usuário do live, autologin) — e gera a ISO (~2,9 GB).</li>
 							</ol>
+							<h3 class="doc-h3"><i class="ti ti-shopping-bag"></i> Atualizar a loja embutida na ISO</h3>
+							<p class="doc-p"><code>nlinux-software/</code> é a cópia do build publicado da loja (<a class="link-accent" href="https://github.com/Nilsonlinux/nlinux-software" target="_blank" rel="noopener noreferrer">Nilsonlinux/nlinux-software</a>). A curadoria já publica a versão nova lá; basta trocar o conteúdo e rebuildar — o <code>build-iso.sh</code> não instala a loja, ele só copia a pasta.</p>
+							<div class="code-block">
+								<div class="code-head"><span>terminal · trocar a loja pela publicação mais recente</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
+								<pre><code><span class="c"># dentro de nlinux-iso-build</span>
+rm -rf nlinux-software &amp;&amp; mkdir nlinux-software
+git clone --depth 1 https://github.com/Nilsonlinux/nlinux-software.git /tmp/loja
+cp -a /tmp/loja/. nlinux-software/
+rm -rf nlinux-software/.git nlinux-software/*.tar.gz nlinux-software/*.tar.gz.asc
+
+<span class="c"># conferindo a revisão e a assinatura do pacote publicado</span>
+cat nlinux-software/catalog-head.json
+gpg --verify /tmp/loja/nlinux-software-v&lt;N&gt;.tar.gz.asc /tmp/loja/nlinux-software-v&lt;N&gt;.tar.gz</code></pre>
+							</div>
+							<div class="callout">
+								<i class="ti ti-info-circle"></i>
+								<p>Desde a v117 o app <strong>não grava mais dentro do <code>/opt</code></strong>: o catálogo e as mídias ficam em <code>~/.local/share/nlinux/store/apps</code> e a árvore em <code>/opt/nlinux-software</code> é só a semente, somente-leitura. Por isso <code>customize_airootfs.sh</code> (live) e <code>40-user-config.sh</code> (instalado) semeiam a pasta do usuário em vez de <code>chown</code> no <code>/opt</code> — a primeira abertura da loja já encontra tudo, sem esperar cópia.</p>
+							</div>
 							<div class="callout warn">
 								<i class="ti ti-alert-triangle"></i>
 								<p>Não rode dois builds ao mesmo tempo: o script roda em um namespace de mounts privado e desmonta mounts deixados por builds interrompidos antes de começar. A camada do live compila os pacotes AUR via <code>yay</code> em duas etapas (<code>noctalia-greeter</code>, <code>xdg-desktop-portal-umbriel-git</code> e <code>xwayland-satellite-git</code> primeiro; depois <code>umbriel-git</code> e <code>whatsapp-linux-desktop-bin</code>, que dependem do portal) — por isso o build é <strong>lento</strong> (Rust/cargo) e precisa de internet.</p>
@@ -1301,46 +1323,6 @@ NLinux.jpg / splash.png   arte do menu de boot</code></pre>
 	$$('.reveal').forEach(el => observer.observe(el));
 })();
 
-/* Catálogo da NLinux Software: revisão, apps e categorias saem do repositório,
-   não do HTML. Publicar um catálogo novo atualiza a doc sem editar o site.
-   O catalog-head.json (143 B) vem sempre fresco; o catálogo completo (230 kB)
-   só é baixado quando o sha1 muda e fica guardado no localStorage. */
-(() => {
-	const RAW = 'https://raw.githubusercontent.com/Nilsonlinux/nlinux-software/main/';
-	const CACHE = 'nlinux-catalog-v1';
-	const META = ['stats', 'distro', 'supported'];
-
-	const paint = data => {
-		document.querySelectorAll('[data-cat]').forEach(el => {
-			const v = data[el.dataset.cat];
-			if (v === undefined || v === null) return;
-			el.textContent = el.dataset.cat === 'revision' ? 'v' + v : String(v);
-		});
-	};
-
-	let cached = null;
-	try { cached = JSON.parse(localStorage.getItem(CACHE) || 'null'); } catch {}
-	if (cached) paint(cached);
-
-	fetch(RAW + 'catalog-head.json', { cache: 'no-store' })
-		.then(r => r.ok ? r.json() : null)
-		.then(head => {
-			if (!head || head.revision == null) return;
-			if (cached && cached.sha === head.sha1 && cached.categories != null) { paint(cached); return; }
-			const next = { revision: head.revision, apps: head.apps, sha: head.sha1 };
-			return fetch(RAW + 'src/apps/applications-en.json')
-				.then(r => r.ok ? r.json() : null)
-				.then(cat => {
-					if (cat) {
-						next.categories = Object.keys(cat)
-							.filter(k => !META.includes(k) && cat[k] && typeof cat[k] === 'object').length;
-						try { localStorage.setItem(CACHE, JSON.stringify(next)); } catch {}
-					}
-					paint(next);
-				});
-		})
-		.catch(() => {});
-})();
 </script>
 	<script src="js/galeria.js"></script>
 </body>
