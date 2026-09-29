@@ -85,3 +85,67 @@ document.querySelectorAll('[data-iso-date]').forEach(el => {
 		})
 		.catch(() => {});
 })();
+
+/* ============================================================
+   ESTRELAS NO GITHUB
+
+   A contagem sai da API pública do GitHub, sem token — e sem
+   token o limite é de 60 requisições por hora por IP. Por isso o
+   número fica no localStorage por 6 horas, e o HTML vem com "…"
+   como reserva para quando o JS não carrega ou a cota acabou.
+
+   Para exibir outro repositório, não mexa aqui: o nome vem do
+   href do próprio link. Qualquer elemento com [data-gh="campo"]
+   dentro de um <a href="https://github.com/…"> recebe o valor,
+   e o [data-gh-label] vizinho vira "estrela"/"estrelas".
+   ============================================================ */
+(() => {
+	const TTL = 6 * 60 * 60 * 1000;      // 6 horas
+	const CACHE = 'nlinux-gh-v1';
+
+	// "https://github.com/dono/repo/tree/main/x" → "dono/repo"
+	const repoDo = link => link.getAttribute('href')
+		.replace(/^https?:\/\/github\.com\//, '')
+		.split(/[/?#]/).filter(Boolean).slice(0, 2).join('/');
+
+	// agrupa por repositório para não repetir a chamada
+	const grupos = new Map();
+	document.querySelectorAll('[data-gh]').forEach(alvo => {
+		const link = alvo.closest('a[href*="github.com/"]');
+		if (!link) return;
+		const repo = repoDo(link);
+		if (!grupos.has(repo)) grupos.set(repo, []);
+		grupos.get(repo).push(alvo);
+	});
+
+	let cache = {};
+	try { cache = JSON.parse(localStorage.getItem(CACHE) || '{}'); } catch {}
+
+	const paint = (alvos, d) => alvos.forEach(alvo => {
+		const n = d[alvo.dataset.gh];
+		if (n == null) return;
+		alvo.textContent = n.toLocaleString('pt-BR');
+		const rotulo = alvo.parentElement.querySelector('[data-gh-label]');
+		if (rotulo) rotulo.textContent = n === 1 ? 'estrela' : 'estrelas';
+	});
+
+	grupos.forEach((alvos, repo) => {
+		const guardado = cache[repo];
+		if (guardado && Date.now() - guardado.t < TTL) { paint(alvos, guardado.d); return; }
+
+		fetch('https://api.github.com/repos/' + repo, { headers: { Accept: 'application/vnd.github+json' } })
+			.then(r => r.ok ? r.json() : null)
+			.then(d => {
+				if (!d || d.stargazers_count == null) return;
+				const dados = {
+					stargazers_count: d.stargazers_count,
+					forks_count: d.forks_count,
+					open_issues_count: d.open_issues_count
+				};
+				cache[repo] = { t: Date.now(), d: dados };
+				try { localStorage.setItem(CACHE, JSON.stringify(cache)); } catch {}
+				paint(alvos, dados);
+			})
+			.catch(() => {});
+	});
+})();

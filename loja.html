@@ -213,6 +213,17 @@
 		}
 		.page-badge .ti { color: var(--accent); }
 
+		/* badge de estrelas: leva ao repositório e acende em amarelo no hover */
+		.page-badge-gh { transition: all .2s ease; }
+		.page-badge-gh:hover, .page-badge-gh:focus-visible {
+			color: #f5c518; border-color: color-mix(in srgb, #f5c518 50%, transparent);
+			background: color-mix(in srgb, #f5c518 10%, transparent);
+		}
+		.page-badge-gh .ti { color: #b9bd27; transition: transform .22s cubic-bezier(.34, 1.56, .64, 1); }
+		.page-badge-gh:hover .ti, .page-badge-gh:focus-visible .ti {
+			color: #f5c518; transform: scale(1.2) rotate(18deg);
+		}
+
 		.hero-banner {
 			position: relative; overflow: hidden; border: 1px solid var(--border);
 			border-radius: 1.25rem; margin-bottom: 2.5rem; box-shadow: var(--shadow-card);
@@ -495,8 +506,11 @@
 							<span class="page-badge"><i class="ti ti-shopping-bag"></i> <span data-cat="revision">…</span> · <span data-cat="apps">…</span> apps</span>
 							<span class="page-badge"><i class="ti ti-fold"></i> <span data-cat="categories">…</span> categorias</span>
 							<span class="page-badge"><i class="ti ti-shield-lock"></i> polkit + pkexec</span>
-							<span class="page-badge"><i class="ti ti-brand-git"></i> catálogo assinado com GPG</span>
-						</div>
+						<span class="page-badge"><i class="ti ti-brand-git"></i> catálogo assinado com GPG</span>
+						<a class="page-badge page-badge-gh" href="https://github.com/Nilsonlinux/nlinux-software" target="_blank" rel="noopener noreferrer" title="Deixe uma estrela no repositório da loja"><i class="ti ti-star"></i> <span data-gh="stargazers_count">…</span> <span data-gh-label>estrela</span></a>
+						<a class="page-badge page-badge-gh" href="https://github.com/Nilsonlinux/nlinux-software" target="_blank" rel="noopener noreferrer" title="Forks do repositório"><i class="ti ti-git-fork"></i> <span data-gh="forks_count">…</span> forks</a>
+						<a class="page-badge page-badge-gh" href="https://github.com/Nilsonlinux/nlinux-software/issues" target="_blank" rel="noopener noreferrer" title="Issues e pull requests abertos no GitHub"><i class="ti ti-circle-dot"></i> <span data-gh="open_issues_count">…</span> issues abertas</a>
+					</div>
 					</div>
 
 				<section class="content-section reveal" id="loja">
