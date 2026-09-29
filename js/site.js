@@ -129,12 +129,27 @@ document.querySelectorAll('[data-iso-date]').forEach(el => {
 		if (rotulo) rotulo.textContent = n === 1 ? 'estrela' : 'estrelas';
 	});
 
+	// 403/429 é cota esgotada (60/hora por IP sem token): vale tentar
+	// mais uma vez depois. Qualquer outra falha é logada, senão o selo
+	// fica no "…" e não dá para saber por quê.
+	const buscar = (repo, restam) => fetch('https://api.github.com/repos/' + repo, {
+		headers: { Accept: 'application/vnd.github+json' }
+	}).then(r => {
+		if (r.ok) return r.json();
+		if ((r.status === 403 || r.status === 429) && restam) {
+			console.warn('[site] GitHub: cota da API esgotada, nova tentativa em 30s');
+			return new Promise(resolve => setTimeout(resolve, 30000))
+				.then(() => buscar(repo, 0));
+		}
+		console.warn('[site] GitHub: resposta ' + r.status + ' para ' + repo);
+		return null;
+	});
+
 	grupos.forEach((alvos, repo) => {
 		const guardado = cache[repo];
 		if (guardado && Date.now() - guardado.t < TTL) { paint(alvos, guardado.d); return; }
 
-		fetch('https://api.github.com/repos/' + repo, { headers: { Accept: 'application/vnd.github+json' } })
-			.then(r => r.ok ? r.json() : null)
+		buscar(repo, 1)
 			.then(d => {
 				if (!d || d.stargazers_count == null) return;
 				const dados = {
@@ -146,6 +161,6 @@ document.querySelectorAll('[data-iso-date]').forEach(el => {
 				try { localStorage.setItem(CACHE, JSON.stringify(cache)); } catch {}
 				paint(alvos, dados);
 			})
-			.catch(() => {});
+			.catch(e => console.warn('[site] GitHub: falha de rede em ' + repo, e));
 	});
 })();
