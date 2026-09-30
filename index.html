@@ -216,14 +216,14 @@
 		.hero-banner {
 			position: relative; overflow: hidden; border: 1px solid var(--border);
 			border-radius: 1.25rem; margin-bottom: 2.5rem; box-shadow: var(--shadow-card);
-			aspect-ratio: 21 / 9; background: var(--bg2);
+			aspect-ratio: 16 / 9; background: var(--bg2);
 		}
-		.hero-banner img { width: 100%; height: 100%; object-fit: cover; display: block; }
+		/* contain: a arte é 1366x768 (16:9) e nunca deve ser cortada nas bordas */
+		.hero-banner img { width: 100%; height: 100%; object-fit: contain; display: block; }
 		.hero-banner::after {
 			content: ""; position: absolute; inset: 0; pointer-events: none;
 			background: linear-gradient(180deg, transparent 55%, color-mix(in srgb, var(--bg) 72%, transparent));
 		}
-		@media (max-width: 680px) { .hero-banner { aspect-ratio: 16 / 10; } }
 
 		.section-title { display: flex; align-items: center; gap: .75rem; font-size: 1.4rem; font-weight: 650; letter-spacing: -.02em; margin-bottom: 1.25rem; }
 		.section-title .count {
