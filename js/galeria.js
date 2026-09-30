@@ -3,6 +3,10 @@
 (() => {
 	const $ = s => document.querySelector(s);
 
+	// número de telas em img/instalador: nlinux-instalador-01.png … nlinux-instalador-NN.png
+	const SCREENS = 24;
+	const screenSrc = i => `img/instalador/nlinux-instalador-${String(i).padStart(2, '0')}.png`;
+
 	// o modal é criado aqui: as páginas só precisam do botão [data-lb-open]
 	const MODAL = `	<div class="lb" id="lb" role="dialog" aria-modal="true" aria-labelledby="lbTitle" hidden>
 		<div class="lb-top">
@@ -14,8 +18,8 @@
 				</div>
 			</div>
 			<div class="lb-top-actions">
-				<span class="lb-counter"><b id="lbCurrent">1</b> / <span id="lbTotal">22</span></span>
-				<a class="lb-btn" id="lbOpen" href="img/instalador/nlinux-instalador-01.jpg" target="_blank" rel="noopener noreferrer" aria-label="Abrir imagem em tamanho cheio" title="Abrir em tamanho cheio"><i class="ti ti-external-link"></i></a>
+				<span class="lb-counter"><b id="lbCurrent">1</b> / <span id="lbTotal">${SCREENS}</span></span>
+				<a class="lb-btn" id="lbOpen" href="${screenSrc(1)}" target="_blank" rel="noopener noreferrer" aria-label="Abrir imagem em tamanho cheio" title="Abrir em tamanho cheio"><i class="ti ti-external-link"></i></a>
 				<button type="button" class="lb-btn lb-close" id="lbClose" aria-label="Fechar galeria" title="Fechar (Esc)"><i class="ti ti-x"></i></button>
 			</div>
 		</div>
@@ -29,7 +33,7 @@
 		</div>
 
 		<div class="lb-bottom">
-			<p class="lb-caption" id="lbCaption">Tela <b>1</b> de <b>22</b></p>
+			<p class="lb-caption" id="lbCaption">Tela <b>1</b> de <b>${SCREENS}</b></p>
 			<div class="lb-thumbs" id="lbThumbs" aria-label="Miniaturas das telas"></div>
 			<p class="lb-hint"><kbd>←</kbd><kbd>→</kbd> navegar <span>·</span> <kbd>Esc</kbd> fechar <span>·</span> <kbd>Início</kbd>/<kbd>Fim</kbd> extremos</p>
 		</div>
@@ -37,7 +41,7 @@
 	if (!document.getElementById('lb')) document.body.insertAdjacentHTML('beforeend', MODAL);
 
 	// ---- Galeria de telas (lightbox) ----
-	const GALLERY = Array.from({ length: 22 }, (_, i) => `img/instalador/nlinux-instalador-${String(i + 1).padStart(2, '0')}.jpg`);
+	const GALLERY = Array.from({ length: SCREENS }, (_, i) => screenSrc(i + 1));
 
 	const lb = $('#lb');
 	const lbStage = $('#lbStage');
