@@ -12,8 +12,8 @@
    O conteúdo no HTML é só a reserva para quando o JS não carrega:
    nunca aponta para um arquivo ou uma data desatualizada.
    ============================================================ */
-const NLINUX_ISO_URL = 'https://drive.google.com/file/d/1ZYcKrgaz_z_o4JO5O_LyaeEyySESUAbY/view?usp=sharing';
-const NLINUX_ISO_DATE = '2026-09-29';
+const NLINUX_ISO_URL = 'https://drive.google.com/file/d/17m7E-nJyaV51c-vTzITPII-6noAaBH1J/view?usp=sharing';
+const NLINUX_ISO_DATE = '2026-09-30';
 
 document.querySelectorAll('[data-iso-download]').forEach(link => {
 	link.href = NLINUX_ISO_URL;
