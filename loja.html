@@ -321,10 +321,12 @@
 		.code-block pre .c { color: var(--faint); }
 		.code-block pre .p { color: var(--accent-2); }
 
-		/* ---- Stack lists ---- */
+		/* ---- Stack lists ----
+		   São 5 cards: 1 no celular, 3 em telas médias e 5 numa linha só
+		   no desktop largo, para não sobrar card órfão na última fileira. */
 		.stack-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
-		@media (min-width: 768px) { .stack-grid { grid-template-columns: repeat(2, 1fr); } }
-		@media (min-width: 1100px) { .stack-grid { grid-template-columns: repeat(4, 1fr); } }
+		@media (min-width: 768px) { .stack-grid { grid-template-columns: repeat(3, 1fr); } }
+		@media (min-width: 1240px) { .stack-grid { grid-template-columns: repeat(5, 1fr); } }
 		.stack-card {
 			border: 1px solid var(--border); border-radius: 1.25rem; background: var(--surface);
 			box-shadow: var(--shadow-card); padding: 1.15rem 1.2rem;
@@ -635,12 +637,24 @@ NLINUX_CATALOG_CHECK=5 <span class="p">nlinux-software</span></code></pre>
 						<i class="ti ti-info-circle"></i>
 						<div>
 							<p>Curadoria separada da instalação: a versão que vai na ISO é só cliente do catálogo. O painel de curadoria (fora da distro) edita os aplicativos, gera o pacote e assina com GPG o <code>tar.gz</code> publicado no repositório <a class="link-accent" href="https://github.com/Nilsonlinux/nlinux-software" target="_blank" rel="noopener noreferrer">Nilsonlinux/nlinux-software</a>, que é de onde a loja baixa o catálogo — por isso o update chega sem reinstalar a ISO.</p>
+							<p>São dois executáveis independentes, e só um vai para a distro: <code>./nlinux-software-admin</code> roda a loja com a página de curadoria (<code>/admin</code>), onde os aplicativos são criados, editados e excluídos; <code>./nlinux-software</code> roda o build de distribuição, sem arquivos nem rotas de administração. É a segunda que o <code>install.sh</code> instala em <code>/opt/nlinux-software</code> — o <code>admin</code> não existe no sistema instalado.</p>
 							<p>E os números desta página (<b data-cat="revision">…</b>, <b data-cat="apps">…</b> apps, <b data-cat="categories">…</b> categorias) são lidos desse mesmo repositório no carregamento: quando a curadoria publica um catálogo novo, esta página muda sozinha, sem ninguém editar o site.</p>
 						</div>
 					</div>
 
 					<h3 class="block-title"><i class="ti ti-box"></i> Por dentro</h3>
 					<div class="stack-grid">
+						<div class="stack-card">
+							<h3><i class="ti ti-package"></i> dependências</h3>
+							<ul>
+								<li><b>python</b> + python-gobject</li>
+								<li><b>gtk3</b> + webkit2gtk-4.1</li>
+								<li><b>polkit</b> (diálogo de senha)</li>
+								<li><b>gnupg</b> (valida a assinatura)</li>
+								<li><b>git</b> (detecta versão nova)</li>
+								<li>opcionais: paru, yay, curl</li>
+							</ul>
+						</div>
 						<div class="stack-card">
 							<h3><i class="ti ti-app-window"></i> nlinux-software</h3>
 							<ul>
@@ -650,6 +664,7 @@ NLINUX_CATALOG_CHECK=5 <span class="p">nlinux-software</span></code></pre>
 								<li>servidor HTTP em 127.0.0.1</li>
 								<li>7 idiomas, tema claro/escuro</li>
 								<li>atalho <b>NLinux Software</b> no menu</li>
+								<li>roda também sem <code>admin</code></li>
 							</ul>
 						</div>
 						<div class="stack-card">
@@ -672,6 +687,7 @@ NLINUX_CATALOG_CHECK=5 <span class="p">nlinux-software</span></code></pre>
 								<li>assets com hash <b>SHA-256</b></li>
 								<li>ícones e capturas de tela</li>
 								<li>marca proprietary / oficial</li>
+								<li>curadoria em <b>applications-en.json</b></li>
 							</ul>
 						</div>
 						<div class="stack-card">
