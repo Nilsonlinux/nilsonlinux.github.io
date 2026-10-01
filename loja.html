@@ -253,6 +253,27 @@
 			color: #f5c518; transform: scale(1.2) rotate(18deg);
 		}
 
+		/* linha de baixo: os 3 numeros do GitHub ficam numa fileira so,
+		   dentro de um contorno unico, em vez de 3 pilulas soltas
+		   dividindo espaco com as tags tecnicas de cima */
+		.page-gh {
+			display: flex; flex-wrap: wrap; justify-content: center; gap: .15rem;
+			width: fit-content; max-width: 100%; margin: .9rem auto 0;
+			padding: .25rem; border: 1px solid var(--border);
+			border-radius: .85rem; background: var(--surface-2);
+			backdrop-filter: blur(8px);
+		}
+		/* dentro do grupo cada item perde a propria borda: o contorno
+		   e o do grupo, e fica firme mesmo com um item em hover */
+		.page-gh .page-badge { border: 0; background: none; border-radius: .6rem; padding: .4rem .9rem; }
+		.page-gh .page-badge-gh:hover, .page-gh .page-badge-gh:focus-visible {
+			/* precisa repetir o fundo aqui: .page-gh .page-badge tem a mesma
+			   especificacao (0,2,0) e vem depois, entao apagaria o destaque */
+			border-color: transparent;
+			background: color-mix(in srgb, #f5c518 10%, transparent);
+		}
+		.page-gh .page-badge-gh:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+
 		.hero-banner {
 			position: relative; overflow: hidden; border: 1px solid var(--border);
 			border-radius: 1.25rem; margin-bottom: 2.5rem; box-shadow: var(--shadow-card);
@@ -539,9 +560,11 @@
 							<span class="page-badge"><i class="ti ti-fold"></i> <span data-cat="categories">…</span> categorias</span>
 							<span class="page-badge"><i class="ti ti-shield-lock"></i> polkit + pkexec</span>
 						<span class="page-badge"><i class="ti ti-brand-git"></i> catálogo assinado com GPG</span>
-						<a class="page-badge page-badge-gh" href="https://github.com/Nilsonlinux/nlinux-software" target="_blank" rel="noopener noreferrer" title="Deixe uma estrela no repositório da loja"><i class="ti ti-star"></i> <span data-gh="stargazers_count">…</span> <span data-gh-label>estrela</span></a>
-						<a class="page-badge page-badge-gh" href="https://github.com/Nilsonlinux/nlinux-software" target="_blank" rel="noopener noreferrer" title="Forks do repositório"><i class="ti ti-git-fork"></i> <span data-gh="forks_count">…</span> forks</a>
-						<a class="page-badge page-badge-gh" href="https://github.com/Nilsonlinux/nlinux-software/issues" target="_blank" rel="noopener noreferrer" title="Issues e pull requests abertos no GitHub"><i class="ti ti-circle-dot"></i> <span data-gh="open_issues_count">…</span> issues abertas</a>
+					</div>
+					<div class="page-gh">
+							<a class="page-badge page-badge-gh" href="https://github.com/Nilsonlinux/nlinux-software" target="_blank" rel="noopener noreferrer" title="Deixe uma estrela no repositório da loja"><i class="ti ti-star"></i> <span data-gh="stargazers_count">…</span> <span data-gh-label>estrela</span></a>
+							<a class="page-badge page-badge-gh" href="https://github.com/Nilsonlinux/nlinux-software" target="_blank" rel="noopener noreferrer" title="Forks do repositório"><i class="ti ti-git-fork"></i> <span data-gh="forks_count">…</span> forks</a>
+							<a class="page-badge page-badge-gh" href="https://github.com/Nilsonlinux/nlinux-software/issues" target="_blank" rel="noopener noreferrer" title="Issues e pull requests abertos no GitHub"><i class="ti ti-circle-dot"></i> <span data-gh="open_issues_count">…</span> issues abertas</a>
 					</div>
 					</div>
 
