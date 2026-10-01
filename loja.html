@@ -543,7 +543,7 @@
 						<article class="feature-card">
 							<div class="feature-icon"><i class="ti ti-window"></i></div>
 							<h3 class="feature-name">Janela nativa, não é site</h3>
-							<p class="feature-desc">Abre como aplicativo do sistema — ícone fixado na dock ou atalho e system try na barra de tarefas<b>Loja de Software NLinux</b> no menu —, com barra de título e botões próprios (fechar): sem aba de navegador piscando nem <code>xdg-open</code> no meio da instalação.</p>
+							<p class="feature-desc">Abre como aplicativo do sistema, com o ícone já fixado na dock, atalho <b>NLinux Software</b> no menu e um atalho na Área de Trabalho: barra de título e botão de fechar próprios, sem aba de navegador piscando nem <code>xdg-open</code> no meio da instalação.</p>
 							<div class="feature-tags"><span class="tag">gtk3</span><span class="tag">webkit2gtk</span><span class="tag">localhost</span></div>
 						</article>
 						<article class="feature-card">
@@ -561,7 +561,7 @@
 						<article class="feature-card">
 							<div class="feature-icon"><i class="ti ti-refresh"></i></div>
 							<h3 class="feature-name">Catálogo que se atualiza sozinho</h3>
-							<p class="feature-desc">A cada 15 s a loja pergunta ao GitHub qual é o commit atual da <code>main</code> e só baixa o catálogo quando ele muda — sempre pela URL travada naquele commit, com os assets conferidos por SHA-256. A tela recarrega sozinha.</p>
+							<p class="feature-desc">A cada 15 s a loja relê o <code>catalog-head.json</code> publicado no GitHub e só baixa o catálogo inteiro quando a impressão digital muda — sempre pela URL travada naquele commit, com os assets conferidos por SHA-256. A tela recarrega sozinha.</p>
 							<div class="feature-tags"><span class="tag">auto-update</span><span class="tag">sha256</span><span class="tag">git</span></div>
 						</article>
 						<article class="feature-card">
@@ -573,19 +573,19 @@
 						<article class="feature-card">
 							<div class="feature-icon"><i class="ti ti-shield-check"></i></div>
 							<h3 class="feature-name">Pacote assinado e verificado</h3>
-							<p class="feature-desc">O pacote da loja é distribuído com assinatura GPG destacada: o instalador importa a chave pública e aborta se a assinatura não bater, avisando para baixar de novo. O catálogo publicado também é assinado.</p>
+							<p class="feature-desc">O pacote da loja é distribuído com assinatura GPG destacada: o instalador importa a chave pública e aborta se a assinatura não bater, avisando para baixar de novo. A assinatura cobre o <code>tar.gz</code> publicado; o catálogo que a loja baixa em tempo de execução é conferido por SHA-256, não por GPG.</p>
 							<div class="feature-tags"><span class="tag">gpg</span><span class="tag">sha256</span><span class="tag">gnupg</span></div>
 						</article>
 						<article class="feature-card">
 							<div class="feature-icon"><i class="ti ti-language"></i></div>
 							<h3 class="feature-name">7 idiomas e tema claro/escuro</h3>
-							<p class="feature-desc">Interface em <b>pt, en, es, fr, de, it e ja</b> — o idioma vem do locale escolhido no instalador, com queda para pt-BR quando falta tradução. O tema claro/escuro alterna pelo botão na barra superior.</p>
+							<p class="feature-desc">Interface em <b>pt, en, es, fr, de, it e ja</b> — o idioma vem do locale escolhido no instalador; se o locale não for um desses sete, a loja cai para <b>inglês</b>. O tema claro/escuro alterna pelo botão na barra superior.</p>
 							<div class="feature-tags"><span class="tag">i18n</span><span class="tag">locale</span><span class="tag">tema</span></div>
 						</article>
 						<article class="feature-card">
 							<div class="feature-icon"><i class="ti ti-photo"></i></div>
 							<h3 class="feature-name">Ícone e capturas de verdade</h3>
-							<p class="feature-desc">Cada aplicativo do catálogo tem o próprio ícone e até três capturas de tela, servidas localmente pela loja — a galeria abre em tela cheia e navega com as setas do teclado.</p>
+							<p class="feature-desc">Todo aplicativo do catálogo tem o próprio ícone, e a maioria traz ainda uma galeria de até três capturas de tela, servidas localmente pela loja — a galeria abre em tela cheia e navega com as setas do teclado.</p>
 							<div class="feature-tags"><span class="tag">mídia</span><span class="tag">lightbox</span><span class="tag">offline</span></div>
 						</article>
 					</div>
@@ -596,7 +596,7 @@
 							<div class="step-num">1</div>
 							<div>
 								<h3>Abra pelo ícone na dock</h3>
-								<p>O ícone da loja já vem fixado na dock. O mesmo atalho aparece no menu do sistema como <b>Loja de Software NLinux</b>. Nada de instalar nada antes: ela já vem na ISO. No terminal, <code>nlinux-software</code> faz o mesmo.</p>
+								<p>O ícone da loja já vem fixado na dock. O mesmo atalho aparece no menu do sistema e na Área de Trabalho como <b>NLinux Software</b>. Nada de instalar nada antes: ela já vem na ISO. No terminal, <code>nlinux-software</code> faz o mesmo.</p>
 							</div>
 						</div>
 						<div class="step-row">
@@ -624,7 +624,7 @@
 
 					<div class="code-block">
 						<div class="code-head"><span>terminal</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
-						<pre><code><span class="c"># abre a loja nativa (atalho do menu: "Loja de Software NLinux")</span>
+						<pre><code><span class="c"># abre a loja nativa (atalho do menu: "NLinux Software")</span>
 <span class="p">nlinux-software</span>
 
 <span class="c"># a loja checa o catálogo a cada 15s; para olhar mais de perto:</span>
@@ -649,7 +649,7 @@ NLINUX_CATALOG_CHECK=5 <span class="p">nlinux-software</span></code></pre>
 								<li><b>python</b> + python-gobject</li>
 								<li>servidor HTTP em 127.0.0.1</li>
 								<li>7 idiomas, tema claro/escuro</li>
-								<li>atalho <b>Loja de Software NLinux</b></li>
+								<li>atalho <b>NLinux Software</b> no menu</li>
 							</ul>
 						</div>
 						<div class="stack-card">
