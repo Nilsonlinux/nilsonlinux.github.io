@@ -213,6 +213,35 @@
 		}
 		.page-badge .ti { color: var(--accent); }
 
+		/* ---- Tooltips ----
+		   Substituem o title nativo do navegador. Aparece sem atraso
+		   (transition de 80ms só na opacidade, imperceptível) e some
+		   na hora. O JS em js/site.js cria um único elemento e o move,
+		   então não há um por badge. position:fixed + z-index alto
+		   escapam de qualquer overflow:hidden do ancestral. */
+		.nt {
+			position: fixed; z-index: 999; top: 0; left: 0;
+			max-width: 17rem; padding: .45rem .7rem;
+			background: var(--surface-3); color: var(--fg);
+			border: 1px solid var(--border); border-radius: .55rem;
+			box-shadow: var(--shadow-card-hover);
+			font: 500 .74rem/1.45 Inter, system-ui, sans-serif;
+			pointer-events: none; opacity: 0;
+			transition: opacity .08s ease;
+			backdrop-filter: blur(8px);
+		}
+		.nt.on { opacity: 1; }
+		.nt b { color: var(--accent); font-weight: 700; }
+		/* a seta aponta para o alvo; inverte quando o tooltip cai abaixo */
+		.nt::after {
+			content: ""; position: absolute; left: 50%; width: .5rem; height: .5rem;
+			background: inherit; border: inherit;
+			transform: translateX(-50%) rotate(45deg);
+		}
+		.nt[data-place="top"]::after { bottom: -.26rem; border-top: 0; border-left: 0; }
+		.nt[data-place="bottom"]::after { top: -.26rem; border-bottom: 0; border-right: 0; }
+		@media (prefers-reduced-motion: reduce) { .nt { transition: none; } }
+
 		.hero-banner {
 			position: relative; overflow: hidden; border: 1px solid var(--border);
 			border-radius: 1.25rem; margin-bottom: 2.5rem; box-shadow: var(--shadow-card);
@@ -444,7 +473,7 @@
 	</script>
 	<!-- variáveis do site (link único de download da ISO em js/site.js).
 	     Ao mexer no site.js, suba o ?v= do src para furar o cache dos navegadores. -->
-	<script src="js/site.js?v=2" defer></script>
+	<script src="js/site.js?v=3" defer></script>
 </head>
 <body>
 <div class="page-canvas">

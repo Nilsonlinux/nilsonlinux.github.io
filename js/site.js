@@ -164,3 +164,104 @@ document.querySelectorAll('[data-iso-date]').forEach(el => {
 			.catch(e => console.warn('[site] GitHub: falha de rede em ' + repo, e));
 	});
 })();
+
+/* ============================================================
+   TOOLTIPS
+
+   Troca o title nativo do navegador por um balão do tema. Não há
+   um balão por elemento: cria-se UM só, no body, e ele é movido
+   até o alvo. Por isso o custo é o mesmo com 3 ou com 30 tooltips.
+
+   Aparece sem atraso de propósito — o title nativo só surge depois
+   de ~1 s parado, o que faz o site parecer lento. Aqui a transição
+   é de 80ms na opacidade, imperceptível.
+
+   O title é guardado em data-tip e removido do elemento, senão os
+   dois balões apareceriam juntos. Todo elemento que tem title já
+   tem aria-label aqui, então o nome acessível não se perde.
+
+   Como o balão é position:fixed com z-index alto, nenhum
+   overflow:hidden do ancestral consegue cortá-lo.
+
+   Aceita <b> dentro do texto para destacar em --accent.
+   ============================================================ */
+(() => {
+	const el = document.createElement('div');
+	el.className = 'nt';
+	el.setAttribute('role', 'tooltip');
+	el.hidden = true;
+	document.body.appendChild(el);
+
+	// 8px de folga para a borda não encostar na viewport
+	const GAP = 8, SETA = 6;
+
+	let alvoAtual = null;
+
+	const suportaHover = matchMedia('(hover: hover) and (pointer: fine)');
+
+	const mostrar = alvo => {
+		const texto = alvo.dataset.tip;
+		if (!texto) return;
+		alvoAtual = alvo;
+		el.innerHTML = texto;
+		el.hidden = false;
+
+		// media primeiro: dá a largura/altura real antes de posicionar
+		const a = alvo.getBoundingClientRect();
+		const t = el.getBoundingClientRect();
+		const vw = document.documentElement.clientWidth;
+		const vh = document.documentElement.clientHeight;
+
+		// em cima por padrão; se não couber, cai para baixo
+		let place = 'top';
+		let top = a.top - t.height - SETA;
+		if (top < GAP) { place = 'bottom'; top = a.bottom + SETA; }
+		// e se também não couber embaixo, encosta no topo da viewport
+		if (place === 'bottom' && top + t.height > vh - GAP) {
+			place = 'top';
+			top = Math.max(GAP, a.top - t.height - SETA);
+		}
+
+		// centraliza no alvo e nunca deixa vazar das laterais
+		let left = a.left + a.width / 2 - t.width / 2;
+		left = Math.max(GAP, Math.min(left, vw - t.width - GAP));
+
+		el.dataset.place = place;
+		el.style.left = left + 'px';
+		el.style.top = top + 'px';
+		el.classList.add('on');
+	};
+
+	const esconder = () => {
+		el.classList.remove('on');
+		el.hidden = true;
+		alvoAtual = null;
+	};
+
+	// delegation: um listener só, e funciona para conteúdo added depois
+	document.addEventListener('pointerover', e => {
+		if (!suportaHover.matches) return;
+		const alvo = e.target.closest?.('[data-tip]');
+		// pointer-events:none no balão faz ele nunca ser o alvo
+		if (!alvo) return;
+		if (alvo === alvoAtual) return;
+		mostrar(alvo);
+	});
+	document.addEventListener('pointerout', e => {
+		if (!alvoAtual) return;
+		// relatedTarget preenchido = ainda está dentro do alvo (filho)
+		if (e.relatedTarget && alvoAtual.contains(e.relatedTarget)) return;
+		esconder();
+	});
+	// sem balão parado no ar quando a página rola ou redimensiona
+	addEventListener('scroll', () => { if (alvoAtual) mostrar(alvoAtual); }, { passive: true });
+	addEventListener('resize', () => { if (alvoAtual) mostrar(alvoAtual); });
+
+	// converte os title existentes e tira o atributo
+	document.querySelectorAll('[title]').forEach(n => {
+		const t = n.getAttribute('title').trim();
+		if (!t) return;
+		n.dataset.tip = t;
+		n.removeAttribute('title');
+	});
+})();
