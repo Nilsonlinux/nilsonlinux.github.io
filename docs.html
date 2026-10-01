@@ -895,7 +895,7 @@ sudo dd if=nlinux-ISO-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync
 								<span class="pill">7 idiomas</span>
 								<span class="pill">offline</span>
 							</div>
-							<p class="doc-p">O catálogo é atualizado sozinho: a cada 15 s a loja confere o commit da <code>main</code> no GitHub e só baixa o catálogo quando ele muda. Sem internet, continua funcionando com o catálogo local.</p>
+							<p class="doc-p">O catálogo é atualizado sozinho: a cada 15 s a loja relê o <code>catalog-head.json</code> publicado no GitHub e só baixa o catálogo inteiro quando a impressão digital muda. Sem internet, continua funcionando com o catálogo local.</p>
 							<p class="doc-p">A revisão e as contagens desta página (<b data-cat="revision">…</b>, <b data-cat="apps">…</b> apps, <b data-cat="categories">…</b> categorias) também saem desse repositório: esta doc lê o <a class="link-accent" href="https://github.com/Nilsonlinux/nlinux-software/blob/main/catalog-head.json" target="_blank" rel="noopener noreferrer">catalog-head.json</a> no carregamento e conta as categorias no catálogo completo, guardando o resultado em cache. Publicar um catálogo novo atualiza a página sem ninguém editar o site.</p>
 							<div class="foot-links">
 								<a class="btn-ghost" href="loja.html"><i class="ti ti-book-2"></i> Detalhes completos da loja</a>
@@ -956,10 +956,14 @@ sudo dd if=nlinux-ISO-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync
 						<!-- ---------- Build ---------- -->
 						<section class="doc-sec reveal" id="build">
 							<h2 class="doc-h2"><i class="ti ti-hammer"></i> Gerar a ISO<a class="anchor ti ti-link" href="#build" aria-label="Link para esta seção"></a></h2>
-							<p class="doc-p">Em uma máquina Arch Linux, dentro do projeto <code>nlinux-iso-build</code>:</p>
+							<p class="doc-p">Tudo o que monta a ISO é aberto: o projeto <a class="link-accent" href="https://github.com/Nilsonlinux/nlinux-iso-build" target="_blank" rel="noopener noreferrer">Nilsonlinux/nlinux-iso-build</a> reúne o <code>build-iso.sh</code>, a camada <code>iso/airootfs/</code>, o <code>install.sh</code> do instalador, a lista de pacotes do live e o <code>make-splash.sh</code>. Em uma máquina Arch Linux, dentro do projeto:</p>
 							<div class="code-block">
 								<div class="code-head"><span>terminal</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
-								<pre><code><span class="c"># gera iso/out/nlinux-&lt;data&gt;-x86_64.iso</span>
+								<pre><code><span class="c"># pegando o projeto (precisa de git; o build usa sudo)</span>
+git clone https://github.com/Nilsonlinux/nlinux-iso-build.git
+cd nlinux-iso-build
+
+<span class="c"># gera iso/out/nlinux-&lt;data&gt;-x86_64.iso</span>
 ./build-iso.sh
 
 <span class="c"># regerar a arte do menu de boot BIOS (precisa de Python + Pillow)</span>
@@ -974,6 +978,9 @@ sudo dd if=nlinux-ISO-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync
 								<li class="doc-li">Transforma o boot: <strong>systemd-boot</strong> (UEFI), <strong>GRUB</strong> (UEFI) e <strong>syslinux</strong> (BIOS), com títulos, itens e a splash do NLinux.</li>
 								<li class="doc-li">Roda <code>mkarchiso -v</code> — que executa a camada <code>iso/airootfs/root/customize_airootfs.sh</code> no chroot do build (AUR, greetd, usuário do live, autologin) — e gera a ISO (~2,9 GB).</li>
 							</ol>
+							<div class="foot-links">
+								<a class="btn-ghost" href="https://github.com/Nilsonlinux/nlinux-iso-build" target="_blank" rel="noopener noreferrer"><i class="ti ti-brand-github"></i> Repositório do build</a>
+							</div>
 							<h3 class="doc-h3"><i class="ti ti-shopping-bag"></i> Atualizar a loja embutida na ISO</h3>
 							<p class="doc-p"><code>nlinux-software/</code> é a cópia do build publicado da loja (<a class="link-accent" href="https://github.com/Nilsonlinux/nlinux-software" target="_blank" rel="noopener noreferrer">Nilsonlinux/nlinux-software</a>). A curadoria já publica a versão nova lá; basta trocar o conteúdo e rebuildar — o <code>build-iso.sh</code> não instala a loja, ele só copia a pasta.</p>
 							<div class="code-block">
@@ -1002,6 +1009,7 @@ gpg --verify /tmp/loja/nlinux-software-v&lt;N&gt;.tar.gz.asc /tmp/loja/nlinux-so
 						<!-- ---------- Estrutura ---------- -->
 						<section class="doc-sec reveal" id="estrutura">
 							<h2 class="doc-h2"><i class="ti ti-folder"></i> Estrutura do projeto<a class="anchor ti ti-link" href="#estrutura" aria-label="Link para esta seção"></a></h2>
+							<p class="doc-p">Esse é o layout do repositório <a class="link-accent" href="https://github.com/Nilsonlinux/nlinux-iso-build" target="_blank" rel="noopener noreferrer">Nilsonlinux/nlinux-iso-build</a>, com o <code>README.md</code> detalhando cada etapa.</p>
 							<div class="code-block">
 								<div class="code-head"><span>nlinux-iso-build</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
 								<pre><code>build-iso.sh              gera a ISO (sudo; limpa mounts de builds interrompidos)
@@ -1175,6 +1183,7 @@ NLinux.jpg / splash.png   arte do menu de boot</code></pre>
 							<p>Projeto</p>
 							<ul>
 								<li><a href="https://github.com/Nilsonlinux" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+								<li><a href="https://github.com/Nilsonlinux/nlinux-iso-build" target="_blank" rel="noopener noreferrer">nlinux-iso-build</a></li>
 								<li><a href="https://github.com/Nilsonlinux/nlinux-software" target="_blank" rel="noopener noreferrer">nlinux-software</a></li>
 								<li><a href="plugins.html">Plugins</a></li>
 								<li><a href="doar.html">Apoie o projeto</a></li>
