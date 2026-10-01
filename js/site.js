@@ -212,14 +212,17 @@ document.querySelectorAll('[data-iso-date]').forEach(el => {
 		const vw = document.documentElement.clientWidth;
 		const vh = document.documentElement.clientHeight;
 
-		// em cima por padrão; se não couber, cai para baixo
-		let place = 'top';
-		let top = a.top - t.height - SETA;
-		if (top < GAP) { place = 'bottom'; top = a.bottom + SETA; }
-		// e se também não couber embaixo, encosta no topo da viewport
-		if (place === 'bottom' && top + t.height > vh - GAP) {
+		// embaixo por padrão; se não couber, sobe
+		let place = 'bottom';
+		let top = a.bottom + SETA;
+		if (top + t.height > vh - GAP) {
 			place = 'top';
-			top = Math.max(GAP, a.top - t.height - SETA);
+			top = a.top - t.height - SETA;
+			// sem espaço acima também: fica embaixo, encostado na borda
+			if (top < GAP) {
+				place = 'bottom';
+				top = Math.max(GAP, Math.min(a.bottom + SETA, vh - t.height - GAP));
+			}
 		}
 
 		// centraliza no alvo e nunca deixa vazar das laterais

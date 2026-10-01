@@ -211,11 +211,12 @@
 		.page-badge .ti { color: var(--accent); }
 
 		/* ---- Tooltips ----
-		   Substituem o title nativo do navegador. Aparece sem atraso
-		   (transition de 80ms só na opacidade, imperceptível) e some
-		   na hora. O JS em js/site.js cria um único elemento e o move,
-		   então não há um por badge. position:fixed + z-index alto
-		   escapam de qualquer overflow:hidden do ancestral. */
+		   Substituem o title nativo do navegador, que só aparece depois
+		   de ~1s parado e com o visual cinza do sistema. Aqui abre sem
+		   atraso: 160ms de opacidade e 180ms de transform, com o balão
+		   vindo de perto do alvo. O JS em js/site.js cria um único
+		   elemento e o move, então não há um por badge. position:fixed
+		   + z-index alto escapam de qualquer overflow:hidden do ancestral. */
 		.nt {
 			position: fixed; z-index: 999; top: 0; left: 0;
 			max-width: 17rem; padding: .45rem .7rem;
@@ -224,12 +225,19 @@
 			box-shadow: var(--shadow-card-hover);
 			font: 500 .74rem/1.45 Inter, system-ui, sans-serif;
 			pointer-events: none; opacity: 0;
-			transition: opacity .08s ease;
+			/* entrada: o balao vem de perto do alvo e assenta no lugar.
+			   --nt-y diz de que lado ele entra, e o lado depende de
+			   data-place: quem abre para cima sobe, para baixo desce */
+			transform: translateY(var(--nt-y, 0)) scale(.94);
+			transition: opacity .16s ease, transform .18s cubic-bezier(.16, 1, .3, 1);
 			backdrop-filter: blur(8px);
 		}
-		.nt.on { opacity: 1; }
+		.nt.on { opacity: 1; transform: none; }
+		.nt[data-place="top"] { --nt-y: 5px; }
+		.nt[data-place="bottom"] { --nt-y: -5px; }
 		.nt b { color: var(--accent); font-weight: 700; }
-		/* a seta aponta para o alvo; inverte quando o tooltip cai abaixo */
+		/* a seta aponta para o alvo; o balão abre embaixo e a seta fica
+		   em cima, e vira para baixo quando não cabe e ele sobe */
 		.nt::after {
 			content: ""; position: absolute; left: 50%; width: .5rem; height: .5rem;
 			background: inherit; border: inherit;
@@ -523,7 +531,7 @@
 	</script>
 	<!-- variáveis do site (link único de download da ISO em js/site.js).
 	     Ao mexer no site.js, suba o ?v= do src para furar o cache dos navegadores. -->
-	<script src="js/site.js?v=3" defer></script>
+	<script src="js/site.js?v=4" defer></script>
 </head>
 <body>
 <div class="page-canvas">
