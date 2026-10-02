@@ -841,6 +841,7 @@ sudo dd if=nlinux-ISO-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync
 										<tr><td>O formulário é enviado duas vezes</td><td><code>POST /api/install</code> devolve <strong>409</strong> com o estado atual e a página volta ao painel: ninguém apaga o disco por cima da instalação que está rodando.</td></tr>
 										<tr><td>O <code>install.sh</code> morre sem escrever o resultado (morto por sinal ou OOM)</td><td>O watchdog da execução reanexada encerra o painel como falha explícita, em vez de girar para sempre.</td></tr>
 										<tr><td>Erro de verdade na instalação</td><td>O <code>install.sh</code> aborta e grava <code>/var/log/install-error.log</code> <strong>no disco instalado</strong>, com as últimas 150 linhas do log, antes de desmontar.</td></tr>
+										<tr><td>Instalação termina mas algo no boot ficou errado</td><td>O log inteiro é copiado para <code>/var/log/nlinux-install.log</code> <strong>no disco instalado</strong>, mesmo quando a instalação deu certo. O do live vive em <code>/tmp</code>, que se perde no reboot.</td></tr>
 										<tr><td>Falha de espelho no modo online</td><td>O <code>pacstrap</code> tenta até <strong>3 vezes</strong> — o pacman reaproveita o cache entre elas — antes de abortar com dica de rede/mirror.</td></tr>
 									</tbody>
 								</table>
@@ -915,6 +916,7 @@ tail -f /tmp/nlinux-web.log</code></pre>
 							<ul class="doc-ul">
 								<li class="doc-li">Ajuste o compositor em <code>~/.config/umbriel/config.toml</code>: teclas, layouts e regras de janela.</li>
 								<li class="doc-li">Hardware especial, atualizações e pacotes da AUR passam pelo <code>yay</code>, que já vem instalado.</li>
+								<li class="doc-li">O banco de dados do <code>pacman</code> é sincronizado sozinho a cada inicialização pelo serviço <code>nlinux-pacman-refresh.service</code>. Ele roda como root, sem pedir senha, e em segundo plano — o boot não espera por ele. Para ver o resultado: <code>journalctl -b -u nlinux-pacman-refresh.service</code>. Na instalação rápida offline (a padrão) ele também fica no sistema instalado, porque a cópia do pendrive leva a unit junto; na instalação completa online, que monta o sistema a partir da lista de pacotes e não do pendrive, ele não é instalado. <strong>Atenção:</strong> ele roda <code>pacman -Sy</code> <em>sem</em> o <code>-u</code>, ou seja, só atualiza o banco e não os pacotes. Para atualizar o sistema inteiro use <code>sudo pacman -Syu</code> (ou <code>yay -Syu</code>); um <code>-Sy</code> sozinho, seguido da instalação de um pacote novo, pode trazer um pacote compilado contra bibliotecas que você ainda não tem.</li>
 								<li class="doc-li">As dependências de build (compiladores, <code>meson</code>, <code>wlroots0.20</code>, Rust) ficam no sistema porque o build da loja precisa delas — dá para removê-las depois se quiser enxugar.</li>
 							</ul>
 						</section>
@@ -1018,7 +1020,7 @@ tail -f /tmp/nlinux-web.log</code></pre>
 
 							<details class="faq-item">
 								<summary><i class="ti ti-alert-circle"></i> O NLinux não aparece na lista de boot da firmware<i class="ti ti-chevron-down chev"></i></summary>
-								<div class="faq-body">Normalmente o disco aparece como <strong>NLinux</strong>. Se aparecer como <strong>Linux Boot Manager</strong>, a máquina recusou a escrita no NVRAM e o instalador manteve a entrada do <code>bootctl</code> — o log da instalação avisa nesse caso. Também aparece como <code>UEFI: &lt;disco&gt;</code> quando não há <code>efibootmgr</code> no live, porque aí só o fallback <code>/EFI/BOOT/BOOTX64.EFI</code> é gravado. Você sempre pode entrar no menu de boot da firmware (normalmente F8/F11/F12) e escolher a entrada manualmente.</div>
+								<div class="faq-body">Normalmente o disco aparece como <strong>NLinux</strong>. Se aparecer como <strong>Linux Boot Manager</strong>, nenhuma das três tentativas de gravar a entrada no NVRAM funcionou e o instalador manteve a entrada do <code>bootctl</code> — por segurança, ele nunca apaga a única entrada que existe. O motivo exato está no log: <code>sudo cat /var/log/nlinux-install.log</code>, procurando por <code>efibootmgr --create</code> (é a linha que traz o erro da sua firmware) e por <code>NVRAM</code> (o estado da lista de boot antes e depois). Também aparece como <code>UEFI: &lt;disco&gt;</code> quando não há <code>efibootmgr</code> no live, porque aí só o fallback <code>/EFI/BOOT/BOOTX64.EFI</code> é gravado. Enquanto isso, você sempre pode entrar no menu de boot da firmware (normalmente F8/F11/F12) e escolher a entrada manualmente.</div>
 							</details>
 
 							<details class="faq-item">
