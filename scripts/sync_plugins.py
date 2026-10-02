@@ -42,7 +42,12 @@ def fetch(url: str) -> str:
 
 
 def fmt_date(ts) -> str:
-    d = datetime.datetime.fromtimestamp(int(ts))
+    # UTC de propósito. fromtimestamp() sem fuso usa o fuso da máquina, e o
+    # CI roda em UTC: o mesmo release sairia com a data advanceada num dia
+    # aqui (-03) e outro no Actions, então a última geração sobrescreveria a
+    # data certa pela errada. Fixar em UTC deixa a saída igual em qualquer
+    # máquina.
+    d = datetime.datetime.fromtimestamp(int(ts), datetime.timezone.utc)
     return f"{d.day:02d} {MONTHS[d.month]} {d.year}"
 
 
