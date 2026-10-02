@@ -296,6 +296,11 @@
 			display: flex; align-items: center; justify-content: space-between; gap: .5rem;
 			padding: .5rem .75rem; border-bottom: 1px solid var(--border);
 			font: 500 .66rem "JetBrains Mono", monospace; color: var(--faint);
+			/* a altura da tira vinha do botão copiar. Sem ele — como no
+			   campo titular, que não tem botão — a tira encolhia 8px e
+			   ficava desalinhada das vizinhas. 2.44rem é a altura
+			   que o botão impõe. */
+			min-height: 2.44rem;
 		}
 		.copy-btn {
 			border: 1px solid var(--border); background: var(--surface-2); color: var(--fg-dim);
@@ -464,7 +469,7 @@
 										<div>
 											<p class="donate-label">Titular</p>
 											<div class="code-block">
-												<div class="code-head"><span>titular</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
+												<div class="code-head"><span>titular</span></div>
 												<pre>Josenilson Da Costa Santos</pre>
 											</div>
 										</div>
@@ -515,7 +520,7 @@
 									<div>
 										<p class="donate-label">Titular</p>
 										<div class="code-block">
-											<div class="code-head"><span>titular</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
+											<div class="code-head"><span>titular</span></div>
 											<pre>Josenilson Da Costa Santos</pre>
 										</div>
 									</div>
