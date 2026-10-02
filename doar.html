@@ -209,27 +209,14 @@
 		.cta-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .75rem; margin-top: 1.4rem; }
 		.cta-heart { font-size: 2.2rem; line-height: 1; }
 
-		/* ---- Abas de doação ---- */
-		.tabs { margin-top: 2rem; }
-		.tablist {
-			display: flex; flex-wrap: wrap; gap: .5rem; justify-content: center;
-			border-bottom: 1px solid var(--border); padding-bottom: .75rem;
-		}
-		.tab {
-			display: inline-flex; align-items: center; gap: .5rem;
-			height: 2.6rem; padding: 0 1.1rem; border: 1px solid var(--border);
-			border-radius: .6rem; background: var(--surface); color: var(--fg-dim);
-			font: 600 .875rem Inter, system-ui, sans-serif; cursor: pointer;
-			transition: all .2s ease; outline: none;
-		}
-		.tab:hover { color: var(--fg); border-color: color-mix(in srgb, var(--accent) 35%, transparent); }
-		.tab[aria-selected="true"] {
-			background: color-mix(in srgb, var(--accent) 14%, transparent);
-			border-color: color-mix(in srgb, var(--accent) 45%, transparent); color: var(--accent);
-		}
-		.tab:focus-visible { box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 50%, transparent); }
-		.tab .ti { font-size: 1.1rem; }
-		.tabpanel { display: none; }
+		/* ---- Abas de doação ----
+		   Os botões que trocam a aba são os do .cta-panel, no card de
+		   cima. Não existe tablist aqui: eles duplicavam exatamente as
+		   mesmas três opções. O .donate-body já tem o próprio respiro.
+		   O scroll-margin evita que o cabeçalho sticky cubra o cartão. */
+		.tabs { margin-top: 2rem; scroll-margin-top: 5.5rem; }
+		.cta-actions a[role="tab"]:focus-visible { box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 50%, transparent); }
+		.tabpanel { display: none; scroll-margin-top: 5.5rem; }
 		.tabpanel.on { display: block; animation: tabIn .25s ease; }
 		@keyframes tabIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 		@media (prefers-reduced-motion: reduce) {
@@ -425,22 +412,19 @@
 						<div class="cta-heart">❤️</div>
 						<h2>Três formas de doar</h2>
 						<p>Escolha Pix, PayPal ou transferência bancária. Qualquer valor faz a diferença — e não precisa ser todo mês.</p>
-						<div class="cta-actions">
-							<a class="btn-primary" href="#doar-pix" data-tab-go="pix"><i class="ti ti-qrcode"></i><span>Apoiar com Pix</span></a>
-							<a class="btn-ghost" href="#doar-paypal" data-tab-go="paypal"><i class="ti ti-brand-paypal"></i> PayPal</a>
-							<a class="btn-ghost" href="#doar-conta" data-tab-go="conta"><i class="ti ti-building-bank"></i> Transferência</a>
+						<!-- estes botões são as abas. O .tablist de baixo duplicava
+						     exatamente estas três opções, então foi removido e o JS passou
+						     a ler o tablist daqui. -->
+						<div class="cta-actions" role="tablist" aria-label="Formas de doar">
+							<a class="btn-primary" role="tab" id="tab-pix" aria-controls="doar-pix" aria-selected="true" href="#doar-pix" data-tab="pix"><i class="ti ti-qrcode"></i><span>Apoiar com Pix</span></a>
+							<a class="btn-ghost" role="tab" id="tab-paypal" aria-controls="doar-paypal" aria-selected="false" href="#doar-paypal" data-tab="paypal"><i class="ti ti-brand-paypal"></i> PayPal</a>
+							<a class="btn-ghost" role="tab" id="tab-conta" aria-controls="doar-conta" aria-selected="false" href="#doar-conta" data-tab="conta"><i class="ti ti-building-bank"></i> Transferência</a>
 						</div>
 					</div>
 				</section>
 
 				<section class="content-section reveal">
 					<div class="tabs">
-						<div class="tablist" role="tablist" aria-label="Formas de doar">
-							<button type="button" class="tab" role="tab" id="tab-pix" aria-controls="doar-pix" aria-selected="true" data-tab="pix"><i class="ti ti-qrcode"></i> Pix</button>
-							<button type="button" class="tab" role="tab" id="tab-paypal" aria-controls="doar-paypal" aria-selected="false" data-tab="paypal"><i class="ti ti-brand-paypal"></i> PayPal</button>
-							<button type="button" class="tab" role="tab" id="tab-conta" aria-controls="doar-conta" aria-selected="false" data-tab="conta"><i class="ti ti-building-bank"></i> Transferência</button>
-						</div>
-
 						<div class="tabpanel on" role="tabpanel" id="doar-pix" aria-labelledby="tab-pix" tabindex="0">
 							<div class="donate-body">
 								<div class="qr-side">
@@ -462,7 +446,7 @@
 										<div>
 											<p class="donate-label">Tipo de chave</p>
 											<div class="code-block">
-												<div class="code-head"><span>pix</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
+												<div class="code-head"><span>pix</span></div>
 												<pre id="pixTipoValue">e-mail</pre>
 											</div>
 										</div>
@@ -527,7 +511,7 @@
 									<div>
 										<p class="donate-label">CPF</p>
 										<div class="code-block">
-											<div class="code-head"><span>cpf</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
+											<div class="code-head"><span>cpf</span></div>
 											<pre>023.***.***-95</pre>
 										</div>
 									</div>
@@ -700,13 +684,20 @@
 
 	const tabs = [...document.querySelectorAll('[data-tab]')];
 	const panels = [...document.querySelectorAll('.tabpanel')];
-	const tablist = document.querySelector('.tablist');
+	// o tablist é o .cta-actions do card de cima. Não buscar por .cta-actions
+	// direto: existe outro igual na seção "outras formas de apoiar".
+	const tablist = document.querySelector('[role="tablist"]');
+	const cartao = document.querySelector('.tabs');
 
 	function ativar(chave, focar) {
 		tabs.forEach(t => {
 			const on = t.dataset.tab === chave;
 			t.setAttribute('aria-selected', String(on));
 			t.tabIndex = on ? 0 : -1;
+			// as abas são botões do CTA: o da aba ativa fica primário e os
+			// outros viram fantasma, senão o Pix continuaria destacado
+			t.classList.toggle('btn-primary', on);
+			t.classList.toggle('btn-ghost', !on);
 			if (on && focar) t.focus();
 		});
 		panels.forEach(p => {
@@ -716,7 +707,22 @@
 		});
 	}
 
-	tabs.forEach(t => t.addEventListener('click', () => ativar(t.dataset.tab)));
+	// rola até o cartão do conteúdo, que agora vem depois dos botões.
+	// O offset é calculado à mão porque o cabeçalho é sticky e o
+	// scroll-margin-top não é respeitado pelo scrollIntoView aqui.
+	function levarParaCartao() {
+		const y = cartao.getBoundingClientRect().top + scrollY - 90;
+		scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+	}
+
+	tabs.forEach(t => t.addEventListener('click', e => {
+		// sem preventDefault a âncora do próprio href rola até o painel e
+		// atropela a rolagem feita aqui
+		e.preventDefault();
+		ativar(t.dataset.tab);
+		history.replaceState(null, '', '#doar-' + t.dataset.tab);
+		levarParaCartao();
+	}));
 	tablist.addEventListener('keydown', e => {
 		const i = tabs.findIndex(t => t.getAttribute('aria-selected') === 'true');
 		const passo = { ArrowRight: 1, ArrowLeft: -1, Home: -i, End: tabs.length - 1 - i }[e.key];
@@ -725,13 +731,13 @@
 		ativar(tabs[(i + passo + tabs.length) % tabs.length].dataset.tab, true);
 	});
 
-	// links "Apoiar com Pix" e afins: trocam a aba e levam até ela
+	// "Doar agora", na última seção: troca a aba e leva até o cartão
 	document.querySelectorAll('[data-tab-go]').forEach(a => {
 		a.addEventListener('click', e => {
 			e.preventDefault();
 			ativar(a.dataset.tabGo);
 			history.replaceState(null, '', '#doar-' + a.dataset.tabGo);
-			tablist.scrollIntoView({ behavior: 'smooth', block: 'center' });
+			levarParaCartao();
 		});
 	});
 
