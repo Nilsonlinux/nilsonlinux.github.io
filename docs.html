@@ -606,6 +606,7 @@
 								<li><a href="#live"><i class="ti ti-power"></i> Primeiro boot</a></li>
 								<li class="toc-group">Instalação</li>
 								<li><a href="#instalar"><i class="ti ti-list-numbers"></i> Instalador em 10 passos</a></li>
+								<li><a href="#resiliencia"><i class="ti ti-refresh"></i> Se a página cair</a></li>
 								<li><a href="#modos"><i class="ti ti-git-compare"></i> Modos e dual boot</a></li>
 								<li><a href="#pos-instalacao"><i class="ti ti-circle-check"></i> Depois de instalar</a></li>
 								<li class="toc-group">Usando o NLinux</li>
@@ -663,7 +664,7 @@
 										<tr><td>Firmware</td><td><strong>UEFI obrigatório</strong> — o instalador aborta em máquina sem <code>/sys/firmware/efi</code></td></tr>
 										<tr><td>Memória</td><td>O instalador não impõe mínimo; o swap é feito por <strong>zram</strong> (metade da RAM, até 4 GB)</td></tr>
 										<tr><td>Pendrive</td><td>8 GB ou mais (a ISO tem ~2,9 GB)</td></tr>
-										<tr><td>Espaço em disco</td><td>O instalador só exige <strong>mais de 5 GB livres</strong> no modo <a class="link-accent" href="#modos">dual boot</a>; como referência, o sistema copiado ocupa quase o tamanho da ISO — 20 GB ou mais deixa espaço para apps e atualizações</td></tr>
+										<tr><td>Espaço em disco</td><td>O instalador só exige <strong>mais de 5 GiB livres</strong> no modo <a class="link-accent" href="#modos">dual boot</a>; como referência, o sistema copiado ocupa quase o tamanho da ISO — 20 GB ou mais deixa espaço para apps e atualizações</td></tr>
 										<tr><td>Internet</td><td>Opcional no modo rápido (offline); obrigatória no modo completo (online)</td></tr>
 									</tbody>
 								</table>
@@ -700,7 +701,7 @@ sudo dd if=nlinux-ISO-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync
 									<tbody>
 										<tr><td>UEFI (systemd-boot)</td><td><strong>NLinux ao vivo (x86_64, UEFI)</strong> (padrão) · <strong>NLinux ao vivo — leitor de tela</strong> · <strong>Memtest86+</strong></td></tr>
 										<tr><td>UEFI (GRUB)</td><td>Menu alternativo do perfil releng, com a entrada principal renomeada para <strong>NLinux ao vivo</strong></td></tr>
-										<tr><td>BIOS (syslinux)</td><td>Menu <strong>Bem-vindo ao NLinux</strong> com a arte do NLinux: <strong>Iniciar NLinux</strong> (padrão) · <strong>Iniciar NLinux with speech</strong> · Boot existing OS · Memtest86+ · HDT · Reboot · Power Off</td></tr>
+										<tr><td>BIOS (syslinux)</td><td>Menu <strong>Bem-vindo ao NLinux</strong> com a arte do NLinux: <strong>Iniciar NLinux (x86_64, BIOS)</strong> (padrão) · <strong>Iniciar NLinux (x86_64, BIOS) with speech</strong> · Boot existing OS · Run Memtest86+ (RAM test) · Hardware Information (HDT) · Reboot · Power Off</td></tr>
 									</tbody>
 								</table>
 							</div>
@@ -747,13 +748,21 @@ sudo dd if=nlinux-ISO-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync
 								<div class="step-row">
 									<div class="step-num">1</div>
 									<div>
+										<h4>Idioma do sistema</h4>
+										<p>Uma única escolha define <strong>locale, teclado e fuso horário</strong> juntos: Brasil, Estados Unidos, Portugal, Reino Unido, Espanha, França, Alemanha, Itália e Japão. Define também o idioma do instalador.</p>
+										<span class="step-hint">Brasil → pt_BR.UTF-8 · br-abnt2 · America/Sao_Paulo</span>
+									</div>
+								</div>
+								<div class="step-row">
+									<div class="step-num">2</div>
+									<div>
 										<h4>Disco de destino</h4>
 										<p>Lista os discos via <code>lsblk</code>, ignorando dispositivos <code>loop</code> e <code>zram</code>. Mostra a ESP existente quando houver.</p>
 										<span class="step-hint">escolha com cuidado: o conteúdo é apagado</span>
 									</div>
 								</div>
 								<div class="step-row">
-									<div class="step-num">2</div>
+									<div class="step-num">3</div>
 									<div>
 										<h4>Modo: apagar o disco ou dual boot</h4>
 										<p><strong>Apagar disco inteiro</strong> remove toda a tabela de partições. <strong>Instalar ao lado</strong> mantém o sistema existente (ex.: Windows) e cria a raiz NLinux no espaço livre; nesse modo aparece o controle para <strong>redimensionar a partição NTFS</strong>.</p>
@@ -761,18 +770,10 @@ sudo dd if=nlinux-ISO-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync
 									</div>
 								</div>
 								<div class="step-row">
-									<div class="step-num">3</div>
+									<div class="step-num">4</div>
 									<div>
 										<h4>Sistema de arquivos</h4>
 										<p><code>ext4</code> (estável e simples) ou <code>btrfs</code> (snapshots e compressão, com subvolumes <code>@</code>, <code>@home</code>, <code>@log</code> e <code>@pkg</code>).</p>
-									</div>
-								</div>
-								<div class="step-row">
-									<div class="step-num">4</div>
-									<div>
-										<h4>Idioma do sistema</h4>
-										<p>Uma única escolha define <strong>locale, teclado e fuso horário</strong> juntos: Brasil, Estados Unidos, Portugal, Reino Unido, Espanha, França, Alemanha, Itália e Japão. Define também o idioma do instalador.</p>
-										<span class="step-hint">Brasil → pt_BR.UTF-8 · br-abnt2 · America/Sao_Paulo</span>
 									</div>
 								</div>
 								<div class="step-row">
@@ -826,6 +827,41 @@ sudo dd if=nlinux-ISO-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync
 							</div>
 						</section>
 
+						<!-- ---------- Resiliência ---------- -->
+						<section class="doc-sec reveal" id="resiliencia">
+							<h2 class="doc-h2"><i class="ti ti-refresh"></i> Se a página ou o servidor caírem<a class="anchor ti ti-link" href="#resiliencia" aria-label="Link para esta seção"></a></h2>
+							<p class="doc-p"><strong>A instalação não depende do navegador nem do servidor.</strong> A saída do <code>install.sh</code> vai para um <em>arquivo</em> de log (<code>/tmp/nlinux-install.log</code>) que o servidor apenas acompanha — não um pipe. O estado (etapa, %, últimas linhas, código de saída) fica no servidor, com checkpoint em <code>/tmp/nlinux-install-state.json</code> a cada 5 s. Na prática, nenhuma queda de janela trava nem reinicia a instalação.</p>
+							<div class="tbl-wrap">
+								<table class="tbl">
+									<thead><tr><th>Situação</th><th>O que acontece</th></tr></thead>
+									<tbody>
+										<tr><td>Cai a conexão, recarrega o kiosk ou o Firefox é suspenso</td><td>O <code>EventSource</code> reconecta sozinho e a tela mostra <em>“Reconectando ao instalador… (a instalação continua)”</em>. Nunca vira falha de instalação.</td></tr>
+										<tr><td>O servidor cai (falta de memória, <kbd>Ctrl</kbd>+<kbd>C</kbd>, reabrir o atalho)</td><td>O <code>install.sh</code> continua até o fim escrevendo no arquivo. Ao voltar, o supervisor do launcher o reinicia em <strong>2 s</strong> e o servidor reanexa a execução em andamento pelo log + checkpoint.</td></tr>
+										<tr><td>A página é recarregada com a instalação rodando</td><td>O boot da página consulta <code>/api/status</code> e volta direto ao painel de progresso — adotando também o idioma da execução — em vez do assistente.</td></tr>
+										<tr><td>O formulário é enviado duas vezes</td><td><code>POST /api/install</code> devolve <strong>409</strong> com o estado atual e a página volta ao painel: ninguém apaga o disco por cima da instalação que está rodando.</td></tr>
+										<tr><td>O <code>install.sh</code> morre sem escrever o resultado (morto por sinal ou OOM)</td><td>O watchdog da execução reanexada encerra o painel como falha explícita, em vez de girar para sempre.</td></tr>
+										<tr><td>Erro de verdade na instalação</td><td>O <code>install.sh</code> aborta e grava <code>/var/log/install-error.log</code> <strong>no disco instalado</strong>, com as últimas 150 linhas do log, antes de desmontar.</td></tr>
+										<tr><td>Falha de espelho no modo online</td><td>O <code>pacstrap</code> tenta até <strong>3 vezes</strong> — o pacman reaproveita o cache entre elas — antes de abortar com dica de rede/mirror.</td></tr>
+									</tbody>
+								</table>
+							</div>
+							<div class="callout">
+								<i class="ti ti-terminal-2"></i>
+								<p>Para acompanhar na mão, a partir de um shell root no live (<kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>F2</kbd>):</p>
+							</div>
+							<div class="code-block">
+								<div class="code-head"><span>terminal · diagnóstico da instalação</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
+								<pre><code><span class="c"># estado real da execução (pct, etapa, código de saída)</span>
+curl -s http://127.0.0.1:8765/api/status
+
+<span class="c"># log vivo da instalação</span>
+tail -f /tmp/nlinux-install.log
+
+<span class="c"># reinícios e erros do servidor</span>
+tail -f /tmp/nlinux-web.log</code></pre>
+							</div>
+						</section>
+
 						<!-- ---------- Modos ---------- -->
 						<section class="doc-sec reveal" id="modos">
 							<h2 class="doc-h2"><i class="ti ti-git-compare"></i> Modos de instalação e dual boot<a class="anchor ti ti-link" href="#modos" aria-label="Link para esta seção"></a></h2>
@@ -844,11 +880,11 @@ sudo dd if=nlinux-ISO-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync
 
 							<h3 class="doc-h3"><i class="ti ti-layout-columns"></i> Dual boot ao lado do Windows</h3>
 							<ul class="doc-ul">
-								<li class="doc-li">O instalador <strong>preserva a ESP existente</strong> e cria a partição NLinux (tipo <code>8304 archroot</code>) no espaço livre.</li>
+								<li class="doc-li">O instalador <strong>preserva a ESP existente</strong> e cria a partição NLinux (tipo <code>8304</code>, nomeada <code>NLinux</code>) no espaço livre.</li>
 								<li class="doc-li">Requisitos: uma <strong>ESP FAT32</strong> no disco escolhido e <strong>mais de 5 GiB livres</strong>.</li>
 								<li class="doc-li">Se não houver espaço, a interface oferece um <strong>controle deslizante para reduzir a partição NTFS</strong> — o ajuste só é aplicado após uma confirmação explícita.</li>
 								<li class="doc-li">A redução <strong>só funciona em NTFS</strong>; outros sistemas de arquivos não são redimensionados.</li>
-								<li class="doc-li">O particionamento normal (wipe) cria GPT com <strong>1 GB de ESP FAT32</strong> montada em <code>/boot</code> e o restante na raiz (<code>8309 cryptroot</code> com LUKS ou <code>8304 archroot</code> sem LUKS).</li>
+								<li class="doc-li">O particionamento normal (wipe) cria GPT com <strong>1 GB de ESP FAT32</strong> montada em <code>/boot</code> e o restante na raiz. A partição raiz é nomeada <code>NLinux</code> no GPT (<code>8309</code> com LUKS, <code>8304</code> sem) e o label do filesystem também é <code>NLinux</code>.</li>
 							</ul>
 							<div class="callout danger">
 								<i class="ti ti-flame"></i>
@@ -861,10 +897,10 @@ sudo dd if=nlinux-ISO-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync
 							<h2 class="doc-h2"><i class="ti ti-circle-check"></i> Depois de instalar<a class="anchor ti ti-link" href="#pos-instalacao" aria-label="Link para esta seção"></a></h2>
 							<p class="doc-p">Remova o pendrive e reinicie. Nos dois modos o chroot roda as mesmas etapas finais: systemd-boot, initramfs, criação do usuário, dotfiles e serviços.</p>
 							<ul class="doc-ul">
-								<li class="doc-li"><strong>Entrada “NLinux” na lista de boot UEFI.</strong> O instalador registra a entrada via <code>efibootmgr --create</code> (removendo o “Linux Boot Manager” do <code>bootctl</code>) e grava o fallback <code>/EFI/BOOT/BOOTX64.EFI</code> — assim o disco aparece como <strong>NLinux</strong> na firmware e, sem NVRAM, como <code>UEFI: &lt;disco&gt;</code>.</li>
+								<li class="doc-li"><strong>systemd-boot na ESP.</strong> O instalador roda <code>bootctl install</code> e grava o fallback <code>/EFI/BOOT/BOOTX64.EFI</code>. <strong>Na lista de boot da firmware o disco aparece como <em>NLinux</em></strong>: o instalador registra essa entrada no NVRAM com <code>efibootmgr --create</code> e em seguida apaga todas as outras que apontam para o mesmo systemd-boot (inclusive a <em>Linux Boot Manager</em> que o <code>bootctl</code> cria, e sobras de instalações antigas), para o disco não aparecer duas vezes. <strong>Windows Boot Manager</strong> nunca é removido. Se a máquina recusar a escrita no NVRAM, o instalador mantém a entrada do <code>bootctl</code> e avisa no log — nesse caso o rótulo é <em>Linux Boot Manager</em>. Em firmwares sem NVRAM, o disco aparece como <code>UEFI: &lt;disco&gt;</code>. Dentro do menu do systemd-boot, a entrada aparece como <strong>NLinux</strong> (<code>/boot/loader/entries/arch.conf</code>).</li>
 								<li class="doc-li"><strong>Bootloader</strong> instalado em <code>/boot</code> (systemd-boot), com initramfs que inclui <code>sd-encrypt</code> quando há LUKS.</li>
 								<li class="doc-li"><strong>Swap em zram</strong> (<code>zram-generator</code>, zstd) com <code>min(ram / 2, 4096)</code> MB.</li>
-								<li class="doc-li"><strong>Serviços habilitados:</strong> NetworkManager, bluetooth, greetd e accounts-daemon, além do NTP (<code>systemd-timesyncd</code>).</li>
+								<li class="doc-li"><strong>Serviços habilitados:</strong> NetworkManager, bluetooth, greetd, accounts-daemon e packagekit, além do NTP (<code>systemd-timesyncd</code>). O Flatpak recebe o <strong>Flathub</strong> como remoto do usuário e a instalação roda <code>appstreamcli refresh --force</code> para baixar os metadados AppStream — é assim que o App Center e a loja conseguem listar os programas (o primeiro acesso ainda baixa um pouco de dados, e precisa de rede).</li>
 								<li class="doc-li"><strong>Login</strong> pelo greetd com noctalia-greeter; o Wayland e o cursor <code>Bibata-Modern-Ice</code> vêm de <code>/etc/environment</code>.</li>
 								<li class="doc-li"><strong>Loja NLinux Software</strong> copiada para <code>/opt/nlinux-software</code>, com o atalho <em>NLinux Software</em> no menu, um atalho na Área de Trabalho e o ícone já fixado na dock.</li>
 								<li class="doc-li"><strong>Boas-vindas</strong> na primeira sessão (janela única em GTK3, disparada pelo autostart do Umbriel). Para ver de novo: <code>nlinux-welcome --menu</code>.</li>
@@ -873,8 +909,14 @@ sudo dd if=nlinux-ISO-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync
 							</ul>
 							<div class="callout">
 								<i class="ti ti-info-circle"></i>
-								<p>Se a instalação falhar, o instalador grava o motivo <strong>no disco de destino</strong> em <code>/var/log/install-error.log</code> (com as últimas 150 linhas do log), antes de desmontar.</p>
+								<p>Se a instalação falhar, o instalador grava o motivo <strong>no disco de destino</strong> em <code>/var/log/install-error.log</code> (com as últimas 150 linhas do log), antes de desmontar. Ainda no live, o log da instalação fica em <code>/tmp/nlinux-install.log</code>.</p>
 							</div>
+							<h3 class="doc-h3"><i class="ti ti-wand"></i> Ajustes sugeridos depois de instalar</h3>
+							<ul class="doc-ul">
+								<li class="doc-li">Ajuste o compositor em <code>~/.config/umbriel/config.toml</code>: teclas, layouts e regras de janela.</li>
+								<li class="doc-li">Hardware especial, atualizações e pacotes da AUR passam pelo <code>yay</code>, que já vem instalado.</li>
+								<li class="doc-li">As dependências de build (compiladores, <code>meson</code>, <code>wlroots0.20</code>, Rust) ficam no sistema porque o build da loja precisa delas — dá para removê-las depois se quiser enxugar.</li>
+							</ul>
 						</section>
 
 						<!-- ---------- Atalhos ---------- -->
@@ -946,7 +988,7 @@ sudo dd if=nlinux-ISO-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync
 
 							<details class="faq-item">
 								<summary><i class="ti ti-alert-circle"></i> A instalação falhou. Onde eu leio o erro?<i class="ti ti-chevron-down chev"></i></summary>
-								<div class="faq-body">O erro é gravado <strong>no disco de destino</strong> antes de desmontar: <code>/var/log/install-error.log</code>, com as últimas 150 linhas do log da instalação. Monte a partição do sistema e leia esse arquivo. No live, o log do instalador web fica em <code>/tmp/nlinux-web.log</code>.</div>
+								<div class="faq-body">O erro é gravado <strong>no disco de destino</strong> antes de desmontar: <code>/var/log/install-error.log</code>, com as últimas 150 linhas do log da instalação. Monte a partição do sistema e leia esse arquivo. No live, o log da instalação fica em <code>/tmp/nlinux-install.log</code> (é o que o painel acompanha) e o do servidor web em <code>/tmp/nlinux-web.log</code>. Para acompanhar ao vivo: <code>tail -f /tmp/nlinux-install.log</code>.</div>
 							</details>
 
 							<details class="faq-item">
@@ -976,7 +1018,7 @@ sudo dd if=nlinux-ISO-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync
 
 							<details class="faq-item">
 								<summary><i class="ti ti-alert-circle"></i> O NLinux não aparece na lista de boot da firmware<i class="ti ti-chevron-down chev"></i></summary>
-								<div class="faq-body">Sem <code>efibootmgr</code> disponível, o instalador só garante o fallback <code>/EFI/BOOT/BOOTX64.EFI</code> — nesse caso o disco aparece como <code>UEFI: &lt;disco&gt;</code>. Você também pode entrar no menu de boot do firmware (normalmente F8/F11/F12) e escolher a entrada manualmente.</div>
+								<div class="faq-body">Normalmente o disco aparece como <strong>NLinux</strong>. Se aparecer como <strong>Linux Boot Manager</strong>, a máquina recusou a escrita no NVRAM e o instalador manteve a entrada do <code>bootctl</code> — o log da instalação avisa nesse caso. Também aparece como <code>UEFI: &lt;disco&gt;</code> quando não há <code>efibootmgr</code> no live, porque aí só o fallback <code>/EFI/BOOT/BOOTX64.EFI</code> é gravado. Você sempre pode entrar no menu de boot da firmware (normalmente F8/F11/F12) e escolher a entrada manualmente.</div>
 							</details>
 
 							<details class="faq-item">
@@ -1011,7 +1053,7 @@ cd nlinux-iso-build
 								<li class="doc-li">Instala o <code>archiso</code> se faltar e <strong>regenera</strong> <code>iso/profile/</code> a partir do perfil releng instalado (compatível com a versão do <code>mkarchiso</code>).</li>
 								<li class="doc-li">Aplica os metadados de <code>iso/profiledef.sh</code> (nome/label/versão = <code>nlinux</code>, publisher <code>NLinux &lt;https://nlinux.dev&gt;</code>).</li>
 								<li class="doc-li">Anexa <code>iso/packages.live</code> à lista de pacotes do live e copia a camada <code>iso/airootfs/</code> (autologin, auto-run, branding, serviços do live).</li>
-								<li class="doc-li">Embute o projeto em <code>/opt/noctalia-installer</code> no live (<code>install.sh</code>, <code>install/</code>, <code>config/</code>, <code>packages/</code>) e a <strong>Loja NLinux Software</strong> em <code>/opt/nlinux-software</code>, a partir da cópia publicada em <code>nlinux-software/</code>.</li>
+								<li class="doc-li">Embute o projeto em <code>/opt/noctalia-installer</code> no live (<code>install.sh</code>, <code>install/</code>, <code>config/</code>, <code>packages/</code>, <code>web/</code>) e a <strong>Loja NLinux Software</strong> em <code>/opt/nlinux-software</code>, a partir da cópia publicada em <code>nlinux-software/</code>.</li>
 								<li class="doc-li">Transforma o boot: <strong>systemd-boot</strong> (UEFI), <strong>GRUB</strong> (UEFI) e <strong>syslinux</strong> (BIOS), com títulos, itens e a splash do NLinux.</li>
 								<li class="doc-li">Roda <code>mkarchiso -v</code> — que executa a camada <code>iso/airootfs/root/customize_airootfs.sh</code> no chroot do build (AUR, greetd, usuário do live, autologin) — e gera a ISO (~2,9 GB).</li>
 							</ol>
@@ -1019,9 +1061,20 @@ cd nlinux-iso-build
 								<a class="btn-ghost" href="https://github.com/Nilsonlinux/nlinux-iso-build" target="_blank" rel="noopener noreferrer"><i class="ti ti-brand-github"></i> Repositório do build</a>
 							</div>
 							<h3 class="doc-h3"><i class="ti ti-shopping-bag"></i> Atualizar a loja embutida na ISO</h3>
-							<p class="doc-p"><code>nlinux-software/</code> é a cópia do build publicado da loja (<a class="link-accent" href="https://github.com/Nilsonlinux/nlinux-software" target="_blank" rel="noopener noreferrer">Nilsonlinux/nlinux-software</a>). A curadoria já publica a versão nova lá; basta trocar o conteúdo e rebuildar — o <code>build-iso.sh</code> não instala a loja, ele só copia a pasta.</p>
+							<p class="doc-p"><code>nlinux-software/</code> é a cópia do build publicado da loja (<a class="link-accent" href="https://github.com/Nilsonlinux/nlinux-software" target="_blank" rel="noopener noreferrer">Nilsonlinux/nlinux-software</a>) que o <code>build-iso.sh</code> embute em <code>/opt/nlinux-software</code>. O script não instala a loja: ele monta a imagem a partir do que está <strong>commitado</strong> na pasta, e por isso ela nunca pode ficar modificada sem commit — uma pasta editada faria a ISO usar uma loja diferente da que está no repositório.</p>
+							<div class="callout">
+								<i class="ti ti-info-circle"></i>
+								<p><strong>Na maior parte das vezes não é preciso fazer isso à mão.</strong> Ao gerar a versão da loja, o passo 8 do build da curadoria (<code>sync_iso_store</code>) apaga, recopla e <strong>commita</strong> <code>nlinux-software/</code> a partir do build recém-gerado, antes de publicar. Basta abrir a curadoria e clicar em <strong>“Gerar versão da loja”</strong>. Só a subpasta da loja entra no commit — se você estiver editando outras coisas do projeto da ISO, elas ficam pendentes e intactas.</p>
+							</div>
 							<div class="code-block">
-								<div class="code-head"><span>terminal · trocar a loja pela publicação mais recente</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
+								<div class="code-head"><span>terminal · conferir o que está embarcado</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
+								<pre><code><span class="c"># dentro de nlinux-iso-build</span>
+grep revision nlinux-software/catalog-head.json
+git log -1 --oneline</code></pre>
+							</div>
+							<p class="doc-p">O próprio <code>build-iso.sh</code> faz essa conferência antes de embutir a loja: ele compara a revisão do <code>catalog-head.json</code> embarcado com a publicação no GitHub. Se a publicada for maior, sai um aviso em amarelo dizendo que a imagem vai ficar com a loja velha. Sem <code>curl</code> ou sem rede, ele avisa e segue — a conferência nunca segura o build. Caso a curadoria falhe ao espelhar, o caminho manual continua valendo:</p>
+							<div class="code-block">
+								<div class="code-head"><span>terminal · espelhar a loja manualmente (fallback)</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
 								<pre><code><span class="c"># dentro de nlinux-iso-build</span>
 rm -rf nlinux-software &amp;&amp; mkdir nlinux-software
 git clone --depth 1 https://github.com/Nilsonlinux/nlinux-software.git /tmp/loja
@@ -1030,7 +1083,11 @@ rm -rf nlinux-software/.git nlinux-software/*.tar.gz nlinux-software/*.tar.gz.as
 
 <span class="c"># conferindo a revisão e a assinatura do pacote publicado</span>
 cat nlinux-software/catalog-head.json
-gpg --verify /tmp/loja/nlinux-software-v&lt;N&gt;.tar.gz.asc /tmp/loja/nlinux-software-v&lt;N&gt;.tar.gz</code></pre>
+gpg --verify nlinux-software/nlinux-software-v&lt;N&gt;.tar.gz.asc nlinux-software/nlinux-software-v&lt;N&gt;.tar.gz</code></pre>
+							</div>
+							<div class="callout">
+								<i class="ti ti-info-circle"></i>
+								<p>A pasta é apagada antes de recoplar. É o que impede programas removidos do catálogo de continuarem embarcados na imagem por causa de um espelho parcial. A assinatura só pode ser conferida no repositório, porque o <code>.tar.gz</code> não existe dentro da pasta embute.</p>
 							</div>
 							<div class="callout">
 								<i class="ti ti-info-circle"></i>
@@ -1078,7 +1135,7 @@ NLinux.jpg / splash.png   arte do menu de boot</code></pre>
 										<tr><td>3</td><td class="mono">30-greetd.sh</td><td><code>/etc/greetd/config.toml</code> com o <strong>noctalia-greeter</strong> (sessão padrão <code>umbriel</code>)</td></tr>
 										<tr><td>4</td><td class="mono">40-user-config.sh</td><td>Copia <code>config/.config</code> → <code>~/.config</code> e <code>config/.local</code> → <code>~/.local</code> (ícones/cursor Bibata, logo do fastfetch), resolvendo templates <code>.tpl</code> com o layout do teclado</td></tr>
 										<tr><td>5</td><td class="mono">41-welcome.sh</td><td>Marca <code>/etc/nlinux-installed</code> e instala o <code>nlinux-welcome</code> (janela única no 1º login)</td></tr>
-										<tr><td>6</td><td class="mono">50-services.sh</td><td>Habilita NetworkManager, bluetooth, greetd e accounts-daemon; escreve <code>/etc/environment</code> (Wayland + cursor) e liga o NTP com <code>systemd-timesyncd</code></td></tr>
+										<tr><td>6</td><td class="mono">50-services.sh</td><td>Habilita NetworkManager, bluetooth, greetd, accounts-daemon e <strong>packagekit</strong>; adiciona o <strong>Flathub</strong> como remoto Flatpak do usuário; roda <strong><code>appstreamcli refresh --force</code></strong> (metadados AppStream para a loja e o App Center); escreve <code>/etc/environment</code> (Wayland + cursor <code>Bibata-Modern-Ice</code>) e liga o NTP com <code>systemd-timesyncd</code></td></tr>
 									</tbody>
 								</table>
 							</div>
@@ -1124,6 +1181,10 @@ NLinux.jpg / splash.png   arte do menu de boot</code></pre>
 								<div class="mini-card">
 									<h4><i class="ti ti-stack-2"></i> Etapas da instalação</h4>
 									<p><code>install/chroot/*.sh</code> — edite ou adicione etapas no <code>all.sh</code>.</p>
+								</div>
+								<div class="mini-card">
+									<h4><i class="ti ti-language"></i> Textos do instalador</h4>
+									<p><code>install/translations.py</code> é a fonte única dos textos do instalador web nos <strong>7 idiomas</strong>. O <code>web/server.py</code> e o <code>web/static/app.js</code> só pedem as chaves (<code>stage.*</code>, <code>web.*</code>, <code>tui.*</code>, <code>part.*</code>) — para traduzir, edite só esse arquivo.</p>
 								</div>
 								<div class="mini-card">
 									<h4><i class="ti ti-photo"></i> Arte do boot</h4>
