@@ -337,6 +337,9 @@
 		.doc-li { position: relative; padding-left: 1.15rem; font-size: .88rem; line-height: 1.7; color: var(--fg-dim); }
 		.doc-li::before { content: ""; position: absolute; left: .15rem; top: .7rem; width: 4px; height: 4px; border-radius: 50%; background: color-mix(in srgb, var(--accent) 70%, transparent); }
 		.doc-li + .doc-li { margin-top: .3rem; }
+		.github-release-notes .doc-p { white-space: pre-wrap; overflow-wrap: anywhere; }
+		.github-release-tag { color: var(--fg-dim); font: 500 .72rem "JetBrains Mono", monospace; overflow-wrap: anywhere; }
+		.github-release-assets code { overflow-wrap: anywhere; }
 		.doc-li code, .doc-p code, td code, .doc-h3 code {
 			font-family: "JetBrains Mono", monospace; font-size: .85em; color: var(--accent);
 			background: color-mix(in srgb, var(--surface-2) 60%, transparent); padding: .05em .35em; border-radius: .35rem;
@@ -598,7 +601,7 @@
 					<p class="page-subtitle">O que mudou em cada ISO do NLinux, do mais novo para o mais antigo. Cada versão traz também o sha256 da imagem.</p>
 					<div class="page-badges">
 						<span class="page-badge"><i class="ti ti-calendar"></i> Uma entrada por ISO</span>
-						<span class="page-badge"><i class="ti ti-star"></i> 2026.10.03 — atual</span>
+						<span class="page-badge" id="latestReleaseBadge"><i class="ti ti-loader-2"></i> Consultando GitHub…</span>
 						<span class="page-badge"><i class="ti ti-shield-check"></i> sha256 por versão</span>
 					</div>
 				</header>
@@ -616,7 +619,8 @@
 								<li class="toc-group">Sobre este changelog</li>
 								<li><a href="#changelog"><i class="ti ti-info-circle"></i> Como ler</a></li>
 								<li class="toc-group">Versões</li>
-								<li><a href="#v2026-10-03"><i class="ti ti-star"></i> 2026.10.03 — atual</a></li>
+								<li><a href="#github-releases"><i class="ti ti-brand-github"></i> GitHub Releases</a></li>
+								<li><a href="#v2026-10-03"><i class="ti ti-history"></i> 2026.10.03</a></li>
 								<li><a href="#v2026-10-02"><i class="ti ti-history"></i> 2026.10.02</a></li>
 								<li><a href="#v2026-10-01"><i class="ti ti-history"></i> 2026.10.01</a></li>
 								<li><a href="#v2026-09-30"><i class="ti ti-history"></i> 2026.09.30 — primeira</a></li>
@@ -637,11 +641,18 @@
 								<p><strong>NLinux é rolling.</strong> Uma ISO é uma fotografia: os repositórios do Arch continuam andando depois dela. Por isso duas pessoas que instalaram a mesma ISO em dias diferentes podem ter pacotes diferentes. Para o dia a dia, atualize com <code>sudo pacman -Syu</code> em vez de reinstalar.</p>
 							</div>
 							<p class="doc-p">Cada versão traz também o <strong>sha256</strong> da imagem, para você conferir se o download chegou inteiro.</p>
+							<p class="doc-p">As novas versões são carregadas das <a class="link-accent" href="https://github.com/Nilsonlinux/nlinux-iso-build/releases" target="_blank" rel="noopener noreferrer">GitHub Releases do nlinux-iso-build</a>. Para publicar uma entrada, crie uma release com a tag da versão da ISO, descreva as mudanças e anexe a ISO e/ou o arquivo de checksum. A página consulta as releases ao abrir; não é preciso editar o HTML.</p>
+						</section>
+
+						<section class="doc-sec reveal" id="github-releases">
+							<h2 class="doc-h2"><i class="ti ti-brand-github"></i> Versões publicadas no GitHub<a class="anchor ti ti-link" href="#github-releases" aria-label="Link para esta seção"></a></h2>
+							<p class="doc-p" id="githubReleaseStatus" role="status" aria-live="polite">Carregando releases do GitHub…</p>
+							<div class="card-grid" id="githubReleaseList"></div>
 						</section>
 
 						<!-- ---------- 2026.10.03 ---------- -->
 						<section class="doc-sec reveal" id="v2026-10-03">
-							<h2 class="doc-h2"><i class="ti ti-star"></i> 2026.10.03 <span class="link-accent">— versão atual</span><a class="anchor ti ti-link" href="#v2026-10-03" aria-label="Link para esta seção"></a></h2>
+							<h2 class="doc-h2"><i class="ti ti-history"></i> 2026.10.03<a class="anchor ti ti-link" href="#v2026-10-03" aria-label="Link para esta seção"></a></h2>
 							<p class="doc-p">Correções de áudio e da loja, e o novo layout da barra superior.</p>
 							<h3 class="doc-h3">Corrigido</h3>
 							<ul class="doc-ul">
@@ -950,6 +961,185 @@
 		if (e.isIntersecting) e.target.classList.add('in');
 	}), { threshold: .05 });
 	$$('.reveal').forEach(el => observer.observe(el));
+
+	/* ---------- releases do GitHub ---------- */
+	const releaseStatus = $('#githubReleaseStatus');
+	const releaseList = $('#githubReleaseList');
+	const latestReleaseBadge = $('#latestReleaseBadge');
+	const releasesPage = 'https://github.com/Nilsonlinux/nlinux-iso-build/releases';
+	const normalizeVersion = value => {
+		const match = String(value).match(/\d{4}[.-]\d{2}[.-]\d{2}/);
+		return match ? match[0].replace(/-/g, '.') : '';
+	};
+	const historicalVersions = new Set(
+		$$('#tocList a[href^="#v"]').map(link => normalizeVersion(link.getAttribute('href')))
+	);
+	const setReleaseStatus = (message, linkText) => {
+		releaseStatus.replaceChildren(document.createTextNode(`${message} `));
+		const link = document.createElement('a');
+		link.className = 'link-accent';
+		link.href = releasesPage;
+		link.target = '_blank';
+		link.rel = 'noopener noreferrer';
+		link.textContent = linkText;
+		releaseStatus.append(link);
+	};
+	const appendInlineText = (parent, text) => {
+		const pattern = /(\*\*[^*]+\*\*|`[^`]+`)/g;
+		let offset = 0;
+		for (const match of text.matchAll(pattern)) {
+			parent.append(document.createTextNode(text.slice(offset, match.index)));
+			const marked = match[0];
+			const element = document.createElement(marked.startsWith('**') ? 'strong' : 'code');
+			element.textContent = marked.startsWith('**') ? marked.slice(2, -2) : marked.slice(1, -1);
+			parent.append(element);
+			offset = match.index + marked.length;
+		}
+		parent.append(document.createTextNode(text.slice(offset)));
+	};
+	const renderReleaseNotes = (container, body) => {
+		let list;
+		String(body || '').split(/\r?\n/).forEach(line => {
+			const text = line.trim();
+			if (!text) { list = null; return; }
+			const heading = text.match(/^#{1,3}\s+(.+)$/);
+			const item = text.match(/^[-*]\s+(.+)$/);
+			if (heading) {
+				list = null;
+				const element = document.createElement('h4');
+				element.className = 'doc-h3';
+				appendInlineText(element, heading[1]);
+				container.append(element);
+			} else if (item) {
+				if (!list) {
+					list = document.createElement('ul');
+					list.className = 'doc-ul';
+					container.append(list);
+				}
+				const element = document.createElement('li');
+				element.className = 'doc-li';
+				appendInlineText(element, item[1]);
+				list.append(element);
+			} else {
+				list = null;
+				const element = document.createElement('p');
+				element.className = 'doc-p';
+				appendInlineText(element, text);
+				container.append(element);
+			}
+		});
+	};
+	const renderRelease = release => {
+		const card = document.createElement('article');
+		card.className = 'mini-card github-release';
+
+		const heading = document.createElement('h3');
+		heading.className = 'doc-h3';
+		heading.textContent = release.name || release.tag_name;
+		if (release.name && release.name !== release.tag_name && !release.name.includes(release.tag_name)) {
+			const tag = document.createElement('span');
+			tag.className = 'github-release-tag';
+			tag.textContent = release.tag_name;
+			heading.append(' ', tag);
+		}
+		card.append(heading);
+
+		const metadata = document.createElement('p');
+		metadata.className = 'doc-p';
+		const publishedAt = release.published_at || release.created_at;
+		const publishedDate = new Date(publishedAt);
+		if (!Number.isNaN(publishedDate.getTime())) {
+			const time = document.createElement('time');
+			time.dateTime = publishedAt;
+			time.textContent = new Intl.DateTimeFormat('pt-BR', {
+				dateStyle: 'long',
+				timeZone: 'UTC'
+			}).format(publishedDate);
+			metadata.append(time, ' · ');
+		}
+		const releaseLink = document.createElement('a');
+		releaseLink.className = 'link-accent';
+		releaseLink.href = release.html_url;
+		releaseLink.target = '_blank';
+		releaseLink.rel = 'noopener noreferrer';
+		releaseLink.textContent = 'Ver release no GitHub';
+		metadata.append(releaseLink);
+		card.append(metadata);
+
+		const notes = document.createElement('div');
+		notes.className = 'github-release-notes';
+		renderReleaseNotes(notes, release.body);
+		if (notes.childNodes.length) card.append(notes);
+
+		const assets = (release.assets || []).filter(asset =>
+			typeof asset.browser_download_url === 'string' &&
+			asset.browser_download_url.startsWith('https://github.com/')
+		);
+		if (assets.length) {
+			const list = document.createElement('ul');
+			list.className = 'doc-ul github-release-assets';
+			assets.forEach(asset => {
+				const item = document.createElement('li');
+				item.className = 'doc-li';
+				const link = document.createElement('a');
+				link.className = 'link-accent';
+				link.href = asset.browser_download_url;
+				link.target = '_blank';
+				link.rel = 'noopener noreferrer';
+				link.textContent = asset.name;
+				item.append(link);
+				if (typeof asset.digest === 'string' && /^sha256:[a-f0-9]{64}$/i.test(asset.digest)) {
+					item.append(' · SHA-256 ');
+					const digest = document.createElement('code');
+					digest.textContent = asset.digest.slice(7);
+					item.append(digest);
+				}
+				list.append(item);
+			});
+			card.append(list);
+		}
+		releaseList.append(card);
+	};
+	const loadGithubReleases = async () => {
+		try {
+			const response = await fetch(
+				'https://api.github.com/repos/Nilsonlinux/nlinux-iso-build/releases?per_page=100',
+				{ headers: { Accept: 'application/vnd.github+json' }, cache: 'no-store' }
+			);
+			if (!response.ok) throw new Error(`GitHub API respondeu HTTP ${response.status}`);
+			const data = await response.json();
+			if (!Array.isArray(data)) throw new Error('A resposta da API do GitHub não é uma lista de releases');
+
+			const releases = data
+				.filter(release => !release.draft && !release.prerelease)
+				.sort((a, b) => Date.parse(b.published_at || b.created_at) - Date.parse(a.published_at || a.created_at));
+			if (releases.length) {
+				latestReleaseBadge.replaceChildren();
+				const icon = document.createElement('i');
+				icon.className = 'ti ti-star';
+				latestReleaseBadge.append(icon, ' ', `${releases[0].tag_name || releases[0].name} — atual`);
+			} else {
+				latestReleaseBadge.textContent = 'Histórico até 2026.10.03';
+			}
+
+			const newReleases = releases.filter(release =>
+				!historicalVersions.has(normalizeVersion(release.tag_name))
+			);
+			if (!releases.length) {
+				setReleaseStatus('Nenhuma GitHub Release publicada ainda.', 'Abrir releases do projeto');
+			} else if (!newReleases.length) {
+				releaseStatus.textContent = 'As releases publicadas já estão incluídas no histórico abaixo.';
+			} else {
+				releaseStatus.textContent = `${newReleases.length} ${newReleases.length === 1 ? 'release publicada' : 'releases publicadas'} carregada${newReleases.length === 1 ? '' : 's'} do GitHub.`;
+				newReleases.forEach(renderRelease);
+			}
+		} catch (error) {
+			console.error('Não foi possível carregar as GitHub Releases do NLinux.', error);
+			latestReleaseBadge.textContent = 'Histórico local até 2026.10.03';
+			setReleaseStatus('Não foi possível consultar as releases agora.', 'Tentar novamente no GitHub');
+		}
+	};
+	loadGithubReleases();
 })();
 
 </script>
