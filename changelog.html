@@ -347,16 +347,18 @@
 		.github-release > summary::-webkit-details-marker { display: none; }
 		.github-release { transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease; }
 		.github-release:hover, .github-release:focus-within {
-			border-color: #3b82f6;
-			box-shadow: var(--shadow-card), 0 0 0 1px rgb(59 130 246 / .45), 0 0 20px rgb(59 130 246 / .28), 0 0 40px rgb(59 130 246 / .12);
+			border-color: #fff06a;
+			box-shadow: var(--shadow-card), 0 0 0 1px rgb(255 240 106 / .7), 0 0 22px rgb(255 232 64 / .48), 0 0 44px rgb(255 224 32 / .2);
 			transform: translateY(-2px);
 		}
-		.github-release > summary:focus-visible { outline: 2px solid #60a5fa; outline-offset: -3px; }
+		.github-release > summary:focus-visible { outline: 2px solid #fff06a; outline-offset: -3px; }
 		.github-release > summary::after { content: "+"; flex: 0 0 auto; color: var(--accent); font-size: 1.5rem; line-height: 1; transition: transform .2s; }
 		.github-release[open] > summary { border-bottom: 1px solid var(--border); }
 		.github-release[open] > summary::after { content: "−"; }
 		.github-release-heading { display: flex; align-items: center; gap: .85rem; min-width: 0; }
-		.github-release-logo { flex: 0 0 3rem; width: 3rem; height: 3rem; object-fit: cover; border: 1px solid var(--border); border-radius: .8rem; }
+		.github-release-avatar { flex: 0 0 4rem; width: 4rem; height: 4rem; object-fit: cover; border: 1px solid var(--border); border-radius: 50%; background: var(--surface-2); }
+		.github-release-author { color: var(--fg-dim); }
+		.github-release-author:hover { color: var(--accent); }
 		.github-release-summary { min-width: 0; }
 		.github-release-summary .doc-h3 { margin: 0; }
 		.github-release-summary .doc-p { margin: .35rem 0 0; }
@@ -836,8 +838,7 @@
 
 	/* ---------- filtrar o sumário ---------- */
 	const filter = $('#tocFilter');
-	const items = $$('#tocList li');
-	const groups = $$('#tocList .toc-group');
+	const tocList = $('#tocList');
 	const emptyMsg = $('#tocEmpty');
 	// Casa o rótulo do sumário OU o texto da seção (mini busca no conteúdo).
 	const targets = new Map($$('#tocList a').map(a => {
@@ -847,7 +848,7 @@
 	filter.addEventListener('input', () => {
 		const q = filter.value.trim().toLowerCase();
 		let visible = 0;
-		items.forEach(li => {
+		tocList.querySelectorAll('li').forEach(li => {
 			const isGroup = li.classList.contains('toc-group');
 			const link = li.querySelector('a');
 			const inSection = link ? (targets.get(link) || '').includes(q) : false;
@@ -855,7 +856,7 @@
 			li.classList.toggle('hidden', !!q && !match);
 			if (match) visible++;
 		});
-		groups.forEach(g => {
+		tocList.querySelectorAll('.toc-group').forEach(g => {
 			let next = g.nextElementSibling;
 			while (next && !next.classList.contains('toc-group')) {
 				if (!next.classList.contains('hidden')) { g.classList.remove('hidden'); return; }
@@ -879,6 +880,22 @@
 		if (visible.length) setActive(visible[0].target.id);
 	}, { rootMargin: '-80px 0px -70% 0px', threshold: 0 });
 	sections.forEach(s => spy.observe(s));
+	const addReleaseToToc = (release, card) => {
+		card.id = `release-${release.id}`;
+		const item = document.createElement('li');
+		const link = document.createElement('a');
+		link.href = `#${card.id}`;
+		const icon = document.createElement('i');
+		icon.className = 'ti ti-history';
+		link.append(icon, ` ${release.name || release.tag_name}`);
+		link.addEventListener('click', () => { card.open = true; });
+		item.append(link);
+		tocList.append(item);
+		links.set(card.id, link);
+		targets.set(link, card.textContent.toLowerCase());
+		spy.observe(card);
+		filter.dispatchEvent(new Event('input'));
+	};
 
 	/* ---------- reveal ---------- */
 	const observer = new IntersectionObserver(entries => entries.forEach(e => {
@@ -1016,14 +1033,29 @@
 		const summary = document.createElement('summary');
 		const headingGroup = document.createElement('div');
 		headingGroup.className = 'github-release-heading';
-		const logo = document.createElement('img');
-		logo.className = 'github-release-logo';
-		logo.src = 'img/nlinux-logo.png';
-		logo.alt = 'NLinux';
-		logo.width = 48;
-		logo.height = 48;
-		logo.loading = 'lazy';
-		headingGroup.append(logo);
+		const author = release.author;
+		const avatar = document.createElement('img');
+		avatar.className = 'github-release-avatar';
+		avatar.src = 'img/nlinux-logo.png';
+		avatar.alt = author?.login ? `Foto de perfil de ${author.login} no GitHub` : 'NLinux';
+		avatar.width = 64;
+		avatar.height = 64;
+		avatar.loading = 'lazy';
+		if (typeof author?.avatar_url === 'string') {
+			try {
+				const avatarUrl = new URL(author.avatar_url);
+				if (avatarUrl.protocol === 'https:' && avatarUrl.hostname === 'avatars.githubusercontent.com') {
+					avatar.src = avatarUrl.href;
+					avatar.addEventListener('error', () => {
+						avatar.src = 'img/nlinux-logo.png';
+						avatar.alt = 'NLinux';
+					}, { once: true });
+				}
+			} catch (error) {
+				console.warn('URL de avatar inválida para o autor da release.', error);
+			}
+		}
+		headingGroup.append(avatar);
 		const summaryContent = document.createElement('div');
 		summaryContent.className = 'github-release-summary';
 		const heading = document.createElement('h3');
@@ -1050,6 +1082,12 @@
 			}).format(publishedDate);
 			time.dateTime = publishedAt;
 			metadata.append(time);
+		}
+		if (typeof author?.login === 'string' && author.login) {
+			const byline = document.createElement('span');
+			byline.className = 'github-release-author';
+			byline.textContent = ` · por @${author.login}`;
+			metadata.append(byline);
 		}
 		summaryContent.append(metadata);
 		headingGroup.append(summaryContent);
@@ -1103,6 +1141,7 @@
 		}
 		card.append(content);
 		releaseList.append(card);
+		addReleaseToToc(release, card);
 	};
 	const loadGithubReleases = async () => {
 		try {
