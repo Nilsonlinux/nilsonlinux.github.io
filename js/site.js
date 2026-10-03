@@ -21,8 +21,8 @@
    nunca aponta para um arquivo ou uma data desatualizada.
    ============================================================ */
 const NLINUX_ISO_URL = 'https://drive.google.com/file/d/17m7E-nJyaV51c-vTzITPII-6noAaBH1J/view?usp=sharing';
-const NLINUX_ISO_DATE = '2026-09-30';
-const NLINUX_ISO_SHA256 = 'cd2eb81f96b9a7682f89483e39b3f40e80ff42c434c7db66c0feefdfd1c34eba';
+const NLINUX_ISO_DATE = '2026-10-03';
+const NLINUX_ISO_SHA256 = '641f4f95d7f19c36ade00e8b30c4a51633cbe0d7bf445ded844a9454c3a5b1a8';
 
 document.querySelectorAll('[data-iso-download]').forEach(link => {
 	link.href = NLINUX_ISO_URL;
