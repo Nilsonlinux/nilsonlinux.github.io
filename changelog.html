@@ -339,8 +339,34 @@
 		.doc-li + .doc-li { margin-top: .3rem; }
 		.github-release-notes .doc-p { white-space: pre-wrap; overflow-wrap: anywhere; }
 		.github-release-image { margin: .75rem 0 1rem; }
-		.github-release-image img { display: block; width: 100%; max-height: 32rem; object-fit: contain; border: 1px solid var(--border); border-radius: .75rem; background: var(--surface-2); }
+		.github-release-image img { display: block; width: 100%; max-height: 42rem; object-fit: contain; border: 1px solid var(--border); border-radius: .75rem; background: var(--surface-2); cursor: zoom-in; }
 		.github-release-image figcaption { margin-top: .35rem; color: var(--faint); font-size: .75rem; }
+		.card-grid.github-release-list { grid-template-columns: minmax(0, 1fr); }
+		.github-release { min-width: 0; padding: 0; overflow: hidden; }
+		.github-release > summary { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.1rem 1.2rem; cursor: pointer; list-style: none; }
+		.github-release > summary::-webkit-details-marker { display: none; }
+		.github-release { transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease; }
+		.github-release:hover, .github-release:focus-within {
+			border-color: #3b82f6;
+			box-shadow: var(--shadow-card), 0 0 0 1px rgb(59 130 246 / .45), 0 0 20px rgb(59 130 246 / .28), 0 0 40px rgb(59 130 246 / .12);
+			transform: translateY(-2px);
+		}
+		.github-release > summary:focus-visible { outline: 2px solid #60a5fa; outline-offset: -3px; }
+		.github-release > summary::after { content: "+"; flex: 0 0 auto; color: var(--accent); font-size: 1.5rem; line-height: 1; transition: transform .2s; }
+		.github-release[open] > summary { border-bottom: 1px solid var(--border); }
+		.github-release[open] > summary::after { content: "−"; }
+		.github-release-heading { display: flex; align-items: center; gap: .85rem; min-width: 0; }
+		.github-release-logo { flex: 0 0 3rem; width: 3rem; height: 3rem; object-fit: cover; border: 1px solid var(--border); border-radius: .8rem; }
+		.github-release-summary { min-width: 0; }
+		.github-release-summary .doc-h3 { margin: 0; }
+		.github-release-summary .doc-p { margin: .35rem 0 0; }
+		.github-release-content { padding: 1.1rem 1.2rem; }
+		.github-release-content > :last-child { margin-bottom: 0; }
+		.github-image-viewer { width: min(96vw, 90rem); max-width: none; max-height: 94vh; padding: 1rem; border: 1px solid var(--border); border-radius: 1rem; background: var(--surface); color: var(--fg); }
+		.github-image-viewer::backdrop { background: rgb(0 0 0 / .82); backdrop-filter: blur(6px); }
+		.github-image-viewer img { display: block; max-width: 100%; max-height: calc(94vh - 5rem); margin: 0 auto; object-fit: contain; }
+		.github-image-viewer figcaption { margin-top: .6rem; color: var(--fg-dim); text-align: center; font-size: .85rem; }
+		.github-image-viewer button { display: block; margin: 0 0 .75rem auto; border: 1px solid var(--border); border-radius: .5rem; padding: .4rem .75rem; background: var(--surface-2); color: var(--fg); cursor: pointer; }
 		.github-release-tag { color: var(--fg-dim); font: 500 .72rem "JetBrains Mono", monospace; overflow-wrap: anywhere; }
 		.github-release-assets code { overflow-wrap: anywhere; }
 		.doc-li code, .doc-p code, td code, .doc-h3 code {
@@ -645,7 +671,7 @@
 						<section class="doc-sec reveal" id="github-releases">
 							<h2 class="doc-h2"><i class="ti ti-brand-github"></i> Versões publicadas no GitHub<a class="anchor ti ti-link" href="#github-releases" aria-label="Link para esta seção"></a></h2>
 							<p class="doc-p" id="githubReleaseStatus" role="status" aria-live="polite">Carregando releases do GitHub…</p>
-							<div class="card-grid" id="githubReleaseList"></div>
+							<div class="card-grid github-release-list" id="githubReleaseList"></div>
 						</section>
 
 						<section class="doc-sec reveal">
@@ -888,6 +914,52 @@
 		}
 		parent.append(document.createTextNode(text.slice(offset)));
 	};
+	const imageViewer = document.createElement('dialog');
+	imageViewer.className = 'github-image-viewer';
+	const imageViewerClose = document.createElement('button');
+	imageViewerClose.type = 'button';
+	imageViewerClose.textContent = 'Fechar';
+	imageViewerClose.addEventListener('click', () => imageViewer.close());
+	const imageViewerImage = document.createElement('img');
+	const imageViewerCaption = document.createElement('figcaption');
+	const imageViewerFigure = document.createElement('figure');
+	imageViewerFigure.append(imageViewerImage, imageViewerCaption);
+	imageViewer.append(imageViewerClose, imageViewerFigure);
+	imageViewer.addEventListener('click', event => {
+		if (event.target === imageViewer) imageViewer.close();
+	});
+	document.body.append(imageViewer);
+	const createReleaseImage = (src, alt, caption) => {
+		let imageUrl;
+		try {
+			imageUrl = new URL(src);
+		} catch (error) {
+			console.warn('URL de imagem inválida nas notas de release.', src, error);
+			return null;
+		}
+		if (imageUrl.protocol !== 'https:' || imageUrl.username || imageUrl.password) return null;
+
+		const figure = document.createElement('figure');
+		figure.className = 'github-release-image';
+		const image = document.createElement('img');
+		image.src = imageUrl.href;
+		image.alt = alt || 'Captura de tela da release';
+		image.loading = 'lazy';
+		image.referrerPolicy = 'no-referrer';
+		image.addEventListener('click', () => {
+			imageViewerImage.src = image.src;
+			imageViewerImage.alt = image.alt;
+			imageViewerCaption.textContent = caption || image.alt;
+			imageViewer.showModal();
+		});
+		figure.append(image);
+		if (caption) {
+			const figcaption = document.createElement('figcaption');
+			figcaption.textContent = caption;
+			figure.append(figcaption);
+		}
+		return figure;
+	};
 	const renderReleaseNotes = (container, body) => {
 		let list;
 		String(body || '').split(/\r?\n/).forEach(line => {
@@ -896,30 +968,22 @@
 			const heading = text.match(/^#{1,3}\s+(.+)$/);
 			const item = text.match(/^[-*]\s+(.+)$/);
 			const image = text.match(/^!\[([^\]]*)\]\((https:\/\/[^\s)]+)(?:\s+"([^"]*)")?\)$/);
-			let imageUrl;
+			const htmlImage = /^<img\b[^>]*\/?>$/i.test(text)
+				? new DOMParser().parseFromString(text, 'text/html').querySelector('img')
+				: null;
+			let imageFigure = null;
 			if (image) {
-				try {
-					imageUrl = new URL(image[2]);
-				} catch (error) {
-					console.warn('URL de imagem inválida nas notas de release.', image[2], error);
-				}
+				imageFigure = createReleaseImage(image[2], image[1], image[3]);
+			} else if (htmlImage) {
+				imageFigure = createReleaseImage(
+					htmlImage.getAttribute('src') || '',
+					htmlImage.getAttribute('alt') || '',
+					htmlImage.getAttribute('title') || ''
+				);
 			}
-			if (image && imageUrl && !imageUrl.username && !imageUrl.password) {
+			if (imageFigure) {
 				list = null;
-				const figure = document.createElement('figure');
-				figure.className = 'github-release-image';
-				const element = document.createElement('img');
-				element.src = imageUrl.href;
-				element.alt = image[1];
-				element.loading = 'lazy';
-				element.referrerPolicy = 'no-referrer';
-				figure.append(element);
-				if (image[3]) {
-					const caption = document.createElement('figcaption');
-					caption.textContent = image[3];
-					figure.append(caption);
-				}
-				container.append(figure);
+				container.append(imageFigure);
 			} else if (heading) {
 				list = null;
 				const element = document.createElement('h4');
@@ -946,9 +1010,22 @@
 		});
 	};
 	const renderRelease = release => {
-		const card = document.createElement('article');
+		const card = document.createElement('details');
 		card.className = 'mini-card github-release';
 
+		const summary = document.createElement('summary');
+		const headingGroup = document.createElement('div');
+		headingGroup.className = 'github-release-heading';
+		const logo = document.createElement('img');
+		logo.className = 'github-release-logo';
+		logo.src = 'img/nlinux-logo.png';
+		logo.alt = 'NLinux';
+		logo.width = 48;
+		logo.height = 48;
+		logo.loading = 'lazy';
+		headingGroup.append(logo);
+		const summaryContent = document.createElement('div');
+		summaryContent.className = 'github-release-summary';
 		const heading = document.createElement('h3');
 		heading.className = 'doc-h3';
 		heading.textContent = release.name || release.tag_name;
@@ -958,12 +1035,12 @@
 			tag.textContent = release.tag_name;
 			heading.append(' ', tag);
 		}
-		card.append(heading);
+		summaryContent.append(heading);
 
-		const metadata = document.createElement('p');
-		metadata.className = 'doc-p';
 		const publishedAt = release.published_at || release.created_at;
 		const publishedDate = new Date(publishedAt);
+		const metadata = document.createElement('p');
+		metadata.className = 'doc-p';
 		if (!Number.isNaN(publishedDate.getTime())) {
 			const time = document.createElement('time');
 			time.dateTime = publishedAt;
@@ -971,21 +1048,31 @@
 				dateStyle: 'long',
 				timeZone: 'UTC'
 			}).format(publishedDate);
-			metadata.append(time, ' · ');
+			time.dateTime = publishedAt;
+			metadata.append(time);
 		}
+		summaryContent.append(metadata);
+		headingGroup.append(summaryContent);
+		summary.append(headingGroup);
+		card.append(summary);
+
+		const content = document.createElement('div');
+		content.className = 'github-release-content';
+		const releaseMetadata = document.createElement('p');
+		releaseMetadata.className = 'doc-p';
 		const releaseLink = document.createElement('a');
 		releaseLink.className = 'link-accent';
 		releaseLink.href = release.html_url;
 		releaseLink.target = '_blank';
 		releaseLink.rel = 'noopener noreferrer';
 		releaseLink.textContent = 'Ver release no GitHub';
-		metadata.append(releaseLink);
-		card.append(metadata);
+		releaseMetadata.append(releaseLink);
+		content.append(releaseMetadata);
 
 		const notes = document.createElement('div');
 		notes.className = 'github-release-notes';
 		renderReleaseNotes(notes, release.body);
-		if (notes.childNodes.length) card.append(notes);
+		if (notes.childNodes.length) content.append(notes);
 
 		const assets = (release.assets || []).filter(asset =>
 			typeof asset.browser_download_url === 'string' &&
@@ -1012,8 +1099,9 @@
 				}
 				list.append(item);
 			});
-			card.append(list);
+			content.append(list);
 		}
+		card.append(content);
 		releaseList.append(card);
 	};
 	const loadGithubReleases = async () => {
