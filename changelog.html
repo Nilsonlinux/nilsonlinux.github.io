@@ -338,6 +338,9 @@
 		.doc-li::before { content: ""; position: absolute; left: .15rem; top: .7rem; width: 4px; height: 4px; border-radius: 50%; background: color-mix(in srgb, var(--accent) 70%, transparent); }
 		.doc-li + .doc-li { margin-top: .3rem; }
 		.github-release-notes .doc-p { white-space: pre-wrap; overflow-wrap: anywhere; }
+		.github-release-image { margin: .75rem 0 1rem; }
+		.github-release-image img { display: block; width: 100%; max-height: 32rem; object-fit: contain; border: 1px solid var(--border); border-radius: .75rem; background: var(--surface-2); }
+		.github-release-image figcaption { margin-top: .35rem; color: var(--faint); font-size: .75rem; }
 		.github-release-tag { color: var(--fg-dim); font: 500 .72rem "JetBrains Mono", monospace; overflow-wrap: anywhere; }
 		.github-release-assets code { overflow-wrap: anywhere; }
 		.doc-li code, .doc-p code, td code, .doc-h3 code {
@@ -620,10 +623,6 @@
 								<li><a href="#changelog"><i class="ti ti-info-circle"></i> Como ler</a></li>
 								<li class="toc-group">Versões</li>
 								<li><a href="#github-releases"><i class="ti ti-brand-github"></i> GitHub Releases</a></li>
-								<li><a href="#v2026-10-03"><i class="ti ti-history"></i> 2026.10.03</a></li>
-								<li><a href="#v2026-10-02"><i class="ti ti-history"></i> 2026.10.02</a></li>
-								<li><a href="#v2026-10-01"><i class="ti ti-history"></i> 2026.10.01</a></li>
-								<li><a href="#v2026-09-30"><i class="ti ti-history"></i> 2026.09.30 — primeira</a></li>
 							</ul>
 							<p class="toc-empty hidden" id="tocEmpty">Nenhuma seção corresponde ao filtro.</p>
 						</div>
@@ -635,119 +634,18 @@
 						<!-- ---------- Como ler ---------- -->
 						<section class="doc-sec reveal" id="changelog">
 							<h2 class="doc-h2"><i class="ti ti-info-circle"></i> Como ler<a class="anchor ti ti-link" href="#changelog" aria-label="Link para esta seção"></a></h2>
-							<p class="doc-p">Cada ISO do NLinux leva no nome a data em que foi gerada (<code>2026.10.03</code>). Este changelog lista uma entrada por ISO, do mais novo para o mais antigo, com as mudanças que afetam quem usa a distro — não o histórico interno de commits.</p>
+							<p class="doc-p">Este changelog lista as versões do NLinux publicadas como GitHub Releases, começando pelas mais recentes. Cada entrada mostra as mudanças da ISO e os arquivos anexados à release.</p>
 							<div class="callout">
 								<i class="ti ti-info-circle"></i>
 								<p><strong>NLinux é rolling.</strong> Uma ISO é uma fotografia: os repositórios do Arch continuam andando depois dela. Por isso duas pessoas que instalaram a mesma ISO em dias diferentes podem ter pacotes diferentes. Para o dia a dia, atualize com <code>sudo pacman -Syu</code> em vez de reinstalar.</p>
 							</div>
-							<p class="doc-p">Cada versão traz também o <strong>sha256</strong> da imagem, para você conferir se o download chegou inteiro.</p>
-							<p class="doc-p">As novas versões são carregadas das <a class="link-accent" href="https://github.com/Nilsonlinux/nlinux-iso-build/releases" target="_blank" rel="noopener noreferrer">GitHub Releases do nlinux-iso-build</a>. Para publicar uma entrada, crie uma release com a tag da versão da ISO, descreva as mudanças e anexe a ISO e/ou o arquivo de checksum. A página consulta as releases ao abrir; não é preciso editar o HTML.</p>
+							<p class="doc-p">As versões são carregadas das <a class="link-accent" href="https://github.com/Nilsonlinux/nlinux-iso-build/releases" target="_blank" rel="noopener noreferrer">GitHub Releases do nlinux-iso-build</a>. Para adicionar uma entrada, publique uma release com a tag da versão, notas das mudanças e os arquivos da ISO e do checksum. A página consulta as releases automaticamente; não é preciso editar o HTML.</p>
 						</section>
 
 						<section class="doc-sec reveal" id="github-releases">
 							<h2 class="doc-h2"><i class="ti ti-brand-github"></i> Versões publicadas no GitHub<a class="anchor ti ti-link" href="#github-releases" aria-label="Link para esta seção"></a></h2>
 							<p class="doc-p" id="githubReleaseStatus" role="status" aria-live="polite">Carregando releases do GitHub…</p>
 							<div class="card-grid" id="githubReleaseList"></div>
-						</section>
-
-						<!-- ---------- 2026.10.03 ---------- -->
-						<section class="doc-sec reveal" id="v2026-10-03">
-							<h2 class="doc-h2"><i class="ti ti-history"></i> 2026.10.03<a class="anchor ti ti-link" href="#v2026-10-03" aria-label="Link para esta seção"></a></h2>
-							<p class="doc-p">Correções de áudio e da loja, e o novo layout da barra superior.</p>
-							<h3 class="doc-h3">Corrigido</h3>
-							<ul class="doc-ul">
-								<li class="doc-li"><strong>O print parou de tocar dois sons.</strong> O clique da câmera toca uma vez; o aviso de &ldquo;captura salva&rdquo; continua aparecendo no canto da tela, agora em silêncio.</li>
-								<li class="doc-li"><strong>A loja voltou a instalar atualizações.</strong> O instalador agora remove o chaveiro que o live deixa na memória temporária — sem isso o <code>pacman</code> recusava a chaveiro e qualquer atualização falhava.</li>
-							</ul>
-							<h3 class="doc-h3">Interface</h3>
-							<ul class="doc-ul">
-								<li class="doc-li"><strong>Barra superior reorganizada.</strong> Os indicadores vêm em dois grupos em cápsula: memória, CPU e temperatura na ponta esquerda; clima e relógio no centro.</li>
-								<li class="doc-li">O relógio passou a mostrar segundos.</li>
-								<li class="doc-li">CPU, memória e temperatura deixaram de mostrar gráfico — só o número.</li>
-								<li class="doc-li">O item de rede esconde o rótulo, deixando só o ícone.</li>
-							</ul>
-							<div class="code-block">
-								<div class="code-head"><span>sha256 · nlinux-2026.10.03-x86_64.iso</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
-								<pre><code>06c91eeee34b15c74466a7ad308c55bd14f236ada506d9492b860d94d13158c1</code></pre>
-							</div>
-						</section>
-
-						<!-- ---------- 2026.10.02 ---------- -->
-						<section class="doc-sec reveal" id="v2026-10-02">
-							<h2 class="doc-h2"><i class="ti ti-history"></i> 2026.10.02<a class="anchor ti ti-link" href="#v2026-10-02" aria-label="Link para esta seção"></a></h2>
-							<p class="doc-p"><strong>multilib ligado por padrão</strong>, sons de interface próprios, e a entrada de boot do NLinux corrigida em firmware sem NVRAM.</p>
-							<h3 class="doc-h3">Novo</h3>
-							<ul class="doc-ul">
-								<li class="doc-li"><strong>multilib habilitado.</strong> Dá para instalar programas 32-bit sem configurar nada — é de lá que sai o Steam. A loja e o App Center leem os três bancos: core, extra e multilib. Para conferir: <code>pacman-conf --repo-list</code>.</li>
-								<li class="doc-li"><strong>Som de notificação próprio do NLinux.</strong> A notificação passou a ter som exclusivo da distro. O bip de volume continua sendo o padrão do freedesktop, que esse tema herda.</li>
-							</ul>
-							<h3 class="doc-h3">Corrigido</h3>
-							<ul class="doc-ul">
-								<li class="doc-li"><strong>Áudio com prioridade.</strong> O serviço <code>rtkit</code> passou a ser habilitado. Sem ele a sessão abria, mas o áudio perdia prioridade realtime e o portal do desktop avisava.</li>
-								<li class="doc-li"><strong>Rede com um gerente só.</strong> O NetworkManager passou a ser o único gerente de rede: o <code>systemd-networkd</code> e o <code>systemd-networkd-wait-online</code> são desabilitados. Com os dois no boot, eles disputavam o mesmo link.</li>
-								<li class="doc-li"><strong>Entrada UEFI &ldquo;NLinux&rdquo; única e confiável.</strong> A entrada é escolhida pelo arquivo em disco e não pelo número da variável — é o caminho que funciona em firmware sem NVRAM, em que o disco aparece como <code>UEFI: &lt;disco&gt;</code>. O Windows Boot Manager nunca é removido, e só as entradas do systemd-boot que apontam para a ESP do NLinux são apagadas.</li>
-								<li class="doc-li"><strong>Falha de instalação agora deixa registro.</strong> Se algo der errado, o motivo fica em <code>/var/log/install-error.log</code> no disco de destino, antes de desmontar.</li>
-								<li class="doc-li"><strong>Live: o yay não falha mais por acaso.</strong> Se o clone falhar, o live repete a tentativa e a falha sai com mensagem clara.</li>
-							</ul>
-							<h3 class="doc-h3">No live</h3>
-							<ul class="doc-ul">
-								<li class="doc-li"><strong>Banco do pacman sincronizado a cada boot.</strong> O serviço <code>nlinux-pacman-refresh.service</code> roda como root, em segundo plano, e o boot não espera por ele. Para ver o resultado: <code>journalctl -b -u nlinux-pacman-refresh.service</code>.</li>
-							</ul>
-							<div class="callout">
-								<i class="ti ti-alert-triangle"></i>
-								<p>Atenção ao <code>pacman -Sy</code> sozinho: o serviço de sincronização atualiza o banco, não os pacotes. Para atualizar o sistema inteiro use <code>sudo pacman -Syu</code> (ou <code>yay -Syu</code>). Um <code>-Sy</code> seguido da instalação de um pacote novo pode trazer um pacote compilado contra bibliotecas que você ainda não tem.</p>
-							</div>
-							<div class="code-block">
-								<div class="code-head"><span>sha256 · nlinux-2026.10.02-x86_64.iso</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
-								<pre><code>9b17bda1979efa496aaaf8e00e566e5543be5d6eace2136fa663fcc1e366d81a</code></pre>
-							</div>
-						</section>
-
-						<!-- ---------- 2026.10.01 ---------- -->
-						<section class="doc-sec reveal" id="v2026-10-01">
-							<h2 class="doc-h2"><i class="ti ti-history"></i> 2026.10.01<a class="anchor ti ti-link" href="#v2026-10-01" aria-label="Link para esta seção"></a></h2>
-							<p class="doc-p">Progresso real na atualização de sistema.</p>
-							<ul class="doc-ul">
-								<li class="doc-li"><strong>A loja mostra a porcentagem da atualização.</strong> A atualização de sistema passou a exibir o percentual real, e não um progresso estimado.</li>
-								<li class="doc-li"><strong>Catálogo da loja embarcado na ISO.</strong> Dá para ver e instalar pacotes já no live, sem depender de rede.</li>
-							</ul>
-							<div class="code-block">
-								<div class="code-head"><span>sha256 · nlinux-2026.10.01-x86_64.iso</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
-								<pre><code>4677f0c81b419c6f7400973c7646f5b86b537f18750319ba246da74eca3d926c</code></pre>
-							</div>
-						</section>
-
-						<!-- ---------- 2026.09.30 ---------- -->
-						<section class="doc-sec reveal" id="v2026-09-30">
-							<h2 class="doc-h2"><i class="ti ti-history"></i> 2026.09.30 <span class="link-accent">— primeira ISO pública</span><a class="anchor ti ti-link" href="#v2026-09-30" aria-label="Link para esta seção"></a></h2>
-							<p class="doc-p">A primeira ISO pública do NLinux, com o instalador web e a loja já embutidos.</p>
-							<h3 class="doc-h3">Instalação</h3>
-							<ul class="doc-ul">
-								<li class="doc-li"><strong>Instalador web em 10 passos</strong>, conduzido pelo navegador a partir do live.</li>
-								<li class="doc-li"><strong>Instalação rápida offline</strong>, que monta o sistema a partir do pendrive, sem depender de rede.</li>
-								<li class="doc-li"><strong>Dual boot ao lado do Windows</strong>, com reaproveitamento da partição EFI e instalação no espaço livre.</li>
-								<li class="doc-li">Suporte a <strong>LUKS2</strong> e a <strong>btrfs</strong> com subvolumes.</li>
-								<li class="doc-li">O instalador sobrevive a queda de conexão e a reinício do servidor.</li>
-							</ul>
-							<h3 class="doc-h3">Loja</h3>
-							<ul class="doc-ul">
-								<li class="doc-li"><strong>Loja NLinux Software embarcada</strong> em <code>/opt/nlinux-software</code>, com atalho no menu, atalho na Área de Trabalho e ícone fixado na dock. Catálogo com busca, categorias e filtro de instalados.</li>
-								<li class="doc-li">Tradução em 7 idiomas.</li>
-							</ul>
-							<h3 class="doc-h3">Desktop</h3>
-							<ul class="doc-ul">
-								<li class="doc-li"><strong>Desktop completo:</strong> Noctalia V5 como shell, Umbriel no Wayland e greetd no login.</li>
-								<li class="doc-li"><strong>gnome-software removido.</strong> O App Center do PackageKit e o Flathub foram junto, porque só alimentavam aquele programa que saiu.</li>
-								<li class="doc-li"><strong>Agente polkit nativo do Noctalia</strong>, no lugar do polkit-gnome, no live e no instalado.</li>
-								<li class="doc-li"><strong>Templates de tema</strong> ativados: gtk3, gtk4, kitty e starship.</li>
-								<li class="doc-li"><strong>Boas-vindas na primeira sessão</strong>, em GTK, com nome, versão e data da distro. Para ver de novo: <code>nlinux-welcome --menu</code>.</li>
-								<li class="doc-li">fish + starship + fastfetch no lugar do shell padrão.</li>
-								<li class="doc-li">9 locales e 9 keymaps.</li>
-							</ul>
-							<div class="code-block">
-								<div class="code-head"><span>sha256 · nlinux-2026.09.30-x86_64.iso</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
-								<pre><code>cd2eb81f96b9a7682f89483e39b3f40e80ff42c434c7db66c0feefdfd1c34eba</code></pre>
-							</div>
 						</section>
 
 						<section class="doc-sec reveal">
@@ -967,13 +865,6 @@
 	const releaseList = $('#githubReleaseList');
 	const latestReleaseBadge = $('#latestReleaseBadge');
 	const releasesPage = 'https://github.com/Nilsonlinux/nlinux-iso-build/releases';
-	const normalizeVersion = value => {
-		const match = String(value).match(/\d{4}[.-]\d{2}[.-]\d{2}/);
-		return match ? match[0].replace(/-/g, '.') : '';
-	};
-	const historicalVersions = new Set(
-		$$('#tocList a[href^="#v"]').map(link => normalizeVersion(link.getAttribute('href')))
-	);
 	const setReleaseStatus = (message, linkText) => {
 		releaseStatus.replaceChildren(document.createTextNode(`${message} `));
 		const link = document.createElement('a');
@@ -1004,7 +895,32 @@
 			if (!text) { list = null; return; }
 			const heading = text.match(/^#{1,3}\s+(.+)$/);
 			const item = text.match(/^[-*]\s+(.+)$/);
-			if (heading) {
+			const image = text.match(/^!\[([^\]]*)\]\((https:\/\/[^\s)]+)(?:\s+"([^"]*)")?\)$/);
+			let imageUrl;
+			if (image) {
+				try {
+					imageUrl = new URL(image[2]);
+				} catch (error) {
+					console.warn('URL de imagem inválida nas notas de release.', image[2], error);
+				}
+			}
+			if (image && imageUrl && !imageUrl.username && !imageUrl.password) {
+				list = null;
+				const figure = document.createElement('figure');
+				figure.className = 'github-release-image';
+				const element = document.createElement('img');
+				element.src = imageUrl.href;
+				element.alt = image[1];
+				element.loading = 'lazy';
+				element.referrerPolicy = 'no-referrer';
+				figure.append(element);
+				if (image[3]) {
+					const caption = document.createElement('figcaption');
+					caption.textContent = image[3];
+					figure.append(caption);
+				}
+				container.append(figure);
+			} else if (heading) {
 				list = null;
 				const element = document.createElement('h4');
 				element.className = 'doc-h3';
@@ -1119,23 +1035,18 @@
 				icon.className = 'ti ti-star';
 				latestReleaseBadge.append(icon, ' ', `${releases[0].tag_name || releases[0].name} — atual`);
 			} else {
-				latestReleaseBadge.textContent = 'Histórico até 2026.10.03';
+				latestReleaseBadge.textContent = 'Aguardando primeira release';
 			}
 
-			const newReleases = releases.filter(release =>
-				!historicalVersions.has(normalizeVersion(release.tag_name))
-			);
 			if (!releases.length) {
-				setReleaseStatus('Nenhuma GitHub Release publicada ainda.', 'Abrir releases do projeto');
-			} else if (!newReleases.length) {
-				releaseStatus.textContent = 'As releases publicadas já estão incluídas no histórico abaixo.';
+				setReleaseStatus('Ainda não há versões publicadas. As futuras releases aparecerão aqui.', 'Abrir releases do projeto');
 			} else {
-				releaseStatus.textContent = `${newReleases.length} ${newReleases.length === 1 ? 'release publicada' : 'releases publicadas'} carregada${newReleases.length === 1 ? '' : 's'} do GitHub.`;
-				newReleases.forEach(renderRelease);
+				releaseStatus.textContent = `${releases.length} ${releases.length === 1 ? 'release publicada' : 'releases publicadas'} carregada${releases.length === 1 ? '' : 's'} do GitHub.`;
+				releases.forEach(renderRelease);
 			}
 		} catch (error) {
 			console.error('Não foi possível carregar as GitHub Releases do NLinux.', error);
-			latestReleaseBadge.textContent = 'Histórico local até 2026.10.03';
+			latestReleaseBadge.textContent = 'GitHub indisponível';
 			setReleaseStatus('Não foi possível consultar as releases agora.', 'Tentar novamente no GitHub');
 		}
 	};
