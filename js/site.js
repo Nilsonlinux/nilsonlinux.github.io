@@ -2,18 +2,27 @@
    NLinux · variáveis compartilhadas do site
 
    DADOS DA ÚLTIMA ISO — fonte única da verdade.
-   Publicou uma ISO nova? Troque SOMENTE as duas linhas abaixo
-   (link e data). Todo elemento marcado no HTML com
-   [data-iso-download] ou [data-iso-date] recebe o valor via JS:
+   Publicou uma ISO nova? Troque SOMENTE as três linhas abaixo
+   (link, data e sha256). Todo elemento marcado no HTML com
+   [data-iso-download], [data-iso-date] ou [data-iso-sha256] recebe
+   o valor via JS:
 
      · [data-iso-download] → href do botão de baixar
      · [data-iso-date]     → data da ISO, formatada em pt-BR
+     · [data-iso-sha256]   → hash sha256 da mesma ISO
+
+   O sha256 tem de ser o do MESMO arquivo que o link aponta. Ele sai
+   do build local:  sha256sum iso/out/nlinux-<data>-x86_64.iso
+   Se a ISO foi re-gerada depois de publicada, o hash muda e o link
+   precisa ir para o arquivo novo — conferir um hash velho contra um
+   arquivo novo dá erro e derruba a confiança no resto da página.
 
    O conteúdo no HTML é só a reserva para quando o JS não carrega:
    nunca aponta para um arquivo ou uma data desatualizada.
    ============================================================ */
 const NLINUX_ISO_URL = 'https://drive.google.com/file/d/17m7E-nJyaV51c-vTzITPII-6noAaBH1J/view?usp=sharing';
 const NLINUX_ISO_DATE = '2026-09-30';
+const NLINUX_ISO_SHA256 = 'cd2eb81f96b9a7682f89483e39b3f40e80ff42c434c7db66c0feefdfd1c34eba';
 
 document.querySelectorAll('[data-iso-download]').forEach(link => {
 	link.href = NLINUX_ISO_URL;
@@ -32,6 +41,10 @@ const isoDateBr = iso => {
 document.querySelectorAll('[data-iso-date]').forEach(el => {
 	el.textContent = isoDateBr(NLINUX_ISO_DATE);
 	el.setAttribute('datetime', NLINUX_ISO_DATE);
+});
+
+document.querySelectorAll('[data-iso-sha256]').forEach(el => {
+	el.textContent = NLINUX_ISO_SHA256;
 });
 
 /* ============================================================

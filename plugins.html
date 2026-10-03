@@ -149,7 +149,22 @@
 		}
 		.icon-btn-gh:hover .ti, .icon-btn-gh:focus-visible .ti { transform: scale(1.16) rotate(-9deg); }
 		.nav-toggle { display: inline-flex; }
-		@media (min-width: 880px) { .main-nav { display: flex; } .nav-toggle { display: none !important; } }
+		/* ---- Nav: 9 itens ----
+			   Entre a marca e o botão de baixar, os 9 links precisam de ~1010px já
+			   encolhidos e ~1400px no tamanho cheio. A nav só vira linha a partir de
+			   1080px; abaixo disso quem navega é o botão de menu. Nos degraus do meio
+			   o wordmark some e os links perdem a largura mínima. */
+		@media (min-width: 1080px) { .main-nav { display: flex; } .nav-toggle { display: none !important; } }
+		@media (min-width: 1080px) and (max-width: 1499px) {
+			.brand-label { display: none; }
+			.main-nav { gap: .15rem; }
+			.main-nav a { min-width: 0; padding: 0 .5rem; font-size: .8rem; }
+			.btn-primary { min-width: 0; padding: 0 .75rem; }
+		}
+		@media (min-width: 1080px) and (max-width: 1279px) {
+			.site-header .btn-primary span.btn-label { display: none; }
+			.site-header .btn-primary { width: 2.5rem; padding: 0; }
+		}
 		.mobile-nav {
 			position: absolute; top: calc(100% + .55rem); right: 1rem; z-index: 40;
 			display: none; flex-direction: column; gap: .15rem;
@@ -183,7 +198,7 @@
 		}
 		.btn-primary:active { transform: translateY(0); }
 		.site-header .btn-primary:hover, .site-header .btn-primary:active { transform: none; }
-		@media (min-width: 880px) { .main-nav { display: flex; } .nav-toggle { display: none !important; } }
+
 
 		/* ---- Main / Plugins page ---- */
 		.site-main { flex: 1; position: relative; z-index: 1; }
@@ -437,6 +452,8 @@
 					<a href="recursos.html"><i class="ti ti-adjustments-horizontal"></i>&nbsp;Recursos</a>
 					<a href="loja.html"><i class="ti ti-shopping-bag"></i>&nbsp;Loja</a>
 					<a href="docs.html"><i class="ti ti-book-2"></i>&nbsp;Docs</a>
+					<a href="changelog.html"><i class="ti ti-history"></i>&nbsp;Changelog</a>
+					<a href="compilar.html"><i class="ti ti-hammer"></i>&nbsp;Compilar</a>
 					<a href="plugins.html" class="active" aria-current="page"><i class="ti ti-plug"></i>&nbsp;Plugins</a>
 					<a href="doar.html">❤️ Apoie o projeto</a>
 				</nav>
@@ -453,6 +470,8 @@
 				<a href="recursos.html"><i class="ti ti-adjustments-horizontal"></i>&nbsp;Recursos</a>
 				<a href="loja.html"><i class="ti ti-shopping-bag"></i>&nbsp;Loja</a>
 				<a href="docs.html"><i class="ti ti-book-2"></i>&nbsp;Docs</a>
+				<a href="changelog.html"><i class="ti ti-history"></i>&nbsp;Changelog</a>
+				<a href="compilar.html"><i class="ti ti-hammer"></i>&nbsp;Compilar</a>
 				<a href="plugins.html" class="active"><i class="ti ti-plug"></i>&nbsp;Plugins</a>
 				<a href="doar.html">❤️&nbsp;Apoie o projeto</a>
 			</nav>
@@ -520,6 +539,7 @@
 						<nav class="footer-col" aria-label="Projetos">
 							<p>Projetos</p>
 							<ul>
+								<li><a href="changelog.html">Changelog</a></li>
 								<li><a href="https://github.com/Nilsonlinux/noctalia-plugins" target="_blank" rel="noopener noreferrer">noctalia-plugins</a></li>
 								<li><a href="https://github.com/Nilsonlinux?tab=repositories" target="_blank" rel="noopener noreferrer">Repositórios</a></li>
 								<li><a href="https://raw.githubusercontent.com/Nilsonlinux/noctalia-plugins/refs/heads/main/catalog.toml" target="_blank" rel="noopener noreferrer">catalog.toml</a></li>

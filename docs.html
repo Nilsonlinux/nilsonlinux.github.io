@@ -185,15 +185,23 @@
 		}
 		.btn-primary:active { transform: translateY(0); }
 		.site-header .btn-primary:hover, .site-header .btn-primary:active { transform: none; }
-		@media (min-width: 880px) { .main-nav { display: flex; } .nav-toggle { display: none !important; } }
-		/* Faixa intermediária: o nav completo + wordmark não cabem; encolhe os links
-		   e mantém só a logo, evitando espremer/estourar o cabeçalho. */
-		@media (min-width: 880px) and (max-width: 1179px) {
+		/* ---- Nav: 9 itens ----
+			   Entre a marca e o botão de baixar, os 9 links precisam de ~1010px já
+			   encolhidos e ~1400px no tamanho cheio. A nav só vira linha a partir de
+			   1080px; abaixo disso quem navega é o botão de menu. Nos degraus do meio
+			   o wordmark some e os links perdem a largura mínima. */
+		@media (min-width: 1080px) { .main-nav { display: flex; } .nav-toggle { display: none !important; } }
+		@media (min-width: 1080px) and (max-width: 1499px) {
 			.brand-label { display: none; }
-			.main-nav { gap: .25rem; }
-			.main-nav a { min-width: 0; padding: 0 .6rem; font-size: .8rem; }
+			.main-nav { gap: .15rem; }
+			.main-nav a { min-width: 0; padding: 0 .5rem; font-size: .8rem; }
 			.btn-primary { min-width: 0; padding: 0 .75rem; }
 		}
+		@media (min-width: 1080px) and (max-width: 1279px) {
+			.site-header .btn-primary span.btn-label { display: none; }
+			.site-header .btn-primary { width: 2.5rem; padding: 0; }
+		}
+
 
 		/* ---- Main / layout ---- */
 		.site-main { flex: 1; position: relative; z-index: 1; }
@@ -390,6 +398,7 @@
 		.copy-btn:hover { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 35%, transparent); }
 		.code-block pre { padding: .8rem .9rem; overflow-x: auto; font: 500 .76rem/1.6 "JetBrains Mono", monospace; color: var(--fg); }
 		.code-block pre .c { color: var(--faint); }
+		.code-block pre .s { color: var(--accent-3); }
 		.code-block pre .p { color: var(--accent-2); }
 
 		/* ---- Callouts ---- */
@@ -531,7 +540,7 @@
 	</script>
 	<!-- variáveis do site (link único de download da ISO em js/site.js).
 	     Ao mexer no site.js, suba o ?v= do src para furar o cache dos navegadores. -->
-	<script src="js/site.js?v=4" defer></script>
+	<script src="js/site.js?v=5" defer></script>
 </head>
 <body>
 <div class="page-canvas">
@@ -552,6 +561,8 @@
 					<a href="recursos.html"><i class="ti ti-adjustments-horizontal"></i>&nbsp;Recursos</a>
 					<a href="loja.html"><i class="ti ti-shopping-bag"></i>&nbsp;Loja</a>
 					<a href="docs.html" class="active" aria-current="page"><i class="ti ti-book-2"></i>&nbsp;Docs</a>
+					<a href="changelog.html"><i class="ti ti-history"></i>&nbsp;Changelog</a>
+					<a href="compilar.html"><i class="ti ti-hammer"></i>&nbsp;Compilar</a>
 					<a href="plugins.html"><i class="ti ti-plug"></i>&nbsp;Plugins</a>
 					<a href="doar.html">❤️ Apoie o projeto</a>
 				</nav>
@@ -568,6 +579,8 @@
 				<a href="recursos.html"><i class="ti ti-adjustments-horizontal"></i>&nbsp;Recursos</a>
 				<a href="loja.html"><i class="ti ti-shopping-bag"></i>&nbsp;Loja</a>
 				<a href="docs.html" class="active"><i class="ti ti-book-2"></i>&nbsp;Docs</a>
+				<a href="changelog.html"><i class="ti ti-history"></i>&nbsp;Changelog</a>
+				<a href="compilar.html"><i class="ti ti-hammer"></i>&nbsp;Compilar</a>
 				<a href="plugins.html"><i class="ti ti-plug"></i>&nbsp;Plugins</a>
 				<a href="doar.html">❤️&nbsp;Apoie o projeto</a>
 			</nav>
@@ -578,7 +591,7 @@
 
 				<header class="page-header reveal">
 					<h1>Documentação do NLinux</h1>
-					<p class="page-subtitle">Tudo o que você precisa para instalar a distribuição, aproveitar o desktop no dia a dia e — se quiser — gerar a sua própria ISO. O conteúdo reflete o código do <a class="link-accent" href="https://github.com/Nilsonlinux" target="_blank" rel="noopener noreferrer">projeto NLinux</a>.</p>
+					<p class="page-subtitle">Tudo o que você precisa para instalar a distribuição e usar o desktop no dia a dia: gravar a ISO, instalar, configurar a interface e resolver problemas. As mudanças de cada versão estão no <a class="link-accent" href="changelog.html">changelog</a>.</p>
 					<div class="page-badges">
 						<span class="page-badge"><i class="ti ti-package"></i> Arch Linux</span>
 						<span class="page-badge"><i class="ti ti-topology-star-3"></i> Umbriel (Wayland)</span>
@@ -610,16 +623,10 @@
 								<li><a href="#modos"><i class="ti ti-git-compare"></i> Modos e dual boot</a></li>
 								<li><a href="#pos-instalacao"><i class="ti ti-circle-check"></i> Depois de instalar</a></li>
 								<li class="toc-group">Usando o NLinux</li>
+								<li><a href="#interface"><i class="ti ti-palette"></i> Configurar a interface</a></li>
 								<li><a href="#atalhos"><i class="ti ti-keyboard"></i> Atalhos de teclado</a></li>
 								<li><a href="loja.html"><i class="ti ti-shopping-bag"></i> Loja de software</a></li>
 								<li><a href="#faq"><i class="ti ti-help-circle"></i> Problemas comuns</a></li>
-								<li class="toc-group">Para desenvolver</li>
-								<li><a href="#build"><i class="ti ti-hammer"></i> Gerar a ISO</a></li>
-								<li><a href="#estrutura"><i class="ti ti-folder"></i> Estrutura do projeto</a></li>
-								<li><a href="#chroot"><i class="ti ti-stack-2"></i> Etapas do chroot</a></li>
-								<li><a href="#pacotes"><i class="ti ti-box"></i> Listas de pacotes</a></li>
-								<li><a href="#personalizar"><i class="ti ti-palette"></i> Personalizar</a></li>
-								<li><a href="#variaveis"><i class="ti ti-variable"></i> Variáveis do instalador</a></li>
 							</ul>
 							<p class="toc-empty hidden" id="tocEmpty">Nenhuma seção corresponde ao filtro.</p>
 						</div>
@@ -681,7 +688,7 @@
 							<p class="doc-p">Baixe a ISO, verifique o pendrive e grave. O <code>dd</code> apaga o dispositivo inteiro — confira a letra do disco duas vezes.</p>
 							<div class="foot-links">
 								<a class="btn-primary" href="baixar.html" data-iso-download target="_blank" rel="noopener noreferrer"><i class="ti ti-download"></i><span>Baixar a ISO</span></a>
-								<a class="btn-ghost" href="baixar.html"><i class="ti ti-info-circle"></i> Detalhes da release</a>
+								<a class="btn-ghost" href="changelog.html"><i class="ti ti-history"></i> Changelog</a>
 							</div>
 							<p class="download-meta"><i class="ti ti-calendar-event" style="margin-right:.3rem"></i>ISO atualizada em <time data-iso-date datetime="2026-09-28">segunda-feira, 28 de setembro de 2026</time></p>
 							<div class="code-block">
@@ -898,12 +905,12 @@ tail -f /tmp/nlinux-web.log</code></pre>
 							<h2 class="doc-h2"><i class="ti ti-circle-check"></i> Depois de instalar<a class="anchor ti ti-link" href="#pos-instalacao" aria-label="Link para esta seção"></a></h2>
 							<p class="doc-p">Remova o pendrive e reinicie. Nos dois modos o chroot roda as mesmas etapas finais: systemd-boot, initramfs, criação do usuário, dotfiles e serviços.</p>
 							<ul class="doc-ul">
-								<li class="doc-li"><strong>systemd-boot na ESP.</strong> O instalador roda <code>bootctl install</code> e grava o fallback <code>/EFI/BOOT/BOOTX64.EFI</code>. <strong>Na lista de boot da firmware o disco aparece como <em>NLinux</em></strong>: a entrada é criada pelo <code>bootctl</code> e o instalador reescreve só o <strong>rótulo</strong> dela. Isso é necessário porque o <code>efibootmgr --create</code> falha neste kernel (<code>ENOENT</code> / <code>Could not prepare Boot variable</code>) — o <code>efivarfs</code> exige <code>EFI_VARIABLE_APPEND_WRITE</code> para gravar uma variável nova, e o kernel do live só passa essa flag no retry que o systemd faz; reescrever uma variável que já existe não passa por esse caminho. Não é permissão, Secure Boot nem <code>lockdown</code>: o mesmo <code>efibootmgr --create</code> funciona no Arch instalado na mesma máquina. <strong>Windows Boot Manager</strong> nunca é removido, e são apagadas só as entradas do systemd-boot que apontam para <strong>a ESP do NLinux</strong> (a do <em>fallback</em> que o <code>bootctl</code> registra junto com a principal, e sobras de instalações antigas) — entradas de outras distribuições são problema delas. Vale saber que o <code>bootctl install</code> grava <strong>duas</strong> entradas na ESP e que a firmware <strong>apaga da NVRAM, no boot, qualquer entrada cujo arquivo ela não consiga resolver</strong>: por isso o instalador escolhe a entrada pelo arquivo em disco, e não pelo número. Se a reescrita falhar, o instalador mantém a entrada do <code>bootctl</code> e avisa no log — nesse caso o rótulo é <em>Linux Boot Manager</em>. Em firmwares sem NVRAM, o disco aparece como <code>UEFI: &lt;disco&gt;</code>. Dentro do menu do systemd-boot, a entrada aparece como <strong>NLinux</strong> (<code>/boot/loader/entries/arch.conf</code>).</li>
+								<li class="doc-li"><strong>systemd-boot na ESP.</strong> O instalador grava o fallback <code>/EFI/BOOT/BOOTX64.EFI</code>, e <strong>na lista de boot da firmware o disco aparece como <em>NLinux</em></strong>. <strong>Windows Boot Manager nunca é removido</strong>, e são apagadas só as entradas do systemd-boot que apontam para a ESP do NLinux. Em firmwares sem NVRAM o disco aparece como <code>UEFI: &lt;disco&gt;</code>. Dentro do menu do systemd-boot, a entrada é <strong>NLinux</strong> (<code>/boot/loader/entries/arch.conf</code>). Se a etiqueta não puder ser reescrita, o instalador avisa no log e a entrada fica como <em>Linux Boot Manager</em>.</li>
 								<li class="doc-li"><strong>Bootloader</strong> instalado em <code>/boot</code> (systemd-boot), com initramfs que inclui <code>sd-encrypt</code> quando há LUKS.</li>
 								<li class="doc-li"><strong>Swap em zram</strong> (<code>zram-generator</code>, zstd) com <code>min(ram / 2, 4096)</code> MB.</li>
 								<li class="doc-li"><strong>Serviços habilitados:</strong> NetworkManager, bluetooth, greetd, accounts-daemon, packagekit e <code>rtkit-daemon</code>, além do NTP (<code>systemd-timesyncd</code>). O <strong>NetworkManager é o único gerente de rede</strong>: o instalador desabilita o <code>systemd-networkd</code> e o <code>systemd-networkd-wait-online</code>, porque o preset do Arch (<code>90-systemd.preset</code>) os habilita e, com os dois no boot, eles disputam o mesmo link. O <code>rtkit</code> é o que dá prioridade realtime ao PipeWire e ao WirePlumber (sem ele a sessão abre, mas o áudio perde prioridade e o portal do desktop avisa). O Flatpak recebe o <strong>Flathub</strong> como remoto do usuário e a instalação roda <code>appstreamcli refresh --force</code> para baixar os metadados AppStream — é assim que o App Center e a loja conseguem listar os programas (o primeiro acesso ainda baixa um pouco de dados, e precisa de rede).</li>
 								<li class="doc-li"><strong>Login</strong> pelo greetd com noctalia-greeter; o Wayland e o cursor <code>Bibata-Modern-Ice</code> vêm de <code>/etc/environment</code>.</li>
-								<li class="doc-li"><strong>Som de interface no Noctalia</strong> (o bip do volume e o som de notificação). A distro já traz o tema <code>freedesktop</code> (<code>sound-theme-freedesktop</code>, em <code>/usr/share/sounds/freedesktop</code>) e o <code>config.toml</code> do Noctalia já vem com as três chaves de áudio fixadas: <code>enable_overdrive</code>, <code>sound_theme = "nlinux"</code> e <code>sound_volume</code> no máximo. São exatamente as que a máquina de referência do projeto tem. O print toca um som só porque o <code>config.toml</code> traz um filtro de notificação, <code>[notification.filter.nlinux_captura_salva]</code>, com <code>play_sound = false</code>: o clique da câmera (<code>screen-capture</code>) continua tocando, e o aviso de "captura salva" continua aparecendo, mas em silêncio. O aviso em si é o que o Noctalia posta ao gravar o arquivo, e ele não tem ajuste de áudio que o cala — <code>enable_sounds</code> não serve para isso, porque o padrão dela já é ligado e nenhum dos dois caminhos de som chega a ler a chave. O som de notificação é o do NLinux, em <code>~/.local/share/sounds/nlinux</code>; o bip de volume é o padrão do freedesktop, que esse tema herda. A troca é só no som de notificação — música continua indo pelo PipeWire, num caminho separado. Se você trocar o tema pela interface, a escolha passa a valer sobre essa configuração — o que é o esperado.</li>
+								<li class="doc-li"><strong>Som de interface</strong> (o bip do volume e o som de notificação) já vem configurado: o som de notificação é o do NLinux e o bip de volume é o padrão do freedesktop. O print toca um som só — o clique da câmera — e o aviso de &ldquo;captura salva&rdquo; aparece em silêncio. A música continua indo pelo PipeWire, num caminho separado.</li>
 								<li class="doc-li"><strong>Loja NLinux Software</strong> copiada para <code>/opt/nlinux-software</code>, com o atalho <em>NLinux Software</em> no menu, um atalho na Área de Trabalho e o ícone já fixado na dock.</li>
 								<li class="doc-li"><strong>Boas-vindas</strong> na primeira sessão (janela única em GTK3, disparada pelo autostart do Umbriel). Para ver de novo: <code>nlinux-welcome --menu</code>.</li>
 								<li class="doc-li"><strong>Identidade da distro:</strong> <code>/etc/nlinux-installed</code> marca o primeiro boot e <code>/etc/nlinux-release</code> grava nome, versão (data) e data de instalação.</li>
@@ -923,10 +930,102 @@ tail -f /tmp/nlinux-web.log</code></pre>
 							</ul>
 						</section>
 
+						<!-- ---------- Interface ---------- -->
+						<section class="doc-sec reveal" id="interface">
+							<h2 class="doc-h2"><i class="ti ti-palette"></i> Configurar a interface<a class="anchor ti ti-link" href="#interface" aria-label="Link para esta seção"></a></h2>
+							<p class="doc-p">O shell é o <strong>Noctalia</strong> e o compositor é o <strong>Umbriel</strong>. Os dois são configurados por arquivo TOML em <code>~/.config/</code>. A distro entrega o arquivo já com a barra, a dock e os sons definidos, então quase tudo já está no lugar.</p>
+
+							<h3 class="doc-h3"><i class="ti ti-stack-2"></i> Qual arquivo vale</h3>
+							<p class="doc-p">O Noctalia lê <strong>todo</strong> <code>*.toml</code> de <code>~/.config/noctalia/</code>, em ordem alfabética, e cada arquivo sobrepõe o anterior. Depois disso ele sobrepõe o <code>settings.toml</code>, que fica em <code>~/.local/state/noctalia/</code> — é ali que os menus da interface guardam o que você muda clicando.</p>
+							<p class="doc-p">Da maior para a menor precedência:</p>
+							<div class="tbl-wrap">
+								<table class="tbl">
+									<thead><tr><th>Ordem</th><th>Arquivo</th><th>Quem escreve</th></tr></thead>
+									<tbody>
+										<tr><td>1 (vence)</td><td><code>settings.toml</code></td><td>os menus da interface</td></tr>
+										<tr><td>2</td><td><code>~/.config/noctalia/*.toml</code></td><td>você, à mão</td></tr>
+										<tr><td>3</td><td><code>config.toml</code></td><td>a distro (padrão de fábrica)</td></tr>
+									</tbody>
+								</table>
+							</div>
+							<div class="callout">
+								<i class="ti ti-alert-triangle"></i>
+								<p><strong>Se você edita o <code>config.toml</code> e nada muda</strong>, quase sempre é porque aquele valor já está no <code>settings.toml</code>, que vem depois. Apague a chave de lá para a do <code>config.toml</code> voltar a valer. Isso também vale para o compositor: o Umbriel tem o mesmo esquema.</p>
+							</div>
+							<p class="doc-p">Os dois arquivos são vigiados pelo Noctalia, então a alteração entra sozinha — não precisa encerrar a sessão. Para conferir sem adivinhar, a linha de comando mostra o que está valendo de verdade:</p>
+							<div class="code-block">
+								<div class="code-head"><span>terminal</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
+								<pre><code><span class="c"># valida um arquivo de config e aponta o que estiver errado</span>
+noctalia config validate ~/.config/noctalia/config.toml
+
+<span class="c"># despeja a configuracao ja mesclada, na ordem de precedencia</span>
+noctalia config export</code></pre>
+							</div>
+
+							<h3 class="doc-h3"><i class="ti ti-layout-columns"></i> Barra superior</h3>
+							<p class="doc-p">Fica em <code>[bar.default]</code>. As listas <code>start</code> e <code>center</code> dizem o que vai em cada ponta, e os itens de grupo (<code>group:g1</code>) apontam para blocos definidos abaixo. Com <code>capsule = true</code> cada bloco ganha o fundo arredondado.</p>
+							<p class="doc-p">A distro vem com dois grupos: <code>g1</code> com memória, temperatura e CPU na ponta esquerda, e <code>g2</code> com clima e relógio no centro. Para mexer nos blocos:</p>
+							<div class="code-block">
+								<div class="code-head"><span>~/.config/noctalia/config.toml</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
+								<pre><code>[bar.default]
+start  = [ <span class="s">"launcher"</span>, <span class="s">"workspaces"</span>, <span class="s">"group:g1"</span> ]
+center = [ <span class="s">"group:g2"</span> ]
+capsule = true
+
+    [[bar.default.capsule_group]]
+    id      = <span class="s">"g1"</span>                    <span class="c"># o nome que start/center referenciam</span>
+    members = [ <span class="s">"ram"</span>, <span class="s">"temp"</span>, <span class="s">"cpu"</span> ]
+    fill    = <span class="s">"surface_variant"</span>       <span class="c"># cor de fundo da capsula</span>
+    padding = 6.0
+    opacity = 1.0</code></pre>
+							</div>
+
+							<h3 class="doc-h3"><i class="ti ti-activity"></i> Indicadores</h3>
+							<p class="doc-p">Cada indicador tem sua própria seção <code>[widget.&lt;nome&gt;]</code>. As que a distro configura:</p>
+							<div class="tbl-wrap">
+								<table class="tbl">
+									<thead><tr><th>Seção</th><th>O que controla</th></tr></thead>
+									<tbody>
+										<tr><td><code>[widget.clock]</code></td><td><code>format</code> — o relógio vem em <code>"{:%H:%M:%S}"</code>, com segundos</td></tr>
+										<tr><td><code>[widget.cpu]</code>, <code>[widget.ram]</code>, <code>[widget.temp]</code></td><td><code>visualization = "none"</code> — só o número, sem gráfico</td></tr>
+										<tr><td><code>[widget.media]</code></td><td><code>hide_when_no_media</code>, <code>rotate_album_art</code>, <code>show_progress</code></td></tr>
+										<tr><td><code>[widget.weather]</code></td><td><code>show_condition</code> — mostra só a temperatura, sem o texto do tempo</td></tr>
+										<tr><td><code>[widget.network]</code></td><td><code>show_label = false</code> — só o ícone, sem o nome da rede</td></tr>
+									</tbody>
+								</table>
+							</div>
+
+							<h3 class="doc-h3"><i class="ti ti-apps"></i> Dock</h3>
+							<p class="doc-p">Na seção <code>[dock]</code>. As chaves que mais mudam na prática:</p>
+							<div class="tbl-wrap">
+								<table class="tbl">
+									<thead><tr><th>Chave</th><th>Efeito</th></tr></thead>
+									<tbody>
+										<tr><td><code>pinned</code></td><td>lista de aplicativos fixados, pelo nome do <code>.desktop</code></td></tr>
+										<tr><td><code>launcher_position</code></td><td><code>"start"</code> deixa o menu de aplicativos na esquerda</td></tr>
+										<tr><td><code>magnification_scale</code></td><td>o quanto o ícone cresce ao passar o mouse (2.0 na distro)</td></tr>
+										<tr><td><code>smart_auto_hide</code></td><td>esconde a dock sozinha e revela ao chegar na borda</td></tr>
+										<tr><td><code>reserve_space</code></td><td>reserva espaço para a dock; com auto-hide ligado, normalmente <code>false</code></td></tr>
+										<tr><td><code>show_dots</code></td><td>ponto de indicador nos aplicativos abertos</td></tr>
+									</tbody>
+								</table>
+							</div>
+							<p class="doc-p">Um arquivo pode puxar outro com <code>[include]</code>, o que serve para deixar um preset de barra em arquivo próprio e combiná-lo com o resto.</p>
+
+							<h3 class="doc-h3"><i class="ti ti-volume"></i> Sons</h3>
+							<p class="doc-p">Na seção <code>[audio]</code>. A distro vem com <code>sound_theme = "nlinux"</code>, que troca <strong>apenas o som de notificação</strong> pelo do NLinux; o bip de volume é o padrão do <code>freedesktop</code>, que esse tema herda. Música continua indo pelo PipeWire, num caminho separado — trocar o tema não mexe nela.</p>
+
+							<h3 class="doc-h3"><i class="ti ti-brush"></i> Templates de tema</h3>
+							<p class="doc-p">Com <code>[theme.templates]</code> e <code>builtin_ids = [ "gtk3", "gtk4", "kitty", "starship" ]</code>, trocar o tema no Noctalia também regera o visual dos aplicativos GTK, do terminal e do prompt — em vez de cada programa ficar com a cor antiga.</p>
+
+							<h3 class="doc-h3"><i class="ti ti-cpu"></i> Compositor</h3>
+							<p class="doc-p">O Umbriel tem config próprio, em <code>~/.config/umbriel/config.toml</code>: teclas, layouts de teclado e regras de janela. É um arquivo separado do do Noctalia e não obedece à precedência da tabela acima.</p>
+						</section>
+
 						<!-- ---------- Atalhos ---------- -->
 						<section class="doc-sec reveal" id="atalhos">
 							<h2 class="doc-h2"><i class="ti ti-keyboard"></i> Atalhos de teclado<a class="anchor ti ti-link" href="#atalhos" aria-label="Link para esta seção"></a></h2>
-							<p class="doc-p"><code>Mod</code> é a tecla <strong>Super</strong>. Os atalhos vêm de <code>config/.config/umbriel/src/keybinds.toml</code> e podem ser ajustados nesse arquivo (veja <a class="link-accent" href="#personalizar">personalizar</a>).</p>
+							<p class="doc-p"><code>Mod</code> é a tecla <strong>Super</strong>. Os atalhos vêm de <code>config/.config/umbriel/src/keybinds.toml</code> e podem ser ajustados nesse arquivo (veja <a class="link-accent" href="compilar.html#personalizar">personalizar</a>).</p>
 							<div class="tbl-wrap">
 								<table class="tbl">
 									<thead><tr><th>Ação</th><th>Atalho</th></tr></thead>
@@ -1037,208 +1136,10 @@ tail -f /tmp/nlinux-web.log</code></pre>
 
 							<details class="faq-item">
 								<summary><i class="ti ti-alert-circle"></i> Quero instalar sem o instalador web (SSH/servidor)<i class="ti ti-chevron-down chev"></i></summary>
-								<div class="faq-body">Dá para rodar o motor direto, sem navegador: exporte as variáveis e execute <code>./install.sh</code> no ambiente live. Veja a <a class="link-accent" href="#variaveis">tabela de variáveis</a>. O instalador web é apenas a interface para montá-las; ele chama o mesmo script com <code>GUI_DRIVEN=1</code>.</div>
+								<div class="faq-body">Dá para rodar o motor direto, sem navegador: exporte as variáveis e execute <code>./install.sh</code> no ambiente live. Veja a <a class="link-accent" href="compilar.html#variaveis">tabela de variáveis</a>. O instalador web é apenas a interface para montá-las; ele chama o mesmo script com <code>GUI_DRIVEN=1</code>.</div>
 							</details>
 						</section>
 
-						<!-- ---------- Build ---------- -->
-						<section class="doc-sec reveal" id="build">
-							<h2 class="doc-h2"><i class="ti ti-hammer"></i> Gerar a ISO<a class="anchor ti ti-link" href="#build" aria-label="Link para esta seção"></a></h2>
-							<p class="doc-p">Tudo o que monta a ISO é aberto: o projeto <a class="link-accent" href="https://github.com/Nilsonlinux/nlinux-iso-build" target="_blank" rel="noopener noreferrer">Nilsonlinux/nlinux-iso-build</a> reúne o <code>build-iso.sh</code>, a camada <code>iso/airootfs/</code>, o <code>install.sh</code> do instalador, a lista de pacotes do live e o <code>make-splash.sh</code>. Em uma máquina Arch Linux, dentro do projeto:</p>
-							<div class="code-block">
-								<div class="code-head"><span>terminal</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
-								<pre><code><span class="c"># pegando o projeto (precisa de git; o build usa sudo)</span>
-git clone https://github.com/Nilsonlinux/nlinux-iso-build.git
-cd nlinux-iso-build
-
-<span class="c"># gera iso/out/nlinux-&lt;data&gt;-x86_64.iso</span>
-./build-iso.sh
-
-<span class="c"># regerar a arte do menu de boot BIOS (precisa de Python + Pillow)</span>
-./make-splash.sh</code></pre>
-							</div>
-							<p class="doc-p">O que o <code>build-iso.sh</code> faz, em ordem:</p>
-							<ol class="doc-ul">
-								<li class="doc-li">Instala o <code>archiso</code> se faltar e <strong>regenera</strong> <code>iso/profile/</code> a partir do perfil releng instalado (compatível com a versão do <code>mkarchiso</code>).</li>
-								<li class="doc-li">Aplica os metadados de <code>iso/profiledef.sh</code> (nome/label/versão = <code>nlinux</code>, publisher <code>NLinux &lt;https://nlinux.dev&gt;</code>).</li>
-								<li class="doc-li">Anexa <code>iso/packages.live</code> à lista de pacotes do live e copia a camada <code>iso/airootfs/</code> (autologin, auto-run, branding, serviços do live).</li>
-								<li class="doc-li">Embute o projeto em <code>/opt/noctalia-installer</code> no live (<code>install.sh</code>, <code>install/</code>, <code>config/</code>, <code>packages/</code>, <code>web/</code>) e a <strong>Loja NLinux Software</strong> em <code>/opt/nlinux-software</code>, a partir da cópia publicada em <code>nlinux-software/</code>.</li>
-								<li class="doc-li">Transforma o boot: <strong>systemd-boot</strong> (UEFI), <strong>GRUB</strong> (UEFI) e <strong>syslinux</strong> (BIOS), com títulos, itens e a splash do NLinux.</li>
-								<li class="doc-li">Roda <code>mkarchiso -v</code> — que executa a camada <code>iso/airootfs/root/customize_airootfs.sh</code> no chroot do build (AUR, greetd, usuário do live, autologin) — e gera a ISO (~2,9 GB).</li>
-							</ol>
-							<div class="foot-links">
-								<a class="btn-ghost" href="https://github.com/Nilsonlinux/nlinux-iso-build" target="_blank" rel="noopener noreferrer"><i class="ti ti-brand-github"></i> Repositório do build</a>
-							</div>
-							<h3 class="doc-h3"><i class="ti ti-shopping-bag"></i> Atualizar a loja embutida na ISO</h3>
-							<p class="doc-p"><code>nlinux-software/</code> é a cópia do build publicado da loja (<a class="link-accent" href="https://github.com/Nilsonlinux/nlinux-software" target="_blank" rel="noopener noreferrer">Nilsonlinux/nlinux-software</a>) que o <code>build-iso.sh</code> embute em <code>/opt/nlinux-software</code>. O script não instala a loja: ele monta a imagem a partir do que está <strong>commitado</strong> na pasta, e por isso ela nunca pode ficar modificada sem commit — uma pasta editada faria a ISO usar uma loja diferente da que está no repositório.</p>
-							<div class="callout">
-								<i class="ti ti-info-circle"></i>
-								<p><strong>Na maior parte das vezes não é preciso fazer isso à mão.</strong> Ao gerar a versão da loja, o passo 8 do build da curadoria (<code>sync_iso_store</code>) apaga, recopla e <strong>commita</strong> <code>nlinux-software/</code> a partir do build recém-gerado, antes de publicar. Basta abrir a curadoria e clicar em <strong>“Gerar versão da loja”</strong>. Só a subpasta da loja entra no commit — se você estiver editando outras coisas do projeto da ISO, elas ficam pendentes e intactas.</p>
-							</div>
-							<div class="code-block">
-								<div class="code-head"><span>terminal · conferir o que está embarcado</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
-								<pre><code><span class="c"># dentro de nlinux-iso-build</span>
-grep revision nlinux-software/catalog-head.json
-git log -1 --oneline</code></pre>
-							</div>
-							<p class="doc-p">O próprio <code>build-iso.sh</code> faz essa conferência antes de embutir a loja: ele compara a revisão do <code>catalog-head.json</code> embarcado com a publicação no GitHub. Se a publicada for maior, sai um aviso em amarelo dizendo que a imagem vai ficar com a loja velha. Sem <code>curl</code> ou sem rede, ele avisa e segue — a conferência nunca segura o build. Caso a curadoria falhe ao espelhar, o caminho manual continua valendo:</p>
-							<div class="code-block">
-								<div class="code-head"><span>terminal · espelhar a loja manualmente (fallback)</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
-								<pre><code><span class="c"># dentro de nlinux-iso-build</span>
-rm -rf nlinux-software &amp;&amp; mkdir nlinux-software
-git clone --depth 1 https://github.com/Nilsonlinux/nlinux-software.git /tmp/loja
-cp -a /tmp/loja/. nlinux-software/
-rm -rf nlinux-software/.git nlinux-software/*.tar.gz nlinux-software/*.tar.gz.asc
-
-<span class="c"># conferindo a revisão e a assinatura do pacote publicado</span>
-cat nlinux-software/catalog-head.json
-gpg --verify nlinux-software/nlinux-software-v&lt;N&gt;.tar.gz.asc nlinux-software/nlinux-software-v&lt;N&gt;.tar.gz</code></pre>
-							</div>
-							<div class="callout">
-								<i class="ti ti-info-circle"></i>
-								<p>A pasta é apagada antes de recoplar. É o que impede programas removidos do catálogo de continuarem embarcados na imagem por causa de um espelho parcial. A assinatura só pode ser conferida no repositório, porque o <code>.tar.gz</code> não existe dentro da pasta embute.</p>
-							</div>
-							<div class="callout">
-								<i class="ti ti-info-circle"></i>
-								<p>Desde a v117 o app <strong>não grava mais dentro do <code>/opt</code></strong>: o catálogo e as mídias ficam em <code>~/.local/share/nlinux/store/apps</code> e a árvore em <code>/opt/nlinux-software</code> é só a semente, somente-leitura. Por isso <code>customize_airootfs.sh</code> (live) e <code>40-user-config.sh</code> (instalado) semeiam a pasta do usuário em vez de <code>chown</code> no <code>/opt</code> — a primeira abertura da loja já encontra tudo, sem esperar cópia.</p>
-							</div>
-							<div class="callout warn">
-								<i class="ti ti-alert-triangle"></i>
-								<p>Não rode dois builds ao mesmo tempo: o script roda em um namespace de mounts privado e desmonta mounts deixados por builds interrompidos antes de começar. A camada do live compila os pacotes AUR via <code>yay</code> em duas etapas (<code>noctalia-greeter</code>, <code>xdg-desktop-portal-umbriel-git</code> e <code>xwayland-satellite-git</code> primeiro; depois <code>umbriel-git</code> e <code>whatsapp-linux-desktop-bin</code>, que dependem do portal) — por isso o build é <strong>lento</strong> (Rust/cargo) e precisa de internet.</p>
-							</div>
-							<p class="doc-p">Depois de gerar, grave a ISO com <code>dd</code> ou balenaEtcher e valide na máquina de destino. Detalhes da release na <a class="link-accent" href="baixar.html">página do NLinux</a>.</p>
-						</section>
-
-						<!-- ---------- Estrutura ---------- -->
-						<section class="doc-sec reveal" id="estrutura">
-							<h2 class="doc-h2"><i class="ti ti-folder"></i> Estrutura do projeto<a class="anchor ti ti-link" href="#estrutura" aria-label="Link para esta seção"></a></h2>
-							<p class="doc-p">Esse é o layout do repositório <a class="link-accent" href="https://github.com/Nilsonlinux/nlinux-iso-build" target="_blank" rel="noopener noreferrer">Nilsonlinux/nlinux-iso-build</a>, com o <code>README.md</code> detalhando cada etapa.</p>
-							<div class="code-block">
-								<div class="code-head"><span>nlinux-iso-build</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
-								<pre><code>build-iso.sh              gera a ISO (sudo; limpa mounts de builds interrompidos)
-make-splash.sh            gera splash.png a partir de NLinux.jpg (menu BIOS)
-install.sh                instalador principal (web-installed; GUI_DRIVEN=1)
-install/translations.py   traduções do instalador (7 idiomas)
-install/chroot/           etapas executadas dentro do chroot do sistema instalado
-web/                      servidor + UI do instalador web (server.py, static/)
-packages/                 listas de pacotes do sistema instalado
-iso/packages.live         pacotes extras do live (ISO)
-iso/airootfs/             camada over do live (branding, auto-run, atalhos)
-iso/profiledef.sh         metadados da ISO (nome, label, versão)
-config/                   dotfiles aplicados ao usuário (live e instalado)
-nlinux-software/          Loja NLinux Software embutida no live
-NLinux.jpg / splash.png   arte do menu de boot</code></pre>
-							</div>
-						</section>
-
-						<!-- ---------- Chroot ---------- -->
-						<section class="doc-sec reveal" id="chroot">
-							<h2 class="doc-h2"><i class="ti ti-stack-2"></i> Etapas do chroot<a class="anchor ti ti-link" href="#chroot" aria-label="Link para esta seção"></a></h2>
-							<p class="doc-p">Roteiro da instalação: <code>install.sh</code> → <code>install/chroot/all.sh</code> → as etapas abaixo. No modo offline a etapa de AUR é pulada.</p>
-							<div class="tbl-wrap">
-								<table class="tbl">
-									<thead><tr><th>#</th><th>Arquivo</th><th>O que faz</th></tr></thead>
-									<tbody>
-										<tr><td>1</td><td class="mono">10-system.sh</td><td>Fuso, locale, keymap, hostname/hosts, branding do <code>os-release</code>, <code>pacman</code>, <code>pacman-key</code>, initramfs (com <code>sd-encrypt</code> quando há LUKS), <strong>zram</strong>, usuários e senhas (shell <strong>fish</strong>), sudoers e <strong>systemd-boot</strong> com a entrada NLinux</td></tr>
-										<tr><td>2</td><td class="mono">20-aur.sh</td><td>Usuário de sistema <code>greeter</code>; usuário temporário <code>builder</code> (sudo sem senha) para instalar o <code>yay-bin</code> e rodar <code>yay -S</code> dos pacotes AUR; remove o <code>builder</code> no final</td></tr>
-										<tr><td>3</td><td class="mono">30-greetd.sh</td><td><code>/etc/greetd/config.toml</code> com o <strong>noctalia-greeter</strong> (sessão padrão <code>umbriel</code>)</td></tr>
-										<tr><td>4</td><td class="mono">40-user-config.sh</td><td>Copia <code>config/.config</code> → <code>~/.config</code> e <code>config/.local</code> → <code>~/.local</code> (ícones/cursor Bibata, logo do fastfetch), resolvendo templates <code>.tpl</code> com o layout do teclado</td></tr>
-										<tr><td>5</td><td class="mono">41-welcome.sh</td><td>Marca <code>/etc/nlinux-installed</code> e instala o <code>nlinux-welcome</code> (janela única no 1º login)</td></tr>
-										<tr><td>6</td><td class="mono">50-services.sh</td><td>Habilita NetworkManager, bluetooth, greetd, accounts-daemon e <strong>packagekit</strong>; adiciona o <strong>Flathub</strong> como remoto Flatpak do usuário; roda <strong><code>appstreamcli refresh --force</code></strong> (metadados AppStream para a loja e o App Center); escreve <code>/etc/environment</code> (Wayland + cursor <code>Bibata-Modern-Ice</code>) e liga o NTP com <code>systemd-timesyncd</code></td></tr>
-									</tbody>
-								</table>
-							</div>
-						</section>
-
-						<!-- ---------- Pacotes ---------- -->
-						<section class="doc-sec reveal" id="pacotes">
-							<h2 class="doc-h2"><i class="ti ti-box"></i> Listas de pacotes<a class="anchor ti ti-link" href="#pacotes" aria-label="Link para esta seção"></a></h2>
-							<div class="tbl-wrap">
-								<table class="tbl">
-									<thead><tr><th>Lista</th><th>Conteúdo</th></tr></thead>
-									<tbody>
-										<tr><td class="mono">packages/base.packages</td><td>Kernel e firmware, rede (NetworkManager, bluez), áudio (PipeWire + WirePlumber), <code>cryptsetup</code>/<code>lvm2</code>, fontes, ferramentas de terminal (fzf, ripgrep, fd, eza, bat, starship, fastfetch, btop, htop) e <code>pacman-contrib</code></td></tr>
-										<tr><td class="mono">packages/desktop.packages</td><td>Stack Noctalia (<code>noctalia</code>, <code>greetd</code>), <code>kitty</code>, fish, starship, fastfetch, apps (firefox, nautilus, discord, telegram, spotify-launcher, gnome-text-editor, eartag), swaylock/idle, wl-clipboard, grim/slurp, <code>zram-generator</code>, mpv/ffmpeg/imagemagick, <code>jq</code>/<code>yq</code> e as dependências da loja (python, python-gobject, webkit2gtk-4.1)</td></tr>
-										<tr><td class="mono">packages/aur.packages</td><td><code>xdg-desktop-portal-umbriel-git</code>, <code>umbriel-git</code>, <code>noctalia-greeter</code>, <code>xwayland-satellite-git</code> (X11 no Umbriel) e <code>whatsapp-linux-desktop-bin</code> — via <code>yay</code> no chroot</td></tr>
-										<tr><td class="mono">iso/packages.live</td><td>Ferramentas do instalador (cryptsetup, gdisk, btrfs-progs, parted, python, webkit2gtk-4.1, efibootmgr, polkit), rede, bluetooth, áudio e os mesmos apps do desktop, para o live ser uma cópia fiel do sistema instalado</td></tr>
-									</tbody>
-								</table>
-							</div>
-							<p class="doc-p">As listas são arquivos de texto: um pacote por linha, comentários com <code>#</code>. No modo online o <code>pacstrap</code> usa <code>base.packages</code> + <code>desktop.packages</code> + os drivers da GPU escolhida + o microcódigo detectado.</p>
-						</section>
-
-						<!-- ---------- Personalizar ---------- -->
-						<section class="doc-sec reveal" id="personalizar">
-							<h2 class="doc-h2"><i class="ti ti-palette"></i> Personalizar<a class="anchor ti ti-link" href="#personalizar" aria-label="Link para esta seção"></a></h2>
-							<div class="card-grid">
-								<div class="mini-card">
-									<h4><i class="ti ti-file"></i> Metadados da ISO</h4>
-									<p><code>iso/profiledef.sh</code>: nome, label, aplicação e versão.</p>
-								</div>
-								<div class="mini-card">
-									<h4><i class="ti ti-box"></i> Pacotes</h4>
-									<p>Edite <code>packages/</code> e <code>iso/packages.live</code>.</p>
-								</div>
-								<div class="mini-card">
-									<h4><i class="ti ti-terminal"></i> Dotfiles</h4>
-									<p><code>config/</code>: kitty, fish, starship, fastfetch, Umbriel e os cursores Bibata. Aplicados ao usuário do live e do sistema instalado.</p>
-								</div>
-								<div class="mini-card">
-									<h4><i class="ti ti-power"></i> Camada do live</h4>
-									<p><code>iso/airootfs/</code>: autologin, auto-run, branding e serviços (<code>root/customize_airootfs.sh</code> roda no chroot do build).</p>
-								</div>
-								<div class="mini-card">
-									<h4><i class="ti ti-stack-2"></i> Etapas da instalação</h4>
-									<p><code>install/chroot/*.sh</code> — edite ou adicione etapas no <code>all.sh</code>.</p>
-								</div>
-								<div class="mini-card">
-									<h4><i class="ti ti-language"></i> Textos do instalador</h4>
-									<p><code>install/translations.py</code> é a fonte única dos textos do instalador web nos <strong>7 idiomas</strong>. O <code>web/server.py</code> e o <code>web/static/app.js</code> só pedem as chaves (<code>stage.*</code>, <code>web.*</code>, <code>tui.*</code>, <code>part.*</code>) — para traduzir, edite só esse arquivo.</p>
-								</div>
-								<div class="mini-card">
-									<h4><i class="ti ti-photo"></i> Arte do boot</h4>
-									<p>Substitua <code>NLinux.jpg</code> e rode <code>./make-splash.sh</code> (640×480, menu syslinux).</p>
-								</div>
-							</div>
-							<div class="callout">
-								<i class="ti ti-info-circle"></i>
-								<p>Arquivos com sufixo <code>.tpl</code> são templates: <code>__KEYBOARD_LAYOUT__</code> é substituído pelo layout derivado do keymap escolhido (<code>br-abnt2</code> → <code>br</code>, <code>us</code> → <code>us</code>…). O <code>fish_variables</code> não é versionado porque guarda caminhos específicos da máquina.</p>
-							</div>
-						</section>
-
-						<!-- ---------- Variáveis ---------- -->
-						<section class="doc-sec reveal" id="variaveis">
-							<h2 class="doc-h2"><i class="ti ti-variable"></i> Variáveis do instalador<a class="anchor ti ti-link" href="#variaveis" aria-label="Link para esta seção"></a></h2>
-							<p class="doc-p">Para instalar sem passar pelo navegador, exporte as variáveis antes de rodar o <code>install.sh</code>:</p>
-							<div class="code-block">
-								<div class="code-head"><span>terminal</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
-								<pre><code>sudo env INSTALL_USER=felipe INSTALL_USER_PASS=senha123 ROOT_PASS=senha123 \
-  INSTALL_DISK=/dev/nvme0n1 FS_TYPE=btrfs USE_LUKS=1 GPU=amd ./install.sh</code></pre>
-							</div>
-							<div class="tbl-wrap">
-								<table class="tbl">
-									<thead><tr><th>Variável</th><th>Padrão</th><th>Para que serve</th></tr></thead>
-									<tbody>
-										<tr><td class="mono">INSTALL_USER / INSTALL_USER_PASS</td><td class="mono">nlinux / nlinux</td><td>Nome e senha do usuário criado</td></tr>
-										<tr><td class="mono">ROOT_PASS</td><td class="mono">nlinux</td><td>Senha do root (o padrão é a mesma do usuário)</td></tr>
-										<tr><td class="mono">LUKS_PASS</td><td class="mono">nlinux</td><td>Senha de desbloqueio do disco</td></tr>
-										<tr><td class="mono">HOSTNAME</td><td class="mono">nlinux</td><td>Nome da máquina</td></tr>
-										<tr><td class="mono">LOCALE / KEYMAP / ZONEINFO</td><td class="mono">pt_BR.UTF-8 / br-abnt2 / America/Sao_Paulo</td><td>Idioma, teclado e fuso do sistema</td></tr>
-										<tr><td class="mono">MIRROR</td><td class="mono">(vazio = automático)</td><td>URL base do espelho de repositórios</td></tr>
-										<tr><td class="mono">OFFLINE</td><td class="mono">1</td><td><code>1</code> = rápida (offline), <code>0</code> = completa (online)</td></tr>
-										<tr><td class="mono">INSTALL_DISK (DISK)</td><td class="mono">(escolhido no menu)</td><td>Disco de destino</td></tr>
-										<tr><td class="mono">INSTALL_MODE</td><td class="mono">wipe</td><td><code>wipe</code> apaga o disco; <code>dual</code> instala ao lado de outro sistema</td></tr>
-										<tr><td class="mono">DUAL_RESIZE_PARTITION / DUAL_RESIZE_BYTES</td><td class="mono">(vazio / 0)</td><td>Partição NTFS a reduzir e tamanho a liberar no dual boot</td></tr>
-										<tr><td class="mono">FS_TYPE</td><td class="mono">(escolhido no menu)</td><td><code>ext4</code> ou <code>btrfs</code></td></tr>
-										<tr><td class="mono">USE_LUKS</td><td class="mono">(escolhido no menu)</td><td><code>1</code> criptografa a raiz com LUKS2</td></tr>
-										<tr><td class="mono">GPU</td><td class="mono">(escolhido no menu)</td><td><code>intel</code>, <code>amd</code>, <code>nvidia</code> ou <code>vm</code> (genérico)</td></tr>
-										<tr><td class="mono">MICROCODE</td><td class="mono">detectado</td><td><code>intel-ucode</code> / <code>amd-ucode</code></td></tr>
-										<tr><td class="mono">NLLANG</td><td class="mono">pt</td><td>Idioma da interface do instalador (pt, en, es, fr, de, it, ja)</td></tr>
-									</tbody>
-								</table>
-							</div>
-							<p class="doc-p">Pré-checagens do instalador: exige root, UEFI e o <code>pacstrap</code> (isto é, rodar a partir do ambiente live do Arch). Sem rede aparente, ele avisa que o modo online pode falhar e sugere o rápido offline. Sem <code>gdisk</code> ou <code>cryptsetup</code>, instala o que falta no live.</p>
-						</section>
 
 						<section class="doc-sec reveal">
 							<div class="foot-links">
@@ -1271,10 +1172,11 @@ NLinux.jpg / splash.png   arte do menu de boot</code></pre>
 						<nav class="footer-col" aria-label="Documentação">
 							<p>Docs</p>
 							<ul>
-								<li><a href="#instalar">Instalador</a></li>
-								<li><a href="#atalhos">Atalhos</a></li>
-								<li><a href="#faq">Problemas comuns</a></li>
-								<li><a href="#build">Gerar a ISO</a></li>
+								<li><a href="docs.html">Documentação</a></li>
+								<li><a href="docs.html#instalar">Instalador</a></li>
+								<li><a href="docs.html#atalhos">Atalhos</a></li>
+								<li><a href="changelog.html">Changelog</a></li>
+								<li><a href="compilar.html">Compilar a ISO</a></li>
 							</ul>
 						</nav>
 						<nav class="footer-col" aria-label="NLinux">

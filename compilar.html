@@ -1,0 +1,1065 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+	<script>
+		(function () {
+			var t = localStorage.getItem('theme');
+			if (t !== 'light' && t !== 'dark')
+				t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+			document.documentElement.setAttribute('data-theme', t);
+		})();
+	</script>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="canonical" href="https://nilsonlinux.github.io/compilar.html" />
+	<link rel="icon" href="img/nlinux-logo.png" type="image/png" />
+	<meta name="description" content="Como compilar a ISO do NLinux do zero: requisitos do host, archiso, etapas do chroot, listas de pacotes, personalização e variáveis do instalador." />
+	<meta name="theme-color" content="#070722" />
+	<meta property="og:title" content="Compilar a ISO · NLinux" />
+	<meta property="og:description" content="Como compilar a ISO do NLinux do zero: requisitos do host, archiso, etapas do chroot, listas de pacotes, personalização e variáveis do instalador." />
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://nilsonlinux.github.io/compilar.html" />
+	<meta property="og:image" content="https://nilsonlinux.github.io/img/nlinux-logo.png" />
+	<meta property="og:image:alt" content="Logo do NLinux" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content="Compilar a ISO · NLinux" />
+	<meta name="twitter:description" content="Como compilar a ISO do NLinux do zero: requisitos do host, archiso, etapas do chroot, listas de pacotes, personalização e variáveis do instalador." />
+	<meta name="twitter:image" content="https://nilsonlinux.github.io/img/nlinux-logo.png" />
+	<title>Compilar a ISO · NLinux · Nilsonlinux</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.30.0/dist/tabler-icons.min.css">
+	<style>
+		:root, html[data-theme="dark"] {
+			color-scheme: dark;
+			--bg: #070722;
+			--bg2: #11112d;
+			--surface: #11112deb;
+			--surface-2: #1515388c;
+			--surface-3: #1a1a458c;
+			--border: #21215f;
+			--fg: #f3edf7;
+			--fg-dim: #a8a6c8;
+			--faint: #7c80b4;
+			--accent: #fff59b;
+			--accent-2: #9bfece;
+			--accent-3: #a9aefe;
+			--on-accent: #0e0e43;
+			--warn: #ffc46b;
+			--danger: #ff9a9a;
+			--shadow-card: 0 1px 2px rgba(0,0,0,.35), 0 12px 32px -12px rgba(0,0,0,.55);
+			--shadow-card-hover: 0 2px 4px rgba(0,0,0,.4), 0 24px 48px -12px rgba(0,0,0,.65);
+		}
+		html[data-theme="light"] {
+			color-scheme: light;
+			--bg: #e6e8fa;
+			--bg2: #eff0ff;
+			--surface: #eff0fff0;
+			--surface-2: #d2d6ff8c;
+			--surface-3: #c6cbfb8c;
+			--border: #a8affc;
+			--fg: #2d3180;
+			--fg-dim: #5057b5;
+			--faint: #6f76c0;
+			--accent: #5d65f5;
+			--accent-2: #c9a32a;
+			--accent-3: #6b74f0;
+			--on-accent: #ffffff;
+			--warn: #b46a00;
+			--danger: #c0392b;
+			--shadow-card: 0 1px 2px rgba(45,49,128,.1), 0 12px 32px -12px rgba(45,49,128,.22);
+			--shadow-card-hover: 0 2px 4px rgba(45,49,128,.12), 0 24px 48px -12px rgba(45,49,128,.3);
+		}
+		* { box-sizing: border-box; margin: 0; padding: 0; }
+		html { scroll-behavior: smooth; }
+		body {
+			min-height: 100vh; font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+			color: var(--fg); background: var(--bg); overflow-x: hidden;
+			transition: background .3s ease, color .25s ease;
+		}
+		body::before {
+			content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+			background-image:
+				radial-gradient(ellipse 95% 72% at 0% -12%, color-mix(in srgb, var(--accent) 13%, transparent), transparent 52%),
+				radial-gradient(ellipse 85% 58% at 100% 4%, color-mix(in srgb, var(--accent-2) 10%, transparent), transparent 48%),
+				radial-gradient(ellipse 65% 48% at 50% 108%, color-mix(in srgb, var(--accent-3) 11%, transparent), transparent 50%);
+		}
+		a { color: inherit; text-decoration: none; }
+		button { font: inherit; cursor: pointer; }
+		::selection { background: color-mix(in srgb, var(--accent) 24%, transparent); color: var(--fg); }
+
+		.page-canvas { position: relative; min-height: 100vh; }
+		.main-col { position: relative; z-index: 1; display: flex; min-height: 100vh; flex-direction: column; }
+
+		/* ---- Header ---- */
+		.site-header {
+			position: sticky; top: 0; z-index: 50;
+			border-bottom: 1px solid color-mix(in srgb, var(--border) 40%, transparent);
+			background: color-mix(in srgb, var(--bg) 92%, transparent);
+			backdrop-filter: blur(20px); backdrop-filter: saturate(125%);
+		}
+		.site-header:after {
+			content: ""; position: absolute; inset: auto 0 0; height: 1px; pointer-events: none;
+			background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--accent) 22%, transparent), color-mix(in srgb, var(--accent-2) 14%, transparent), color-mix(in srgb, var(--accent) 22%, transparent), transparent);
+			opacity: .6;
+		}
+		.site-header-inner {
+			margin: 0 auto; max-width: 90rem; height: 4rem; padding: 0 1rem;
+			display: flex; align-items: center; justify-content: space-between; gap: .75rem;
+		}
+		.brand { display: flex; align-items: center; gap: .625rem; min-width: 0; }
+		.brand img { width: 2.5rem; height: 2.5rem; border-radius: .75rem; object-fit: cover; }
+		.brand-label { display: flex; flex-direction: column; line-height: 1.15; }
+		.brand-name { font-weight: 600; letter-spacing: -.02em; font-size: 1.05rem; }
+		.brand-tag { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .12em; color: var(--faint); }
+		.main-nav { display: none; align-items: center; gap: .5rem; }
+		.main-nav a {
+			display: inline-flex; height: 2.5rem; min-width: 5rem; align-items: center; justify-content: center;
+			white-space: nowrap; padding: 0 .875rem; border-radius: .5rem;
+			font-size: .875rem; font-weight: 500; color: var(--fg-dim);
+			transition: all .2s; outline: none;
+		}
+		.main-nav a:hover { background: color-mix(in srgb, var(--surface-2) 80%, transparent); color: var(--accent); }
+		.main-nav a.active { background: var(--surface-2); color: var(--accent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 22%, transparent); }
+		a.has-badge { position: relative; }
+		.nav-badge {
+			position: absolute; top: .3rem; right: .05rem; pointer-events: none;
+			display: inline-flex; align-items: center; justify-content: center;
+			width: .85rem; height: .85rem; line-height: 1;
+			animation: new-pulse 2s ease-in-out infinite;
+		}
+		.nav-badge img { width: 100%; height: 100%; object-fit: contain; display: block; }
+		@keyframes new-pulse {
+			0% { filter: drop-shadow(0 0 1px rgba(255,212,0,.9)); transform: scale(1); }
+			50% { filter: drop-shadow(0 0 6px rgba(255,212,0,.85)); transform: scale(1.15); }
+			100% { filter: drop-shadow(0 0 1px rgba(255,212,0,.9)); transform: scale(1); }
+		}
+		.header-actions { display: flex; align-items: center; justify-content: flex-end; gap: .5rem; }
+		.icon-btn {
+			display: inline-flex; width: 2.5rem; height: 2.5rem; align-items: center; justify-content: center;
+			border-radius: .5rem; border: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+			background: color-mix(in srgb, var(--surface-2) 50%, transparent); color: var(--fg);
+			font-size: 1rem; transition: all .2s; outline: none;
+		}
+		.icon-btn:hover { border-color: var(--border); background: var(--surface-2); }
+
+		/* GitHub no cabecalho: amarelo da marca no hover */
+		.icon-btn .ti { transition: transform .22s cubic-bezier(.34, 1.56, .64, 1); }
+		.icon-btn-gh:hover, .icon-btn-gh:focus-visible {
+			color: #f5c518; border-color: color-mix(in srgb, #f5c518 55%, transparent);
+			background: color-mix(in srgb, #f5c518 13%, transparent);
+			box-shadow: 0 0 0 3px color-mix(in srgb, #f5c518 12%, transparent);
+		}
+		.icon-btn-gh:hover .ti, .icon-btn-gh:focus-visible .ti { transform: scale(1.16) rotate(-9deg); }
+		.nav-toggle { display: inline-flex; }
+		.mobile-nav {
+			position: absolute; top: calc(100% + .55rem); right: 1rem; z-index: 40;
+			display: none; flex-direction: column; gap: .15rem;
+			min-width: 230px; padding: .5rem;
+			border: 1px solid var(--border); border-radius: .9rem;
+			background: color-mix(in srgb, var(--bg) 96%, transparent);
+			backdrop-filter: blur(20px); backdrop-filter: saturate(125%);
+			box-shadow: var(--shadow-card);
+		}
+		.mobile-nav.open { display: flex; }
+		.mobile-nav a {
+			display: flex; align-items: center; gap: .6rem; padding: .75rem .875rem;
+			border-radius: .6rem; font-size: .95rem; font-weight: 500; color: var(--fg-dim);
+			transition: all .2s; outline: none;
+		}
+		.mobile-nav a:hover { background: color-mix(in srgb, var(--surface-2) 80%, transparent); color: var(--accent); }
+		.mobile-nav a.active {
+			background: var(--surface-2); color: var(--accent);
+			box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 22%, transparent);
+		}
+		.btn-primary {
+			display: inline-flex; height: 2.5rem; min-width: 6rem; align-items: center; justify-content: center;
+			gap: .5rem; padding: 0 1rem; border-radius: .5rem; border: 0;
+			background: var(--accent); color: var(--on-accent); font-size: .875rem; font-weight: 600;
+			box-shadow: 0 8px 28px -6px color-mix(in srgb, var(--accent) 40%, transparent), inset 0 0 0 1px color-mix(in srgb, var(--accent) 20%, transparent);
+			transition: all .2s; outline: none;
+		}
+		.btn-primary:hover {
+			filter: brightness(1.05); transform: translateY(-2px);
+			box-shadow: 0 12px 36px -8px color-mix(in srgb, var(--accent) 55%, transparent), inset 0 0 0 1px color-mix(in srgb, var(--accent) 28%, transparent);
+		}
+		.btn-primary:active { transform: translateY(0); }
+		.site-header .btn-primary:hover, .site-header .btn-primary:active { transform: none; }
+		/* ---- Nav: 9 itens ----
+			   Entre a marca e o botão de baixar, os 9 links precisam de ~1010px já
+			   encolhidos e ~1400px no tamanho cheio. A nav só vira linha a partir de
+			   1080px; abaixo disso quem navega é o botão de menu. Nos degraus do meio
+			   o wordmark some e os links perdem a largura mínima. */
+		@media (min-width: 1080px) { .main-nav { display: flex; } .nav-toggle { display: none !important; } }
+		@media (min-width: 1080px) and (max-width: 1499px) {
+			.brand-label { display: none; }
+			.main-nav { gap: .15rem; }
+			.main-nav a { min-width: 0; padding: 0 .5rem; font-size: .8rem; }
+			.btn-primary { min-width: 0; padding: 0 .75rem; }
+		}
+		@media (min-width: 1080px) and (max-width: 1279px) {
+			.site-header .btn-primary span.btn-label { display: none; }
+			.site-header .btn-primary { width: 2.5rem; padding: 0; }
+		}
+
+
+		/* ---- Main / layout ---- */
+		.site-main { flex: 1; position: relative; z-index: 1; }
+		.site-shell { width: min(100% - 2rem, 90rem); margin: 0 auto; padding: 3rem 0 4rem; }
+
+		.page-header { margin-bottom: 2.5rem; }
+		.page-header h1 { font-size: clamp(2rem, 5vw, 2.75rem); font-weight: 600; letter-spacing: -.04em; }
+		.page-subtitle { margin-top: .75rem; color: var(--fg-dim); max-width: 62ch; line-height: 1.6; }
+		.page-badges { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.25rem; }
+		.page-badge {
+			display: inline-flex; align-items: center; gap: .4rem; padding: .4rem .85rem;
+			border-radius: 999px; border: 1px solid var(--border); background: var(--surface);
+			font-size: .78rem; font-weight: 500; color: var(--fg-dim);
+		}
+		.page-badge .ti { color: var(--accent); }
+
+		/* ---- Tooltips ----
+		   Substituem o title nativo do navegador, que só aparece depois
+		   de ~1s parado e com o visual cinza do sistema. Aqui abre sem
+		   atraso: 160ms de opacidade e 180ms de transform, com o balão
+		   vindo de perto do alvo. O JS em js/site.js cria um único
+		   elemento e o move, então não há um por badge. position:fixed
+		   + z-index alto escapam de qualquer overflow:hidden do ancestral. */
+		.nt {
+			position: fixed; z-index: 999; top: 0; left: 0;
+			max-width: 17rem; padding: .45rem .7rem;
+			background: var(--surface-3); color: var(--fg);
+			border: 1px solid var(--border); border-radius: .55rem;
+			box-shadow: var(--shadow-card-hover);
+			font: 500 .74rem/1.45 Inter, system-ui, sans-serif;
+			pointer-events: none; opacity: 0;
+			/* entrada: o balao vem de perto do alvo e assenta no lugar.
+			   --nt-y diz de que lado ele entra, e o lado depende de
+			   data-place: quem abre para cima sobe, para baixo desce */
+			transform: translateY(var(--nt-y, 0)) scale(.94);
+			transition: opacity .16s ease, transform .18s cubic-bezier(.16, 1, .3, 1);
+			backdrop-filter: blur(8px);
+		}
+		.nt.on { opacity: 1; transform: none; }
+		.nt[data-place="top"] { --nt-y: 5px; }
+		.nt[data-place="bottom"] { --nt-y: -5px; }
+		.nt b { color: var(--accent); font-weight: 700; }
+		/* a seta aponta para o alvo; o balão abre embaixo e a seta fica
+		   em cima, e vira para baixo quando não cabe e ele sobe */
+		.nt::after {
+			content: ""; position: absolute; left: 50%; width: .5rem; height: .5rem;
+			background: inherit; border: inherit;
+			transform: translateX(-50%) rotate(45deg);
+		}
+		.nt[data-place="top"]::after { bottom: -.26rem; border-top: 0; border-left: 0; }
+		.nt[data-place="bottom"]::after { top: -.26rem; border-bottom: 0; border-right: 0; }
+		@media (prefers-reduced-motion: reduce) { .nt { transition: none; } }
+
+		/* minmax(0,…) em vez de 1fr: sem isso a trilha assume a largura mínima do
+		   conteúdo (linha de código mais longa) e a página estoura no mobile. */
+		.docs-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2.5rem; align-items: start; }
+		@media (min-width: 1080px) {
+			.docs-layout { grid-template-columns: 16rem minmax(0, 1fr); gap: 3.5rem; }
+		}
+		.doc-content { min-width: 0; }
+
+		/* ---- Sumário ---- */
+		.toc { position: sticky; top: 5.25rem; }
+		@media (max-width: 1079px) { .toc { position: static; } }
+		.toc-box {
+			border: 1px solid var(--border); border-radius: 1.1rem; background: var(--surface);
+			box-shadow: var(--shadow-card); padding: 1.1rem 1.15rem; max-height: calc(100vh - 7rem); overflow-y: auto;
+		}
+		@media (max-width: 1079px) { .toc-box { max-height: none; } }
+		.toc-title {
+			display: flex; align-items: center; gap: .5rem; font-size: .68rem; font-weight: 700;
+			text-transform: uppercase; letter-spacing: .14em; color: var(--faint); margin-bottom: .9rem;
+		}
+		.toc-search { position: relative; margin-bottom: .85rem; }
+		.toc-search i {
+			position: absolute; left: .6rem; top: 50%; transform: translateY(-50%);
+			font-size: .9rem; color: var(--faint); pointer-events: none;
+		}
+		.toc-search input {
+			width: 100%; height: 2.1rem; padding: 0 .6rem 0 2rem; border-radius: .55rem;
+			border: 1px solid var(--border); background: color-mix(in srgb, var(--surface-2) 60%, transparent);
+			color: var(--fg); font: 400 .8rem Inter, sans-serif; outline: none;
+		}
+		.toc-search input::placeholder { color: var(--faint); }
+		.toc-search input:focus { border-color: color-mix(in srgb, var(--accent) 40%, transparent); }
+		.toc-list { list-style: none; display: flex; flex-direction: column; gap: .1rem; }
+		.toc-list a {
+			display: flex; align-items: center; gap: .45rem; padding: .42rem .55rem; border-radius: .5rem;
+			font-size: .82rem; font-weight: 500; color: var(--fg-dim); border-left: 2px solid transparent;
+			transition: all .15s;
+		}
+		.toc-list a:hover { background: color-mix(in srgb, var(--surface-2) 70%, transparent); color: var(--fg); }
+		.toc-list a.active {
+			background: color-mix(in srgb, var(--surface-2) 90%, transparent); color: var(--accent);
+			border-left-color: var(--accent); font-weight: 600;
+		}
+		.toc-list a .ti { font-size: .95rem; flex-shrink: 0; opacity: .85; }
+		.toc-list li.hidden { display: none; }
+		.toc-empty { padding: .5rem .55rem; font-size: .78rem; color: var(--faint); }
+		.toc-group {
+			margin: 1rem 0 .35rem; padding: 0 .55rem; font-size: .62rem; font-weight: 700;
+			text-transform: uppercase; letter-spacing: .14em; color: var(--faint);
+		}
+		.toc-group:first-child { margin-top: 0; }
+
+		/* ---- Seções ---- */
+		.doc-sec { margin-bottom: 3rem; scroll-margin-top: 5.5rem; }
+		.doc-sec:last-child { margin-bottom: 0; }
+		.doc-h2 {
+			display: flex; align-items: center; gap: .6rem; font-size: 1.4rem; font-weight: 650;
+			letter-spacing: -.02em; margin-bottom: 1.1rem; scroll-margin-top: 5.5rem;
+		}
+		.doc-h2 .ti { color: var(--accent); font-size: 1.25rem; }
+		.doc-h2 .anchor {
+			margin-left: .25rem; font-size: .95rem; color: var(--faint); opacity: 0;
+			transition: opacity .2s; font-weight: 400;
+		}
+		.doc-h2:hover .anchor, .doc-h2 .anchor:focus { opacity: 1; }
+		.doc-h3 { font-size: 1rem; font-weight: 700; letter-spacing: -.01em; margin: 1.75rem 0 .75rem; }
+		.doc-h3 .ti { color: var(--accent); font-size: .95rem; }
+		.doc-p { font-size: .9rem; line-height: 1.7; color: var(--fg-dim); margin-bottom: .9rem; }
+		.doc-p strong, .doc-li strong { color: var(--fg); font-weight: 600; }
+		.doc-lead { display: flex; align-items: flex-start; gap: 1.05rem; margin-bottom: 1.1rem; }
+		.doc-lead img { flex-shrink: 0; width: 54px; height: auto; margin-top: .1rem; }
+		.doc-lead p { margin-bottom: 0; }
+		.doc-h2 .pill { font-size: .62rem; padding: .2rem .5rem; }
+		@media (max-width: 420px) { .doc-lead img { width: 42px; } }
+		.doc-ul { list-style: none; margin-bottom: 1rem; }
+		.doc-li { position: relative; padding-left: 1.15rem; font-size: .88rem; line-height: 1.7; color: var(--fg-dim); }
+		.doc-li::before { content: ""; position: absolute; left: .15rem; top: .7rem; width: 4px; height: 4px; border-radius: 50%; background: color-mix(in srgb, var(--accent) 70%, transparent); }
+		.doc-li + .doc-li { margin-top: .3rem; }
+		.doc-li code, .doc-p code, td code, .doc-h3 code {
+			font-family: "JetBrains Mono", monospace; font-size: .85em; color: var(--accent);
+			background: color-mix(in srgb, var(--surface-2) 60%, transparent); padding: .05em .35em; border-radius: .35rem;
+		}
+		.link-accent { color: var(--accent); border-bottom: 1px solid color-mix(in srgb, var(--accent) 35%, transparent); }
+		.link-accent:hover { border-bottom-color: var(--accent); }
+
+		/* ---- Tabelas ---- */
+		.tbl-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: .9rem; margin-bottom: 1rem; background: var(--surface); box-shadow: var(--shadow-card); }
+		.tbl { width: 100%; border-collapse: collapse; min-width: 30rem; }
+		.tbl th, .tbl td { text-align: left; padding: .6rem .85rem; font-size: .82rem; vertical-align: top; }
+		.tbl thead th {
+			font-size: .66rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em;
+			color: var(--faint); background: color-mix(in srgb, var(--surface-2) 45%, transparent);
+			border-bottom: 1px solid var(--border); white-space: nowrap;
+		}
+		.tbl tbody tr + tr { border-top: 1px solid color-mix(in srgb, var(--border) 45%, transparent); }
+		.tbl td { color: var(--fg-dim); line-height: 1.55; }
+		.tbl td:first-child { color: var(--fg); font-weight: 600; white-space: nowrap; }
+		.tbl tbody tr:hover td { background: color-mix(in srgb, var(--surface-2) 35%, transparent); }
+		.tbl .mono { font-family: "JetBrains Mono", monospace; font-size: .76rem; white-space: nowrap; }
+
+		/* ---- kbd ---- */
+		.tbl kbd {
+			display: inline-block; font: 500 .72rem "JetBrains Mono", monospace; color: var(--fg);
+			background: color-mix(in srgb, var(--surface-2) 85%, transparent);
+			border: 1px solid var(--border); border-bottom-width: 2px; border-radius: .35rem;
+			padding: .1rem .35rem; white-space: nowrap;
+		}
+
+		/* ---- Steps ---- */
+		.steps { display: grid; gap: .75rem; }
+		.step-row {
+			display: grid; grid-template-columns: auto 1fr; gap: 1rem; align-items: start;
+			border: 1px solid var(--border); border-radius: 1rem; background: var(--surface);
+			padding: 1rem 1.15rem; box-shadow: var(--shadow-card);
+		}
+		.step-num {
+			width: 2rem; height: 2rem; border-radius: .6rem; display: grid; place-items: center;
+			background: var(--accent); color: var(--on-accent); font: 700 .85rem "JetBrains Mono", monospace;
+		}
+		.step-row h4 { font-size: .95rem; font-weight: 700; letter-spacing: -.01em; }
+		.step-row p { margin-top: .3rem; font-size: .84rem; line-height: 1.6; color: var(--fg-dim); }
+		.step-row .step-hint {
+			display: inline-block; margin-top: .5rem; font: 500 .68rem "JetBrains Mono", monospace;
+			color: var(--faint); border: 1px solid var(--border); border-radius: 999px; padding: .15rem .55rem;
+		}
+
+		/* ---- Code ---- */
+		.code-block {
+			margin: 1rem 0; border: 1px solid var(--border); border-radius: .75rem;
+			background: color-mix(in srgb, var(--bg2) 85%, transparent); overflow: hidden;
+		}
+		.code-head {
+			display: flex; align-items: center; justify-content: space-between; gap: .5rem;
+			padding: .5rem .75rem; border-bottom: 1px solid var(--border);
+			font: 500 .66rem "JetBrains Mono", monospace; color: var(--faint);
+		}
+		.copy-btn {
+			border: 1px solid var(--border); background: var(--surface-2); color: var(--fg-dim);
+			border-radius: .4rem; padding: .2rem .55rem; font-size: .66rem; font-family: inherit;
+		}
+		.copy-btn:hover { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 35%, transparent); }
+		.code-block pre { padding: .8rem .9rem; overflow-x: auto; font: 500 .76rem/1.6 "JetBrains Mono", monospace; color: var(--fg); }
+		.code-block pre .c { color: var(--faint); }
+		.code-block pre .s { color: var(--accent-3); }
+		.code-block pre .p { color: var(--accent-2); }
+
+		/* ---- Callouts ---- */
+		.callout {
+			display: flex; gap: .75rem; align-items: flex-start; margin: 1.25rem 0;
+			border: 1px solid var(--border); border-left: 2px solid var(--accent);
+			border-radius: .9rem; background: color-mix(in srgb, var(--surface-2) 55%, transparent);
+			padding: .9rem 1.1rem; font-size: .84rem; line-height: 1.65; color: var(--fg-dim);
+		}
+		.callout .ti { color: var(--accent); font-size: 1.05rem; flex-shrink: 0; margin-top: .1rem; }
+		.callout.warn { border-left-color: var(--warn); }
+		.callout.warn .ti { color: var(--warn); }
+		.callout.danger { border-left-color: var(--danger); }
+		.callout.danger .ti { color: var(--danger); }
+		.callout strong { color: var(--fg); }
+
+		/* ---- Cards / specs ---- */
+		.specs-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: .75rem; margin-bottom: 1rem; }
+		@media (min-width: 640px) { .specs-grid { grid-template-columns: repeat(3, 1fr); } }
+		.spec-box {
+			padding: .9rem 1rem; border: 1px solid var(--border); border-radius: .9rem;
+			background: var(--surface); box-shadow: var(--shadow-card);
+		}
+		.spec-box span { display: block; color: var(--faint); font-size: .6rem; text-transform: uppercase; letter-spacing: .08em; font-weight: 600; }
+		.spec-box b { display: block; margin-top: .3rem; font: 600 .82rem "JetBrains Mono", monospace; color: var(--fg); }
+
+		.card-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-bottom: 1rem; }
+		@media (min-width: 700px) { .card-grid { grid-template-columns: repeat(2, 1fr); } }
+		.mini-card {
+			border: 1px solid var(--border); border-radius: 1.1rem; background: var(--surface);
+			box-shadow: var(--shadow-card); padding: 1.1rem 1.2rem;
+		}
+		.mini-card h4 { display: flex; align-items: center; gap: .5rem; font-size: .92rem; font-weight: 700; margin-bottom: .5rem; }
+		.mini-card h4 .ti { color: var(--accent); }
+		.mini-card p { font-size: .83rem; line-height: 1.6; color: var(--fg-dim); }
+		.mini-card p + p { margin-top: .5rem; }
+
+		/* ---- FAQ ---- */
+		.faq-item {
+			border: 1px solid var(--border); border-radius: 1rem; background: var(--surface);
+			box-shadow: var(--shadow-card); margin-bottom: .6rem; overflow: hidden;
+		}
+		.faq-item > summary {
+			list-style: none; cursor: pointer; padding: .9rem 1.1rem; display: flex; align-items: center;
+			gap: .6rem; font-size: .9rem; font-weight: 600; scroll-margin-top: 5.5rem;
+		}
+		.faq-item > summary::-webkit-details-marker { display: none; }
+		.faq-item > summary .ti { color: var(--accent); font-size: 1rem; flex-shrink: 0; }
+		.faq-item > summary .chev { margin-left: auto; color: var(--faint); transition: transform .2s; font-size: 1rem; }
+		.faq-item[open] > summary .chev { transform: rotate(180deg); }
+		.faq-item[open] > summary { border-bottom: 1px solid color-mix(in srgb, var(--border) 50%, transparent); }
+		.faq-body { padding: .9rem 1.1rem 1rem; font-size: .85rem; line-height: 1.7; color: var(--fg-dim); }
+		.faq-body code { font-family: "JetBrains Mono", monospace; font-size: .84em; color: var(--accent); background: color-mix(in srgb, var(--surface-2) 60%, transparent); padding: .05em .35em; border-radius: .35rem; }
+
+		/* ---- Pills ---- */
+		.pill-row { display: flex; flex-wrap: wrap; gap: .35rem; margin: .75rem 0 1.25rem; }
+		.pill {
+			padding: .25rem .6rem; border-radius: 999px; border: 1px solid var(--border);
+			color: var(--fg-dim); font-size: .68rem; font-family: "JetBrains Mono", monospace;
+			background: color-mix(in srgb, var(--surface-2) 40%, transparent);
+		}
+
+		.anchor-target { scroll-margin-top: 5.5rem; }
+		.foot-links { margin-top: 1.25rem; display: flex; flex-wrap: wrap; gap: .6rem; }
+		.download-meta { margin-top: .8rem; font: 500 .7rem "JetBrains Mono", monospace; color: var(--faint); }
+		.btn-ghost {
+			display: inline-flex; height: 2.5rem; align-items: center; justify-content: center;
+			gap: .5rem; padding: 0 1rem; border-radius: .5rem;
+			border: 1px solid var(--border); background: var(--surface-2); color: var(--fg);
+			font-size: .875rem; font-weight: 600; transition: all .2s;
+		}
+		.btn-ghost:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--accent) 40%, transparent); color: var(--accent); }
+		.btn-ghost:active { transform: translateY(0); }
+
+		/* ---- CTA da seção ---- */
+		.doc-cta { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; margin: 1rem 0 .25rem; }
+		.doc-cta .btn-view { margin-top: 0; }
+		.doc-cta-hint { font-size: .78rem; color: var(--faint); }
+		@media (max-width: 560px) { .doc-cta { flex-direction: column; align-items: flex-start; gap: .5rem; } }
+
+		/* ---- Footer ---- */
+		.site-footer {
+			position: relative; z-index: 1; margin-top: auto;
+			border-top: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
+			background: color-mix(in srgb, var(--bg) 60%, transparent); backdrop-filter: blur(20px);
+		}
+		.site-footer-inner { max-width: 90rem; margin: 0 auto; padding: 2.5rem 1rem; }
+		.footer-grid { display: flex; flex-direction: column; gap: 2.5rem; }
+		@media (min-width: 1024px) { .footer-grid { flex-direction: row; align-items: flex-start; gap: 4rem; } }
+		.footer-brand { max-width: 22rem; flex-shrink: 0; }
+		.footer-brand-logo { display: flex; align-items: center; gap: .75rem; }
+		.footer-brand-logo img { width: 2.5rem; height: 2.5rem; border-radius: .75rem; object-fit: cover; }
+		.footer-blurb { margin-top: 1rem; font-size: .875rem; line-height: 1.6; color: var(--fg-dim); }
+		.footer-links { flex: 1; display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+		@media (min-width: 640px) { .footer-links { grid-template-columns: repeat(4, 1fr); } }
+		.footer-col p { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .14em; color: var(--fg); margin-bottom: .9rem; }
+		.footer-col ul { list-style: none; }
+		.footer-col li { margin-bottom: .35rem; }
+		.footer-col a { font-size: .875rem; color: var(--fg-dim); transition: all .2s; border-radius: .25rem; }
+		.footer-col a:hover { color: var(--accent); }
+		.footer-bottom {
+			margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid color-mix(in srgb, var(--border) 40%, transparent);
+			display: flex; flex-direction: column; gap: .75rem; font-size: .78rem; color: var(--fg-dim);
+		}
+		@media (min-width: 640px) { .footer-bottom { flex-direction: row; align-items: center; justify-content: space-between; } }
+
+		.back-top {
+			position: fixed; right: 1.5rem; bottom: 1.5rem; z-index: 60;
+			width: 2.75rem; height: 2.75rem; display: flex; align-items: center; justify-content: center;
+			border-radius: 999px; border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+			background: var(--accent); color: var(--on-accent); font-size: 1.25rem;
+			box-shadow: var(--shadow-card); transition: all .3s;
+			pointer-events: none; opacity: 0; transform: translateY(12px);
+		}
+		.back-top.visible { pointer-events: auto; opacity: 1; transform: none; }
+		.back-top:hover { filter: brightness(1.08); }
+
+		.reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+		.reveal.in { opacity: 1; transform: none; }
+
+		@media (max-width: 680px) {
+			.site-shell { width: min(100% - 1.25rem, 90rem); padding: 2rem 0 3rem; }
+			.specs-grid { grid-template-columns: 1fr 1fr; }
+			.site-header .btn-primary span.btn-label { display: none; }
+			.site-header .btn-primary { min-width: 2.5rem; width: 2.5rem; padding: 0; }
+		}
+		@media (prefers-reduced-motion: reduce) {
+			*, *:before, *:after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+		}
+	</style>
+	<link rel="stylesheet" href="css/galeria.css" />
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-S0GS6KKPB3"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-S0GS6KKPB3');
+	</script>
+	<!-- variáveis do site (link único de download da ISO em js/site.js).
+	     Ao mexer no site.js, suba o ?v= do src para furar o cache dos navegadores. -->
+	<script src="js/site.js?v=5" defer></script>
+</head>
+<body>
+<div class="page-canvas">
+	<div class="main-col">
+
+		<header class="site-header">
+			<div class="site-header-inner">
+				<a href="index.html" class="brand">
+					<img src="img/nlinux-logo.png" alt="NLinux" width="40" height="40" />
+					<span class="brand-label">
+						<span class="brand-name">NLinux</span>
+						<span class="brand-tag">compilar a ISO</span>
+					</span>
+				</a>
+				<nav class="main-nav" aria-label="Páginas do site">
+					<a href="index.html" class="has-badge"><i class="ti ti-disc"></i>&nbsp;NLinux<span class="nav-badge"><img src="img/tux.png" alt="Linux"></span></a>
+					<a href="baixar.html"><i class="ti ti-download"></i>&nbsp;Baixar</a>
+					<a href="recursos.html"><i class="ti ti-adjustments-horizontal"></i>&nbsp;Recursos</a>
+					<a href="loja.html"><i class="ti ti-shopping-bag"></i>&nbsp;Loja</a>
+					<a href="docs.html"><i class="ti ti-book-2"></i>&nbsp;Docs</a>
+					<a href="changelog.html"><i class="ti ti-history"></i>&nbsp;Changelog</a>
+					<a href="compilar.html" class="active" aria-current="page"><i class="ti ti-hammer"></i>&nbsp;Compilar</a>
+					<a href="plugins.html"><i class="ti ti-plug"></i>&nbsp;Plugins</a>
+					<a href="doar.html">❤️ Apoie o projeto</a>
+				</nav>
+				<div class="header-actions">
+					<button type="button" class="icon-btn" id="themeToggle" aria-label="Alternar tema" title="Tema"><i class="ti ti-sun-moon"></i></button>
+					<a class="icon-btn icon-btn-gh" href="https://github.com/Nilsonlinux" target="_blank" rel="noopener noreferrer" aria-label="GitHub do NLinux" title="GitHub"><i class="ti ti-brand-github"></i></a>
+					<a class="btn-primary" href="baixar.html"><i class="ti ti-download"></i><span class="btn-label">Baixar ISO</span></a>
+					<button type="button" class="icon-btn nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false" title="Menu"><i class="ti ti-menu-2"></i></button>
+				</div>
+			</div>
+			<nav class="mobile-nav" id="mobileMenu" aria-label="Páginas do site (menu móvel)">
+				<a href="index.html" class="has-badge"><i class="ti ti-disc"></i>&nbsp;NLinux<span class="nav-badge"><img src="img/tux.png" alt="Linux"></span></a>
+				<a href="baixar.html"><i class="ti ti-download"></i>&nbsp;Baixar</a>
+				<a href="recursos.html"><i class="ti ti-adjustments-horizontal"></i>&nbsp;Recursos</a>
+				<a href="loja.html"><i class="ti ti-shopping-bag"></i>&nbsp;Loja</a>
+				<a href="docs.html"><i class="ti ti-book-2"></i>&nbsp;Docs</a>
+				<a href="changelog.html"><i class="ti ti-history"></i>&nbsp;Changelog</a>
+				<a href="compilar.html" class="active"><i class="ti ti-hammer"></i>&nbsp;Compilar</a>
+				<a href="plugins.html"><i class="ti ti-plug"></i>&nbsp;Plugins</a>
+				<a href="doar.html">❤️&nbsp;Apoie o projeto</a>
+			</nav>
+		</header>
+
+		<main class="site-main">
+			<div class="site-shell">
+
+				<header class="page-header reveal">
+					<h1>Compilar a ISO do NLinux</h1>
+					<p class="page-subtitle">Para quem quer compilar a distribuição ou modificá-la. Se você só quer instalar o NLinux, a documentação do usuário está em <a class="link-accent" href="docs.html">docs.html</a>.</p>
+					<div class="page-badges">
+						<span class="page-badge"><i class="ti ti-hammer"></i> archiso</span>
+						<span class="page-badge"><i class="ti ti-terminal-2"></i> shell root no host Arch</span>
+						<span class="page-badge"><i class="ti ti-package"></i> imagem ~3 GB</span>
+						<span class="page-badge"><i class="ti ti-brand-github"></i> nlinux-iso-build</span>
+					</div>
+				</header>
+
+				<div class="docs-layout">
+					<!-- ============================ SUMÁRIO ============================ -->
+					<aside class="toc" aria-label="Sumário da documentação">
+						<div class="toc-box">
+							<p class="toc-title"><i class="ti ti-list"></i> Nesta página</p>
+							<div class="toc-search">
+								<i class="ti ti-search" aria-hidden="true"></i>
+								<input type="search" id="tocFilter" placeholder="Buscar nas seções…" autocomplete="off" spellcheck="false" aria-label="Buscar nas seções">
+							</div>
+							<ul class="toc-list" id="tocList">
+								<li class="toc-group">Antes de começar</li>
+								<li><a href="#quando-usar"><i class="ti ti-info-circle"></i> Quando usar esta página</a></li>
+								<li class="toc-group">Construindo a ISO</li>
+								<li><a href="#build"><i class="ti ti-hammer"></i> Gerar a ISO</a></li>
+								<li><a href="#estrutura"><i class="ti ti-folder"></i> Estrutura do projeto</a></li>
+								<li><a href="#chroot"><i class="ti ti-stack-2"></i> Etapas do chroot</a></li>
+								<li><a href="#pacotes"><i class="ti ti-box"></i> Listas de pacotes</a></li>
+								<li><a href="#personalizar"><i class="ti ti-palette"></i> Personalizar</a></li>
+								<li><a href="#variaveis"><i class="ti ti-variable"></i> Variáveis do instalador</a></li>
+							</ul>
+							<p class="toc-empty hidden" id="tocEmpty">Nenhuma seção corresponde ao filtro.</p>
+						</div>
+					</aside>
+
+					<!-- ============================ CONTEÚDO ============================ -->
+					<div class="doc-content">
+
+						<!-- ---------- Quando usar esta página ---------- -->
+						<section class="doc-sec reveal" id="quando-usar">
+							<h2 class="doc-h2"><i class="ti ti-info-circle"></i> Quando usar esta página<a class="anchor ti ti-link" href="#quando-usar" aria-label="Link para esta seção"></a></h2>
+							<p class="doc-p">Esta página é para quem quer <strong>compilar a distribuição</strong> ou <strong>modificá-la</strong>: montar a ISO do zero, entender como o sistema é construído, trocar a lista de pacotes ou ajustar o instalador. Não faz parte do caminho de quem só quer instalar o NLinux — para isso, veja a <a class="link-accent" href="docs.html">documentação do usuário</a>.</p>
+							<p class="doc-p">O NLinux é uma distro <strong>rolling</strong>: não existe um "build oficial" com regras fixas, e o que você compila depende do estado dos repositórios no momento do build. Espera-se divergência entre duas máquinas. O que existe é um processo reproduzível, e é isso que está documentado aqui.</p>
+							<div class="specs-grid">
+								<div class="spec-box"><span>Host</span><b>Arch Linux</b></div>
+								<div class="spec-box"><span>Ferramentas</span><b>archiso</b></div>
+								<div class="spec-box"><span>Formato</span><b>x86_64</b></div>
+								<div class="spec-box"><span>Tempo de build</span><b>~50 min</b></div>
+								<div class="spec-box"><span>Resultado</span><b>~3 GB</b></div>
+								<div class="spec-box"><span>Licença da ISO</span><b>CC-BY-SA 4.0</b></div>
+							</div>
+							<p class="doc-p"><strong>Requisitos do host:</strong> Arch Linux com <code>git</code>, <code>archiso</code> e <code>qemu-desktop</code>. O build roda <code>makepkg</code> e <code>pacstrap</code> em chroot, então precisa de <code>root</code> e de espaço para a imagem de trabalho. Não é preciso <code>sudo</code> em passo algum se você for <code>root</code>.</p>
+							<p class="doc-p">O repositório é <a class="link-accent" href="https://github.com/Nilsonlinux/nlinux-iso-build" target="_blank" rel="noopener noreferrer">Nilsonlinux/nlinux-iso-build</a>. Correções e pull requests são bem-vindos.</p>
+						</section>
+
+						<!-- ---------- Build ---------- -->
+						<section class="doc-sec reveal" id="build">
+							<h2 class="doc-h2"><i class="ti ti-hammer"></i> Gerar a ISO<a class="anchor ti ti-link" href="#build" aria-label="Link para esta seção"></a></h2>
+							<p class="doc-p">Tudo o que monta a ISO é aberto: o projeto <a class="link-accent" href="https://github.com/Nilsonlinux/nlinux-iso-build" target="_blank" rel="noopener noreferrer">Nilsonlinux/nlinux-iso-build</a> reúne o <code>build-iso.sh</code>, a camada <code>iso/airootfs/</code>, o <code>install.sh</code> do instalador, a lista de pacotes do live e o <code>make-splash.sh</code>. Em uma máquina Arch Linux, dentro do projeto:</p>
+							<div class="code-block">
+								<div class="code-head"><span>terminal</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
+								<pre><code><span class="c"># pegando o projeto (precisa de git; o build usa sudo)</span>
+git clone https://github.com/Nilsonlinux/nlinux-iso-build.git
+cd nlinux-iso-build
+
+<span class="c"># gera iso/out/nlinux-&lt;data&gt;-x86_64.iso</span>
+./build-iso.sh
+
+<span class="c"># regerar a arte do menu de boot BIOS (precisa de Python + Pillow)</span>
+./make-splash.sh</code></pre>
+							</div>
+							<p class="doc-p">O que o <code>build-iso.sh</code> faz, em ordem:</p>
+							<ol class="doc-ul">
+								<li class="doc-li">Instala o <code>archiso</code> se faltar e <strong>regenera</strong> <code>iso/profile/</code> a partir do perfil releng instalado (compatível com a versão do <code>mkarchiso</code>).</li>
+								<li class="doc-li">Aplica os metadados de <code>iso/profiledef.sh</code> (nome/label/versão = <code>nlinux</code>, publisher <code>NLinux &lt;https://nlinux.dev&gt;</code>).</li>
+								<li class="doc-li">Anexa <code>iso/packages.live</code> à lista de pacotes do live e copia a camada <code>iso/airootfs/</code> (autologin, auto-run, branding, serviços do live).</li>
+								<li class="doc-li">Embute o projeto em <code>/opt/noctalia-installer</code> no live (<code>install.sh</code>, <code>install/</code>, <code>config/</code>, <code>packages/</code>, <code>web/</code>) e a <strong>Loja NLinux Software</strong> em <code>/opt/nlinux-software</code>, a partir da cópia publicada em <code>nlinux-software/</code>.</li>
+								<li class="doc-li">Transforma o boot: <strong>systemd-boot</strong> (UEFI), <strong>GRUB</strong> (UEFI) e <strong>syslinux</strong> (BIOS), com títulos, itens e a splash do NLinux.</li>
+								<li class="doc-li">Roda <code>mkarchiso -v</code> — que executa a camada <code>iso/airootfs/root/customize_airootfs.sh</code> no chroot do build (AUR, greetd, usuário do live, autologin) — e gera a ISO (~2,9 GB).</li>
+							</ol>
+							<div class="foot-links">
+								<a class="btn-ghost" href="https://github.com/Nilsonlinux/nlinux-iso-build" target="_blank" rel="noopener noreferrer"><i class="ti ti-brand-github"></i> Repositório do build</a>
+							</div>
+							<h3 class="doc-h3"><i class="ti ti-shopping-bag"></i> Atualizar a loja embutida na ISO</h3>
+							<p class="doc-p"><code>nlinux-software/</code> é a cópia do build publicado da loja (<a class="link-accent" href="https://github.com/Nilsonlinux/nlinux-software" target="_blank" rel="noopener noreferrer">Nilsonlinux/nlinux-software</a>) que o <code>build-iso.sh</code> embute em <code>/opt/nlinux-software</code>. O script não instala a loja: ele monta a imagem a partir do que está <strong>commitado</strong> na pasta, e por isso ela nunca pode ficar modificada sem commit — uma pasta editada faria a ISO usar uma loja diferente da que está no repositório.</p>
+							<div class="callout">
+								<i class="ti ti-info-circle"></i>
+								<p><strong>Na maior parte das vezes não é preciso fazer isso à mão.</strong> Ao gerar a versão da loja, o passo 8 do build da curadoria (<code>sync_iso_store</code>) apaga, recopla e <strong>commita</strong> <code>nlinux-software/</code> a partir do build recém-gerado, antes de publicar. Basta abrir a curadoria e clicar em <strong>“Gerar versão da loja”</strong>. Só a subpasta da loja entra no commit — se você estiver editando outras coisas do projeto da ISO, elas ficam pendentes e intactas.</p>
+							</div>
+							<div class="code-block">
+								<div class="code-head"><span>terminal · conferir o que está embarcado</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
+								<pre><code><span class="c"># dentro de nlinux-iso-build</span>
+grep revision nlinux-software/catalog-head.json
+git log -1 --oneline</code></pre>
+							</div>
+							<p class="doc-p">O próprio <code>build-iso.sh</code> faz essa conferência antes de embutir a loja: ele compara a revisão do <code>catalog-head.json</code> embarcado com a publicação no GitHub. Se a publicada for maior, sai um aviso em amarelo dizendo que a imagem vai ficar com a loja velha. Sem <code>curl</code> ou sem rede, ele avisa e segue — a conferência nunca segura o build. Caso a curadoria falhe ao espelhar, o caminho manual continua valendo:</p>
+							<div class="code-block">
+								<div class="code-head"><span>terminal · espelhar a loja manualmente (fallback)</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
+								<pre><code><span class="c"># dentro de nlinux-iso-build</span>
+rm -rf nlinux-software &amp;&amp; mkdir nlinux-software
+git clone --depth 1 https://github.com/Nilsonlinux/nlinux-software.git /tmp/loja
+cp -a /tmp/loja/. nlinux-software/
+rm -rf nlinux-software/.git nlinux-software/*.tar.gz nlinux-software/*.tar.gz.asc
+
+<span class="c"># conferindo a revisão e a assinatura do pacote publicado</span>
+cat nlinux-software/catalog-head.json
+gpg --verify nlinux-software/nlinux-software-v&lt;N&gt;.tar.gz.asc nlinux-software/nlinux-software-v&lt;N&gt;.tar.gz</code></pre>
+							</div>
+							<div class="callout">
+								<i class="ti ti-info-circle"></i>
+								<p>A pasta é apagada antes de recoplar. É o que impede programas removidos do catálogo de continuarem embarcados na imagem por causa de um espelho parcial. A assinatura só pode ser conferida no repositório, porque o <code>.tar.gz</code> não existe dentro da pasta embute.</p>
+							</div>
+							<div class="callout">
+								<i class="ti ti-info-circle"></i>
+								<p>Desde a v117 o app <strong>não grava mais dentro do <code>/opt</code></strong>: o catálogo e as mídias ficam em <code>~/.local/share/nlinux/store/apps</code> e a árvore em <code>/opt/nlinux-software</code> é só a semente, somente-leitura. Por isso <code>customize_airootfs.sh</code> (live) e <code>40-user-config.sh</code> (instalado) semeiam a pasta do usuário em vez de <code>chown</code> no <code>/opt</code> — a primeira abertura da loja já encontra tudo, sem esperar cópia.</p>
+							</div>
+							<div class="callout warn">
+								<i class="ti ti-alert-triangle"></i>
+								<p>Não rode dois builds ao mesmo tempo: o script roda em um namespace de mounts privado e desmonta mounts deixados por builds interrompidos antes de começar. A camada do live compila os pacotes AUR via <code>yay</code> em duas etapas (<code>noctalia-greeter</code>, <code>xdg-desktop-portal-umbriel-git</code> e <code>xwayland-satellite-git</code> primeiro; depois <code>umbriel-git</code> e <code>whatsapp-linux-desktop-bin</code>, que dependem do portal) — por isso o build é <strong>lento</strong> (Rust/cargo) e precisa de internet.</p>
+							</div>
+							<p class="doc-p">Depois de gerar, grave a ISO com <code>dd</code> ou balenaEtcher e valide na máquina de destino. Detalhes da release na <a class="link-accent" href="baixar.html">página do NLinux</a>.</p>
+						</section>
+
+						<!-- ---------- Estrutura ---------- -->
+						<section class="doc-sec reveal" id="estrutura">
+							<h2 class="doc-h2"><i class="ti ti-folder"></i> Estrutura do projeto<a class="anchor ti ti-link" href="#estrutura" aria-label="Link para esta seção"></a></h2>
+							<p class="doc-p">Esse é o layout do repositório <a class="link-accent" href="https://github.com/Nilsonlinux/nlinux-iso-build" target="_blank" rel="noopener noreferrer">Nilsonlinux/nlinux-iso-build</a>, com o <code>README.md</code> detalhando cada etapa.</p>
+							<div class="code-block">
+								<div class="code-head"><span>nlinux-iso-build</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
+								<pre><code>build-iso.sh              gera a ISO (sudo; limpa mounts de builds interrompidos)
+make-splash.sh            gera splash.png a partir de NLinux.jpg (menu BIOS)
+install.sh                instalador principal (web-installed; GUI_DRIVEN=1)
+install/translations.py   traduções do instalador (7 idiomas)
+install/chroot/           etapas executadas dentro do chroot do sistema instalado
+web/                      servidor + UI do instalador web (server.py, static/)
+packages/                 listas de pacotes do sistema instalado
+iso/packages.live         pacotes extras do live (ISO)
+iso/airootfs/             camada over do live (branding, auto-run, atalhos)
+iso/profiledef.sh         metadados da ISO (nome, label, versão)
+config/                   dotfiles aplicados ao usuário (live e instalado)
+nlinux-software/          Loja NLinux Software embutida no live
+NLinux.jpg / splash.png   arte do menu de boot</code></pre>
+							</div>
+						</section>
+
+						<!-- ---------- Chroot ---------- -->
+						<section class="doc-sec reveal" id="chroot">
+							<h2 class="doc-h2"><i class="ti ti-stack-2"></i> Etapas do chroot<a class="anchor ti ti-link" href="#chroot" aria-label="Link para esta seção"></a></h2>
+							<p class="doc-p">Roteiro da instalação: <code>install.sh</code> → <code>install/chroot/all.sh</code> → as etapas abaixo. No modo offline a etapa de AUR é pulada.</p>
+							<div class="tbl-wrap">
+								<table class="tbl">
+									<thead><tr><th>#</th><th>Arquivo</th><th>O que faz</th></tr></thead>
+									<tbody>
+										<tr><td>1</td><td class="mono">10-system.sh</td><td>Fuso, locale, keymap, hostname/hosts, branding do <code>os-release</code>, <code>pacman</code>, <code>pacman-key</code>, initramfs (com <code>sd-encrypt</code> quando há LUKS), <strong>zram</strong>, usuários e senhas (shell <strong>fish</strong>), sudoers e <strong>systemd-boot</strong> com a entrada NLinux</td></tr>
+										<tr><td>2</td><td class="mono">20-aur.sh</td><td>Usuário de sistema <code>greeter</code>; usuário temporário <code>builder</code> (sudo sem senha) para instalar o <code>yay-bin</code> e rodar <code>yay -S</code> dos pacotes AUR; remove o <code>builder</code> no final</td></tr>
+										<tr><td>3</td><td class="mono">30-greetd.sh</td><td><code>/etc/greetd/config.toml</code> com o <strong>noctalia-greeter</strong> (sessão padrão <code>umbriel</code>)</td></tr>
+										<tr><td>4</td><td class="mono">40-user-config.sh</td><td>Copia <code>config/.config</code> → <code>~/.config</code> e <code>config/.local</code> → <code>~/.local</code> (ícones/cursor Bibata, logo do fastfetch), resolvendo templates <code>.tpl</code> com o layout do teclado</td></tr>
+										<tr><td>5</td><td class="mono">41-welcome.sh</td><td>Marca <code>/etc/nlinux-installed</code> e instala o <code>nlinux-welcome</code> (janela única no 1º login)</td></tr>
+										<tr><td>6</td><td class="mono">50-services.sh</td><td>Habilita NetworkManager, bluetooth, greetd, accounts-daemon e <strong>packagekit</strong>; adiciona o <strong>Flathub</strong> como remoto Flatpak do usuário; roda <strong><code>appstreamcli refresh --force</code></strong> (metadados AppStream para a loja e o App Center); escreve <code>/etc/environment</code> (Wayland + cursor <code>Bibata-Modern-Ice</code>) e liga o NTP com <code>systemd-timesyncd</code></td></tr>
+									</tbody>
+								</table>
+							</div>
+						</section>
+
+						<!-- ---------- Pacotes ---------- -->
+						<section class="doc-sec reveal" id="pacotes">
+							<h2 class="doc-h2"><i class="ti ti-box"></i> Listas de pacotes<a class="anchor ti ti-link" href="#pacotes" aria-label="Link para esta seção"></a></h2>
+							<div class="tbl-wrap">
+								<table class="tbl">
+									<thead><tr><th>Lista</th><th>Conteúdo</th></tr></thead>
+									<tbody>
+										<tr><td class="mono">packages/base.packages</td><td>Kernel e firmware, rede (NetworkManager, bluez), áudio (PipeWire + WirePlumber), <code>cryptsetup</code>/<code>lvm2</code>, fontes, ferramentas de terminal (fzf, ripgrep, fd, eza, bat, starship, fastfetch, btop, htop) e <code>pacman-contrib</code></td></tr>
+										<tr><td class="mono">packages/desktop.packages</td><td>Stack Noctalia (<code>noctalia</code>, <code>greetd</code>), <code>kitty</code>, fish, starship, fastfetch, apps (firefox, nautilus, discord, telegram, spotify-launcher, gnome-text-editor, eartag), swaylock/idle, wl-clipboard, grim/slurp, <code>zram-generator</code>, mpv/ffmpeg/imagemagick, <code>jq</code>/<code>yq</code> e as dependências da loja (python, python-gobject, webkit2gtk-4.1)</td></tr>
+										<tr><td class="mono">packages/aur.packages</td><td><code>xdg-desktop-portal-umbriel-git</code>, <code>umbriel-git</code>, <code>noctalia-greeter</code>, <code>xwayland-satellite-git</code> (X11 no Umbriel) e <code>whatsapp-linux-desktop-bin</code> — via <code>yay</code> no chroot</td></tr>
+										<tr><td class="mono">iso/packages.live</td><td>Ferramentas do instalador (cryptsetup, gdisk, btrfs-progs, parted, python, webkit2gtk-4.1, efibootmgr, polkit), rede, bluetooth, áudio e os mesmos apps do desktop, para o live ser uma cópia fiel do sistema instalado</td></tr>
+									</tbody>
+								</table>
+							</div>
+							<p class="doc-p">As listas são arquivos de texto: um pacote por linha, comentários com <code>#</code>. No modo online o <code>pacstrap</code> usa <code>base.packages</code> + <code>desktop.packages</code> + os drivers da GPU escolhida + o microcódigo detectado.</p>
+						</section>
+
+						<!-- ---------- Personalizar ---------- -->
+						<section class="doc-sec reveal" id="personalizar">
+							<h2 class="doc-h2"><i class="ti ti-palette"></i> Personalizar<a class="anchor ti ti-link" href="#personalizar" aria-label="Link para esta seção"></a></h2>
+							<div class="card-grid">
+								<div class="mini-card">
+									<h4><i class="ti ti-file"></i> Metadados da ISO</h4>
+									<p><code>iso/profiledef.sh</code>: nome, label, aplicação e versão.</p>
+								</div>
+								<div class="mini-card">
+									<h4><i class="ti ti-box"></i> Pacotes</h4>
+									<p>Edite <code>packages/</code> e <code>iso/packages.live</code>.</p>
+								</div>
+								<div class="mini-card">
+									<h4><i class="ti ti-terminal"></i> Dotfiles</h4>
+									<p><code>config/</code>: kitty, fish, starship, fastfetch, Umbriel e os cursores Bibata. Aplicados ao usuário do live e do sistema instalado.</p>
+								</div>
+								<div class="mini-card">
+									<h4><i class="ti ti-power"></i> Camada do live</h4>
+									<p><code>iso/airootfs/</code>: autologin, auto-run, branding e serviços (<code>root/customize_airootfs.sh</code> roda no chroot do build).</p>
+								</div>
+								<div class="mini-card">
+									<h4><i class="ti ti-stack-2"></i> Etapas da instalação</h4>
+									<p><code>install/chroot/*.sh</code> — edite ou adicione etapas no <code>all.sh</code>.</p>
+								</div>
+								<div class="mini-card">
+									<h4><i class="ti ti-language"></i> Textos do instalador</h4>
+									<p><code>install/translations.py</code> é a fonte única dos textos do instalador web nos <strong>7 idiomas</strong>. O <code>web/server.py</code> e o <code>web/static/app.js</code> só pedem as chaves (<code>stage.*</code>, <code>web.*</code>, <code>tui.*</code>, <code>part.*</code>) — para traduzir, edite só esse arquivo.</p>
+								</div>
+								<div class="mini-card">
+									<h4><i class="ti ti-photo"></i> Arte do boot</h4>
+									<p>Substitua <code>NLinux.jpg</code> e rode <code>./make-splash.sh</code> (640×480, menu syslinux).</p>
+								</div>
+							</div>
+							<div class="callout">
+								<i class="ti ti-info-circle"></i>
+								<p>Arquivos com sufixo <code>.tpl</code> são templates: <code>__KEYBOARD_LAYOUT__</code> é substituído pelo layout derivado do keymap escolhido (<code>br-abnt2</code> → <code>br</code>, <code>us</code> → <code>us</code>…). O <code>fish_variables</code> não é versionado porque guarda caminhos específicos da máquina.</p>
+							</div>
+						</section>
+
+						<!-- ---------- Variáveis ---------- -->
+						<section class="doc-sec reveal" id="variaveis">
+							<h2 class="doc-h2"><i class="ti ti-variable"></i> Variáveis do instalador<a class="anchor ti ti-link" href="#variaveis" aria-label="Link para esta seção"></a></h2>
+							<p class="doc-p">Para instalar sem passar pelo navegador, exporte as variáveis antes de rodar o <code>install.sh</code>:</p>
+							<div class="code-block">
+								<div class="code-head"><span>terminal</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
+								<pre><code>sudo env INSTALL_USER=felipe INSTALL_USER_PASS=senha123 ROOT_PASS=senha123 \
+  INSTALL_DISK=/dev/nvme0n1 FS_TYPE=btrfs USE_LUKS=1 GPU=amd ./install.sh</code></pre>
+							</div>
+							<div class="tbl-wrap">
+								<table class="tbl">
+									<thead><tr><th>Variável</th><th>Padrão</th><th>Para que serve</th></tr></thead>
+									<tbody>
+										<tr><td class="mono">INSTALL_USER / INSTALL_USER_PASS</td><td class="mono">nlinux / nlinux</td><td>Nome e senha do usuário criado</td></tr>
+										<tr><td class="mono">ROOT_PASS</td><td class="mono">nlinux</td><td>Senha do root (o padrão é a mesma do usuário)</td></tr>
+										<tr><td class="mono">LUKS_PASS</td><td class="mono">nlinux</td><td>Senha de desbloqueio do disco</td></tr>
+										<tr><td class="mono">HOSTNAME</td><td class="mono">nlinux</td><td>Nome da máquina</td></tr>
+										<tr><td class="mono">LOCALE / KEYMAP / ZONEINFO</td><td class="mono">pt_BR.UTF-8 / br-abnt2 / America/Sao_Paulo</td><td>Idioma, teclado e fuso do sistema</td></tr>
+										<tr><td class="mono">MIRROR</td><td class="mono">(vazio = automático)</td><td>URL base do espelho de repositórios</td></tr>
+										<tr><td class="mono">OFFLINE</td><td class="mono">1</td><td><code>1</code> = rápida (offline), <code>0</code> = completa (online)</td></tr>
+										<tr><td class="mono">INSTALL_DISK (DISK)</td><td class="mono">(escolhido no menu)</td><td>Disco de destino</td></tr>
+										<tr><td class="mono">INSTALL_MODE</td><td class="mono">wipe</td><td><code>wipe</code> apaga o disco; <code>dual</code> instala ao lado de outro sistema</td></tr>
+										<tr><td class="mono">DUAL_RESIZE_PARTITION / DUAL_RESIZE_BYTES</td><td class="mono">(vazio / 0)</td><td>Partição NTFS a reduzir e tamanho a liberar no dual boot</td></tr>
+										<tr><td class="mono">FS_TYPE</td><td class="mono">(escolhido no menu)</td><td><code>ext4</code> ou <code>btrfs</code></td></tr>
+										<tr><td class="mono">USE_LUKS</td><td class="mono">(escolhido no menu)</td><td><code>1</code> criptografa a raiz com LUKS2</td></tr>
+										<tr><td class="mono">GPU</td><td class="mono">(escolhido no menu)</td><td><code>intel</code>, <code>amd</code>, <code>nvidia</code> ou <code>vm</code> (genérico)</td></tr>
+										<tr><td class="mono">MICROCODE</td><td class="mono">detectado</td><td><code>intel-ucode</code> / <code>amd-ucode</code></td></tr>
+										<tr><td class="mono">NLLANG</td><td class="mono">pt</td><td>Idioma da interface do instalador (pt, en, es, fr, de, it, ja)</td></tr>
+									</tbody>
+								</table>
+							</div>
+							<p class="doc-p">Pré-checagens do instalador: exige root, UEFI e o <code>pacstrap</code> (isto é, rodar a partir do ambiente live do Arch). Sem rede aparente, ele avisa que o modo online pode falhar e sugere o rápido offline. Sem <code>gdisk</code> ou <code>cryptsetup</code>, instala o que falta no live.</p>
+						</section>
+
+						<section class="doc-sec reveal">
+							<div class="foot-links">
+								<a class="btn-primary" href="baixar.html"><i class="ti ti-download"></i><span>Baixar a ISO</span></a>
+								<a class="btn-ghost" href="loja.html"><i class="ti ti-shopping-bag"></i> Sobre a loja</a>
+								<a class="btn-ghost" href="https://github.com/Nilsonlinux" target="_blank" rel="noopener noreferrer"><i class="ti ti-brand-github"></i> Código-fonte</a>
+							</div>
+						</section>
+
+					</div>
+				</div>
+
+			</div>
+		</main>
+
+		<footer class="site-footer">
+			<div class="site-footer-inner">
+				<div class="footer-grid">
+					<div class="footer-brand">
+						<div class="footer-brand-logo">
+							<img src="img/nlinux-logo.png" alt="NLinux" width="40" height="40" />
+							<div>
+								<p style="font-weight:600;letter-spacing:-.01em">NLinux</p>
+								<p style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.12em;color:var(--faint)">documentação</p>
+							</div>
+						</div>
+						<p class="footer-blurb">Documentação da distribuição Arch Linux do Nilsonlinux: compositor Umbriel, login greetd, shell Noctalia V5, loja nativa e instalador web — tudo open source.</p>
+					</div>
+					<div class="footer-links">
+						<nav class="footer-col" aria-label="Documentação">
+							<p>Docs</p>
+							<ul>
+								<li><a href="docs.html">Documentação</a></li>
+								<li><a href="docs.html#instalar">Instalador</a></li>
+								<li><a href="docs.html#atalhos">Atalhos</a></li>
+								<li><a href="changelog.html">Changelog</a></li>
+								<li><a href="compilar.html">Compilar a ISO</a></li>
+							</ul>
+						</nav>
+						<nav class="footer-col" aria-label="NLinux">
+							<p>NLinux</p>
+							<ul>
+								<li><a href="index.html">Visão geral</a></li>
+								<li><a href="loja.html">Loja de software</a></li>
+								<li><a href="recursos.html">Recursos</a></li>
+								<li><a href="baixar.html">Download ISO</a></li>
+							</ul>
+						</nav>
+						<nav class="footer-col" aria-label="Projeto">
+							<p>Projeto</p>
+							<ul>
+								<li><a href="https://github.com/Nilsonlinux" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+								<li><a href="https://github.com/Nilsonlinux/nlinux-iso-build" target="_blank" rel="noopener noreferrer">nlinux-iso-build</a></li>
+								<li><a href="https://github.com/Nilsonlinux/nlinux-software" target="_blank" rel="noopener noreferrer">nlinux-software</a></li>
+								<li><a href="plugins.html">Plugins</a></li>
+								<li><a href="doar.html">Apoie o projeto</a></li>
+							</ul>
+						</nav>
+						<nav class="footer-col" aria-label="Comunidade">
+							<p>Redes</p>
+							<ul>
+								<li><a href="https://github.com/Nilsonlinux?tab=repositories" target="_blank" rel="noopener noreferrer">Repositórios</a></li>
+								<li><a href="https://discord.noctalia.dev" target="_blank" rel="noopener noreferrer">Discord Noctalia</a></li>
+								<li><a href="https://docs.noctalia.dev" target="_blank" rel="noopener noreferrer">Noctalia Docs</a></li>
+								<li><a href="https://archlinux.org" target="_blank" rel="noopener noreferrer">Arch Linux</a></li>
+							</ul>
+						</nav>
+					</div>
+				</div>
+				<div class="footer-bottom">
+					<p>© <span id="year"></span> Nilsonlinux · NLinux — Arch, Umbriel e Noctalia V5.</p>
+					<p>base archlinux · compositor greetd/umbriel · shell noctalia v5</p>
+				</div>
+			</div>
+		</footer>
+
+		<button type="button" class="back-top" id="backToTop" aria-label="Voltar ao topo"><i class="ti ti-chevron-up"></i></button>
+	</div>
+</div>
+
+<script>
+(() => {
+	const $ = s => document.querySelector(s);
+	const $$ = s => [...document.querySelectorAll(s)];
+
+	/* ---------- tema ---------- */
+	const themeBtn = $('#themeToggle');
+	const themeIcon = () => themeBtn.querySelector('i');
+	function syncThemeIcon() {
+		const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+		themeIcon().className = dark ? 'ti ti-sun' : 'ti ti-moon';
+		themeBtn.setAttribute('aria-label', dark ? 'Alternar para tema claro' : 'Alternar para tema escuro');
+	}
+	themeBtn.addEventListener('click', () => {
+		const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+		document.documentElement.setAttribute('data-theme', next);
+		try { localStorage.setItem('theme', next); } catch (e) { }
+		syncThemeIcon();
+	});
+	syncThemeIcon();
+
+	/* ---------- ano ---------- */
+	$('#year').textContent = new Date().getFullYear();
+
+	/* ---------- menu móvel ---------- */
+	const navToggle = $('#navToggle');
+	const mobileMenu = $('#mobileMenu');
+	const menuIcon = () => navToggle.querySelector('i');
+	function setMenu(open) {
+		mobileMenu.classList.toggle('open', open);
+		navToggle.setAttribute('aria-expanded', open);
+		navToggle.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+		menuIcon().className = open ? 'ti ti-x' : 'ti ti-menu-2';
+	}
+	function closeMenu() { setMenu(false); }
+	navToggle.addEventListener('click', e => {
+		e.stopPropagation();
+		setMenu(!mobileMenu.classList.contains('open'));
+	});
+	document.addEventListener('click', e => {
+		if (!mobileMenu.contains(e.target) && !navToggle.contains(e.target)) closeMenu();
+	});
+	mobileMenu.addEventListener('click', e => { if (e.target.closest('a')) closeMenu(); });
+	window.addEventListener('resize', () => { if (innerWidth >= 880) closeMenu(); });
+
+	/* ---------- voltar ao topo ---------- */
+	const backTop = $('#backToTop');
+	window.addEventListener('scroll', () => {
+		backTop.classList.toggle('visible', window.scrollY > 600);
+	}, { passive: true });
+	backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+	/* ---------- copiar código ---------- */
+	$$('[data-copy]').forEach(btn => {
+		btn.addEventListener('click', async () => {
+			const pre = btn.closest('.code-block').querySelector('pre');
+			const text = pre.innerText;
+			const done = ok => {
+				btn.textContent = ok ? 'copiado!' : 'não copiou';
+				setTimeout(() => btn.textContent = 'copiar', 1600);
+			};
+			let ok = false;
+			try {
+				await navigator.clipboard.writeText(text);
+				ok = true;
+			} catch (e) {
+				// Fallback para contextos sem permissão da Clipboard API
+				// (p.ex.: página em http://, navegadores antigos).
+				try {
+					const ta = document.createElement('textarea');
+					ta.value = text;
+					ta.setAttribute('readonly', '');
+					ta.style.cssText = 'position:fixed;top:0;left:-9999px;opacity:0';
+					document.body.appendChild(ta);
+					ta.select();
+					ok = document.execCommand('copy');
+					ta.remove();
+				} catch (err) { ok = false; }
+			}
+			done(ok);
+		});
+	});
+
+	/* ---------- filtrar o sumário ---------- */
+	const filter = $('#tocFilter');
+	const items = $$('#tocList li');
+	const groups = $$('#tocList .toc-group');
+	const emptyMsg = $('#tocEmpty');
+	// Casa o rótulo do sumário OU o texto da seção (mini busca no conteúdo).
+	const targets = new Map($$('#tocList a').map(a => {
+		const id = a.getAttribute('href').slice(1);
+		return [a, (document.getElementById(id) || {textContent: ''}).textContent.toLowerCase()];
+	}));
+	filter.addEventListener('input', () => {
+		const q = filter.value.trim().toLowerCase();
+		let visible = 0;
+		items.forEach(li => {
+			const isGroup = li.classList.contains('toc-group');
+			const link = li.querySelector('a');
+			const inSection = link ? (targets.get(link) || '').includes(q) : false;
+			const match = isGroup ? false : (li.textContent.toLowerCase().includes(q) || (!!q && inSection));
+			li.classList.toggle('hidden', !!q && !match);
+			if (match) visible++;
+		});
+		groups.forEach(g => {
+			let next = g.nextElementSibling;
+			while (next && !next.classList.contains('toc-group')) {
+				if (!next.classList.contains('hidden')) { g.classList.remove('hidden'); return; }
+				next = next.nextElementSibling;
+			}
+			g.classList.toggle('hidden', !!q);
+		});
+		emptyMsg.classList.toggle('hidden', visible > 0);
+	});
+
+	/* ---------- scroll-spy do sumário ---------- */
+	const links = new Map();
+	$$('#tocList a').forEach(a => links.set(a.getAttribute('href').slice(1), a));
+	const sections = [...links.keys()].map(id => document.getElementById(id)).filter(Boolean);
+	const setActive = id => {
+		links.forEach((a, key) => a.classList.toggle('active', key === id));
+	};
+	const spy = new IntersectionObserver(entries => {
+		const visible = entries.filter(e => e.isIntersecting)
+			.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+		if (visible.length) setActive(visible[0].target.id);
+	}, { rootMargin: '-80px 0px -70% 0px', threshold: 0 });
+	sections.forEach(s => spy.observe(s));
+
+	/* ---------- reveal ---------- */
+	const observer = new IntersectionObserver(entries => entries.forEach(e => {
+		if (e.isIntersecting) e.target.classList.add('in');
+	}), { threshold: .05 });
+	$$('.reveal').forEach(el => observer.observe(el));
+})();
+
+</script>
+	<script src="js/galeria.js"></script>
+</body>
+</html>
