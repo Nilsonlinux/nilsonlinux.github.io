@@ -20,7 +20,7 @@
    O conteúdo no HTML é só a reserva para quando o JS não carrega:
    nunca aponta para um arquivo ou uma data desatualizada.
    ============================================================ */
-const NLINUX_ISO_URL = 'https://drive.google.com/file/d/17m7E-nJyaV51c-vTzITPII-6noAaBH1J/view?usp=sharing';
+const NLINUX_ISO_URL = 'https://drive.google.com/file/d/1yje5qTN3zml-Gl98ef2lRRbNZ7eLLJsm/view?usp=sharing';
 const NLINUX_ISO_DATE = '2026-10-03';
 const NLINUX_ISO_SHA256 = '641f4f95d7f19c36ade00e8b30c4a51633cbe0d7bf445ded844a9454c3a5b1a8';
 
