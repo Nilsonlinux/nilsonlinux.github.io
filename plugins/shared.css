@@ -136,17 +136,24 @@ a.has-badge { position: relative; }
 	transition: all .2s; outline: none;
 }
 .btn-primary:hover { filter: brightness(1.06); transform: translateY(-1px); }
-/* ---- Nav: 9 itens ---- */
-@media (min-width: 1080px) { .main-nav { display: flex; } .nav-toggle { display: none !important; } }
-@media (min-width: 1080px) and (max-width: 1499px) {
-	.brand-label { display: none; }
+/* O menu completo só aparece quando cabe junto com a marca. */
+@media (min-width: 1280px) { .main-nav { display: flex; } .nav-toggle { display: none !important; } }
+@media (min-width: 1280px) and (max-width: 1499px) {
 	.main-nav { gap: .15rem; }
 	.main-nav a { min-width: 0; padding: 0 .5rem; font-size: .8rem; }
 	.btn-primary { min-width: 0; padding: 0 .75rem; }
 }
-@media (min-width: 1080px) and (max-width: 1279px) {
+@media (min-width: 1280px) and (max-width: 1359px) {
 	.site-header .btn-primary span.btn-label { display: none; }
 	.site-header .btn-primary { width: 2.5rem; padding: 0; }
+}
+@media (max-width: 400px) {
+	.site-header .header-actions > .btn-primary { display: none; }
+}
+@media (max-width: 360px) {
+	.site-header-inner { gap: .5rem; }
+	.brand { gap: .4rem; }
+	.brand-tag { font-size: 8px; letter-spacing: .04em; }
 }
 
 /* ---- Plugin page ---- */

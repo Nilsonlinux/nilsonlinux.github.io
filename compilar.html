@@ -186,21 +186,24 @@
 		}
 		.btn-primary:active { transform: translateY(0); }
 		.site-header .btn-primary:hover, .site-header .btn-primary:active { transform: none; }
-		/* ---- Nav: 9 itens ----
-			   Entre a marca e o botão de baixar, os 9 links precisam de ~1010px já
-			   encolhidos e ~1400px no tamanho cheio. A nav só vira linha a partir de
-			   1080px; abaixo disso quem navega é o botão de menu. Nos degraus do meio
-			   o wordmark some e os links perdem a largura mínima. */
-		@media (min-width: 1080px) { .main-nav { display: flex; } .nav-toggle { display: none !important; } }
-		@media (min-width: 1080px) and (max-width: 1499px) {
-			.brand-label { display: none; }
+		/* O menu completo só aparece quando cabe junto com a marca. */
+		@media (min-width: 1280px) { .main-nav { display: flex; } .nav-toggle { display: none !important; } }
+		@media (min-width: 1280px) and (max-width: 1499px) {
 			.main-nav { gap: .15rem; }
 			.main-nav a { min-width: 0; padding: 0 .5rem; font-size: .8rem; }
 			.btn-primary { min-width: 0; padding: 0 .75rem; }
 		}
-		@media (min-width: 1080px) and (max-width: 1279px) {
+		@media (min-width: 1280px) and (max-width: 1359px) {
 			.site-header .btn-primary span.btn-label { display: none; }
 			.site-header .btn-primary { width: 2.5rem; padding: 0; }
+		}
+		@media (max-width: 480px) {
+			.site-header .icon-btn-gh, .site-header .header-actions > .btn-primary { display: none; }
+		}
+		@media (max-width: 360px) {
+			.site-header-inner { gap: .5rem; }
+			.brand { gap: .4rem; }
+			.brand-tag { font-size: 8px; letter-spacing: .04em; }
 		}
 
 
@@ -966,7 +969,7 @@ NLinux.jpg / splash.png   arte do menu de boot</code></pre>
 		if (!mobileMenu.contains(e.target) && !navToggle.contains(e.target)) closeMenu();
 	});
 	mobileMenu.addEventListener('click', e => { if (e.target.closest('a')) closeMenu(); });
-	window.addEventListener('resize', () => { if (innerWidth >= 880) closeMenu(); });
+	window.addEventListener('resize', () => { if (innerWidth >= 1280) closeMenu(); });
 
 	/* ---------- voltar ao topo ---------- */
 	const backTop = $('#backToTop');

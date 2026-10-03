@@ -185,11 +185,20 @@
 <script>
 (() => {
 	const $ = s => document.querySelector(s);
-	document.getElementById('themeToggle').addEventListener('click', () => {
+	const themeBtn = $('#themeToggle');
+	const themeIcon = () => themeBtn.querySelector('i');
+	function syncThemeIcon() {
+		const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+		themeIcon().className = dark ? 'ti ti-sun' : 'ti ti-moon';
+		themeBtn.setAttribute('aria-label', dark ? 'Alternar para tema claro' : 'Alternar para tema escuro');
+	}
+	themeBtn.addEventListener('click', () => {
 		const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
 		document.documentElement.setAttribute('data-theme', next);
 		localStorage.setItem('theme', next);
+		syncThemeIcon();
 	});
+	syncThemeIcon();
 	$('#year').textContent = new Date().getFullYear();
 
 	// ---- Menu móvel (sanduíche) ----
@@ -209,7 +218,7 @@
 		menuIcon().className = open ? 'ti ti-x' : 'ti ti-menu-2';
 	});
 	mobileMenu.addEventListener('click', e => { if (e.target.closest('a')) closeMenu(); });
-	window.addEventListener('resize', () => { if (innerWidth >= 1080) closeMenu(); });
+	window.addEventListener('resize', () => { if (innerWidth >= 1280) closeMenu(); });
 	const observer = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }), { threshold: .08 });
 	document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 	const topBtn = $('#backToTop');
