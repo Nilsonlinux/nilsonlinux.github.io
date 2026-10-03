@@ -48,16 +48,14 @@
 						<span class="brand-tag">open source</span>
 					</span>
 				</a>
-				<!-- Menu igual ao das paginas da raiz: a fonte da verdade e o
-				     <nav class="main-nav"> do index.html. Se mudar la, tem que
-				     mudar aqui e nas 7 paginas da raiz, senao o cabecalho
-				     fica diferente conforme a pagina. -->
 				<nav class="main-nav" aria-label="Páginas do site">
 					<a href="../../index.html" class="has-badge"><i class="ti ti-disc"></i>&nbsp;NLinux<span class="nav-badge"><img src="../../img/tux.png" alt="Linux"></span></a>
 					<a href="../../baixar.html"><i class="ti ti-download"></i>&nbsp;Baixar</a>
 					<a href="../../recursos.html"><i class="ti ti-adjustments-horizontal"></i>&nbsp;Recursos</a>
 					<a href="../../loja.html"><i class="ti ti-shopping-bag"></i>&nbsp;Loja</a>
 					<a href="../../docs.html"><i class="ti ti-book-2"></i>&nbsp;Docs</a>
+					<a href="../../changelog.html"><i class="ti ti-history"></i>&nbsp;Changelog</a>
+					<a href="../../compilar.html"><i class="ti ti-hammer"></i>&nbsp;Compilar</a>
 					<a href="../../plugins.html" class="active" aria-current="page"><i class="ti ti-plug"></i>&nbsp;Plugins</a>
 					<a href="../../doar.html">❤️ Apoie o projeto</a>
 				</nav>
@@ -73,6 +71,8 @@
 				<a href="../../recursos.html"><i class="ti ti-adjustments-horizontal"></i>&nbsp;Recursos</a>
 				<a href="../../loja.html"><i class="ti ti-shopping-bag"></i>&nbsp;Loja</a>
 				<a href="../../docs.html"><i class="ti ti-book-2"></i>&nbsp;Docs</a>
+				<a href="../../changelog.html"><i class="ti ti-history"></i>&nbsp;Changelog</a>
+				<a href="../../compilar.html"><i class="ti ti-hammer"></i>&nbsp;Compilar</a>
 				<a href="../../plugins.html" class="active"><i class="ti ti-plug"></i>&nbsp;Plugins</a>
 				<a href="../../doar.html">❤️&nbsp;Apoie o projeto</a>
 			</nav>
@@ -425,7 +425,7 @@ sets the new product's Available bucket; In use and Damage start at zero.</p>
 		menuIcon().className = open ? 'ti ti-x' : 'ti ti-menu-2';
 	});
 	mobileMenu.addEventListener('click', e => { if (e.target.closest('a')) closeMenu(); });
-	window.addEventListener('resize', () => { if (innerWidth >= 880) closeMenu(); });
+	window.addEventListener('resize', () => { if (innerWidth >= 1080) closeMenu(); });
 	const observer = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }), { threshold: .08 });
 	document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 	const topBtn = $('#backToTop');

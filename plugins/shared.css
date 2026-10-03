@@ -136,17 +136,15 @@ a.has-badge { position: relative; }
 	transition: all .2s; outline: none;
 }
 .btn-primary:hover { filter: brightness(1.06); transform: translateY(-1px); }
-@media (min-width: 880px) { .main-nav { display: flex; } .nav-toggle { display: none !important; } }
-/* Faixa intermediária: o nav completo + wordmark não cabem; encolhe os links
-   e mantém só a logo, evitando espremer/estourar o cabeçalho. */
-@media (min-width: 880px) and (max-width: 1279px) {
+/* ---- Nav: 9 itens ---- */
+@media (min-width: 1080px) { .main-nav { display: flex; } .nav-toggle { display: none !important; } }
+@media (min-width: 1080px) and (max-width: 1499px) {
 	.brand-label { display: none; }
-	.main-nav { gap: .25rem; }
-	.main-nav a { min-width: 0; padding: 0 .6rem; font-size: .8rem; }
+	.main-nav { gap: .15rem; }
+	.main-nav a { min-width: 0; padding: 0 .5rem; font-size: .8rem; }
 	.btn-primary { min-width: 0; padding: 0 .75rem; }
 }
-/* Entre 880 e 959px o botão "Plugins" do cabeçalho vira só ícone. */
-@media (min-width: 880px) and (max-width: 959px) {
+@media (min-width: 1080px) and (max-width: 1279px) {
 	.site-header .btn-primary span.btn-label { display: none; }
 	.site-header .btn-primary { width: 2.5rem; padding: 0; }
 }
