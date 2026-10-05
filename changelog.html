@@ -667,7 +667,7 @@
 								<i class="ti ti-info-circle"></i>
 								<p><strong>NLinux é rolling.</strong> Uma ISO é uma fotografia: os repositórios do Arch continuam andando depois dela. Por isso duas pessoas que instalaram a mesma ISO em dias diferentes podem ter pacotes diferentes. Para o dia a dia, atualize com <code>sudo pacman -Syu</code> em vez de reinstalar.</p>
 							</div>
-							<p class="doc-p">As versões são carregadas das <a class="link-accent" href="https://github.com/Nilsonlinux/nlinux-iso-build/releases" target="_blank" rel="noopener noreferrer">GitHub Releases do nlinux-iso-build</a>.são, notas das mudanças e os arquivos da ISO e do checksum. A página consulta as releases automaticamente; não é preciso editar o HTML.</p>
+							<p class="doc-p">As versões são carregadas das <a class="link-accent" href="https://github.com/Nilsonlinux/nlinux-iso-build/releases" target="_blank" rel="noopener noreferrer">GitHub Releases do nlinux-iso-build</a>. Para adicionar uma entrada, publique uma release com a tag da versão, notas das mudanças e os arquivos da ISO e do checksum. A página consulta as releases automaticamente; não é preciso editar o HTML.</p>
 						</section>
 
 						<section class="doc-sec reveal" id="github-releases">
@@ -918,15 +918,48 @@
 		link.textContent = linkText;
 		releaseStatus.append(link);
 	};
+	// URLs permitidas nos links markdown das releases. Qualquer outra coisa
+	// (javascript:, data:) é descartada, porque o texto vem da API do GitHub.
+	const safeHref = href => {
+		try {
+			const url = new URL(href, window.location.href);
+			return ['http:', 'https:', 'mailto:'].includes(url.protocol) ? url.href : null;
+		} catch {
+			return null;
+		}
+	};
 	const appendInlineText = (parent, text) => {
-		const pattern = /(\*\*[^*]+\*\*|`[^`]+`)/g;
+		// Negrito, código e link markdown, na ordem em que aparecem no texto.
+		// O link é o último da regex porque seu texto pode conter os outros.
+		const pattern = /(\*\*[^*]+\*\*|`[^`]+`|\[([^\]]*)\]\(([^)\s]+)\))/g;
 		let offset = 0;
 		for (const match of text.matchAll(pattern)) {
 			parent.append(document.createTextNode(text.slice(offset, match.index)));
 			const marked = match[0];
-			const element = document.createElement(marked.startsWith('**') ? 'strong' : 'code');
-			element.textContent = marked.startsWith('**') ? marked.slice(2, -2) : marked.slice(1, -1);
-			parent.append(element);
+			if (marked.startsWith('**')) {
+				const strong = document.createElement('strong');
+				strong.textContent = marked.slice(2, -2);
+				parent.append(strong);
+			} else if (marked.startsWith('`')) {
+				const code = document.createElement('code');
+				code.textContent = marked.slice(1, -1);
+				parent.append(code);
+			} else {
+				const href = safeHref(match[3]);
+				if (href) {
+					const link = document.createElement('a');
+					link.className = 'link-accent';
+					link.href = href;
+					link.target = '_blank';
+					link.rel = 'noopener noreferrer';
+					appendInlineText(link, match[2]);
+					parent.append(link);
+				} else {
+					// href perigoso ou inválido: mostra o markdown cru em vez de
+					// gerar um link clicável.
+					parent.append(document.createTextNode(marked));
+				}
+			}
 			offset = match.index + marked.length;
 		}
 		parent.append(document.createTextNode(text.slice(offset)));
