@@ -230,7 +230,7 @@
 		/* ---- Abas de doação ----
 		   Os botões que trocam a aba são os do .cta-panel, no card de
 		   cima. Não existe tablist aqui: eles duplicavam exatamente as
-		   mesmas três opções. O .donate-body já tem o próprio respiro.
+		   mesmas quatro opções. O .donate-body já tem o próprio respiro.
 		   O scroll-margin evita que o cabeçalho sticky cubra o cartão. */
 		.tabs { margin-top: 2rem; scroll-margin-top: 5.5rem; }
 		.cta-actions a[role="tab"]:focus-visible { box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 50%, transparent); }
@@ -432,14 +432,15 @@
 				<section class="content-section reveal">
 					<div class="cta-panel">
 						<div class="cta-heart">❤️</div>
-						<h2>Três formas de doar</h2>
-						<p>Escolha Pix, PayPal ou transferência bancária. Qualquer valor faz a diferença — e não precisa ser todo mês.</p>
+						<h2>Quatro formas de doar</h2>
+						<p>Escolha Pix, PayPal, Ko-fi ou transferência bancária. Qualquer valor faz a diferença — e não precisa ser todo mês.</p>
 						<!-- estes botões são as abas. O .tablist de baixo duplicava
-						     exatamente estas três opções, então foi removido e o JS passou
+						     exatamente estas quatro opções, então foi removido e o JS passou
 						     a ler o tablist daqui. -->
 						<div class="cta-actions" role="tablist" aria-label="Formas de doar">
 							<a class="btn-primary" role="tab" id="tab-pix" aria-controls="doar-pix" aria-selected="true" href="#doar-pix" data-tab="pix"><i class="ti ti-qrcode"></i><span>Apoiar com Pix</span></a>
 							<a class="btn-ghost" role="tab" id="tab-paypal" aria-controls="doar-paypal" aria-selected="false" href="#doar-paypal" data-tab="paypal"><i class="ti ti-brand-paypal"></i> PayPal</a>
+							<a class="btn-ghost" role="tab" id="tab-kofi" aria-controls="doar-kofi" aria-selected="false" href="#doar-kofi" data-tab="kofi"><i class="ti ti-coffee"></i> Ko-fi</a>
 							<a class="btn-ghost" role="tab" id="tab-conta" aria-controls="doar-conta" aria-selected="false" href="#doar-conta" data-tab="conta"><i class="ti ti-building-bank"></i> Transferência</a>
 						</div>
 					</div>
@@ -495,6 +496,22 @@
 									height="550"
 									loading="lazy"
 								></iframe>
+							</div>
+						</div>
+
+						<div class="tabpanel" role="tabpanel" id="doar-kofi" aria-labelledby="tab-kofi" tabindex="0" hidden>
+							<div class="donate-body">
+								<div class="qr-side">
+									<i class="ti ti-coffee" style="font-size:3rem;color:var(--accent)"></i>
+									<p class="placeholder-note">ko-fi.com/nilsonlinux</p>
+								</div>
+								<div>
+									<h3 class="section-title">Ko-fi <span class="count">cartão ou por mês</span></h3>
+									<p class="placeholder-note">A página do projeto no Ko-fi, onde a contribuição é feita direto na plataforma. Aceita cartão e, se você quiser, um valor fixo por mês — é o que mais ajuda a manter os projetos no ar.</p>
+									<div class="cta-actions" style="justify-content:flex-start;margin-top:1.1rem">
+										<a class="btn-primary" href="https://ko-fi.com/nilsonlinux/gallery#galleryItemView" target="_blank" rel="noopener noreferrer"><i class="ti ti-coffee"></i> Abrir no Ko-fi</a>
+									</div>
+								</div>
 							</div>
 						</div>
 
