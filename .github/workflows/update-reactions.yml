@@ -28,12 +28,18 @@ jobs:
 
       - name: Commit and push reaction counts
         run: |
-          if [ -n "$(git status --porcelain)" ]; then
+          # Só data/reactions.json é escrito por update_reactions.py, e o
+          # plugins.html lê esse arquivo em runtime. Publicar o branch do
+          # Pages é o que leva o JSON novo ao ar, então o build continua
+          # necessário quando o arquivo muda de verdade — por isso o
+          # commit é escopado nesse caminho. Sem escopo, qualquer mudança
+          # na árvore de trabalho virava push e um build inútil a cada rodada.
+          if [ -z "$(git status --porcelain -- data/reactions.json)" ]; then
+            echo "No count changes; nothing to commit."
+          else
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add -A
+            git add -- data/reactions.json
             git commit -m "Update issue reaction counts"
             git push
-          else
-            echo "No count changes; nothing to commit."
           fi
