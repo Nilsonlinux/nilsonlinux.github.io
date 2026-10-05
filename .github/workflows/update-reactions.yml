@@ -2,7 +2,10 @@ name: Update reaction counts
 
 on:
   schedule:
-    - cron: "*/30 * * * *"
+    # De hora em hora, no minuto 17. Cada commit aqui dispara um build do
+    # Pages, e o minuto cheio é o horário mais disputado da agenda do Actions,
+    # então evitá-lo reduz a chance de o build ficar na fila.
+    - cron: "17 * * * *"
   workflow_dispatch:
 
 permissions:
