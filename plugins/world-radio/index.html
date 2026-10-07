@@ -101,169 +101,185 @@
 				<div class="about-section reveal">
 					<h2 class="section-title">Sobre</h2>
 					<div class="readme-content">
-						<p># World Radio<br>
-<br>
-Browse thousands of internet radio stations from around the world and play<br>
-them straight from a Noctalia panel - each country shows its flag, and while a<br>
-station plays, its logo appears in the media widget thanks to mpv&#x27;s<br>
-`--cover-art-files`.<br>
-<br>
-## Plugin<br>
-<br>
-| Field   | Value                                        |<br>
-| ------- | -------------------------------------------- |<br>
-| ID      | `nilsonlinux/world-radio`                    |<br>
-| Entries | Bar widget: `radio`; Panel: `Panel`          |<br>
-<br>
-## Features<br>
-<br>
-- **Dashboard** - two stat cards (total stations and total countries) fetched<br>
-  from the radio-browser.info stats API, animated with a count-up effect every<br>
-  time the panel opens. Below them, genre and decade chips, then a searchable<br>
-  list of every country sorted by station count with each country&#x27;s flag.<br>
-- **Tappable stat cards** - tap **Total de estações** to open every station in<br>
-  the directory ordered by votes (`Load more` fetches the next 100), or tap<br>
-  **Total de países** to open the full country list (paginated 50 at a time).<br>
-- **Paged country list** - the dashboard&#x27;s &quot;Todos os países&quot; drawer and the<br>
-  **All countries** view render 50 countries at a time with a `Load more`<br>
-  button, so the full ~240-country list never locks the panel while opening.<br>
-- **Per-country stations** - tap a country to list its stations ordered by<br>
-  votes. A search box above the list filters them by name, and rows show the<br>
-  station&#x27;s favicon (downloaded on demand), codec, bitrate and vote count,<br>
-  with a `Load more` button for the next page (100 stations per page).<br>
-- **Favorites** - star any station to save it; all favorites live in one<br>
-  place and are persisted to disk.<br>
-- **Local radios** - add your own stations by URL (name is optional and<br>
-  guessed from the host), with an optional cover image URL that shows as the<br>
-  station&#x27;s thumbnail in the list and as its logo in the media widget. Each<br>
-  one can be edited later (name, URL or cover), played, favorited, or<br>
-  removed; they persist across restarts in a separate file.<br>
-- **Playback via mpv** - stations are played through `mpv` at 85% volume<br>
-  (falls back to `ffplay` when mpv is missing). Starting a new station stops<br>
-  the previous one. The mini player shows a pulsing green live icon while a<br>
-  station is playing, with the current track under the station name (when the<br>
-  stream broadcasts song metadata).<br>
-- **Station logo in the media widget** - the playing station&#x27;s favicon is<br>
-  passed to mpv via `--cover-art-files`, which makes mpv-mpris publish it as<br>
-  `mpris:artUrl`; Noctalia&#x27;s media tab then shows the station&#x27;s own logo. For<br>
-  local radios the optional cover URL you set is used as the logo.<br>
-- **Now playing on the bar** - while a station plays, the bar widget shows its<br>
-  name next to the icon (configurable, see `show_now_playing`) and a tooltip<br>
- with &quot;Now playing: `&lt;station&gt;`&quot;.<br>
-- **Two languages** - English and `pt-BR` translations.<br>
-<br>
-## Requirements<br>
-<br>
-Install `mpv` and make sure it is on `PATH`. If `mpv` is missing, playback<br>
-automatically falls back to `ffplay` (provided by `ffmpeg`), also expected on<br>
-`PATH`.<br>
-<br>
-- `mpv` - the primary player used by the plugin (declared dependency).<br>
-- `ffmpeg` - only used as the `ffplay` fallback when `mpv` is not installed<br>
-  (declared dependency).<br>
-- `mpv-mpris` - *optional*. Required for the station&#x27;s logo to appear in<br>
-  Noctalia&#x27;s media widget/tab and for the current track to show in the mini<br>
-  player: mpv embeds the cover via `--cover-art-files`, but `mpv-mpris` is<br>
-  what publishes MPRIS (`mpris:artUrl`, `xesam:title`), and Noctalia reads<br>
-  the artwork from exactly that property. Without it Noctalia sees no MPRIS<br>
-  player, so no now-playing info and no artwork.<br>
-- `playerctl` - *optional*. Used to query MPRIS for the current track title,<br>
-  shown under the station name in the mini player. Needs `mpv-mpris` to be<br>
-  present too: without either of them the mini player simply hides the track<br>
-  line.<br>
-- **Network** - reaching `radio-browser.info` is required for the country<br>
-  list, the stats cards, all station lists and searches. No API key or<br>
-  account is needed; the service is a public, free API.<br>
-- The panel only works while a network connection is available to reach<br>
-  `radio-browser.info`.<br>
-<br>
-## Usage<br>
-<br>
-Open the panel directly with:<br>
-<br>
-```sh<br>
-noctalia msg panel-toggle nilsonlinux/world-radio:Panel<br>
-```<br>
-<br>
-or click the radio widget (`radio`) placed in the bar.<br>
-<br>
-1. **Dashboard** - search or scroll the country list; the stat cards show the<br>
-   total of stations and countries with a count-up animation on open. Tap a<br>
-   country to open it.<br>
-2. **All stations** - tap the **Total de estações** card to browse the whole<br>
-   directory ordered by votes (100 per page). Tap **Total de países** to open<br>
-   the full country list (50 per page). Use `Load more` to fetch the next<br>
-   page.<br>
-3. **Country view** - type in the search box to filter stations by name, tap<br>
-   the play button on a station to start it (it becomes a stop button while<br>
-   playing), the star to favorite it, or `Load more` for the next page.<br>
-4. **Favorites** - the star button in the header lists every station you<br>
-   starred.<br>
-5. **Local radios** - the broadcast button in the header opens your saved<br>
-   stations; `+` lets you add one with a stream URL (an optional name and an<br>
-   optional cover image URL). Use the pencil button to edit it and the trash<br>
-   button to remove it.<br>
-6. While a station plays, check the media widget for the station&#x27;s logo, and<br>
-   the bar for the now-playing name.<br>
-<br>
-## Settings<br>
-<br>
-### Bar Widget<br>
-<br>
-| Setting            | Type    | Default  | Description                                             |<br>
-| ------------------ | ------- | -------- | ------------------------------------------------------- |<br>
-| `glyph`            | `glyph` | `radio`  | Icon shown in the bar for the widget.                   |<br>
-| `show_now_playing` | `bool`  | `true`   | Show the currently playing station name next to the icon (the tooltip always keeps it). |<br>
-<br>
-## IPC<br>
-<br>
-Only the panel toggle is exposed:<br>
-<br>
-```sh<br>
-noctalia msg panel-toggle nilsonlinux/world-radio:Panel<br>
-```<br>
-<br>
-While a station plays, the plugin publishes `{ name, uuid, url }` on the<br>
-`playing` state channel (`noctalia.state`); `widget.luau` watches it to update<br>
-the bar text, tooltip and icon.<br>
-<br>
-## Notes<br>
-<br>
-- The plugin has no background service: all fetching, caching and playback is<br>
-  driven from the panel, so nothing runs while the panel is closed.<br>
-- **Network calls** - the plugin talks to `radio-browser.info`<br>
-  (`de1.api.radio-browser.info`) using `/json/countries`, `/json/stats`, and<br>
-  `/json/stations/search` (`hidebroken=true`, ordered by votes) with a<br>
-  `User-Agent` of `nilsonlinux/world-radio/1.0.0`. No credentials are sent.<br>
-- **Processes** - playback spawns `mpv` (or `ffplay`) per station; the PID is<br>
-  stored in `player.pid` so the next play/Stop kills it cleanly. Before any<br>
-  `kill`, the PID is cross-checked against `/proc/&lt;pid&gt;/comm` and<br>
-  `/proc/&lt;pid&gt;/cmdline` to confirm the process is actually `mpv`/`ffplay`, so<br>
-  a stale pid file that was recycled by an unrelated process is never<br>
-  signalled. The debounce and animation timers shell out to `sleep`.<br>
-- **Files** - runtime data lives in the plugin&#x27;s data directory and survives<br>
-  reloads: `countries.json` and `stats.json` (4h cache), `favorites.json`,<br>
-  `custom-stations.json`, `playing.json` (mini player state), `thumbs/`<br>
-  (downloaded favicons) and `player.pid`. All of them can be safely deleted<br>
-  to force a refresh. Favicon file names derive from a sanitised station id<br>
-  (non `[A-Za-z0-9_-]` characters are stripped) and downloads only accept<br>
-  `http(s)://` artwork URLs, so a remote station id or favicon cannot write<br>
-  outside `thumbs/`.<br>
-- While a station plays, the mini player state is persisted to `playing.json`.<br>
-  If the plugin reloads (for example after toggling another plugin in<br>
-  Settings), the panel restores the mini player on next open as long as the<br>
-  player process is still alive; deleting `playing.json` clears it.<br>
-- Station logos sometimes fail to download (some favicons return 403/404) -<br>
-  playback is never blocked by that; the station just plays without artwork.<br>
-- The track title under the station name depends on the station broadcasting<br>
-  stream metadata (ICY &quot;StreamTitle&quot;): only stations that send it will show a<br>
-  title, and only while `playerctl` + `mpv-mpris` are installed. Stations<br>
-  without stream metadata never show a title.<br>
-<br>
-## License<br>
-<br>
-MIT<br>
-</p>
+						<h1>World Radio</h1>
+<p>Browse thousands of internet radio stations from around the world and play
+them straight from a Noctalia panel - each country shows its flag, and while a
+station plays, its logo appears in the media widget thanks to mpv's
+<code>--cover-art-files</code>.</p>
+<h2>Plugin</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ID</td>
+<td><code>nilsonlinux/world-radio</code></td>
+</tr>
+<tr>
+<td>Entries</td>
+<td>Bar widget: <code>radio</code>; Panel: <code>Panel</code></td>
+</tr>
+</tbody>
+</table>
+<h2>Features</h2>
+<ul>
+<li><strong>Dashboard</strong> - two stat cards (total stations and total countries) fetched
+from the radio-browser.info stats API, animated with a count-up effect every
+time the panel opens. Below them, genre and decade chips, then a searchable
+list of every country sorted by station count with each country's flag.</li>
+<li><strong>Tappable stat cards</strong> - tap <strong>Total de estações</strong> to open every station in
+the directory ordered by votes (<code>Load more</code> fetches the next 100), or tap
+<strong>Total de países</strong> to open the full country list (paginated 50 at a time).</li>
+<li><strong>Paged country list</strong> - the dashboard's &quot;Todos os países&quot; drawer and the
+<strong>All countries</strong> view render 50 countries at a time with a <code>Load more</code>
+button, so the full ~240-country list never locks the panel while opening.</li>
+<li><strong>Per-country stations</strong> - tap a country to list its stations ordered by
+votes. A search box above the list filters them by name, and rows show the
+station's favicon (downloaded on demand), codec, bitrate and vote count,
+with a <code>Load more</code> button for the next page (100 stations per page).</li>
+<li><strong>Favorites</strong> - star any station to save it; all favorites live in one
+place and are persisted to disk.</li>
+<li><strong>Local radios</strong> - add your own stations by URL (name is optional and
+guessed from the host), with an optional cover image URL that shows as the
+station's thumbnail in the list and as its logo in the media widget. Each
+one can be edited later (name, URL or cover), played, favorited, or
+removed; they persist across restarts in a separate file.</li>
+<li><strong>Playback via mpv</strong> - stations are played through <code>mpv</code> at 85% volume
+(falls back to <code>ffplay</code> when mpv is missing). Starting a new station stops
+the previous one. The mini player shows a pulsing green live icon while a
+station is playing, with the current track under the station name (when the
+stream broadcasts song metadata).</li>
+<li><strong>Station logo in the media widget</strong> - the playing station's favicon is
+passed to mpv via <code>--cover-art-files</code>, which makes mpv-mpris publish it as
+<code>mpris:artUrl</code>; Noctalia's media tab then shows the station's own logo. For
+local radios the optional cover URL you set is used as the logo.</li>
+<li><strong>Now playing on the bar</strong> - while a station plays, the bar widget shows its
+name next to the icon (configurable, see <code>show_now_playing</code>) and a tooltip
+with &quot;Now playing: <code>&lt;station&gt;</code>&quot;.</li>
+<li><strong>Two languages</strong> - English and <code>pt-BR</code> translations.</li>
+</ul>
+<h2>Requirements</h2>
+<p>Install <code>mpv</code> and make sure it is on <code>PATH</code>. If <code>mpv</code> is missing, playback
+automatically falls back to <code>ffplay</code> (provided by <code>ffmpeg</code>), also expected on
+<code>PATH</code>.</p>
+<ul>
+<li><code>mpv</code> - the primary player used by the plugin (declared dependency).</li>
+<li><code>ffmpeg</code> - only used as the <code>ffplay</code> fallback when <code>mpv</code> is not installed
+(declared dependency).</li>
+<li><code>mpv-mpris</code> - <em>optional</em>. Required for the station's logo to appear in
+Noctalia's media widget/tab and for the current track to show in the mini
+player: mpv embeds the cover via <code>--cover-art-files</code>, but <code>mpv-mpris</code> is
+what publishes MPRIS (<code>mpris:artUrl</code>, <code>xesam:title</code>), and Noctalia reads
+the artwork from exactly that property. Without it Noctalia sees no MPRIS
+player, so no now-playing info and no artwork.</li>
+<li><code>playerctl</code> - <em>optional</em>. Used to query MPRIS for the current track title,
+shown under the station name in the mini player. Needs <code>mpv-mpris</code> to be
+present too: without either of them the mini player simply hides the track
+line.</li>
+<li><strong>Network</strong> - reaching <code>radio-browser.info</code> is required for the country
+list, the stats cards, all station lists and searches. No API key or
+account is needed; the service is a public, free API.</li>
+<li>The panel only works while a network connection is available to reach
+<code>radio-browser.info</code>.</li>
+</ul>
+<h2>Usage</h2>
+<p>Open the panel directly with:</p>
+<pre><code class="language-sh">noctalia msg panel-toggle nilsonlinux/world-radio:Panel
+</code></pre>
+<p>or click the radio widget (<code>radio</code>) placed in the bar.</p>
+<ol>
+<li><strong>Dashboard</strong> - search or scroll the country list; the stat cards show the
+total of stations and countries with a count-up animation on open. Tap a
+country to open it.</li>
+<li><strong>All stations</strong> - tap the <strong>Total de estações</strong> card to browse the whole
+directory ordered by votes (100 per page). Tap <strong>Total de países</strong> to open
+the full country list (50 per page). Use <code>Load more</code> to fetch the next
+page.</li>
+<li><strong>Country view</strong> - type in the search box to filter stations by name, tap
+the play button on a station to start it (it becomes a stop button while
+playing), the star to favorite it, or <code>Load more</code> for the next page.</li>
+<li><strong>Favorites</strong> - the star button in the header lists every station you
+starred.</li>
+<li><strong>Local radios</strong> - the broadcast button in the header opens your saved
+stations; <code>+</code> lets you add one with a stream URL (an optional name and an
+optional cover image URL). Use the pencil button to edit it and the trash
+button to remove it.</li>
+<li>While a station plays, check the media widget for the station's logo, and
+the bar for the now-playing name.</li>
+</ol>
+<h2>Settings</h2>
+<h3>Bar Widget</h3>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>glyph</code></td>
+<td><code>glyph</code></td>
+<td><code>radio</code></td>
+<td>Icon shown in the bar for the widget.</td>
+</tr>
+<tr>
+<td><code>show_now_playing</code></td>
+<td><code>bool</code></td>
+<td><code>true</code></td>
+<td>Show the currently playing station name next to the icon (the tooltip always keeps it).</td>
+</tr>
+</tbody>
+</table>
+<h2>IPC</h2>
+<p>Only the panel toggle is exposed:</p>
+<pre><code class="language-sh">noctalia msg panel-toggle nilsonlinux/world-radio:Panel
+</code></pre>
+<p>While a station plays, the plugin publishes <code>{ name, uuid, url }</code> on the
+<code>playing</code> state channel (<code>noctalia.state</code>); <code>widget.luau</code> watches it to update
+the bar text, tooltip and icon.</p>
+<h2>Notes</h2>
+<ul>
+<li>The plugin has no background service: all fetching, caching and playback is
+driven from the panel, so nothing runs while the panel is closed.</li>
+<li><strong>Network calls</strong> - the plugin talks to <code>radio-browser.info</code>
+(<code>de1.api.radio-browser.info</code>) using <code>/json/countries</code>, <code>/json/stats</code>, and
+<code>/json/stations/search</code> (<code>hidebroken=true</code>, ordered by votes) with a
+<code>User-Agent</code> of <code>nilsonlinux/world-radio/1.0.0</code>. No credentials are sent.</li>
+<li><strong>Processes</strong> - playback spawns <code>mpv</code> (or <code>ffplay</code>) per station; the PID is
+stored in <code>player.pid</code> so the next play/Stop kills it cleanly. Before any
+<code>kill</code>, the PID is cross-checked against <code>/proc/&lt;pid&gt;/comm</code> and
+<code>/proc/&lt;pid&gt;/cmdline</code> to confirm the process is actually <code>mpv</code>/<code>ffplay</code>, so
+a stale pid file that was recycled by an unrelated process is never
+signalled. The debounce and animation timers shell out to <code>sleep</code>.</li>
+<li><strong>Files</strong> - runtime data lives in the plugin's data directory and survives
+reloads: <code>countries.json</code> and <code>stats.json</code> (4h cache), <code>favorites.json</code>,
+<code>custom-stations.json</code>, <code>playing.json</code> (mini player state), <code>thumbs/</code>
+(downloaded favicons) and <code>player.pid</code>. All of them can be safely deleted
+to force a refresh. Favicon file names derive from a sanitised station id
+(non <code>[A-Za-z0-9_-]</code> characters are stripped) and downloads only accept
+<code>http(s)://</code> artwork URLs, so a remote station id or favicon cannot write
+outside <code>thumbs/</code>.</li>
+<li>While a station plays, the mini player state is persisted to <code>playing.json</code>.
+If the plugin reloads (for example after toggling another plugin in
+Settings), the panel restores the mini player on next open as long as the
+player process is still alive; deleting <code>playing.json</code> clears it.</li>
+<li>Station logos sometimes fail to download (some favicons return 403/404) -
+playback is never blocked by that; the station just plays without artwork.</li>
+<li>The track title under the station name depends on the station broadcasting
+stream metadata (ICY &quot;StreamTitle&quot;): only stations that send it will show a
+title, and only while <code>playerctl</code> + <code>mpv-mpris</code> are installed. Stations
+without stream metadata never show a title.</li>
+</ul>
+<h2>License</h2>
+<p>MIT</p>
+
 					</div>
 				</div>
 

@@ -101,175 +101,193 @@
 				<div class="about-section reveal">
 					<h2 class="section-title">Sobre</h2>
 					<div class="readme-content">
-						<p># Speedtest Meter<br>
-<br>
-Run an internet speed test with a live speedometer and detailed results.<br>
-<br>
-## What it does<br>
-<br>
-Speedtest Meter runs a network speed test using the Ookla Speedtest CLI or<br>
-`speedtest-cli`, displaying real-time results with a live speedometer<br>
-gauge. It measures:<br>
-<br>
-- Download speed (Mbps)<br>
-- Upload speed (Mbps)<br>
-- Ping (ms)<br>
-- Jitter (ms)<br>
-- Packet loss (%)<br>
-- Server details (name, host, location, country, IP)<br>
-- Connection details (ISP, external IP, city, region, country, organization)<br>
-<br>
-The panel shows a visual speedometer during the test and displays full<br>
-technical results upon completion. The speedometer is a circular dial<br>
-(with needle, tick marks and a colored progress arc) rendered live while<br>
-the test runs, using the same ring-gauge drawing core as the official<br>
-Noctalia &quot;processes&quot; plugin. The needle and arc sweep smoothly (eased,<br>
-speedtest.net-style) toward the current speed and the tick marks light up<br>
-as it passes. If `python3`/`Pillow` are unavailable it gracefully falls<br>
-back to the simple circular display.<br>
-<br>
-## Plugin<br>
-<br>
-| Field | Value |<br>
-| --- | --- |<br>
-| ID | `nilsonlinux/speedtest-meter` |<br>
-| Entries | Bar widget: `speedtest-widget`; Panel: `speedtest` |<br>
-<br>
-**Entries:**<br>
-- **Widget:** `speedtest-widget` - Shows an icon in the bar; click to open the panel<br>
-- **Panel:** `speedtest` - Runs the speed test and displays the results<br>
-<br>
-## Settings<br>
-<br>
-| Setting | Type | Default | Description |<br>
-|---------|------|---------|-------------|<br>
-| `glyph` (widget) | `glyph` | `brand-speedtest` | Icon shown in the bar for the `speedtest-widget` widget. |<br>
-<br>
-## Requirements<br>
-<br>
-At least one of the following must be installed and on PATH:<br>
-<br>
-- **`speedtest`** (Ookla CLI) - preferred backend; gives a truly live gauge<br>
-  with per-phase progress. `speedtest --version` is checked for the string<br>
-  &quot;Ookla&quot; before it&#x27;s trusted, since some distros&#x27; `speedtest-cli` package<br>
-  also installs a same-named `speedtest` binary.<br>
-- **`speedtest-cli`** (Python implementation) - fallback backend. No<br>
-  incremental progress, so the gauge pulses instead of tracking real<br>
-  numbers while it runs — the final result is still complete either way.<br>
-- **`stdbuf`** (coreutils) - used, when present, to force line-buffered<br>
-  output from the Ookla CLI so the live gauge updates in real time instead<br>
-  of only at the end. Present on virtually every Linux system.<br>
-<br>
-Optional (only for the circular speedometer dial):<br>
-<br>
-- **`python3`** + **`Pillow`** (`pip install Pillow`) - render the<br>
-  speedometer dial images live. Without them the plugin keeps working but<br>
-  shows the simpler circle display instead.<br>
-<br>
-Install the Ookla Speedtest CLI (recommended) or the Python fallback:<br>
-<br>
-```bash<br>
-# Arch Linux (AUR) — package name varies, check `yay -Ss speedtest` first<br>
-yay -S speedtest-bin<br>
-<br>
-# Ubuntu/Debian<br>
-curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | sudo bash<br>
-sudo apt-get install speedtest<br>
-<br>
-# Fedora<br>
-curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.rpm.sh | sudo bash<br>
-sudo dnf install speedtest<br>
-<br>
-# Or the Python fallback (also in most distros&#x27; official repos, e.g.<br>
-# Arch: pacman -S speedtest-cli, plus Debian/Ubuntu, Fedora, openSUSE, Alpine)<br>
-pip install speedtest-cli<br>
-```<br>
-<br>
-`stdbuf` ships as part of coreutils and is already installed on virtually<br>
-every Linux system — no separate install step needed.<br>
-<br>
-If neither speedtest tool is found, the error screen shows the right<br>
-install command for the detected package manager (pacman/apt/dnf/zypper/apk)<br>
-automatically.<br>
-<br>
-## External dependencies<br>
-<br>
-### Third-party services<br>
-<br>
-- **ipapi.co** - After every successful test, the panel sends one request<br>
-  to `https://ipapi.co/json/` to resolve the client&#x27;s public IP into<br>
-  geolocation data (city, region, country, organization) shown alongside<br>
-  the test server&#x27;s own location. No data is stored or transmitted beyond<br>
-  that single request.  <br>
-<br>
-### Local gauge renderer<br>
-<br>
-- **`python3` + `Pillow` worker** (`scripts/speed_gauge.py`, which uses<br>
-  `scripts/draw_graph.py`) - when available, redraws the two speedometer<br>
-  dials live while a test runs, using the same ring-gauge drawing core as<br>
-  the official &quot;processes&quot; plugin. The worker reads a tiny JSON snapshot<br>
-  that the panel writes with the current speeds; the needle sweeps toward<br>
-  the target with easing (speedtest.net style), the tick marks light up as<br>
-  it passes, and re-rendering stops once the value settles. If it cannot<br>
-  start (no `python3` or `Pillow`), the plugin falls back to the plain<br>
-  circular display and keeps working normally; nothing is sent over the<br>
-  network besides the usual speedtest/ipapi requests.  <br>
-<br>
-## Legacy `speedtest-cli` behavior<br>
-<br>
-The human-readable stream is kept on screen in the original order. When `Upload:` arrives, the plugin stays on the live Upload phase while the final Upload number animates into place.<br>
-<br>
-Only after the bandwidth test has completed does the plugin start the metadata enrichment:<br>
-<br>
-1. Query the current Speedtest.net server directory using the sponsor/city shown by the completed test.<br>
-2. Read the server `host` and `country` from that directory.<br>
-3. Resolve the server hostname to an IPv4 address.<br>
-4. Use `ipapi.co/&lt;server-ip&gt;/json/` only when Host or Country is still missing.<br>
-5. Persist every successful ipapi response in `/ipapi-cache.json`, keyed by server IP, so the same server IP is never queried again on later tests.<br>
-6. If ipapi returns HTTP 429, keep a global cooldown in the cache to avoid sending more requests until the cooldown expires.<br>
-7. Show the final result screen only after the Upload animation and metadata phase are complete, with a timeout fallback.<br>
-<br>
-The `https://ipapi.co/json/` client-IP request is not used for server metadata.<br>
-<br>
-## Notes<br>
-<br>
-While a test is running (or a result is being shown), the panel writes a<br>
-few files to the `${XDG_RUNTIME_DIR}` directory:<br>
-<br>
-| File | Description |<br>
-| --- | --- |<br>
-| `noctalia_nilsonlinux_speedtest_live.json` | Live snapshot (current download/upload speeds and gauge scale) consumed by the gauge worker. |<br>
-| `noctalia_nilsonlinux_speedtest_download.png` | Download speedometer dial image (160x130). |<br>
-| `noctalia_nilsonlinux_speedtest_upload.png` | Upload speedometer dial image (160x130). |<br>
-<br>
-`${XDG_RUNTIME_DIR}` is used when set (falling back to `${TMPDIR}`, then<br>
-`/tmp`). The files are removed when the panel closes.  <br>
-<br>
-## Installation<br>
-<br>
-Install via Noctalia Plugin Store.<br>
-<br>
-## Usage<br>
-<br>
-1. Click the widget in the bar to open the panel<br>
-2. Click &quot;Start test&quot; to run a speed test<br>
-3. Watch the circular speedometer dial while it runs (live numbers with the<br>
-   Ookla backend, a pulse with the legacy backend)<br>
-4. Review the results: download/upload, ping, jitter, packet loss, test<br>
-   server details, your ISP and external IP<br>
-<br>
-## Panel IPC Command<br>
-<br>
-To toggle the panel from outside the plugin:<br>
-<br>
-```<br>
-noctalia msg panel-toggle nilsonlinux/speedtest-meter:speedtest<br>
-```<br>
-<br>
-## License<br>
-<br>
-MIT<br>
-</p>
+						<h1>Speedtest Meter</h1>
+<p>Run an internet speed test with a live speedometer and detailed results.</p>
+<h2>What it does</h2>
+<p>Speedtest Meter runs a network speed test using the Ookla Speedtest CLI or
+<code>speedtest-cli</code>, displaying real-time results with a live speedometer
+gauge. It measures:</p>
+<ul>
+<li>Download speed (Mbps)</li>
+<li>Upload speed (Mbps)</li>
+<li>Ping (ms)</li>
+<li>Jitter (ms)</li>
+<li>Packet loss (%)</li>
+<li>Server details (name, host, location, country, IP)</li>
+<li>Connection details (ISP, external IP, city, region, country, organization)</li>
+</ul>
+<p>The panel shows a visual speedometer during the test and displays full
+technical results upon completion. The speedometer is a circular dial
+(with needle, tick marks and a colored progress arc) rendered live while
+the test runs, using the same ring-gauge drawing core as the official
+Noctalia &quot;processes&quot; plugin. The needle and arc sweep smoothly (eased,
+speedtest.net-style) toward the current speed and the tick marks light up
+as it passes. If <code>python3</code>/<code>Pillow</code> are unavailable it gracefully falls
+back to the simple circular display.</p>
+<h2>Plugin</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ID</td>
+<td><code>nilsonlinux/speedtest-meter</code></td>
+</tr>
+<tr>
+<td>Entries</td>
+<td>Bar widget: <code>speedtest-widget</code>; Panel: <code>speedtest</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Entries:</strong></p>
+<ul>
+<li><strong>Widget:</strong> <code>speedtest-widget</code> - Shows an icon in the bar; click to open the panel</li>
+<li><strong>Panel:</strong> <code>speedtest</code> - Runs the speed test and displays the results</li>
+</ul>
+<h2>Settings</h2>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>glyph</code> (widget)</td>
+<td><code>glyph</code></td>
+<td><code>brand-speedtest</code></td>
+<td>Icon shown in the bar for the <code>speedtest-widget</code> widget.</td>
+</tr>
+</tbody>
+</table>
+<h2>Requirements</h2>
+<p>At least one of the following must be installed and on PATH:</p>
+<ul>
+<li><strong><code>speedtest</code></strong> (Ookla CLI) - preferred backend; gives a truly live gauge
+with per-phase progress. <code>speedtest --version</code> is checked for the string
+&quot;Ookla&quot; before it's trusted, since some distros' <code>speedtest-cli</code> package
+also installs a same-named <code>speedtest</code> binary.</li>
+<li><strong><code>speedtest-cli</code></strong> (Python implementation) - fallback backend. No
+incremental progress, so the gauge pulses instead of tracking real
+numbers while it runs — the final result is still complete either way.</li>
+<li><strong><code>stdbuf</code></strong> (coreutils) - used, when present, to force line-buffered
+output from the Ookla CLI so the live gauge updates in real time instead
+of only at the end. Present on virtually every Linux system.</li>
+</ul>
+<p>Optional (only for the circular speedometer dial):</p>
+<ul>
+<li><strong><code>python3</code></strong> + <strong><code>Pillow</code></strong> (<code>pip install Pillow</code>) - render the
+speedometer dial images live. Without them the plugin keeps working but
+shows the simpler circle display instead.</li>
+</ul>
+<p>Install the Ookla Speedtest CLI (recommended) or the Python fallback:</p>
+<pre><code class="language-bash"># Arch Linux (AUR) — package name varies, check `yay -Ss speedtest` first
+yay -S speedtest-bin
+
+# Ubuntu/Debian
+curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | sudo bash
+sudo apt-get install speedtest
+
+# Fedora
+curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.rpm.sh | sudo bash
+sudo dnf install speedtest
+
+# Or the Python fallback (also in most distros' official repos, e.g.
+# Arch: pacman -S speedtest-cli, plus Debian/Ubuntu, Fedora, openSUSE, Alpine)
+pip install speedtest-cli
+</code></pre>
+<p><code>stdbuf</code> ships as part of coreutils and is already installed on virtually
+every Linux system — no separate install step needed.</p>
+<p>If neither speedtest tool is found, the error screen shows the right
+install command for the detected package manager (pacman/apt/dnf/zypper/apk)
+automatically.</p>
+<h2>External dependencies</h2>
+<h3>Third-party services</h3>
+<ul>
+<li><strong>ipapi.co</strong> - After every successful test, the panel sends one request
+to <code>https://ipapi.co/json/</code> to resolve the client's public IP into
+geolocation data (city, region, country, organization) shown alongside
+the test server's own location. No data is stored or transmitted beyond
+that single request.</li>
+</ul>
+<h3>Local gauge renderer</h3>
+<ul>
+<li><strong><code>python3</code> + <code>Pillow</code> worker</strong> (<code>scripts/speed_gauge.py</code>, which uses
+<code>scripts/draw_graph.py</code>) - when available, redraws the two speedometer
+dials live while a test runs, using the same ring-gauge drawing core as
+the official &quot;processes&quot; plugin. The worker reads a tiny JSON snapshot
+that the panel writes with the current speeds; the needle sweeps toward
+the target with easing (speedtest.net style), the tick marks light up as
+it passes, and re-rendering stops once the value settles. If it cannot
+start (no <code>python3</code> or <code>Pillow</code>), the plugin falls back to the plain
+circular display and keeps working normally; nothing is sent over the
+network besides the usual speedtest/ipapi requests.</li>
+</ul>
+<h2>Legacy <code>speedtest-cli</code> behavior</h2>
+<p>The human-readable stream is kept on screen in the original order. When <code>Upload:</code> arrives, the plugin stays on the live Upload phase while the final Upload number animates into place.</p>
+<p>Only after the bandwidth test has completed does the plugin start the metadata enrichment:</p>
+<ol>
+<li>Query the current Speedtest.net server directory using the sponsor/city shown by the completed test.</li>
+<li>Read the server <code>host</code> and <code>country</code> from that directory.</li>
+<li>Resolve the server hostname to an IPv4 address.</li>
+<li>Use <code>ipapi.co/&lt;server-ip&gt;/json/</code> only when Host or Country is still missing.</li>
+<li>Persist every successful ipapi response in <code>/ipapi-cache.json</code>, keyed by server IP, so the same server IP is never queried again on later tests.</li>
+<li>If ipapi returns HTTP 429, keep a global cooldown in the cache to avoid sending more requests until the cooldown expires.</li>
+<li>Show the final result screen only after the Upload animation and metadata phase are complete, with a timeout fallback.</li>
+</ol>
+<p>The <code>https://ipapi.co/json/</code> client-IP request is not used for server metadata.</p>
+<h2>Notes</h2>
+<p>While a test is running (or a result is being shown), the panel writes a
+few files to the <code>${XDG_RUNTIME_DIR}</code> directory:</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>noctalia_nilsonlinux_speedtest_live.json</code></td>
+<td>Live snapshot (current download/upload speeds and gauge scale) consumed by the gauge worker.</td>
+</tr>
+<tr>
+<td><code>noctalia_nilsonlinux_speedtest_download.png</code></td>
+<td>Download speedometer dial image (160x130).</td>
+</tr>
+<tr>
+<td><code>noctalia_nilsonlinux_speedtest_upload.png</code></td>
+<td>Upload speedometer dial image (160x130).</td>
+</tr>
+</tbody>
+</table>
+<p><code>${XDG_RUNTIME_DIR}</code> is used when set (falling back to <code>${TMPDIR}</code>, then
+<code>/tmp</code>). The files are removed when the panel closes.</p>
+<h2>Installation</h2>
+<p>Install via Noctalia Plugin Store.</p>
+<h2>Usage</h2>
+<ol>
+<li>Click the widget in the bar to open the panel</li>
+<li>Click &quot;Start test&quot; to run a speed test</li>
+<li>Watch the circular speedometer dial while it runs (live numbers with the
+Ookla backend, a pulse with the legacy backend)</li>
+<li>Review the results: download/upload, ping, jitter, packet loss, test
+server details, your ISP and external IP</li>
+</ol>
+<h2>Panel IPC Command</h2>
+<p>To toggle the panel from outside the plugin:</p>
+<pre><code>noctalia msg panel-toggle nilsonlinux/speedtest-meter:speedtest
+</code></pre>
+<h2>License</h2>
+<p>MIT</p>
+
 					</div>
 				</div>
 

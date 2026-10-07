@@ -52,13 +52,24 @@ def fmt_date(ts) -> str:
 
 
 def md_to_html(md_text: str) -> str:
+    """Convert README Markdown to HTML.
+
+    Tries markdown-it-py (available locally) first, then the classic
+    `markdown` package (installed by the CI via scripts/requirements.txt),
+    and only falls back to escaped plain text if neither is available —
+    so the page never renders raw Markdown source.
+    """
+    try:
+        from markdown_it import MarkdownIt
+        md = MarkdownIt('commonmark').enable('table').enable('strikethrough')
+        return md.render(md_text)
+    except ImportError:
+        pass
     try:
         import markdown
+        return markdown.markdown(md_text, extensions=["tables", "fenced_code", "sane_lists"])
     except ImportError:
-        # Graceful degradation when the optional `markdown` package is missing
-        # (the CI installs it via scripts/requirements.txt and fully re-renders).
         return "<p>" + html.escape(md_text).replace("\n", "<br>\n") + "</p>"
-    return markdown.markdown(md_text, extensions=["tables", "fenced_code", "sane_lists"])
 
 
 def tag_badges(tags) -> str:

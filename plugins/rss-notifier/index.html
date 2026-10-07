@@ -101,72 +101,105 @@
 				<div class="about-section reveal">
 					<h2 class="section-title">Sobre</h2>
 					<div class="readme-content">
-						<p># RSS/Atom Notifier<br>
-<br>
-Monitor RSS/Atom feeds and get notifications for new items.<br>
-<br>
-## Plugin<br>
-<br>
-| Field | Value |<br>
-| --- | --- |<br>
-| ID | `nilsonlinux/rss-notifier` |<br>
-| Entries | Bar widget: `indicator`; Panel: `Panel`|<br>
-<br>
-**Entries:**<br>
-- **Service:** `fetcher` - Background service that fetches and parses feeds<br>
-- **Widget:** `badge` - Shows unread count on the bar<br>
-- **Panel:** `panel` - Displays feed items in a panel<br>
-<br>
-**IPC Command:**<br>
-<br>
-noctalia msg panel-toggle nilsonlinux/rss-notifier:Panel<br>
-text<br>
-<br>
-<br>
-## Settings<br>
-<br>
-| Setting | Type | Default | Description |<br>
-|---------|------|---------|-------------|<br>
-| `refresh_minutes` | int | `30` | How often to check for new items (1-1440 minutes) |<br>
-| `notify_new` | bool | `true` | Display notifications when new items arrive |<br>
-| `max_notifications_per_cycle` | int | `5` | Maximum notifications shown per check (1-50) |<br>
-| `show_feed_images` | bool | `true` | Show the feed&#x27;s photo (logo) on each card, with the item&#x27;s cover or the site&#x27;s favicon as a fallback. |<br>
-| `glyph` (widget) | `glyph` | `rss` | Icon shown in the bar for the `status` widget. |<br>
-<br>
-Feed URLs are not a plugin setting anymore: add (or remove) feeds directly<br>
-from the panel via the `+` button next to the refresh button.<br>
-<br>
-## Post images<br>
-<br>
-Each card always tries to show the post&#x27;s own photo, extracted from the feed:<br>
-`&lt;enclosure&gt;` (RSS 2.0), `media:thumbnail`/`media:content` (Media RSS), or the<br>
-first `&lt;img&gt;` inside `&lt;description&gt;`/`&lt;content&gt;` - scanning the whole item,<br>
-not just its start. If the post has no image, it falls back to the feed&#x27;s own<br>
-logo and then to the site&#x27;s favicon.<br>
-<br>
-## Installation<br>
-<br>
-Install via Noctalia Plugin Store.<br>
-<br>
-## Requirements<br>
-<br>
-- `xdg-open` - Required to open feed URLs in your default web browser. Usually pre-installed on most Linux distributions.<br>
-<br>
-## Usage<br>
-<br>
-1. Click the widget to open the panel<br>
-2. Use the `+` button to add feed URLs (and manage them)<br>
-3. The widget will show a badge with unread count<br>
-4. Click an item to open it in your default browser<br>
-<br>
-## Dependencies<br>
-<br>
-**xdg-open** <br>
-<br>
-## License<br>
-<br>
-MIT<br>
-</p>
+						<h1>RSS/Atom Notifier</h1>
+<p>Monitor RSS/Atom feeds and get notifications for new items.</p>
+<h2>Plugin</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ID</td>
+<td><code>nilsonlinux/rss-notifier</code></td>
+</tr>
+<tr>
+<td>Entries</td>
+<td>Bar widget: <code>indicator</code>; Panel: <code>Panel</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Entries:</strong></p>
+<ul>
+<li><strong>Service:</strong> <code>fetcher</code> - Background service that fetches and parses feeds</li>
+<li><strong>Widget:</strong> <code>badge</code> - Shows unread count on the bar</li>
+<li><strong>Panel:</strong> <code>panel</code> - Displays feed items in a panel</li>
+</ul>
+<p><strong>IPC Command:</strong></p>
+<p>noctalia msg panel-toggle nilsonlinux/rss-notifier:Panel
+text</p>
+<h2>Settings</h2>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>refresh_minutes</code></td>
+<td>int</td>
+<td><code>30</code></td>
+<td>How often to check for new items (1-1440 minutes)</td>
+</tr>
+<tr>
+<td><code>notify_new</code></td>
+<td>bool</td>
+<td><code>true</code></td>
+<td>Display notifications when new items arrive</td>
+</tr>
+<tr>
+<td><code>max_notifications_per_cycle</code></td>
+<td>int</td>
+<td><code>5</code></td>
+<td>Maximum notifications shown per check (1-50)</td>
+</tr>
+<tr>
+<td><code>show_feed_images</code></td>
+<td>bool</td>
+<td><code>true</code></td>
+<td>Show the feed's photo (logo) on each card, with the item's cover or the site's favicon as a fallback.</td>
+</tr>
+<tr>
+<td><code>glyph</code> (widget)</td>
+<td><code>glyph</code></td>
+<td><code>rss</code></td>
+<td>Icon shown in the bar for the <code>status</code> widget.</td>
+</tr>
+</tbody>
+</table>
+<p>Feed URLs are not a plugin setting anymore: add (or remove) feeds directly
+from the panel via the <code>+</code> button next to the refresh button.</p>
+<h2>Post images</h2>
+<p>Each card always tries to show the post's own photo, extracted from the feed:
+<code>&lt;enclosure&gt;</code> (RSS 2.0), <code>media:thumbnail</code>/<code>media:content</code> (Media RSS), or the
+first <code>&lt;img&gt;</code> inside <code>&lt;description&gt;</code>/<code>&lt;content&gt;</code> - scanning the whole item,
+not just its start. If the post has no image, it falls back to the feed's own
+logo and then to the site's favicon.</p>
+<h2>Installation</h2>
+<p>Install via Noctalia Plugin Store.</p>
+<h2>Requirements</h2>
+<ul>
+<li><code>xdg-open</code> - Required to open feed URLs in your default web browser. Usually pre-installed on most Linux distributions.</li>
+</ul>
+<h2>Usage</h2>
+<ol>
+<li>Click the widget to open the panel</li>
+<li>Use the <code>+</code> button to add feed URLs (and manage them)</li>
+<li>The widget will show a badge with unread count</li>
+<li>Click an item to open it in your default browser</li>
+</ol>
+<h2>Dependencies</h2>
+<p><strong>xdg-open</strong></p>
+<h2>License</h2>
+<p>MIT</p>
+
 					</div>
 				</div>
 
