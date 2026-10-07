@@ -101,239 +101,185 @@
 				<div class="about-section reveal">
 					<h2 class="section-title">Sobre</h2>
 					<div class="readme-content">
-						<h1>Contact Notification Sounds</h1>
-<p>Plays a <strong>unique sound per person, group or app</strong> on your notifications.</p>
-<p>Configure a list of contacts — each mapped to a sound file (<strong>or a folder of
-sounds</strong>) — from the <strong>panel</strong>. When any notification arrives, the plugin checks
-its app name, title and body for your contacts' names (case-insensitive by
-default) and plays the assigned sound for the first contact matched.</p>
-<h2>Plugin</h2>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>ID</td>
-<td><code>nilsonlinux/contact-sounds</code></td>
-</tr>
-<tr>
-<td>Entries</td>
-<td>Service: <code>monitor</code>; Panel: <code>Panel</code>; Shortcut: <code>sounds</code>; Bar widget: <code>contact-sounds-widget</code></td>
-</tr>
-</tbody>
-</table>
-<h2>Features</h2>
-<ul>
-<li><strong>Unique notification sounds per contact</strong> — you always know who messaged
-  you before looking.</li>
-<li><strong>Contacts, groups and apps</strong> — each entry can be typed as <strong>Contato</strong>,
-  <strong>Grupo</strong> or <strong>App</strong>. Contact/group entries match the notification title and
-  body; <strong>app</strong> entries match the notification <em>app name</em> only, so an app
-  entry can't be triggered by a mention of its name in some other app's text.</li>
-<li><strong>Photo / group photo / app icon in the list</strong> — every row in the panel
-  starts with the entry's avatar: an optional photo/icon you give it, or the
-  app's own icon for app entries (glyph placeholder otherwise).</li>
-<li><strong>Folders of sounds</strong> — instead of a single <code>.ogg/.mp3</code>, an entry can point
-  to a <strong>folder</strong>; the panel lists that folder's sounds in a menu-list.
-  Pick one sound for the entry, or leave <strong>Random (any sound)</strong> so any sound
-  from the folder plays.</li>
-<li><strong>Panel of entries</strong> — open it from the control-center tile or the bar bell
-  icon: play each sound, <strong>add</strong> an entry (type + name + sound file or folder</li>
-<li>optional photo), <strong>edit</strong>, or <strong>delete</strong> (with an inline confirmation).</li>
-<li><strong>Drag-and-drop reordering</strong> — grab any row's drag handle and drop it onto
-  the thin strips between rows to change the list order; the order persists
-  exactly like the entries themselves.</li>
-<li><strong>Stop button for long sounds</strong> — when you test a sound longer than ~5s, the
-  panel also shows a <strong>stop</strong> button that immediately cuts the audio (it
-  destroys the active PipeWire stream; see <em>How it works</em>).</li>
-<li><strong>Overlapping playback</strong> — rapid hits for the same contact are never
-  swallowed: each play re-uses one of three ring-slot buffers so a fresh copy
-  always starts from the beginning, even if the previous one is still playing.</li>
-<li><strong>App filter</strong> — optionally restrict matching to specific notification apps
-  (e.g. Telegram, Discord) so browser spam never matches.</li>
-<li><strong>OGG/MP3/WAV</strong> — any local <code>.ogg</code>, <code>.mp3</code> or <code>.wav</code> file with an absolute
-  path, or a folder containing them.</li>
-<li><strong>Hide the bar icon</strong> — toggle <code>show_widget</code> off to remove the bell from the bar.</li>
-</ul>
-<h2>How it works</h2>
-<p>Entries are edited <strong>only from the panel</strong>, and the contact list is owned by
-the plugin itself — it does <strong>not</strong> live in Noctalia's app settings.</p>
-<ul>
-<li>The authoritative list is kept in the plugin's <strong>persistent data file</strong>
-  <code>~/.local/state/noctalia/plugins/data/nilsonlinux/contact-sounds/state.json</code>
-  (via <code>noctalia.pluginDataDir()</code>, which survives plugin updates and Noctalia
-  restarts). Every add/edit/delete/reorder in the panel is sent as a command to
-  the <code>monitor</code> service (<code>noctalia.state</code> "contacts.cmd"), which applies it,
-  writes <code>state.json</code> immediately and republishes — no config reload, so the
-  panel never closes while you edit.</li>
-<li>On startup, the service loads the list back from <code>state.json</code> and republishes
-  it as <code>contacts.data</code>. The panel reads the current value with
-  <code>noctalia.state.get("contacts.data")</code> on load and watches it for changes, so
-  a freshly opened panel always shows the real saved list — not whatever the
-  app config still has.</li>
-<li><code>service.luau</code> runs <code>scripts/monitor.sh</code>, a <code>dbus-monitor</code> pipeline that
-  watches the <code>org.freedesktop.Notifications</code> session interface and forwards
-  every <code>Notify()</code> call as <code>app \x1e title \x1e body</code>.</li>
-<li>The service matches contact names in that text and plays the sound through
-  Noctalia's audio system (<code>noctalia.sound</code>); plugin sounds are not silenced by
-  Do Not Disturb. A folder entry resolves to its picked sound, or a random
-  member, per hit. Sounds are loaded one per tick to respect the runtime's
-  pending-load cap, and a rapid second hit reloads a ring slot so it is never
-  suppressed while a previous copy is still playing.</li>
-<li><strong>Stop</strong>: there is no runtime "stop" API for playback, so the stop button
-  runs <code>scripts/stop_sounds.py</code>, which finds the active <code>noctalia-sound</code>
-  PipeWire nodes in <code>pw-dump</code> and destroys them with <code>pw-cli</code>. Afterwards the
-  service invalidates the loaded buffers, so the next play always mints a fresh
-  one. <code>scripts/sound_durations.py</code> probes how long each sound is (via
-  <code>ffprobe</code>, <code>mutagen</code> or a <code>.wav</code> header) so the stop button only appears for
-  sounds longer than ~5s.</li>
-<li><strong>Exclusive sound</strong>: the service keeps
-  <code>~/.config/noctalia/contact-sounds.toml</code> in sync with
-  <code>[notification.filter.contact-sounds-*]</code> rules that set <code>play_sound = false</code>
-  (<code>scripts/sync_filter.sh</code>), so Noctalia's system notification sound is
-  suppressed exactly when the plugin will play a contact's audio. The rules
-  only cover contact sounds that loaded, are disabled while case-sensitive
-  matching is on (system filters are always case-insensitive), and become one
-  rule per allowed app when <code>only_apps</code> is set. The file is removed when the
-  plugin is disabled or uninstalled, so the system sound can never be left
-  muted. Notifications that match nothing keep their normal system sound.</li>
-<li><code>panel.luau</code> renders the list and all actions. <code>widget.luau</code> draws the bar
-  bell (hidden when <code>show_widget</code> is off) and <code>shortcut.luau</code> adds the
-  control-center tile; both open the panel.</li>
-</ul>
-<p>Open the panel directly with:</p>
-<pre><code class="language-sh">noctalia msg panel-toggle nilsonlinux/contact-sounds:Panel
-</code></pre>
-<h2>Requirements</h2>
-<ul>
-<li><code>dbus-monitor</code>, <code>gawk</code> and <code>python3</code> (all usually present on Arch/Debian) —
-  declared as plugin dependencies.</li>
-<li>The <strong>stop</strong> button additionally needs <code>pw-dump</code> and <code>pw-cli</code> (PipeWire).</li>
-<li>Sound-duration probing optionally uses <code>ffprobe</code> (ffmpeg) or
-  <code>python3-mutagen</code>; without them the stop button is simply not shown for
-  sounds it can't measure.</li>
-</ul>
-<h2>Usage</h2>
-<p>Entries are managed <strong>only from the panel</strong> — the contact settings are hidden
-from <strong>Settings → Plugins</strong> so the list can't be edited outside the UI.</p>
-<ol>
-<li>Click the bar bell (or the control-center tile) to open the panel.</li>
-<li>Click <strong>+</strong> to add an entry:
-   - <strong>Type</strong> — <code>Contact</code>, <code>Group</code> or <code>App</code>.
-   - <strong>Name</strong> — type it exactly as it appears in a notification. The field
-     starts empty for every new entry.
-   - <strong>Sound</strong> — a <code>.ogg</code>/<code>.mp3</code>/<code>.wav</code> file, or a <strong>sounds folder</strong>. When the
-     form opens it suggests folders you have used before; the pencil/​list
-     button switches between picking an existing folder and typing a path.
-   - <strong>Photo / icon path</strong> — optional avatar for the row.</li>
-<li><strong>Save</strong> — the entry is written to the plugin's <code>state.json</code> instantly and
-   appears in the list. It survives plugin reloads, plugin updates and
-   restarting Noctalia.</li>
-<li><strong>Play</strong> (<code>▶</code>) — hear the entry's sound; <strong>Edit</strong> (<code>✎</code>) and <strong>Delete</strong> (<code>🗑</code>,
-   confirm with <code>✓</code>/<code>✕</code> in the row) manage entries, and <strong>Drag</strong> any row's
-   handle to reorder the list.</li>
-<li>For <strong>folder</strong> entries, a menu-list shows the folder's sounds — pick one, or
-   <strong>Random (any sound)</strong> so any file from the folder plays per notification.</li>
-<li>For sounds longer than ~5s a <strong>stop</strong> (<code>■</code>) button also appears in the row,
-   cutting off the playback immediately.</li>
-</ol>
-<p>Example of what the list holds underneath (edited via the panel only):</p>
-<pre><code>&quot;Maria Souza&quot;  = &quot;/home/you/Documents/Sounds/maria.ogg&quot;
-&quot;João Carlos&quot;  = &quot;/home/you/Documents/Sounds/joao.ogg&quot;
-&quot;Família&quot;      = &quot;/home/you/Documents/Sounds/familia&quot;   # folder of sounds
-</code></pre>
-<h2>Settings</h2>
-<table>
-<thead>
-<tr>
-<th>Setting</th>
-<th>Type</th>
-<th>Default</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>contacts</code></td>
-<td><code>string_map</code></td>
-<td><code>{}</code></td>
-<td><code>"Name" = "/path/to/sound.{ogg,mp3,wav}"</code> or a folder of sounds. <em>(hidden — edited from the panel)</em></td>
-</tr>
-<tr>
-<td><code>contact_kinds</code></td>
-<td><code>string_map</code></td>
-<td><code>{}</code></td>
-<td><code>"Name" = "contact" \| "group" \| "app"</code> (default <code>contact</code>). <em>(hidden — edited from the panel)</em></td>
-</tr>
-<tr>
-<td><code>contact_images</code></td>
-<td><code>string_map</code></td>
-<td><code>{}</code></td>
-<td><code>"Name" = "/path/to/photo-or-icon.png"</code> shown at the start of the row. <em>(hidden — edited from the panel)</em></td>
-</tr>
-<tr>
-<td><code>folder_sounds</code></td>
-<td><code>string_map</code></td>
-<td><code>{}</code></td>
-<td><code>"Name" = "sound.ogg"</code> picked inside a folder entry; empty = random. <em>(hidden — edited from the panel)</em></td>
-</tr>
-<tr>
-<td><code>sound_folders</code></td>
-<td><code>string_map</code></td>
-<td><code>{}</code></td>
-<td>Registry of known sound-folder paths offered when adding an entry. <em>(hidden — edited from the panel)</em></td>
-</tr>
-<tr>
-<td><code>contact_order</code></td>
-<td><code>string_list</code></td>
-<td><code>[]</code></td>
-<td>Contact names in display order; set by drag-and-drop in the panel. <em>(hidden — edited from the panel)</em></td>
-</tr>
-<tr>
-<td><code>show_widget</code></td>
-<td><code>bool</code></td>
-<td><code>true</code></td>
-<td>Show the bell icon in the bar.</td>
-</tr>
-<tr>
-<td><code>match_case_sensitive</code></td>
-<td><code>bool</code></td>
-<td><code>false</code></td>
-<td>Match names with exact capitalization. <em>(advanced)</em></td>
-</tr>
-<tr>
-<td><code>only_apps</code></td>
-<td><code>string_list</code></td>
-<td><code>[]</code></td>
-<td>App-name allow-list; empty = all apps. <em>(advanced)</em></td>
-</tr>
-<tr>
-<td><code>glyph</code> (widget)</td>
-<td><code>glyph</code></td>
-<td><code>bell-ringing</code></td>
-<td>Icon shown in the bar for the bell widget.</td>
-</tr>
-</tbody>
-</table>
-<h2>Notes</h2>
-<p>Notification text and panel labels come from <code>translations/&lt;locale&gt;.json</code>
-(English and <code>pt-BR</code> included).</p>
-<p>The contact list is stored in the plugin's persistent data file
-(<code>noctalia.pluginDataDir()/state.json</code>) — it is never kept in the app-managed
-<code>settings.toml</code>, so panel-created entries survive config reloads and plugin
-updates untouched.</p>
-<p><code>~/.config/noctalia/contact-sounds.toml</code> is managed by the plugin
-(<code>scripts/sync_filter.sh</code>) and should not be edited by hand. Matching is always
-case-insensitive for the exclusive-sound suppression; with <code>only_apps</code> set, a
-contact must appear in the notification summary or body (a name that only shows
-up in the app name is covered only when no app allow-list is configured).</p>
-<p>Sound files are played at the <a href="https://noctalia.dev">Noctalia</a> audio volume.</p>
-<h2>License</h2>
-<p>MIT</p>
+						<p># Contact Notification Sounds<br>
+<br>
+Plays a **unique sound per person, group or app** on your notifications.<br>
+<br>
+Configure a list of contacts — each mapped to a sound file (**or a folder of<br>
+sounds**) — from the **panel**. When any notification arrives, the plugin checks<br>
+its app name, title and body for your contacts&#x27; names (case-insensitive by<br>
+default) and plays the assigned sound for the first contact matched.<br>
+<br>
+## Plugin<br>
+<br>
+| Field   | Value                                                                      |<br>
+| ------- | -------------------------------------------------------------------------- |<br>
+| ID      | `nilsonlinux/contact-sounds`                                               |<br>
+| Entries | Service: `monitor`; Panel: `Panel`; Shortcut: `sounds`; Bar widget: `contact-sounds-widget` |<br>
+<br>
+## Features<br>
+<br>
+- **Unique notification sounds per contact** — you always know who messaged<br>
+  you before looking.<br>
+- **Contacts, groups and apps** — each entry can be typed as **Contato**,<br>
+  **Grupo** or **App**. Contact/group entries match the notification title and<br>
+  body; **app** entries match the notification *app name* only, so an app<br>
+  entry can&#x27;t be triggered by a mention of its name in some other app&#x27;s text.<br>
+- **Photo / group photo / app icon in the list** — every row in the panel<br>
+  starts with the entry&#x27;s avatar: an optional photo/icon you give it, or the<br>
+  app&#x27;s own icon for app entries (glyph placeholder otherwise).<br>
+- **Folders of sounds** — instead of a single `.ogg/.mp3`, an entry can point<br>
+  to a **folder**; the panel lists that folder&#x27;s sounds in a menu-list.<br>
+  Pick one sound for the entry, or leave **Random (any sound)** so any sound<br>
+  from the folder plays.<br>
+- **Panel of entries** — open it from the control-center tile or the bar bell<br>
+  icon: play each sound, **add** an entry (type + name + sound file or folder<br>
+  + optional photo), **edit**, or **delete** (with an inline confirmation).<br>
+- **Drag-and-drop reordering** — grab any row&#x27;s drag handle and drop it onto<br>
+  the thin strips between rows to change the list order; the order persists<br>
+  exactly like the entries themselves.<br>
+- **Stop button for long sounds** — when you test a sound longer than ~5s, the<br>
+  panel also shows a **stop** button that immediately cuts the audio (it<br>
+  destroys the active PipeWire stream; see *How it works*).<br>
+- **Overlapping playback** — rapid hits for the same contact are never<br>
+  swallowed: each play re-uses one of three ring-slot buffers so a fresh copy<br>
+  always starts from the beginning, even if the previous one is still playing.<br>
+- **App filter** — optionally restrict matching to specific notification apps<br>
+  (e.g. Telegram, Discord) so browser spam never matches.<br>
+- **OGG/MP3/WAV** — any local `.ogg`, `.mp3` or `.wav` file with an absolute<br>
+  path, or a folder containing them.<br>
+- **Hide the bar icon** — toggle `show_widget` off to remove the bell from the bar.<br>
+<br>
+## How it works<br>
+<br>
+Entries are edited **only from the panel**, and the contact list is owned by<br>
+the plugin itself — it does **not** live in Noctalia&#x27;s app settings.<br>
+<br>
+- The authoritative list is kept in the plugin&#x27;s **persistent data file**<br>
+  `~/.local/state/noctalia/plugins/data/nilsonlinux/contact-sounds/state.json`<br>
+  (via `noctalia.pluginDataDir()`, which survives plugin updates and Noctalia<br>
+  restarts). Every add/edit/delete/reorder in the panel is sent as a command to<br>
+  the `monitor` service (`noctalia.state` &quot;contacts.cmd&quot;), which applies it,<br>
+  writes `state.json` immediately and republishes — no config reload, so the<br>
+  panel never closes while you edit.<br>
+- On startup, the service loads the list back from `state.json` and republishes<br>
+  it as `contacts.data`. The panel reads the current value with<br>
+  `noctalia.state.get(&quot;contacts.data&quot;)` on load and watches it for changes, so<br>
+  a freshly opened panel always shows the real saved list — not whatever the<br>
+  app config still has.<br>
+- `service.luau` runs `scripts/monitor.sh`, a `dbus-monitor` pipeline that<br>
+  watches the `org.freedesktop.Notifications` session interface and forwards<br>
+  every `Notify()` call as `app \x1e title \x1e body`.<br>
+- The service matches contact names in that text and plays the sound through<br>
+  Noctalia&#x27;s audio system (`noctalia.sound`); plugin sounds are not silenced by<br>
+  Do Not Disturb. A folder entry resolves to its picked sound, or a random<br>
+  member, per hit. Sounds are loaded one per tick to respect the runtime&#x27;s<br>
+  pending-load cap, and a rapid second hit reloads a ring slot so it is never<br>
+  suppressed while a previous copy is still playing.<br>
+- **Stop**: there is no runtime &quot;stop&quot; API for playback, so the stop button<br>
+  runs `scripts/stop_sounds.py`, which finds the active `noctalia-sound`<br>
+  PipeWire nodes in `pw-dump` and destroys them with `pw-cli`. Afterwards the<br>
+  service invalidates the loaded buffers, so the next play always mints a fresh<br>
+  one. `scripts/sound_durations.py` probes how long each sound is (via<br>
+  `ffprobe`, `mutagen` or a `.wav` header) so the stop button only appears for<br>
+  sounds longer than ~5s.<br>
+- **Exclusive sound**: the service keeps<br>
+  `~/.config/noctalia/contact-sounds.toml` in sync with<br>
+  `[notification.filter.contact-sounds-*]` rules that set `play_sound = false`<br>
+  (`scripts/sync_filter.sh`), so Noctalia&#x27;s system notification sound is<br>
+  suppressed exactly when the plugin will play a contact&#x27;s audio. The rules<br>
+  only cover contact sounds that loaded, are disabled while case-sensitive<br>
+  matching is on (system filters are always case-insensitive), and become one<br>
+  rule per allowed app when `only_apps` is set. The file is removed when the<br>
+  plugin is disabled or uninstalled, so the system sound can never be left<br>
+  muted. Notifications that match nothing keep their normal system sound.<br>
+- `panel.luau` renders the list and all actions. `widget.luau` draws the bar<br>
+  bell (hidden when `show_widget` is off) and `shortcut.luau` adds the<br>
+  control-center tile; both open the panel.<br>
+<br>
+Open the panel directly with:<br>
+```sh<br>
+noctalia msg panel-toggle nilsonlinux/contact-sounds:Panel<br>
+```<br>
+<br>
+## Requirements<br>
+<br>
+- `dbus-monitor`, `gawk` and `python3` (all usually present on Arch/Debian) —<br>
+  declared as plugin dependencies.<br>
+- The **stop** button additionally needs `pw-dump` and `pw-cli` (PipeWire).<br>
+- Sound-duration probing optionally uses `ffprobe` (ffmpeg) or<br>
+  `python3-mutagen`; without them the stop button is simply not shown for<br>
+  sounds it can&#x27;t measure.<br>
+<br>
+## Usage<br>
+<br>
+Entries are managed **only from the panel** — the contact settings are hidden<br>
+from **Settings → Plugins** so the list can&#x27;t be edited outside the UI.<br>
+<br>
+1. Click the bar bell (or the control-center tile) to open the panel.<br>
+2. Click **+** to add an entry:<br>
+   - **Type** — `Contact`, `Group` or `App`.<br>
+   - **Name** — type it exactly as it appears in a notification. The field<br>
+     starts empty for every new entry.<br>
+   - **Sound** — a `.ogg`/`.mp3`/`.wav` file, or a **sounds folder**. When the<br>
+     form opens it suggests folders you have used before; the pencil/​list<br>
+     button switches between picking an existing folder and typing a path.<br>
+   - **Photo / icon path** — optional avatar for the row.<br>
+3. **Save** — the entry is written to the plugin&#x27;s `state.json` instantly and<br>
+   appears in the list. It survives plugin reloads, plugin updates and<br>
+   restarting Noctalia.<br>
+4. **Play** (`▶`) — hear the entry&#x27;s sound; **Edit** (`✎`) and **Delete** (`🗑`,<br>
+   confirm with `✓`/`✕` in the row) manage entries, and **Drag** any row&#x27;s<br>
+   handle to reorder the list.<br>
+5. For **folder** entries, a menu-list shows the folder&#x27;s sounds — pick one, or<br>
+   **Random (any sound)** so any file from the folder plays per notification.<br>
+6. For sounds longer than ~5s a **stop** (`■`) button also appears in the row,<br>
+   cutting off the playback immediately.<br>
+<br>
+Example of what the list holds underneath (edited via the panel only):<br>
+<br>
+```<br>
+&quot;Maria Souza&quot;  = &quot;/home/you/Documents/Sounds/maria.ogg&quot;<br>
+&quot;João Carlos&quot;  = &quot;/home/you/Documents/Sounds/joao.ogg&quot;<br>
+&quot;Família&quot;      = &quot;/home/you/Documents/Sounds/familia&quot;   # folder of sounds<br>
+```<br>
+<br>
+## Settings<br>
+<br>
+| Setting                  | Type         | Default | Description                                                              |<br>
+| ------------------------ | ------------ | ------- | ------------------------------------------------------------------------ |<br>
+| `contacts`               | `string_map` | `{}`    | `&quot;Name&quot; = &quot;/path/to/sound.{ogg,mp3,wav}&quot;` or a folder of sounds. *(hidden — edited from the panel)* |<br>
+| `contact_kinds`          | `string_map` | `{}`    | `&quot;Name&quot; = &quot;contact&quot; \| &quot;group&quot; \| &quot;app&quot;` (default `contact`). *(hidden — edited from the panel)* |<br>
+| `contact_images`         | `string_map` | `{}`    | `&quot;Name&quot; = &quot;/path/to/photo-or-icon.png&quot;` shown at the start of the row. *(hidden — edited from the panel)* |<br>
+| `folder_sounds`          | `string_map` | `{}`    | `&quot;Name&quot; = &quot;sound.ogg&quot;` picked inside a folder entry; empty = random. *(hidden — edited from the panel)* |<br>
+| `sound_folders`          | `string_map` | `{}`    | Registry of known sound-folder paths offered when adding an entry. *(hidden — edited from the panel)* |<br>
+| `contact_order`          | `string_list`| `[]`    | Contact names in display order; set by drag-and-drop in the panel. *(hidden — edited from the panel)* |<br>
+| `show_widget`            | `bool`       | `true`  | Show the bell icon in the bar.                                           |<br>
+| `match_case_sensitive`   | `bool`       | `false` | Match names with exact capitalization. *(advanced)*                      |<br>
+| `only_apps`              | `string_list`| `[]`    | App-name allow-list; empty = all apps. *(advanced)*                       |<br>
+| `glyph` (widget)         | `glyph`      | `bell-ringing` | Icon shown in the bar for the bell widget.                        |<br>
+<br>
+## Notes<br>
+<br>
+Notification text and panel labels come from `translations/&lt;locale&gt;.json`<br>
+(English and `pt-BR` included).<br>
+<br>
+The contact list is stored in the plugin&#x27;s persistent data file<br>
+(`noctalia.pluginDataDir()/state.json`) — it is never kept in the app-managed<br>
+`settings.toml`, so panel-created entries survive config reloads and plugin<br>
+updates untouched.<br>
+<br>
+`~/.config/noctalia/contact-sounds.toml` is managed by the plugin<br>
+(`scripts/sync_filter.sh`) and should not be edited by hand. Matching is always<br>
+case-insensitive for the exclusive-sound suppression; with `only_apps` set, a<br>
+contact must appear in the notification summary or body (a name that only shows<br>
+up in the app name is covered only when no app allow-list is configured).<br>
+<br>
+Sound files are played at the [Noctalia](https://noctalia.dev) audio volume.<br>
+<br>
+## License<br>
+<br>
+MIT</p>
 					</div>
 				</div>
 
@@ -380,6 +326,9 @@ up in the app name is covered only when no app allow-list is configured).</p>
 							</div>
 						</div>
 						<p class="footer-blurb">Desenvolvedor focado em Linux, Noctalia e automação. Plugins e projetos open source, com dados atualizados diretamente do <b>catalog.toml</b> e das APIs do GitHub.</p>
+						<a href="../../doar.html" class="btn-primary" style="margin-top:1rem; display:inline-flex; align-items:center; gap:.5rem;">
+							<span>❤️</span> Apoie o projeto
+						</a>
 					</div>
 					<div class="footer-links">
 						<nav class="footer-col" aria-label="Plugins">
