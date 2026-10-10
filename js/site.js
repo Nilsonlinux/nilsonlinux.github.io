@@ -281,3 +281,82 @@ document.querySelectorAll('[data-iso-sha256]').forEach(el => {
 		n.removeAttribute('title');
 	});
 })();
+
+/* ============================================================
+   CLIQUES NO BOTÃO DE DOWNLOAD
+
+   A ISO fica no Drive, então o GitHub não conta esses downloads —
+   e o site é estático, sem servidor para registrar cliques. A
+   contagem vive num contador público (abacus.jasoncameron.dev):
+   cada clique em [data-iso-download] chama /hit/<ns>/<chave> e o
+   total é lido com /get na mesma chave.
+
+   Os elementos [data-dl-count] (no rodapé de download das páginas)
+   recebem o número e só então são revelados: enquanto a resposta
+   não chega — ou se o serviço falhar — o trecho fica escondido,
+   em vez de mostrar um "0" que não é verdade.
+
+   O valor fica no localStorage por 2 minutos para não repetir a
+   leitura a cada navegação entre as páginas do site; um clique
+   sempre rebusca e atualiza na hora.
+   ============================================================ */
+(() => {
+	const API = 'https://abacus.jasoncameron.dev';
+	const NS = 'nilsonlinux';
+	const KEY = 'cliques-iso';
+	const TTL = 2 * 60 * 1000;           // 2 minutos
+	const CACHE = 'nlinux-dl-v1';
+
+	const alvos = document.querySelectorAll('[data-dl-count]');
+	if (!alvos.length) return;
+
+	const pintar = n => alvos.forEach(el => {
+		const valor = el.querySelector('[data-dl-count-value]');
+		const rotulo = el.querySelector('[data-dl-count-label]');
+		if (valor) valor.textContent = n.toLocaleString('pt-BR');
+		if (rotulo) rotulo.textContent = n === 1 ? 'download' : 'downloads';
+		el.hidden = false;
+	});
+
+	const guardar = n => {
+		try { localStorage.setItem(CACHE, JSON.stringify({ t: Date.now(), n })); } catch {}
+	};
+
+	const numero = d => (d && typeof d.value === 'number' ? d.value : null);
+
+	const buscar = () => fetch(API + '/get/' + NS + '/' + KEY)
+		.then(r => r.ok ? r.json() : Promise.reject(r.status))
+		.then(d => {
+			const n = numero(d);
+			if (n == null) throw new Error('resposta inesperada');
+			guardar(n);
+			return n;
+		});
+
+	const contar = () => fetch(API + '/hit/' + NS + '/' + KEY)
+		.then(r => r.ok ? r.json() : Promise.reject(r.status))
+		.then(d => {
+			const n = numero(d);
+			if (n == null) throw new Error('resposta inesperada');
+			guardar(n);
+			pintar(n);
+		});
+
+	let cache = null;
+	try { cache = JSON.parse(localStorage.getItem(CACHE) || 'null'); } catch {}
+
+	// pinta já o valor guardado, para o número não "piscar" no layout
+	if (cache && typeof cache.n === 'number') pintar(cache.n);
+
+	if (!cache || Date.now() - cache.t >= TTL) {
+		buscar()
+			.then(pintar)
+			.catch(e => console.warn('[site] contador de downloads:', e));
+	}
+
+	document.querySelectorAll('[data-iso-download]').forEach(link => {
+		link.addEventListener('click', () => {
+			contar().catch(e => console.warn('[site] contador de downloads:', e));
+		});
+	});
+})();
