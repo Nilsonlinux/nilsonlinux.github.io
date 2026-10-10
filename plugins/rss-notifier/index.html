@@ -60,6 +60,8 @@
 				</nav>
 				<div class="header-actions">
 					<button type="button" class="icon-btn" id="themeToggle" aria-label="Alternar tema" title="Tema"><i class="ti ti-sun-moon"></i></button>
+					<a class="icon-btn icon-btn-telegram" href="https://t.me/NLinuxOS" target="_blank" rel="noopener noreferrer" aria-label="Canal do Telegram NLinuxOS" title="Telegram NLinuxOS"><i class="ti ti-brand-telegram"></i></a>
+					<a class="icon-btn icon-btn-gh" href="https://github.com/Nilsonlinux" target="_blank" rel="noopener noreferrer" aria-label="GitHub do NLinux" title="GitHub"><i class="ti ti-brand-github"></i></a>
 					<a class="btn-primary" href="../../plugins.html"><i class="ti ti-rocket"></i><span class="btn-label">Plugins</span></a>
 					<button type="button" class="icon-btn nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false" title="Menu"><i class="ti ti-menu-2"></i></button>
 				</div>
@@ -122,10 +124,12 @@
 </tr>
 </tbody>
 </table>
-<p><strong>Entries:</strong>
-- <strong>Service:</strong> <code>fetcher</code> - Background service that fetches and parses feeds
-- <strong>Widget:</strong> <code>badge</code> - Shows unread count on the bar
-- <strong>Panel:</strong> <code>panel</code> - Displays feed items in a panel</p>
+<p><strong>Entries:</strong></p>
+<ul>
+<li><strong>Service:</strong> <code>fetcher</code> - Background service that fetches and parses feeds</li>
+<li><strong>Widget:</strong> <code>badge</code> - Shows unread count on the bar</li>
+<li><strong>Panel:</strong> <code>panel</code> - Displays feed items in a panel</li>
+</ul>
 <p><strong>IPC Command:</strong></p>
 <p>noctalia msg panel-toggle nilsonlinux/rss-notifier:Panel
 text</p>
@@ -194,9 +198,10 @@ logo and then to the site's favicon.</p>
 <li>Click an item to open it in your default browser</li>
 </ol>
 <h2>Dependencies</h2>
-<p><strong>xdg-open</strong> </p>
+<p><strong>xdg-open</strong></p>
 <h2>License</h2>
 <p>MIT</p>
+
 					</div>
 				</div>
 
