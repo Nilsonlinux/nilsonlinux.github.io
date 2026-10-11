@@ -43,6 +43,7 @@
 			--fg-dim: #a8a6c8;
 			--faint: #7c80b4;
 			--accent: #fff59b;
+			--gh-hover: #f5c518;
 			--accent-2: #9bfece;
 			--accent-3: #a9aefe;
 			--on-accent: #0e0e43;
@@ -61,6 +62,7 @@
 			--fg-dim: #5057b5;
 			--faint: #6f76c0;
 			--accent: #5d65f5;
+			--gh-hover: #5d65f5;
 			--accent-2: #c9a32a;
 			--accent-3: #6b74f0;
 			--on-accent: #ffffff;
@@ -140,12 +142,12 @@
 		}
 		.icon-btn:hover { border-color: var(--border); background: var(--surface-2); }
 
-		/* GitHub no cabecalho: amarelo da marca no hover */
+		/* GitHub no cabecalho: cor do tema no hover (--gh-hover) */
 		.icon-btn .ti { transition: transform .22s cubic-bezier(.34, 1.56, .64, 1); }
 		.icon-btn-gh:hover, .icon-btn-gh:focus-visible {
-			color: #f5c518; border-color: color-mix(in srgb, #f5c518 55%, transparent);
-			background: color-mix(in srgb, #f5c518 13%, transparent);
-			box-shadow: 0 0 0 3px color-mix(in srgb, #f5c518 12%, transparent);
+			color: var(--gh-hover); border-color: color-mix(in srgb, var(--gh-hover) 55%, transparent);
+			background: color-mix(in srgb, var(--gh-hover) 13%, transparent);
+			box-shadow: 0 0 0 3px color-mix(in srgb, var(--gh-hover) 12%, transparent);
 		}
 		.icon-btn-gh:hover .ti, .icon-btn-gh:focus-visible .ti { transform: scale(1.16) rotate(-9deg); }
 		.nav-toggle { display: inline-flex; }
