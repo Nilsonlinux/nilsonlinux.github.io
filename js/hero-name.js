@@ -3,6 +3,7 @@
      chuva    — bolinhas caem de cima e se encaixam;
      explosão — o nome estoura em partículas e se recompõe;
      lateral  — as bolinhas entram pelas laterais;
+     lados    — "NLi" entra pela esquerda e "nux" pela direita;
      onda     — as bolinhas se recolhem do caos;
      teclado  — as bolinhas aparecem da esquerda p/ a direita;
      letras   — cada letra se monta por vez (esq -> dir);
@@ -383,6 +384,21 @@
 				}
 			},
 			params: () => ({ k: 0.1, damp: 0.88, grav: 0 })
+		},
+		{ /* lados: a 1ª metade ("NLi") entra pela esquerda, a 2ª ("nux") pela direita */
+			duration: 2.6,
+			init() {
+				const mid = Math.ceil(nLetters / 2);
+				for (const p of particles) {
+					const left = p.letter < mid;
+					p.x = left ? -rnd(40, W * 0.55) : W + rnd(40, W * 0.55);
+					p.y = p.ty + rnd(-H * 0.08, H * 0.08);
+					p.vx = (left ? 1 : -1) * rnd(8, 16);
+					p.vy = rnd(-0.6, 0.6);
+					p.delay = 0;
+				}
+			},
+			params: () => ({ k: 0.11, damp: 0.86, grav: 0 })
 		},
 		{ /* onda: recolhe do caos */
 			duration: 2.6,
