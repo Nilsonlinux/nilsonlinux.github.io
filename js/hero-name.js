@@ -19,7 +19,8 @@
      tokens   — o nome é gerado token por token (com cursor);
      atenção  — linhas de atenção ligam as letras;
      detecção — caixas de confiança reconhecem cada letra;
-     treino   — converge enquanto a "loss" cai (aprendizado).
+     treino   — converge enquanto a "loss" cai (aprendizado);
+     centro   — as bolinhas nascem no centro e abrem p/ as bordas (de dentro p/ fora).
    Dica: clique sobre o nome para pular para o próximo efeito.
    Além disso, bolinhas soltas aparecem e somem ao fundo enquanto o
    nome se forma, e ao passar o mouse sobre o nome surgem bolinhas que
@@ -773,6 +774,30 @@
 				const loss = 1.75 * (1 - Math.min(1, t / 0.85)) + 0.012;
 				ctx.fillText('loss ' + loss.toFixed(3), 8, 6);
 				ctx.restore();
+			}
+		},
+		{ /* centro: as bolinhas nascem no centro do nome e abrem para as bordas
+		     (de dentro para fora: o meio aparece primeiro, as pontas depois) */
+			duration: 2.7,
+			init() {
+				let maxD = 1;
+				for (const p of particles) {
+					const d = Math.hypot(p.tx - W / 2, p.ty - H / 2);
+					if (d > maxD) maxD = d;
+				}
+				for (const p of particles) {
+					const d = Math.hypot(p.tx - W / 2, p.ty - H / 2);
+					p.delay = (d / maxD) * 0.5; // quanto mais longe do centro, mais tarde
+					const a = rnd(0, TAU), r = rnd(0, Math.max(6, fontPx * 0.1));
+					p.x = W / 2 + Math.cos(a) * r;
+					p.y = H / 2 + Math.sin(a) * r;
+					p.vx = 0; p.vy = 0;
+					p.alpha = 0;
+				}
+			},
+			params: () => ({ k: 0.2, damp: 0.78, grav: 0 }),
+			tick(p, t) {
+				p.alpha = smooth((t - p.delay) / 0.16);
 			}
 		}
 	];
