@@ -13,10 +13,12 @@
      zoom     — o nome vem grande/afastado e se ajusta.
    Além disso, bolinhas soltas aparecem e somem ao fundo enquanto o
    nome se forma, e ao passar o mouse sobre o nome surgem bolinhas que
-   seguram um gradiente de cor e somem num degrade. No fim de cada
-   efeito as bolinhas se dissolvem numa camada com a fonte real (Geist),
-   então o nome 100% montado fica idêntico à tipografia. Segue o tema
-   pelo --accent (amarelo no escuro, azul no claro) e respeita
+   seguram um gradiente de cor e somem num degrade. As bolinhas têm um
+   brilho que pulsa. No fim de cada efeito as bolinhas se dissolvem numa
+   camada com a fonte real (Geist), então o nome 100% montado fica
+   idêntico à tipografia — e ganha um brilho (flash ao montar + brilho
+   suave contínuo). Segue o tema pelo --accent (amarelo no escuro, azul
+   no claro) e respeita
    prefers-reduced-motion: nesse caso o canvas nem liga e o texto em
    gradiente do .hero-name-text fica visível. */
 (() => {
@@ -42,6 +44,8 @@
 	let ambientColor = 'rgb(180, 170, 120)';
 	const WHITE = [255, 255, 255], BLACK = [0, 0, 0];
 	let metal = [];
+	let glowRGB = [255, 255, 255], glowColor = 'rgb(255, 255, 255)';
+	let pulse = 0, glowFlash = 0;
 
 	/* ---------- cor ---------- */
 	const cssVar = name => getComputedStyle(root).getPropertyValue(name).trim();
@@ -67,6 +71,8 @@
 		ACCENT3 = parseColor(cssVar('--accent-3') || '#a9aefe');
 		BG = parseColor(cssVar('--bg') || '#070722');
 		ambientColor = rgb(mix(ACCENT, BG, 0.35));
+		glowRGB = mix(ACCENT, WHITE, 0.3);
+		glowColor = rgb(glowRGB);
 		/* mesmos stops do gradiente metálico do .hero-name-text (CSS) */
 		metal = [
 			[0.000, mix(WHITE, ACCENT, 0.62)], [0.263, mix(WHITE, ACCENT, 0.62)],
@@ -96,6 +102,23 @@
 	function applyFont(c, px) {
 		c.font = WEIGHT + ' ' + px + 'px ' + FAMILY;
 		if ('letterSpacing' in c) c.letterSpacing = (-0.045 * px) + 'px';
+	}
+
+	/* bolinha com halo de brilho — "glow" controlado por glow (0..1),
+	   que pulsa junto com a variável pulse */
+	function glowDot(x, y, r, color, alpha, glow) {
+		if (glow > 0.001) {
+			ctx.globalAlpha = alpha * glow;
+			ctx.fillStyle = glowColor;
+			ctx.beginPath();
+			ctx.arc(x, y, r * 1.7, 0, TAU);
+			ctx.fill();
+		}
+		ctx.globalAlpha = alpha;
+		ctx.fillStyle = color;
+		ctx.beginPath();
+		ctx.arc(x, y, r, 0, TAU);
+		ctx.fill();
 	}
 
 	/* ---------- geometria / alvos ---------- */
@@ -195,7 +218,6 @@
 	}
 
 	function drawAmbient(dt) {
-		ctx.fillStyle = ambientColor;
 		for (let i = 0; i < ambient.length; i++) {
 			const a = ambient[i];
 			a.life += dt;
@@ -204,10 +226,7 @@
 			a.y += a.vy * dt;
 			const alpha = Math.sin(Math.PI * (a.life / a.max)) * 0.45;
 			if (alpha <= 0.012) continue;
-			ctx.globalAlpha = alpha;
-			ctx.beginPath();
-			ctx.arc(a.x, a.y, a.size * 0.5, 0, TAU);
-			ctx.fill();
+			glowDot(a.x, a.y, a.size * 0.5, ambientColor, alpha, 0.06 + 0.1 * pulse);
 		}
 		ctx.globalAlpha = 1;
 	}
@@ -259,11 +278,7 @@
 			if (a <= 0.01) continue;
 			const r = b.size * (1 - u * 0.45) * 0.5;
 			if (r <= 0) continue;
-			ctx.globalAlpha = a;
-			ctx.fillStyle = b.color;
-			ctx.beginPath();
-			ctx.arc(b.x, b.y, r, 0, TAU);
-			ctx.fill();
+			glowDot(b.x, b.y, r, b.color, a, 0.18 + 0.28 * pulse);
 		}
 		ctx.globalAlpha = 1;
 	}
@@ -509,6 +524,10 @@
 		const dt = Math.min(0.05, last ? (now - last) / 1000 : 0.016);
 		last = now;
 
+		/* pulso do brilho das bolinhas + decaimento do flash do nome */
+		pulse = 0.5 + 0.5 * Math.sin(now / 620);
+		if (glowFlash > 0) glowFlash = Math.max(0, glowFlash - dt / 0.7);
+
 		ctx.clearRect(0, 0, W, H);
 		drawAmbient(dt);
 		stepHover(dt);
@@ -521,7 +540,7 @@
 		let fx = EFFECTS[cur];
 		let t = (now - t0) / (fx.duration * 1000);
 		if (t >= 1) {
-			if (!settling) { settling = true; settleT0 = now; }
+			if (!settling) { settling = true; settleT0 = now; glowFlash = 1; }
 			if (now - settleT0 >= SETTLE * 1000) {
 				startEffect(cur + 1);
 				fx = EFFECTS[cur];
@@ -565,20 +584,22 @@
 			if (pAlpha <= 0.004) continue;
 			const r = p.size * (p.scale > 0 ? p.scale : 0) * 0.5;
 			if (r <= 0) continue;
-			ctx.globalAlpha = p.alpha * pAlpha;
-			ctx.fillStyle = p.color;
-			ctx.beginPath();
-			ctx.arc(p.x, p.y, r, 0, TAU);
-			ctx.fill();
+			glowDot(p.x, p.y, r, p.color, p.alpha * pAlpha, 0.07 + 0.13 * pulse);
 		}
 		ctx.globalAlpha = 1;
 
 		if (fx.overlay) fx.overlay(t);
 
 		if (nameLayer && hold > 0.004) {
+			/* brilho do nome montado: contínuo (pulsante) + flash na montagem */
+			const ng = hold * (0.4 + 0.4 * pulse) + glowFlash;
+			const ga = Math.min(0.8, 0.5 * ng);
+			ctx.save();
+			ctx.shadowColor = 'rgba(' + (glowRGB[0] | 0) + ', ' + (glowRGB[1] | 0) + ', ' + (glowRGB[2] | 0) + ', ' + ga.toFixed(3) + ')';
+			ctx.shadowBlur = 26 * Math.min(1.5, ng);
 			ctx.globalAlpha = hold;
 			ctx.drawImage(nameLayer, 0, 0, W, H);
-			ctx.globalAlpha = 1;
+			ctx.restore();
 		}
 		drawHover();
 	}
