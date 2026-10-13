@@ -19,7 +19,7 @@
      tokens   — o nome é gerado token por token (com cursor);
      atenção  — linhas de atenção ligam as letras;
      detecção — caixas de confiança reconhecem cada letra;
-     treino   — converge enquanto a "loss" cai (aprendizado);
+     treino   — o nome "aprende" e converge suavemente até o lugar;
      centro   — as bolinhas nascem no centro e abrem p/ as bordas (de dentro p/ fora).
    Dica: clique sobre o nome para pular para o próximo efeito.
    Além disso, bolinhas soltas aparecem e somem ao fundo enquanto o
@@ -746,7 +746,7 @@
 				ctx.globalAlpha = 1;
 			}
 		},
-		{ /* treino: o nome "aprende" (converge) enquanto a "loss" cai */
+		{ /* treino: o nome "aprende" e converge suavemente até o lugar */
 			duration: 3.0,
 			init() {
 				for (const p of particles) {
@@ -760,20 +760,6 @@
 			params(t) {
 				const e = smooth(Math.min(1, t / 0.8));
 				return { k: 0.03 + 0.13 * e, damp: 0.9, grav: 0 };
-			},
-			overlay(t) {
-				const fade = 1 - Math.min(1, t / 0.9);
-				if (fade <= 0.02) return;
-				ctx.save();
-				ctx.globalAlpha = fade * 0.7;
-				ctx.fillStyle = glowColor;
-				ctx.font = '600 ' + Math.max(9, fontPx * 0.15) + 'px ' + FAMILY;
-				ctx.textAlign = 'left';
-				ctx.textBaseline = 'top';
-				if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
-				const loss = 1.75 * (1 - Math.min(1, t / 0.85)) + 0.012;
-				ctx.fillText('loss ' + loss.toFixed(3), 8, 6);
-				ctx.restore();
 			}
 		},
 		{ /* centro: as bolinhas nascem no centro do nome e abrem para as bordas
