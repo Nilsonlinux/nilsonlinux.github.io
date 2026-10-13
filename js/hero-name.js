@@ -13,8 +13,10 @@
      zoom     — o nome vem grande/afastado e se ajusta.
    Além disso, blocos soltos aparecem e somem ao fundo enquanto o
    nome se forma, e ao passar o mouse sobre o nome surgem blocos que
-   seguram um gradiente de cor e somem num degrade. Segue o tema pelo
-   --accent (amarelo no escuro, azul no claro) e respeita
+   seguram um gradiente de cor e somem num degrade. No fim de cada
+   efeito os blocos se dissolvem numa camada com a fonte real (Geist),
+   então o nome 100% montado fica idêntico à tipografia. Segue o tema
+   pelo --accent (amarelo no escuro, azul no claro) e respeita
    prefers-reduced-motion: nesse caso o canvas nem liga e o texto em
    gradiente do .hero-name-text fica visível. */
 (() => {
@@ -34,9 +36,12 @@
 	let W = 0, H = 0, dpr = 1, fontPx = 100;
 	let particles = [];
 	let ambient = [];
-	let gradTop = 0, gradSpan = 1;
+	let nameLayer = null, nameLayerCtx = null;
+	let hold = 0;
 	let ACCENT = [255, 245, 155], ACCENT2 = [155, 254, 206], ACCENT3 = [169, 174, 254], BG = [7, 7, 34];
 	let ambientColor = 'rgb(180, 170, 120)';
+	const WHITE = [255, 255, 255], BLACK = [0, 0, 0];
+	let metal = [];
 
 	/* ---------- cor ---------- */
 	const cssVar = name => getComputedStyle(root).getPropertyValue(name).trim();
@@ -61,22 +66,44 @@
 		ACCENT3 = parseColor(cssVar('--accent-3') || '#a9aefe');
 		BG = parseColor(cssVar('--bg') || '#070722');
 		ambientColor = rgb(mix(ACCENT, BG, 0.35));
+		/* mesmos stops do gradiente metálico do .hero-name-text (CSS) */
+		metal = [
+			[0.000, mix(WHITE, ACCENT, 0.62)], [0.263, mix(WHITE, ACCENT, 0.62)],
+			[0.263, ACCENT],                   [0.368, ACCENT],
+			[0.368, mix(WHITE, ACCENT, 0.84)], [0.579, mix(WHITE, ACCENT, 0.84)],
+			[0.579, mix(BLACK, ACCENT, 0.68)], [0.737, mix(BLACK, ACCENT, 0.68)],
+			[0.737, mix(BLACK, ACCENT, 0.42)]
+		];
 	}
 
-	/* tom metálico: topo mais claro, meio no --accent, base mais escura */
-	function tone(u) {
+	/* cor do nome em função da altura (u = y/H), amostrando o gradiente
+	   metálico — usada pelos blocos para casar com a camada da fonte real */
+	function nameColorAt(u) {
 		u = u < 0 ? 0 : u > 1 ? 1 : u;
-		const white = [255, 255, 255], black = [0, 0, 0];
-		return u <= 0.5 ? rgb(mix(ACCENT, white, (0.5 - u) * 0.8))
-		                : rgb(mix(ACCENT, black, (u - 0.5) * 0.9));
+		for (let i = 0; i < metal.length - 1; i++) {
+			const a = metal[i], b = metal[i + 1];
+			if (u >= a[0] && u <= b[0]) {
+				const span = b[0] - a[0];
+				const t = span <= 1e-6 ? 1 : (u - a[0]) / span;
+				return rgb(mix(a[1], b[1], t));
+			}
+		}
+		return rgb(metal.length ? metal[metal.length - 1][1] : ACCENT);
+	}
+
+	/* aplica a fonte exata (peso 800 + letter-spacing -.045em do CSS) */
+	function applyFont(c, px) {
+		c.font = WEIGHT + ' ' + px + 'px ' + FAMILY;
+		if ('letterSpacing' in c) c.letterSpacing = (-0.045 * px) + 'px';
 	}
 
 	/* ---------- geometria / alvos ---------- */
 	function computeFont() {
 		const targetW = W * 0.96;
-		ctx.font = WEIGHT + ' 100px ' + FAMILY;
+		applyFont(ctx, 100);
 		const w = ctx.measureText(TEXT).width || 1;
 		fontPx = Math.max(24, Math.min((targetW / w) * 100, H * 0.9));
+		applyFont(ctx, fontPx);
 	}
 
 	function buildParticles() {
@@ -84,7 +111,7 @@
 		off.width = W; off.height = H;
 		const o = off.getContext('2d');
 		o.textAlign = 'center'; o.textBaseline = 'middle';
-		o.font = WEIGHT + ' ' + fontPx + 'px ' + FAMILY;
+		applyFont(o, fontPx);
 		o.fillStyle = '#fff';
 		o.fillText(TEXT, W / 2, H / 2);
 
@@ -95,19 +122,14 @@
 		const step = Math.max(4, Math.round(fontPx / 16));
 		const size = step * 1.05;
 		const xs = [], ys = [];
-		let top = H, bot = 0;
 		for (let y = 0; y < H; y += step) {
 			for (let x = 0; x < W; x += step) {
 				if (data[(y * W + x) * 4 + 3] > 140) {
 					xs.push(x); ys.push(y);
-					if (y < top) top = y;
-					if (y > bot) bot = y;
 				}
 			}
 		}
 		if (!xs.length) { particles = []; return; }
-		if (bot <= top) { top = H / 2 - fontPx / 2; bot = top + fontPx; }
-		gradTop = top; gradSpan = Math.max(1, bot - top);
 
 		particles = new Array(xs.length);
 		for (let i = 0; i < xs.length; i++) {
@@ -115,9 +137,36 @@
 				tx: xs[i], ty: ys[i], x: xs[i], y: ys[i],
 				vx: 0, vy: 0, size: size, delay: 0,
 				scale: 1, scaleV: 0, rot: 0, rotV: 0, alpha: 1,
-				color: tone((ys[i] - gradTop) / gradSpan)
+				color: nameColorAt(ys[i] / H)
 			};
 		}
+	}
+
+	/* ---------- camada do nome na fonte real ----------
+	   Desenha "NLinux" na fonte exata (Geist 800 + letter-spacing do CSS)
+	   com o gradiente metálico. Ao fim de cada efeito os blocos dão lugar
+	   a esta camada, então o nome montado fica idêntico à tipografia. */
+	function paintName(c) {
+		c.clearRect(0, 0, W, H);
+		const g = c.createLinearGradient(0, 0, 0, H);
+		for (let i = 0; i < metal.length; i++) g.addColorStop(metal[i][0], rgb(metal[i][1]));
+		c.fillStyle = g;
+		c.fillText(TEXT, W / 2, H / 2);
+		c.lineWidth = 1.5;
+		c.strokeStyle = 'rgba(' + (ACCENT[0] | 0) + ', ' + (ACCENT[1] | 0) + ', ' + (ACCENT[2] | 0) + ', 0.75)';
+		c.strokeText(TEXT, W / 2, H / 2);
+	}
+
+	function buildNameLayer() {
+		nameLayer = document.createElement('canvas');
+		nameLayer.width = Math.round(W * dpr);
+		nameLayer.height = Math.round(H * dpr);
+		nameLayerCtx = nameLayer.getContext('2d');
+		nameLayerCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+		nameLayerCtx.textAlign = 'center';
+		nameLayerCtx.textBaseline = 'middle';
+		applyFont(nameLayerCtx, fontPx);
+		paintName(nameLayerCtx);
 	}
 
 	/* ---------- blocos soltos ao fundo ---------- */
@@ -239,6 +288,7 @@
 		ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 		computeFont();
 		buildParticles();
+		buildNameLayer();
 		buildAmbient();
 	}
 
@@ -432,6 +482,8 @@
 
 	/* ---------- loop ---------- */
 	let cur = 0, t0 = 0, raf = 0, running = false, visible = true, last = 0;
+	let settling = false, settleT0 = 0;
+	const SETTLE = 0.9; // segundos em que o nome fica montado (fonte real) entre efeitos
 
 	function startEffect(idx) {
 		cur = ((idx % EFFECTS.length) + EFFECTS.length) % EFFECTS.length;
@@ -440,6 +492,7 @@
 			p.scale = 1; p.scaleV = 0; p.rot = 0; p.rotV = 0; p.alpha = 1;
 		}
 		EFFECTS[cur].init();
+		settling = false;
 		t0 = performance.now();
 	}
 
@@ -454,13 +507,31 @@
 		ctx.clearRect(0, 0, W, H);
 		drawAmbient(dt);
 		stepHover(dt);
-		if (!particles.length) { drawHover(); return; }
+		if (!particles.length) {
+			if (nameLayer) { ctx.globalAlpha = 1; ctx.drawImage(nameLayer, 0, 0, W, H); }
+			drawHover();
+			return;
+		}
 
 		let fx = EFFECTS[cur];
 		let t = (now - t0) / (fx.duration * 1000);
-		if (t >= 1) { startEffect(cur + 1); fx = EFFECTS[cur]; t = 0; }
+		if (t >= 1) {
+			if (!settling) { settling = true; settleT0 = now; }
+			if (now - settleT0 >= SETTLE * 1000) {
+				startEffect(cur + 1);
+				fx = EFFECTS[cur];
+				t = 0;
+			} else {
+				t = 1; // nome montado: segura na fonte real antes do próximo efeito
+			}
+		}
 
 		const par = fx.params(t);
+
+		/* "hold": ao final do efeito, os blocos viram o nome na fonte real */
+		hold += ((t > 0.5 ? 1 : 0) - hold) * Math.min(1, dt / 0.22);
+		const pAlpha = 1 - hold;
+
 		for (let i = 0; i < particles.length; i++) {
 			const p = particles[i];
 			const g = gate(p, t);
@@ -486,8 +557,9 @@
 
 			if (fx.tick) fx.tick(p, t);
 
+			if (pAlpha <= 0.004) continue;
 			const s = p.size * (p.scale > 0 ? p.scale : 0);
-			ctx.globalAlpha = p.alpha;
+			ctx.globalAlpha = p.alpha * pAlpha;
 			ctx.fillStyle = p.color;
 			if (p.rot) {
 				ctx.save();
@@ -502,6 +574,12 @@
 		ctx.globalAlpha = 1;
 
 		if (fx.overlay) fx.overlay(t);
+
+		if (nameLayer && hold > 0.004) {
+			ctx.globalAlpha = hold;
+			ctx.drawImage(nameLayer, 0, 0, W, H);
+			ctx.globalAlpha = 1;
+		}
 		drawHover();
 	}
 
@@ -540,7 +618,8 @@
 
 	new MutationObserver(() => {
 		readColors();
-		for (const p of particles) p.color = tone((p.ty - gradTop) / gradSpan);
+		for (const p of particles) p.color = nameColorAt(p.ty / H);
+		if (nameLayerCtx) paintName(nameLayerCtx);
 	}).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
 
 	if (reduce.addEventListener) reduce.addEventListener('change', activate);
