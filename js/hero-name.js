@@ -20,7 +20,8 @@
      atenção  — linhas de atenção ligam as letras;
      detecção — caixas de confiança reconhecem cada letra;
      treino   — o nome "aprende" e converge suavemente até o lugar;
-     centro   — as bolinhas nascem no centro e abrem p/ as bordas (de dentro p/ fora).
+     centro   — as bolinhas nascem no centro e abrem p/ as bordas (de dentro p/ fora);
+     união    — as bolinhas se juntam no centro e explodem formando o nome.
    Dica: clique sobre o nome para pular para o próximo efeito.
    Além disso, bolinhas soltas aparecem e somem ao fundo enquanto o
    nome se forma, e ao passar o mouse sobre o nome surgem bolinhas que
@@ -784,6 +785,56 @@
 			params: () => ({ k: 0.2, damp: 0.78, grav: 0 }),
 			tick(p, t) {
 				p.alpha = smooth((t - p.delay) / 0.16);
+			}
+		},
+		{ /* união: as bolinhas se juntam no centro e explodem formando o nome */
+			duration: 2.8,
+			init() {
+				for (const p of particles) {
+					p.x = p.tx + rnd(-W * 0.5, W * 0.5);
+					p.y = p.ty + rnd(-H * 0.6, H * 0.6);
+					p.vx = 0; p.vy = 0;
+					p.alpha = 0.25;
+					p.delay = 0;
+					p.kicked = false;
+				}
+			},
+			params(t) {
+				/* fase 1 (juntar): mola fraca; fase 2 (explodir): mola forte */
+				const e = smooth(Math.min(1, Math.max(0, (t - 0.38) / 0.15)));
+				return { k: 0.015 + 0.24 * e, damp: e > 0 ? 0.82 : 0.9, grav: 0 };
+			},
+			tick(p, t) {
+				if (t < 0.4) {
+					/* puxa todas para o centro (a "união") */
+					const c = smooth(t / 0.4);
+					p.x += (W / 2 - p.x) * (0.05 + 0.35 * c);
+					p.y += (H / 2 - p.y) * (0.05 + 0.35 * c);
+					p.vx *= 0.5; p.vy *= 0.5;
+					p.alpha = 0.25 + 0.75 * c;
+				} else if (!p.kicked) {
+					/* impulso único de explosão, na direção de cada alvo */
+					const dx = p.tx - W / 2, dy = p.ty - H / 2;
+					const d = Math.hypot(dx, dy) || 1;
+					const imp = fontPx * 0.1;
+					p.vx += dx / d * imp;
+					p.vy += dy / d * imp;
+					p.kicked = true;
+				}
+			},
+			overlay(t) {
+				/* clarão no centro no momento da explosão */
+				const rel = (t - 0.4) / 0.22;
+				if (rel <= 0 || rel >= 1) return;
+				const a = (1 - rel) * 0.55;
+				const r = fontPx * (0.15 + rel * 1.1);
+				const g = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, r);
+				g.addColorStop(0, 'rgba(' + (glowRGB[0] | 0) + ',' + (glowRGB[1] | 0) + ',' + (glowRGB[2] | 0) + ',' + a.toFixed(3) + ')');
+				g.addColorStop(1, 'rgba(0,0,0,0)');
+				ctx.fillStyle = g;
+				ctx.beginPath();
+				ctx.arc(W / 2, H / 2, r, 0, TAU);
+				ctx.fill();
 			}
 		}
 	];
