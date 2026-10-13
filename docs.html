@@ -145,14 +145,6 @@
 		}
 		.icon-btn:hover { border-color: var(--border); background: var(--surface-2); }
 
-		/* GitHub no cabecalho: cor do tema no hover (--gh-hover) */
-		.icon-btn .ti { transition: transform .22s cubic-bezier(.34, 1.56, .64, 1); }
-		.icon-btn-gh:hover, .icon-btn-gh:focus-visible {
-			color: var(--gh-hover); border-color: color-mix(in srgb, var(--gh-hover) 55%, transparent);
-			background: color-mix(in srgb, var(--gh-hover) 13%, transparent);
-			box-shadow: 0 0 0 3px color-mix(in srgb, var(--gh-hover) 12%, transparent);
-		}
-		.icon-btn-gh:hover .ti, .icon-btn-gh:focus-visible .ti { transform: scale(1.16) rotate(-9deg); }
 		.nav-toggle { display: inline-flex; }
 		.mobile-nav {
 			position: absolute; top: calc(100% + .55rem); right: 1rem; z-index: 40;
@@ -598,9 +590,9 @@
 					<a href="plugins.html"><i class="ti ti-plug"></i>&nbsp;Plugins</a>
 				</nav>
 				<div class="header-actions">
-					<button type="button" class="icon-btn" id="themeToggle" aria-label="Alternar tema" title="Tema"><i class="ti ti-sun-moon"></i></button>
 					<a class="icon-btn icon-btn-telegram" href="https://t.me/NLinuxOS" target="_blank" rel="noopener noreferrer" aria-label="Canal do Telegram NLinuxOS" title="Telegram NLinuxOS"><i class="ti ti-brand-telegram"></i></a>
 					<a class="icon-btn icon-btn-gh" href="https://github.com/Nilsonlinux" target="_blank" rel="noopener noreferrer" aria-label="GitHub do NLinux" title="GitHub"><i class="ti ti-brand-github"></i></a>
+					<button type="button" class="icon-btn" id="themeToggle" aria-label="Alternar tema" title="Tema"><i class="ti ti-sun-moon"></i></button>
 					<a class="btn-primary" href="baixar.html"><i class="ti ti-download"></i><span class="btn-label">Baixar ISO</span></a>
 					<button type="button" class="icon-btn nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false" title="Menu"><i class="ti ti-menu-2"></i></button>
 				</div>
