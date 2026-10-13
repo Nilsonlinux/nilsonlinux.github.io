@@ -14,7 +14,13 @@
      scanline — uma linha varre de cima p/ baixo revelando o nome;
      dominó   — as bolinhas caem em cascata (esq -> dir);
      zoom     — o nome vem grande/afastado e se ajusta;
-     ia       — rede neural que "aprende" o nome (sinapses e convergência).
+     ia       — rede neural que "aprende" o nome (sinapses e convergência);
+     difusão  — o nome emerge do ruído (denoise);
+     tokens   — o nome é gerado token por token (com cursor);
+     atenção  — linhas de atenção ligam as letras;
+     detecção — caixas de confiança reconhecem cada letra;
+     treino   — converge enquanto a "loss" cai (aprendizado).
+   Dica: clique sobre o nome para pular para o próximo efeito.
    Além disso, bolinhas soltas aparecem e somem ao fundo enquanto o
    nome se forma, e ao passar o mouse sobre o nome surgem bolinhas que
    seguram um gradiente de cor e somem num degrade. As bolinhas têm um
@@ -613,6 +619,161 @@
 				}
 				ctx.globalAlpha = 1;
 			}
+		},
+		{ /* difusão: o nome emerge do ruído, "desruidando" aos poucos */
+			duration: 3.0,
+			init() {
+				for (const p of particles) {
+					p.x = rnd(0, W); p.y = rnd(0, H);
+					p.vx = rnd(-2, 2); p.vy = rnd(-2, 2);
+					p.alpha = rnd(0.3, 0.7);
+					p.delay = rnd(0, 0.45);
+				}
+			},
+			params(t) {
+				const e = smooth(Math.max(0, (t - 0.08) / 0.9));
+				return { k: 0.02 + 0.13 * e, damp: 0.9, grav: 0 };
+			},
+			tick(p, t) {
+				p.alpha = 0.15 + 0.85 * smooth((t - p.delay) / 0.4);
+				const j = (1 - Math.min(1, t / 0.7)) * 3.5; // ruído que vai sumindo
+				if (j > 0.12) { p.x += rnd(-j, j); p.y += rnd(-j, j); }
+			}
+		},
+		{ /* tokens: o nome é "gerado" token por token, com cursor piscando */
+			duration: 3.0,
+			init() {
+				for (const p of particles) {
+					p.x = p.tx; p.y = p.ty;
+					p.vx = 0; p.vy = 0;
+					p.scale = 0.1; p.scaleV = 0;
+					p.alpha = 0;
+					p.delay = (p.letter / nLetters) * 0.72;
+				}
+			},
+			params: () => ({ k: 0.3, damp: 0.6, grav: 0 }),
+			tick(p, t) {
+				const u = smooth((t - p.delay) / 0.13);
+				p.alpha = u;
+				p.scale = 0.1 + 0.9 * u;
+				p.scaleV = 0;
+			},
+			overlay(t) {
+				const prog = Math.min(nLetters, Math.floor(t / 0.72 * nLetters) + 1);
+				const idx = Math.max(0, Math.min(nLetters - 1, prog - 1));
+				const caretX = letterBounds[idx] ? letterBounds[idx][1] + fontPx * 0.08 : W / 2;
+				const blink = Math.sin(performance.now() / 200) > -0.2 ? 1 : 0;
+				ctx.globalAlpha = Math.max(0, 1 - Math.min(1, t / 0.92)) * 0.85 * blink;
+				ctx.fillStyle = glowColor;
+				ctx.fillRect(caretX, H / 2 - fontPx * 0.34, Math.max(2, fontPx * 0.05), fontPx * 0.68);
+				ctx.globalAlpha = 1;
+			}
+		},
+		{ /* atenção: linhas de "atenção" ligam as letras até o nome se formar */
+			duration: 3.0,
+			init() {
+				for (const p of particles) {
+					const a = rnd(0, TAU), rad = rnd(H * 0.4, H * 1.3);
+					p.x = W / 2 + Math.cos(a) * rad * 1.1;
+					p.y = H / 2 + Math.sin(a) * rad;
+					p.vx = 0; p.vy = 0;
+					p.alpha = 1;
+					p.delay = rnd(0, 0.3);
+				}
+			},
+			params(t) {
+				const e = smooth(Math.min(1, t / 0.7));
+				return { k: 0.02 + 0.14 * e, damp: 0.9, grav: 0 };
+			},
+			underlay(t) {
+				const a = 1 - Math.min(1, t / 0.75);
+				if (a <= 0.03 || nLetters < 2) return;
+				ctx.strokeStyle = glowColor;
+				ctx.lineWidth = 1;
+				for (let i = 0; i < nLetters; i++) {
+					const xi = (letterBounds[i][0] + letterBounds[i][1]) / 2;
+					for (let j = i + 1; j < nLetters; j++) {
+						const xj = (letterBounds[j][0] + letterBounds[j][1]) / 2;
+						const w = 1 / (1 + Math.abs(i - j));
+						ctx.globalAlpha = a * w * 0.55;
+						ctx.beginPath();
+						ctx.moveTo(xi, H / 2 - fontPx * 0.32);
+						ctx.lineTo(xj, H / 2 + fontPx * 0.32);
+						ctx.stroke();
+					}
+				}
+				ctx.globalAlpha = 1;
+			}
+		},
+		{ /* detecção: caixas de "confiança" reconhecem cada letra */
+			duration: 3.0,
+			init() {
+				for (const p of particles) {
+					p.x = rnd(0, W); p.y = rnd(0, H);
+					p.vx = 0; p.vy = 0;
+					p.alpha = 0.12;
+					p.delay = (p.letter / nLetters) * 0.5 + rnd(0, 0.15);
+				}
+			},
+			params: () => ({ k: 0.09, damp: 0.88, grav: 0 }),
+			tick(p, t) {
+				p.alpha = 0.12 + 0.88 * smooth((t - p.delay) / 0.35);
+			},
+			underlay(t) {
+				const fade = 1 - Math.min(1, t / 0.82);
+				if (fade <= 0.03) return;
+				const per = 0.5 / Math.max(1, nLetters);
+				ctx.lineWidth = 1.5;
+				ctx.strokeStyle = glowColor;
+				for (let i = 0; i < nLetters; i++) {
+					const on = smooth(Math.min(1, Math.max(0, (t - i * per) / 0.12)));
+					if (on <= 0.01) continue;
+					const x0 = letterBounds[i][0] - 3, x1 = letterBounds[i][1] + 3;
+					const y0 = H / 2 - fontPx * 0.52, y1 = H / 2 + fontPx * 0.52;
+					ctx.globalAlpha = on * fade * 0.7;
+					ctx.strokeRect(x0, y0, x1 - x0, y1 - y0);
+					ctx.save();
+					ctx.globalAlpha = on * fade * 0.9;
+					ctx.fillStyle = glowColor;
+					ctx.font = '600 ' + Math.max(8, fontPx * 0.14) + 'px ' + FAMILY;
+					ctx.textAlign = 'left';
+					ctx.textBaseline = 'bottom';
+					if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
+					ctx.fillText((88 + ((i * 13) % 11)) + '%', x0, y0 - 3);
+					ctx.restore();
+				}
+				ctx.globalAlpha = 1;
+			}
+		},
+		{ /* treino: o nome "aprende" (converge) enquanto a "loss" cai */
+			duration: 3.0,
+			init() {
+				for (const p of particles) {
+					p.x = p.tx + rnd(-W * 0.15, W * 0.15);
+					p.y = p.ty + rnd(-H * 0.5, H * 0.5);
+					p.vx = 0; p.vy = 0;
+					p.alpha = 1;
+					p.delay = rnd(0, 0.25);
+				}
+			},
+			params(t) {
+				const e = smooth(Math.min(1, t / 0.8));
+				return { k: 0.03 + 0.13 * e, damp: 0.9, grav: 0 };
+			},
+			overlay(t) {
+				const fade = 1 - Math.min(1, t / 0.9);
+				if (fade <= 0.02) return;
+				ctx.save();
+				ctx.globalAlpha = fade * 0.7;
+				ctx.fillStyle = glowColor;
+				ctx.font = '600 ' + Math.max(9, fontPx * 0.15) + 'px ' + FAMILY;
+				ctx.textAlign = 'left';
+				ctx.textBaseline = 'top';
+				if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
+				const loss = 1.75 * (1 - Math.min(1, t / 0.85)) + 0.012;
+				ctx.fillText('loss ' + loss.toFixed(3), 8, 6);
+				ctx.restore();
+			}
 		}
 	];
 
@@ -781,7 +942,7 @@
 	document.addEventListener('visibilitychange', () => { visible = !document.hidden; });
 
 	canvas.addEventListener('pointermove', handleMove, { passive: true });
-	canvas.addEventListener('pointerdown', handleMove, { passive: true });
+	canvas.addEventListener('pointerdown', e => { handleMove(e); startEffect(cur + 1); });
 	canvas.addEventListener('pointerleave', () => { lastPt = null; });
 
 	/* ---------- início ---------- */
