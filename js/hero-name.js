@@ -1,20 +1,20 @@
 /* NLinux — efeito do nome no hero (canvas).
-   Monta "NLinux" com blocos/partículas e vai alternando efeitos:
-     chuva    — blocos caem de cima e se encaixam;
+   Monta "NLinux" com bolinhas/partículas e vai alternando efeitos:
+     chuva    — bolinhas caem de cima e se encaixam;
      explosão — o nome estoura em partículas e se recompõe;
-     lateral  — as peças entram pelas laterais;
-     onda     — as peças se recolhem do caos;
-     teclado  — as peças aparecem da esquerda p/ a direita;
-     bordas   — as peças entram pela borda mais próxima;
+     lateral  — as bolinhas entram pelas laterais;
+     onda     — as bolinhas se recolhem do caos;
+     teclado  — as bolinhas aparecem da esquerda p/ a direita;
+     bordas   — as bolinhas entram pela borda mais próxima;
      glitch   — começa embaralhado e "trava" no lugar;
-     vórtice  — as peças espiralam até o nome;
+     vórtice  — as bolinhas espiralam até o nome;
      scanline — uma linha varre de cima p/ baixo revelando o nome;
-     dominó   — as peças caem e tombam em cascata (esq -> dir);
+     dominó   — as bolinhas caem em cascata (esq -> dir);
      zoom     — o nome vem grande/afastado e se ajusta.
-   Além disso, blocos soltos aparecem e somem ao fundo enquanto o
-   nome se forma, e ao passar o mouse sobre o nome surgem blocos que
+   Além disso, bolinhas soltas aparecem e somem ao fundo enquanto o
+   nome se forma, e ao passar o mouse sobre o nome surgem bolinhas que
    seguram um gradiente de cor e somem num degrade. No fim de cada
-   efeito os blocos se dissolvem numa camada com a fonte real (Geist),
+   efeito as bolinhas se dissolvem numa camada com a fonte real (Geist),
    então o nome 100% montado fica idêntico à tipografia. Segue o tema
    pelo --accent (amarelo no escuro, azul no claro) e respeita
    prefers-reduced-motion: nesse caso o canvas nem liga e o texto em
@@ -59,6 +59,7 @@
 	const mix = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
 	const rgb = c => 'rgb(' + (c[0] | 0) + ', ' + (c[1] | 0) + ', ' + (c[2] | 0) + ')';
 	const smooth = x => { x = x < 0 ? 0 : x > 1 ? 1 : x; return x * x * (3 - 2 * x); };
+	const TAU = Math.PI * 2;
 
 	function readColors() {
 		ACCENT = parseColor(cssVar('--accent'));
@@ -77,7 +78,7 @@
 	}
 
 	/* cor do nome em função da altura (u = y/H), amostrando o gradiente
-	   metálico — usada pelos blocos para casar com a camada da fonte real */
+	   metálico — usada pelas bolinhas para casar com a camada da fonte real */
 	function nameColorAt(u) {
 		u = u < 0 ? 0 : u > 1 ? 1 : u;
 		for (let i = 0; i < metal.length - 1; i++) {
@@ -120,7 +121,7 @@
 		catch (e) { return; }
 
 		const step = Math.max(4, Math.round(fontPx / 16));
-		const size = step * 1.05;
+		const size = step * 1.35;
 		const xs = [], ys = [];
 		for (let y = 0; y < H; y += step) {
 			for (let x = 0; x < W; x += step) {
@@ -144,7 +145,7 @@
 
 	/* ---------- camada do nome na fonte real ----------
 	   Desenha "NLinux" na fonte exata (Geist 800 + letter-spacing do CSS)
-	   com o gradiente metálico. Ao fim de cada efeito os blocos dão lugar
+	   com o gradiente metálico. Ao fim de cada efeito as bolinhas dão lugar
 	   a esta camada, então o nome montado fica idêntico à tipografia. */
 	function paintName(c) {
 		c.clearRect(0, 0, W, H);
@@ -169,7 +170,7 @@
 		paintName(nameLayerCtx);
 	}
 
-	/* ---------- blocos soltos ao fundo ---------- */
+	/* ---------- bolinhas soltas ao fundo ---------- */
 	const rnd = (a, b) => a + Math.random() * (b - a);
 
 	function respawnAmbient(a, initial) {
@@ -204,14 +205,15 @@
 			const alpha = Math.sin(Math.PI * (a.life / a.max)) * 0.45;
 			if (alpha <= 0.012) continue;
 			ctx.globalAlpha = alpha;
-			const s = a.size;
-			ctx.fillRect(a.x - s * 0.5, a.y - s * 0.5, s, s);
+			ctx.beginPath();
+			ctx.arc(a.x, a.y, a.size * 0.5, 0, TAU);
+			ctx.fill();
 		}
 		ctx.globalAlpha = 1;
 	}
 
-	/* ---------- blocos do hover (aparecem ao passar o mouse) ----------
-	   Os blocos surgem sob o cursor com tamanho/posição aleatórios e
+	/* ---------- bolinhas do hover (aparecem ao passar o mouse) ----------
+	   As bolinhas surgem sob o cursor com tamanho/posição aleatórios e
 	   somem num degrade: a opacidade cai com a vida e a cor percorre um
 	   gradiente (accent -> accent-3 -> accent-2) conforme a posição x. */
 	const hover = [];
@@ -255,10 +257,13 @@
 			const u = b.life / b.max;
 			const a = (1 - u) * 0.9;
 			if (a <= 0.01) continue;
-			const s = b.size * (1 - u * 0.45);
+			const r = b.size * (1 - u * 0.45) * 0.5;
+			if (r <= 0) continue;
 			ctx.globalAlpha = a;
 			ctx.fillStyle = b.color;
-			ctx.fillRect(b.x - s * 0.5, b.y - s * 0.5, s, s);
+			ctx.beginPath();
+			ctx.arc(b.x, b.y, r, 0, TAU);
+			ctx.fill();
 		}
 		ctx.globalAlpha = 1;
 	}
@@ -326,7 +331,7 @@
 				return { k: 0.13 * e, damp: 0.9, grav: 0.45 * (1 - e) };
 			}
 		},
-		{ /* lateral: as peças entram pelas laterais */
+		{ /* lateral: as bolinhas entram pelas laterais */
 			duration: 2.4,
 			init() {
 				for (const p of particles) {
@@ -351,7 +356,7 @@
 			},
 			params: () => ({ k: 0.055, damp: 0.9, grav: 0 })
 		},
-		{ /* teclado: as peças aparecem da esquerda p/ a direita */
+		{ /* teclado: as bolinhas aparecem da esquerda p/ a direita */
 			duration: 2.7,
 			init() {
 				const R = fontPx * 0.28;
@@ -364,7 +369,7 @@
 			},
 			params: () => ({ k: 0.2, damp: 0.7, grav: 0 })
 		},
-		{ /* bordas: as peças entram pela borda mais próxima */
+		{ /* bordas: as bolinhas entram pela borda mais próxima */
 			duration: 2.4,
 			init() {
 				for (const p of particles) {
@@ -399,7 +404,7 @@
 				}
 			}
 		},
-		{ /* vórtice: as peças espiralam até o nome */
+		{ /* vórtice: as bolinhas espiralam até o nome */
 			duration: 2.8,
 			init() {
 				const cx = W / 2, cy = H / 2;
@@ -440,7 +445,7 @@
 				ctx.globalAlpha = 1;
 			}
 		},
-		{ /* dominó: as peças caem e tombam em cascata (esq -> dir) */
+		{ /* dominó: as bolinhas caem em cascata (esq -> dir) */
 			duration: 2.8,
 			init() {
 				for (const p of particles) {
@@ -528,7 +533,7 @@
 
 		const par = fx.params(t);
 
-		/* "hold": ao final do efeito, os blocos viram o nome na fonte real */
+		/* "hold": ao final do efeito, as bolinhas viram o nome na fonte real */
 		hold += ((t > 0.5 ? 1 : 0) - hold) * Math.min(1, dt / 0.22);
 		const pAlpha = 1 - hold;
 
@@ -558,18 +563,13 @@
 			if (fx.tick) fx.tick(p, t);
 
 			if (pAlpha <= 0.004) continue;
-			const s = p.size * (p.scale > 0 ? p.scale : 0);
+			const r = p.size * (p.scale > 0 ? p.scale : 0) * 0.5;
+			if (r <= 0) continue;
 			ctx.globalAlpha = p.alpha * pAlpha;
 			ctx.fillStyle = p.color;
-			if (p.rot) {
-				ctx.save();
-				ctx.translate(p.x, p.y);
-				ctx.rotate(p.rot);
-				ctx.fillRect(-s * 0.5, -s * 0.5, s, s);
-				ctx.restore();
-			} else {
-				ctx.fillRect(p.x - s * 0.5, p.y - s * 0.5, s, s);
-			}
+			ctx.beginPath();
+			ctx.arc(p.x, p.y, r, 0, TAU);
+			ctx.fill();
 		}
 		ctx.globalAlpha = 1;
 
