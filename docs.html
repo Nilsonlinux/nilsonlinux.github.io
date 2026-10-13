@@ -456,10 +456,17 @@
 			color: var(--accent); font-size: 1rem; flex-shrink: 0;
 			transition: transform .25s cubic-bezier(.34, 1.56, .64, 1);
 		}
-		.faq-item > summary .chev { margin-left: auto; color: var(--faint); transition: transform .25s; font-size: 1rem; }
+		.faq-item > summary .chev {
+			margin-left: auto; display: inline-flex; align-items: center; justify-content: center;
+			color: var(--faint); font-size: 1rem; line-height: 1; transition: color .2s ease;
+		}
+		.faq-item > summary .chev .ti { color: inherit; font-size: 1rem; }
+		.faq-item > summary .chev .ti-minus { display: none; }
 		.faq-item > summary:hover { background: color-mix(in srgb, var(--surface-2) 45%, transparent); }
-		.faq-item[open] > summary .chev { transform: rotate(180deg); }
 		.faq-item[open] > summary .ti { transform: scale(1.2); }
+		.faq-item[open] > summary .chev { color: var(--accent); }
+		.faq-item[open] > summary .chev .ti-plus { display: none; }
+		.faq-item[open] > summary .chev .ti-minus { display: inline-block; }
 		.faq-item[open] > summary { border-bottom: 1px solid color-mix(in srgb, var(--accent) 30%, transparent); }
 		.faq-item[open] {
 			border-color: color-mix(in srgb, var(--accent) 40%, transparent);
@@ -1114,52 +1121,52 @@ capsule = true
 							<h2 class="doc-h2"><i class="ti ti-help-circle"></i> Problemas comuns<a class="anchor ti ti-link" href="#faq" aria-label="Link para esta seção"></a></h2>
 
 							<details class="faq-item">
-								<summary><i class="ti ti-alert-circle"></i> A instalação falhou. Onde eu leio o erro?<i class="ti ti-chevron-down chev"></i></summary>
+								<summary><i class="ti ti-alert-circle"></i> A instalação falhou. Onde eu leio o erro?<span class="chev"><i class="ti ti-plus"></i><i class="ti ti-minus"></i></span></summary>
 								<div class="faq-body">O erro é gravado <strong>no disco de destino</strong> antes de desmontar: <code>/var/log/install-error.log</code>, com as últimas 150 linhas do log da instalação. Monte a partição do sistema e leia esse arquivo. No live, o log da instalação fica em <code>/tmp/nlinux-install.log</code> (é o que o painel acompanha) e o do servidor web em <code>/tmp/nlinux-web.log</code>. Para acompanhar ao vivo: <code>tail -f /tmp/nlinux-install.log</code>.</div>
 							</details>
 
 							<details class="faq-item">
-								<summary><i class="ti ti-alert-circle"></i> O instalador diz que só suporta UEFI<i class="ti ti-chevron-down chev"></i></summary>
+								<summary><i class="ti ti-alert-circle"></i> O instalador diz que só suporta UEFI<span class="chev"><i class="ti ti-plus"></i><i class="ti ti-minus"></i></span></summary>
 								<div class="faq-body">Ele verifica <code>/sys/firmware/efi</code> e aborta em modo legado. Ative o modo UEFI na firmware e desligue CSM/Legacy Boot. Para conferir depois de instalado: <code>[ -d /sys/firmware/efi ] &amp;&amp; echo UEFI</code>.</div>
 							</details>
 
 							<details class="faq-item">
-								<summary><i class="ti ti-alert-circle"></i> O dual boot não aparece disponível<i class="ti ti-chevron-down chev"></i></summary>
+								<summary><i class="ti ti-alert-circle"></i> O dual boot não aparece disponível<span class="chev"><i class="ti ti-plus"></i><i class="ti ti-minus"></i></span></summary>
 								<div class="faq-body">O modo <em>ao lado</em> exige uma partição <strong>ESP FAT32</strong> no disco escolhido e <strong>mais de 5 GiB livres</strong>. Sem ESP ou sem espaço, a interface desabilita a opção. Também é preciso espaço livre numbering disponível no GPT.</div>
 							</details>
 
 							<details class="faq-item">
-								<summary><i class="ti ti-alert-circle"></i> Posso reduzir a partição do Windows?<i class="ti ti-chevron-down chev"></i></summary>
+								<summary><i class="ti ti-alert-circle"></i> Posso reduzir a partição do Windows?<span class="chev"><i class="ti ti-plus"></i><i class="ti ti-minus"></i></span></summary>
 								<div class="faq-body">Sim, apenas se ela for <strong>NTFS</strong> e você estiver no modo dual. Faça backup, desative BitLocker e a Inicialização Rápida/hibernação antes — o instalador avisa que a redução só é aplicada após a confirmação, e o Windows pode verificar o disco no primeiro boot.</div>
 							</details>
 
 							<details class="faq-item">
-								<summary><i class="ti ti-alert-circle"></i> A cópia offline foi interrompida<i class="ti ti-chevron-down chev"></i></summary>
+								<summary><i class="ti ti-alert-circle"></i> A cópia offline foi interrompida<span class="chev"><i class="ti ti-plus"></i><i class="ti ti-minus"></i></span></summary>
 								<div class="faq-body">O <code>rsync</code> retoma sozinho com <code>--partial</code> quando é interrompido, e avisos não fatais (arquivos que somem no live, atributos da ESP FAT) não abortam mais a instalação. Se parar de vez, confira espaço e o log em <code>/var/log/offline-rsync.log</code>.</div>
 							</details>
 
 							<details class="faq-item">
-								<summary><i class="ti ti-alert-circle"></i> Sem internet: consigo instalar?<i class="ti ti-chevron-down chev"></i></summary>
+								<summary><i class="ti ti-alert-circle"></i> Sem internet: consigo instalar?<span class="chev"><i class="ti ti-plus"></i><i class="ti ti-minus"></i></span></summary>
 								<div class="faq-body">Sim, no modo <strong>Rápida (offline)</strong> — o sistema é copiado do pendrive e não é preciso rede. O modo Completo (online) baixa tudo do espelho. Sem rede, a loja também continua abrindo com o catálogo local.</div>
 							</details>
 
 							<details class="faq-item">
-								<summary><i class="ti ti-alert-circle"></i> O NLinux não aparece na lista de boot da firmware<i class="ti ti-chevron-down chev"></i></summary>
+								<summary><i class="ti ti-alert-circle"></i> O NLinux não aparece na lista de boot da firmware<span class="chev"><i class="ti ti-plus"></i><i class="ti ti-minus"></i></span></summary>
 								<div class="faq-body">Normalmente o disco aparece como <strong>NLinux</strong>. Há três sintomas, e cada um tem uma causa diferente:<br><br><strong>1. Aparece como <em>Linux Boot Manager</em>.</strong> A reescrita do rótulo não deu certo e o instalador manteve a entrada como o <code>bootctl</code> deixou — por segurança, ele nunca apaga a única entrada que existe e nunca deixa a máquina sem entrada além do fallback <code>/EFI/BOOT/BOOTX64.EFI</code>.<br><br><strong>2. Só aparece <code>UEFI: &lt;disco&gt;</code> / <code>UEFI OS</code>, sem o <em>NLinux</em>.</strong> A entrada existiu, mas a firmware a apagou da NVRAM no boot seguinte porque não conseguiu abrir o arquivo do loader. A firmware <strong>descarta da NVRAM toda entrada que ela não resolve</strong> — não há como mantê-la à força. A causa quase sempre é o <code>/boot/EFI/systemd/systemd-bootx64.efi</code> não estar na ESP. Isso também acontece naturalmente quando a ESP é recriada (nova instalação no mesmo disco): as entradas antigas apontam para o GUID da partição que não existe mais e somem do menu, o que é o comportamento correto.<br><br><strong>3. O rótulo estava certo na instalação e sumiu depois.</strong> Foi o caso de a entrada escolhida ser a do <em>fallback</em> (<code>systemd-boot-fallbackx64.efi</code>) em vez da principal: ela some junto com a firmware. O instalador hoje escolhe pelo arquivo em disco justamente para não errar isso.<br><br>O motivo exato está no log: <code>sudo cat /var/log/nlinux-install.log</code>, procurando por <code>renomeada</code> (a linha de sucesso traz o rótulo antigo, o novo e quantos bytes o rótulo ocupava), por <code>loader presente</code> / <code>SEM O ARQUIVO</code> (o que a firmware vai descartar) e por <code>NVRAM</code> (o estado da lista de boot antes e depois). <br><br>Um detalhe que costuma enganar: <code>efibootmgr -b 0001 -L "NLinux"</code> <strong>não renomeia nada</strong> nesta versão — o <code>--label</code> só é lido por <code>--create</code> e por <code>--delete</code>. É o que a maioria das wiki manda fazer, e é um no-op. Também aparece como <code>UEFI: &lt;disco&gt;</code> quando não há <code>efibootmgr</code> no live, porque aí só o fallback <code>/EFI/BOOT/BOOTX64.EFI</code> é gravado. Enquanto isso, você sempre pode entrar no menu de boot da firmware (normalmente F8/F11/F12) e escolher a entrada manualmente.</div>
 							</details>
 
 							<details class="faq-item">
-								<summary><i class="ti ti-alert-circle"></i> Linhas vermelhas com "Volume full" na tela de boot<i class="ti ti-chevron-down chev"></i></summary>
+								<summary><i class="ti ti-alert-circle"></i> Linhas vermelhas com "Volume full" na tela de boot<span class="chev"><i class="ti ti-plus"></i><i class="ti ti-minus"></i></span></summary>
 								<div class="faq-body"><code>Volume full</code> é o status UEFI <code>EFI_VOLUME_FULL</code>, devolvido pelo <code>PCR_Extend</code> do <code>EFI_TCG2_PROTOCOL</code> — ou seja, pela <strong>firmware</strong>. As linhas vêm do <code>systemd-boot</code>/<code>systemd-stub</code> (<code>measure-smbios.c</code>, <code>measure.c</code>, <code>boot.c</code>) e aparecem <strong>em qualquer sistema</strong>: na ISO live, no NLinux instalado e no Arch, porque quem mede é o loader, não a distro.<br><br>Elas <strong>não impedem o boot</strong>. As medições que falham são puladas (<code>ignoring</code>); o que deixa de funcionar é apenas <em>measured boot</em> e atestação de integridade. Para conferir se a firmware está entregando log de medição: <code>cat /sys/kernel/security/tpm0/binary_bios_measurements | wc -c</code> — mas um <code>0</code> aqui <strong>não é o diagnóstico</strong>: ele pode continuar em <code>0</code> com tudo funcionando, e mesmo quando as linhas aparecem. O sinal que importa é o <code>EFI_VOLUME_FULL</code> em si.<br><br><strong>Atenção: mexer na NVRAM ou no TPM pode travar o Windows.</strong> Em máquina com <strong>Windows 11</strong> — ou com qualquer distro usando BitLocker/cifra de disco — vale para as duas operações:<br><br>• <strong>Reset da NVRAM</strong> (<em>Load BIOS Defaults</em>) apaga o cofre de chaves do Secure Boot: <code>PK</code>, <code>KEK</code>, <code>db</code>, <code>dbx</code>. Com o Secure Boot ligado, o Windows deixa de ter chaves válidas e não dá boot no modo seguro até elas serem reinscritas. Em algumas placas esse reset também mexe no estado do TPM.<br>• <strong>Limpar o TPM</strong> apaga as chaves que ficam guardadas nele: as do Secure Boot, a chave mestra do <strong>BitLocker</strong> (o Windows passa a pedir a chave de recuperação, os 48 dígitos), o Windows Hello e a Criptografia de Dispositivo.<br>• <strong>Desligar o TPM na BIOS</strong> tem o mesmo efeito de limpar.<br><br>O que fazer, nessa ordem:<br><br>1. <strong>Atualizar a BIOS.</strong> É o passo mais seguro: resolve o firmware sem tocar em chave nenhuma.<br>2. <strong>Reset da NVRAM</strong> (<em>Load BIOS Defaults</em>) — costuma resolver, mas <strong>é o passo que exige atenção numa máquina com Windows</strong>: confira antes se o Secure Boot estava ligado, porque o cofre de chaves será apagado. Em máquina só com Linux não há o que perder. As entradas de boot da NVRAM normalmente sobrevivem ao reset (só as preferências da BIOS voltam ao padrão).<br>3. <strong>Se você não usa <em>measured boot</em> nem atestação, deixe como está.</strong> As linhas são cosméticas e nada mais é afetado.<br>4. <strong>Só desligue o TPM na BIOS se a máquina não tiver Windows 11 nem nada cifrado com TPM.</strong> Aí as linhas somem na hora, porque o <code>systemd-boot</code> só chama o TCG2 se o protocolo existir.<br>5. <strong>Se for limpar o TPM mesmo assim</strong>, no Windows salve antes a chave de recuperação (<code>manage-bde recoverypassword C:</code>) e conte com reinscrever as chaves do Secure Boot depois.</div>
 							</details>
 
 							<details class="faq-item">
-								<summary><i class="ti ti-alert-circle"></i> A tela ficou preta depois do boot<i class="ti ti-chevron-down chev"></i></summary>
+								<summary><i class="ti ti-alert-circle"></i> A tela ficou preta depois do boot<span class="chev"><i class="ti ti-plus"></i><i class="ti ti-minus"></i></span></summary>
 								<div class="faq-body">No live, o desktop abre automaticamente pelo autologin no tty1. Se a sessão gráfica não subir, use <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>F2</kbd> para um shell root e verifique os serviços do greetd. Em máquina com GPU NVIDIA, confira se a opção de driver NVIDIA foi escolhida na instalação.</div>
 							</details>
 
 							<details class="faq-item">
-								<summary><i class="ti ti-alert-circle"></i> Quero instalar sem o instalador web (SSH/servidor)<i class="ti ti-chevron-down chev"></i></summary>
+								<summary><i class="ti ti-alert-circle"></i> Quero instalar sem o instalador web (SSH/servidor)<span class="chev"><i class="ti ti-plus"></i><i class="ti ti-minus"></i></span></summary>
 								<div class="faq-body">Dá para rodar o motor direto, sem navegador: exporte as variáveis e execute <code>./install.sh</code> no ambiente live. Veja a <a class="link-accent" href="compilar.html#variaveis">tabela de variáveis</a>. O instalador web é apenas a interface para montá-las; ele chama o mesmo script com <code>GUI_DRIVEN=1</code>.</div>
 							</details>
 						</section>
