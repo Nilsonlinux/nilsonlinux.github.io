@@ -524,38 +524,9 @@
 		/* ---- Hero: baixar + telas do instalador ---- */
 		.hero-actions { margin-top: 1.6rem; }
 		.hero-actions .cta-actions { margin-top: 0; }
-		.inst-preview { margin-top: 1.75rem; }
-		.inst-label {
-			display: inline-flex; align-items: center; gap: .45rem;
-			font: 600 .68rem "JetBrains Mono", monospace; text-transform: uppercase;
-			letter-spacing: .1em; color: var(--faint); margin-bottom: .75rem;
-		}
-		.inst-label .ti { color: var(--accent); font-size: 1rem; }
-		.inst-strip {
-			display: flex; gap: .75rem; overflow-x: auto; padding: .3rem .3rem .8rem;
-			scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
-			justify-content: safe center; scrollbar-width: thin;
-		}
-		.inst-strip button {
-			position: relative; flex: 0 0 auto; width: clamp(12rem, 34vw, 18rem);
-			aspect-ratio: 16 / 9; padding: 0; border: 1px solid var(--border);
-			border-radius: .8rem; overflow: hidden; background: var(--bg2);
-			cursor: zoom-in; scroll-snap-align: center; box-shadow: var(--shadow-card);
-			transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
-		}
-		.inst-strip button:hover {
-			transform: translateY(-3px);
-			border-color: color-mix(in srgb, var(--accent) 45%, transparent);
-			box-shadow: var(--shadow-card-hover);
-		}
-		.inst-strip button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-		.inst-strip img { width: 100%; height: 100%; object-fit: cover; display: block; }
-		.inst-num {
-			position: absolute; left: .5rem; bottom: .5rem;
-			font: 600 .62rem "JetBrains Mono", monospace; color: #fff;
-			padding: .15rem .45rem; border-radius: 999px;
-			background: color-mix(in srgb, #000 55%, transparent); backdrop-filter: blur(4px);
-		}
+		/* os dois botões do hero ficam arredondados (pílula) */
+		.hero-actions .btn-primary,
+		.hero-actions .btn-ghost { border-radius: 999px; height: 2.75rem; padding: 0 1.5rem; }
 
 		/* ---- Footer ---- */
 		.site-footer {
@@ -689,17 +660,6 @@
 						<div class="cta-actions">
 							<a class="btn-primary" href="baixar.html" data-iso-download target="_blank" rel="noopener noreferrer"><i class="ti ti-download"></i><span>Baixar ISO</span></a>
 							<button type="button" class="btn-ghost" data-lb-open><i class="ti ti-photo"></i><span>Ver as 24 telas</span></button>
-						</div>
-					</div>
-					<div class="inst-preview reveal">
-						<p class="inst-label"><i class="ti ti-photo"></i> Telas do instalador</p>
-						<div class="inst-strip">
-							<button type="button" data-lb-open data-lb-index="0" aria-label="Ver a tela 1 do instalador"><img src="img/instalador/nlinux-instalador-01.png" alt="NLinux — tela 1 de 24 (live e instalador)" loading="lazy" decoding="async" /><span class="inst-num">01</span></button>
-							<button type="button" data-lb-open data-lb-index="4" aria-label="Ver a tela 5 do instalador"><img src="img/instalador/nlinux-instalador-05.png" alt="NLinux — tela 5 de 24 (live e instalador)" loading="lazy" decoding="async" /><span class="inst-num">05</span></button>
-							<button type="button" data-lb-open data-lb-index="8" aria-label="Ver a tela 9 do instalador"><img src="img/instalador/nlinux-instalador-09.png" alt="NLinux — tela 9 de 24 (live e instalador)" loading="lazy" decoding="async" /><span class="inst-num">09</span></button>
-							<button type="button" data-lb-open data-lb-index="12" aria-label="Ver a tela 13 do instalador"><img src="img/instalador/nlinux-instalador-13.png" alt="NLinux — tela 13 de 24 (live e instalador)" loading="lazy" decoding="async" /><span class="inst-num">13</span></button>
-							<button type="button" data-lb-open data-lb-index="16" aria-label="Ver a tela 17 do instalador"><img src="img/instalador/nlinux-instalador-17.png" alt="NLinux — tela 17 de 24 (live e instalador)" loading="lazy" decoding="async" /><span class="inst-num">17</span></button>
-							<button type="button" data-lb-open data-lb-index="20" aria-label="Ver a tela 21 do instalador"><img src="img/instalador/nlinux-instalador-21.png" alt="NLinux — tela 21 de 24 (live e instalador)" loading="lazy" decoding="async" /><span class="inst-num">21</span></button>
 						</div>
 					</div>
 					<div class="page-badges">
@@ -964,6 +924,6 @@
 })();
 
 </script>
-	<script src="js/galeria.js?v=2"></script>
+	<script src="js/galeria.js"></script>
 </body>
 </html>
