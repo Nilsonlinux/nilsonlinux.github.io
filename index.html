@@ -210,41 +210,47 @@
 
 		.page-header { text-align: center; margin-bottom: 2.5rem; }
 		.page-header h1 { font-size: clamp(2.25rem, 6vw, 3rem); font-weight: 600; letter-spacing: -.04em; }
-		/* nome no hero: gradiente metálico + brilho que passa no load,
-		   no estilo do wordmark do omarchy.pt, seguindo o tema.
-		   color-mix deriva as bandas do --accent, então troca junto com
-		   o tema (amarelo no escuro, azul no claro). */
+		/* nome no hero: desenho/traço contínuo com preenchimento metálico,
+		   no espírito do wordmark do omarchy.pt, seguindo o tema.
+		   color-mix deriva as bandas do --accent e o contorno, então
+		   acompanha o tema (amarelo no escuro, azul no claro). */
+		.page-header h1 {
+			display: inline-block; position: relative;
+			-webkit-text-stroke: 1.5px color-mix(in srgb, var(--accent) 75%, transparent);
+			animation: hero-draw 5.4s ease-in-out infinite;
+		}
 		@supports ((background-clip: text) or (-webkit-background-clip: text)) {
 			.page-header h1 {
-				background-image:
-					linear-gradient(115deg, transparent 42%, rgba(255,255,255,.85) 50%, transparent 58%),
-					linear-gradient(180deg,
-						color-mix(in srgb, var(--accent) 62%, #fff) 0%,
-						color-mix(in srgb, var(--accent) 62%, #fff) 26.3%,
-						var(--accent) 26.3%,
-						var(--accent) 36.8%,
-						color-mix(in srgb, var(--accent) 84%, #fff) 36.8%,
-						color-mix(in srgb, var(--accent) 84%, #fff) 57.9%,
-						color-mix(in srgb, var(--accent) 68%, #000) 57.9%,
-						color-mix(in srgb, var(--accent) 68%, #000) 73.7%,
-						color-mix(in srgb, var(--accent) 42%, #000) 73.7%);
-				background-size: 260% 100%, 100% 100%;
-				background-position: -130% 0, 0 0;
+				background-image: linear-gradient(180deg,
+					color-mix(in srgb, var(--accent) 62%, #fff) 0%,
+					color-mix(in srgb, var(--accent) 62%, #fff) 26.3%,
+					var(--accent) 26.3%,
+					var(--accent) 36.8%,
+					color-mix(in srgb, var(--accent) 84%, #fff) 36.8%,
+					color-mix(in srgb, var(--accent) 84%, #fff) 57.9%,
+					color-mix(in srgb, var(--accent) 68%, #000) 57.9%,
+					color-mix(in srgb, var(--accent) 68%, #000) 73.7%,
+					color-mix(in srgb, var(--accent) 42%, #000) 73.7%);
+				background-size: 100% 100%;
 				background-repeat: no-repeat;
 				-webkit-background-clip: text; background-clip: text;
 				color: transparent; -webkit-text-fill-color: transparent;
-				animation: name-sheen 2.4s ease-out .25s 1;
 			}
 		}
-		@keyframes name-sheen {
-			from { background-position: -130% 0, 0 0; }
-			to { background-position: 230% 0, 0 0; }
+		/* revela da esquerda p/ a direita (o "traço"), segura, some e recomeça */
+		@keyframes hero-draw {
+			0%   { clip-path: polygon(-6% -12%, -6% -12%, -6% 112%, -6% 112%); opacity: 1; }
+			50%  { clip-path: polygon(-6% -12%, 106% -12%, 106% 112%, -6% 112%); opacity: 1; }
+			74%  { clip-path: polygon(-6% -12%, 106% -12%, 106% 112%, -6% 112%); opacity: 1; }
+			90%  { clip-path: polygon(-6% -12%, 106% -12%, 106% 112%, -6% 112%); opacity: 0; }
+			91%  { clip-path: polygon(-6% -12%, -6% -12%, -6% 112%, -6% 112%); opacity: 0; }
+			100% { clip-path: polygon(-6% -12%, -6% -12%, -6% 112%, -6% 112%); opacity: 1; }
 		}
 		@media (prefers-reduced-motion: reduce) {
-			.page-header h1 { animation: none; background-position: 0 0, 0 0; }
+			.page-header h1 { animation: none; clip-path: none; }
 		}
 		@media print {
-			.page-header h1 { background: none; color: var(--fg); -webkit-text-fill-color: var(--fg); }
+			.page-header h1 { background: none; color: var(--fg); -webkit-text-fill-color: var(--fg); -webkit-text-stroke: 0; clip-path: none; }
 		}
 		.page-subtitle { margin-top: .75rem; color: var(--fg-dim); }
 		.page-badges { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem; margin-top: 1.25rem; }
