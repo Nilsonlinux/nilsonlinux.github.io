@@ -13,7 +13,8 @@
      vórtice  — as bolinhas espiralam até o nome;
      scanline — uma linha varre de cima p/ baixo revelando o nome;
      dominó   — as bolinhas caem em cascata (esq -> dir);
-     zoom     — o nome vem grande/afastado e se ajusta.
+     zoom     — o nome vem grande/afastado e se ajusta;
+     ia       — rede neural que "aprende" o nome (sinapses e convergência).
    Além disso, bolinhas soltas aparecem e somem ao fundo enquanto o
    nome se forma, e ao passar o mouse sobre o nome surgem bolinhas que
    seguram um gradiente de cor e somem num degrade. As bolinhas têm um
@@ -563,6 +564,55 @@
 				}
 			},
 			params: () => ({ k: 0.09, damp: 0.86, grav: 0 })
+		},
+		{ /* ia: as bolinhas formam uma "rede neural" que aprende o nome —
+		     elas nascem espalhadas, ligadas por sinapses, e convergem
+		     devagar até o nome; as sinapses somem conforme ela "aprende" */
+			duration: 3.3,
+			init() {
+				for (const p of particles) {
+					p.x = rnd(-W * 0.1, W * 1.1);
+					p.y = rnd(-H * 0.2, H * 1.2);
+					p.vx = 0; p.vy = 0;
+					p.alpha = 1;
+					p.delay = rnd(0, 0.2);
+				}
+			},
+			params(t) {
+				/* começa "pensando" (mola fraca) e vai travando o nome */
+				const e = smooth(Math.min(1, t / 0.65));
+				return { k: 0.022 + 0.15 * e, damp: 0.9, grav: 0 };
+			},
+			underlay(t) {
+				/* sinapses: liga bolinhas vizinhas (subamostradas) */
+				const linkA = 1 - Math.min(1, t / 0.8);
+				if (linkA <= 0.03 || particles.length < 8) return;
+				const step = Math.max(8, Math.round(particles.length / 120));
+				const pts = [];
+				for (let i = 0; i < particles.length; i += step) pts.push(particles[i]);
+				const maxD = fontPx * 0.5;
+				const maxD2 = maxD * maxD;
+				ctx.strokeStyle = glowColor;
+				ctx.lineWidth = 1;
+				for (let i = 0; i < pts.length; i++) {
+					const a = pts[i];
+					let links = 0;
+					for (let j = i + 1; j < pts.length && links < 3; j++) {
+						const b = pts[j];
+						const dx = a.x - b.x, dy = a.y - b.y;
+						const d2 = dx * dx + dy * dy;
+						if (d2 < maxD2) {
+							ctx.globalAlpha = linkA * (1 - Math.sqrt(d2) / maxD) * 0.55;
+							ctx.beginPath();
+							ctx.moveTo(a.x, a.y);
+							ctx.lineTo(b.x, b.y);
+							ctx.stroke();
+							links++;
+						}
+					}
+				}
+				ctx.globalAlpha = 1;
+			}
 		}
 	];
 
@@ -630,6 +680,8 @@
 		/* "hold": ao final do efeito, as bolinhas viram o nome na fonte real */
 		hold += ((t > 0.5 ? 1 : 0) - hold) * Math.min(1, dt / 0.22);
 		const pAlpha = 1 - hold;
+
+		if (fx.underlay) fx.underlay(t);
 
 		for (let i = 0; i < particles.length; i++) {
 			const p = particles[i];
