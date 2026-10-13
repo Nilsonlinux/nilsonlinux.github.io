@@ -26,7 +26,7 @@
 	const reduce = matchMedia('(prefers-reduced-motion: reduce)');
 
 	const WEIGHT = 800;
-	const FAMILY = 'Inter, ui-sans-serif, system-ui, sans-serif';
+	const FAMILY = 'Geist, Inter, ui-sans-serif, system-ui, sans-serif';
 	const root = document.documentElement;
 
 	let W = 0, H = 0, dpr = 1, fontPx = 100;
@@ -484,6 +484,9 @@
 	/* ---------- início ---------- */
 	activate();
 	if (document.fonts && document.fonts.ready) {
-		document.fonts.ready.then(() => { if (!reduce.matches) activate(); });
+		Promise.resolve(document.fonts.load ? document.fonts.load(WEIGHT + ' 64px ' + FAMILY) : null)
+			.catch(() => {})
+			.then(() => document.fonts.ready)
+			.then(() => { if (!reduce.matches) activate(); });
 	}
 })();
