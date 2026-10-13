@@ -1,6 +1,7 @@
 /* NLinux — efeito do nome no hero (canvas).
    Monta "NLinux" com bolinhas/partículas e vai alternando efeitos:
      chuva    — bolinhas caem de cima e se encaixam;
+     converge — umas caem de cima e outras sobem de baixo, devagar;
      explosão — o nome estoura em partículas e se recompõe;
      lateral  — as bolinhas entram pelas laterais;
      lados    — "NLi" entra pela esquerda e "nux" pela direita;
@@ -351,6 +352,21 @@
 				}
 			},
 			params: () => ({ k: 0.085, damp: 0.9, grav: 0.42 })
+		},
+		{ /* converge: umas caem de cima, outras sobem de baixo, formando devagar */
+			duration: 3.2,
+			init() {
+				const mid = H / 2;
+				for (const p of particles) {
+					const fromTop = p.ty < mid; // parte de cima do nome desce; a de baixo sobe
+					p.x = p.tx + rnd(-W * 0.05, W * 0.05);
+					p.y = fromTop ? -rnd(30, H * 0.85) : H + rnd(30, H * 0.85);
+					p.vx = rnd(-0.5, 0.5);
+					p.vy = fromTop ? rnd(2.5, 6) : -rnd(2.5, 6);
+					p.delay = (1 - Math.min(1, Math.abs(p.ty - mid) / (H * 0.5))) * 0.3;
+				}
+			},
+			params: () => ({ k: 0.055, damp: 0.9, grav: 0 })
 		},
 		{ /* explosão: estoura do centro e volta a se montar */
 			duration: 2.6,
