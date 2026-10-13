@@ -265,7 +265,10 @@
 				color: var(--fg); -webkit-text-fill-color: var(--fg); -webkit-text-stroke: 0;
 			}
 		}
-		.page-subtitle { margin-top: .75rem; color: var(--fg-dim); }
+		.page-subtitle {
+			margin-top: .9rem; max-width: 60ch; margin-left: auto; margin-right: auto;
+			color: var(--fg-dim); font-size: clamp(1.0625rem, 2.3vw, 1.35rem); line-height: 1.55;
+		}
 		.page-badges { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem; margin-top: 1.25rem; }
 		.page-badge {
 			display: inline-flex; align-items: center; gap: .4rem; padding: .4rem .85rem;
@@ -655,7 +658,7 @@
 						<span class="hero-name-text">NLinux</span>
 						<canvas aria-hidden="true"></canvas>
 					</h1>
-					<p class="page-subtitle">Distribuição baseada em Arch Linux com compositor <b>Umbriel</b>, login <b>greetd</b> e shell <b>Noctalia V5</b> — ISO ao vivo com instalador web de 10 passos.</p>
+					<p class="page-subtitle">Seu Arch Linux pronto em minutos: <b>Umbriel</b>, <b>Noctalia V5</b> e instalador web de <b>10 passos</b> — direto do pendrive.</p>
 					<div class="hero-actions reveal">
 						<div class="cta-actions">
 							<a class="btn-primary" href="baixar.html" data-iso-download target="_blank" rel="noopener noreferrer"><i class="ti ti-download"></i><span>Baixar ISO</span></a>
