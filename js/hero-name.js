@@ -7,7 +7,10 @@
      teclado  — as peças aparecem da esquerda p/ a direita;
      bordas   — as peças entram pela borda mais próxima;
      glitch   — começa embaralhado e "trava" no lugar;
-     vórtice  — as peças espiralam até o nome.
+     vórtice  — as peças espiralam até o nome;
+     scanline — uma linha varre de cima p/ baixo revelando o nome;
+     dominó   — as peças caem e tombam em cascata (esq -> dir);
+     zoom     — o nome vem grande/afastado e se ajusta.
    Além disso, blocos soltos aparecem e somem ao fundo enquanto o
    nome se forma. Segue o tema pelo --accent (amarelo no escuro,
    azul no claro) e respeita prefers-reduced-motion: nesse caso o
@@ -107,6 +110,7 @@
 			particles[i] = {
 				tx: xs[i], ty: ys[i], x: xs[i], y: ys[i],
 				vx: 0, vy: 0, size: size, delay: 0,
+				scale: 1, scaleV: 0, rot: 0, rotV: 0, alpha: 1,
 				color: tone((ys[i] - gradTop) / gradSpan)
 			};
 		}
@@ -290,6 +294,60 @@
 				}
 			},
 			params: () => ({ k: 0.07, damp: 0.9, grav: 0 })
+		},
+		{ /* scanline: uma linha varre de cima p/ baixo revelando o nome */
+			duration: 2.6,
+			init() {
+				for (const p of particles) {
+					p.x = p.tx; p.y = p.ty; p.vx = 0; p.vy = 0; p.delay = 0; p.alpha = 0;
+				}
+			},
+			params: () => ({ k: 0.14, damp: 0.85, grav: 0 }),
+			tick(p, t) {
+				const scan = t * (H * 1.2) - H * 0.1;
+				p.alpha = smooth((scan - p.ty) / (H * 0.05));
+				if (p.alpha >= 1) p.x = p.tx;
+				else p.x = p.tx + rnd(-4, 4);
+			},
+			overlay(t) {
+				const scan = t * (H * 1.2) - H * 0.1;
+				if (scan < -2 || scan > H + 2) return;
+				ctx.globalAlpha = 0.14;
+				ctx.fillStyle = rgb(ACCENT);
+				ctx.fillRect(0, scan - H * 0.06, W, H * 0.12);
+				ctx.globalAlpha = 0.55;
+				ctx.fillRect(0, scan - 1, W, 2);
+				ctx.globalAlpha = 1;
+			}
+		},
+		{ /* dominó: as peças caem e tombam em cascata (esq -> dir) */
+			duration: 2.8,
+			init() {
+				for (const p of particles) {
+					p.x = p.tx;
+					p.y = p.ty - rnd(H * 0.12, H * 0.45);
+					p.vx = 0; p.vy = rnd(1, 3);
+					p.rot = rnd(-1.5, -0.5);
+					p.rotV = 0;
+					p.delay = (p.tx / Math.max(1, W)) * 0.5;
+				}
+			},
+			params: () => ({ k: 0.14, damp: 0.82, grav: 0.22 })
+		},
+		{ /* zoom: o nome vem grande/afastado e se ajusta */
+			duration: 2.6,
+			init() {
+				const cx = W / 2, cy = H / 2;
+				for (const p of particles) {
+					const z = rnd(2.2, 3.4);
+					p.scale = z; p.scaleV = 0;
+					p.x = cx + (p.tx - cx) * z;
+					p.y = cy + (p.ty - cy) * z;
+					p.vx = 0; p.vy = 0;
+					p.delay = 0;
+				}
+			},
+			params: () => ({ k: 0.09, damp: 0.86, grav: 0 })
 		}
 	];
 
@@ -307,6 +365,10 @@
 
 	function startEffect(idx) {
 		cur = ((idx % EFFECTS.length) + EFFECTS.length) % EFFECTS.length;
+		for (let i = 0; i < particles.length; i++) {
+			const p = particles[i];
+			p.scale = 1; p.scaleV = 0; p.rot = 0; p.rotV = 0; p.alpha = 1;
+		}
 		EFFECTS[cur].init();
 		t0 = performance.now();
 	}
@@ -330,19 +392,45 @@
 		const par = fx.params(t);
 		for (let i = 0; i < particles.length; i++) {
 			const p = particles[i];
-			if (fx.tick) fx.tick(p, t);
 			const g = gate(p, t);
 			const k = par.k * g;
+
 			p.vx += (p.tx - p.x) * k;
 			p.vy += (p.ty - p.y) * k + par.grav * g;
 			p.vx *= par.damp;
 			p.vy *= par.damp;
 			p.x += p.vx;
 			p.y += p.vy;
-			const s = p.size;
+
+			if (p.scale !== 1 || p.scaleV) {
+				p.scaleV += (1 - p.scale) * k;
+				p.scaleV *= par.damp;
+				p.scale += p.scaleV;
+			}
+			if (p.rot || p.rotV) {
+				p.rotV += (0 - p.rot) * k;
+				p.rotV *= par.damp;
+				p.rot += p.rotV;
+			}
+
+			if (fx.tick) fx.tick(p, t);
+
+			const s = p.size * (p.scale > 0 ? p.scale : 0);
+			ctx.globalAlpha = p.alpha;
 			ctx.fillStyle = p.color;
-			ctx.fillRect(p.x - s * 0.5, p.y - s * 0.5, s, s);
+			if (p.rot) {
+				ctx.save();
+				ctx.translate(p.x, p.y);
+				ctx.rotate(p.rot);
+				ctx.fillRect(-s * 0.5, -s * 0.5, s, s);
+				ctx.restore();
+			} else {
+				ctx.fillRect(p.x - s * 0.5, p.y - s * 0.5, s, s);
+			}
 		}
+		ctx.globalAlpha = 1;
+
+		if (fx.overlay) fx.overlay(t);
 	}
 
 	function run() {
