@@ -143,7 +143,10 @@
 		lbOpener = null;
 	}
 
-	document.querySelectorAll('[data-lb-open]').forEach(btn => btn.addEventListener('click', () => openLb(0, btn)));
+	document.querySelectorAll('[data-lb-open]').forEach(btn => btn.addEventListener('click', () => {
+		const idx = Number(btn.getAttribute('data-lb-index'));
+		openLb(Number.isFinite(idx) && idx >= 0 ? idx : 0, btn);
+	}));
 	lbClose.addEventListener('click', closeLb);
 	lbPrev.addEventListener('click', () => show(lbIndex - 1));
 	lbNext.addEventListener('click', () => show(lbIndex + 1));
