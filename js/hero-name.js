@@ -12,9 +12,11 @@
      dominó   — as peças caem e tombam em cascata (esq -> dir);
      zoom     — o nome vem grande/afastado e se ajusta.
    Além disso, blocos soltos aparecem e somem ao fundo enquanto o
-   nome se forma. Segue o tema pelo --accent (amarelo no escuro,
-   azul no claro) e respeita prefers-reduced-motion: nesse caso o
-   canvas nem liga e o texto em gradiente do .hero-name-text fica visível. */
+   nome se forma, e ao passar o mouse sobre o nome surgem blocos que
+   seguram um gradiente de cor e somem num degrade. Segue o tema pelo
+   --accent (amarelo no escuro, azul no claro) e respeita
+   prefers-reduced-motion: nesse caso o canvas nem liga e o texto em
+   gradiente do .hero-name-text fica visível. */
 (() => {
 	const host = document.querySelector('.hero-name');
 	if (!host) return;
@@ -33,7 +35,7 @@
 	let particles = [];
 	let ambient = [];
 	let gradTop = 0, gradSpan = 1;
-	let ACCENT = [255, 245, 155], BG = [7, 7, 34];
+	let ACCENT = [255, 245, 155], ACCENT2 = [155, 254, 206], ACCENT3 = [169, 174, 254], BG = [7, 7, 34];
 	let ambientColor = 'rgb(180, 170, 120)';
 
 	/* ---------- cor ---------- */
@@ -55,6 +57,8 @@
 
 	function readColors() {
 		ACCENT = parseColor(cssVar('--accent'));
+		ACCENT2 = parseColor(cssVar('--accent-2') || '#9bfece');
+		ACCENT3 = parseColor(cssVar('--accent-3') || '#a9aefe');
 		BG = parseColor(cssVar('--bg') || '#070722');
 		ambientColor = rgb(mix(ACCENT, BG, 0.35));
 	}
@@ -155,6 +159,72 @@
 			ctx.fillRect(a.x - s * 0.5, a.y - s * 0.5, s, s);
 		}
 		ctx.globalAlpha = 1;
+	}
+
+	/* ---------- blocos do hover (aparecem ao passar o mouse) ----------
+	   Os blocos surgem sob o cursor com tamanho/posição aleatórios e
+	   somem num degrade: a opacidade cai com a vida e a cor percorre um
+	   gradiente (accent -> accent-3 -> accent-2) conforme a posição x. */
+	const hover = [];
+	let lastPt = null;
+
+	function hoverColor(t) {
+		t = t < 0 ? 0 : t > 1 ? 1 : t;
+		return t < 0.5 ? rgb(mix(ACCENT, ACCENT3, t * 2))
+		                : rgb(mix(ACCENT3, ACCENT2, (t - 0.5) * 2));
+	}
+
+	function spawnHover(x, y) {
+		if (hover.length > 340) return;
+		const base = Math.max(8, fontPx);
+		hover.push({
+			x: x, y: y,
+			vx: rnd(-45, 45),
+			vy: rnd(-85, -12),
+			size: rnd(base * 0.05, base * 0.13),
+			life: 0,
+			max: rnd(0.55, 1.15),
+			color: hoverColor(x / Math.max(1, W))
+		});
+	}
+
+	function stepHover(dt) {
+		for (let i = hover.length - 1; i >= 0; i--) {
+			const b = hover[i];
+			b.life += dt;
+			if (b.life >= b.max) { hover.splice(i, 1); continue; }
+			b.vy += 160 * dt;
+			b.x += b.vx * dt;
+			b.y += b.vy * dt;
+		}
+	}
+
+	function drawHover() {
+		if (!hover.length) return;
+		for (let i = 0; i < hover.length; i++) {
+			const b = hover[i];
+			const u = b.life / b.max;
+			const a = (1 - u) * 0.9;
+			if (a <= 0.01) continue;
+			const s = b.size * (1 - u * 0.45);
+			ctx.globalAlpha = a;
+			ctx.fillStyle = b.color;
+			ctx.fillRect(b.x - s * 0.5, b.y - s * 0.5, s, s);
+		}
+		ctx.globalAlpha = 1;
+	}
+
+	function handleMove(e) {
+		const x = e.offsetX, y = e.offsetY;
+		if (lastPt) {
+			const dx = x - lastPt.x, dy = y - lastPt.y;
+			const dist = Math.hypot(dx, dy);
+			const steps = Math.min(14, Math.max(1, Math.round(dist / 7)));
+			for (let s = 1; s <= steps; s++) spawnHover(lastPt.x + dx * s / steps, lastPt.y + dy * s / steps);
+		} else {
+			spawnHover(x, y);
+		}
+		lastPt = { x: x, y: y };
 	}
 
 	function layout() {
@@ -383,7 +453,8 @@
 
 		ctx.clearRect(0, 0, W, H);
 		drawAmbient(dt);
-		if (!particles.length) return;
+		stepHover(dt);
+		if (!particles.length) { drawHover(); return; }
 
 		let fx = EFFECTS[cur];
 		let t = (now - t0) / (fx.duration * 1000);
@@ -431,6 +502,7 @@
 		ctx.globalAlpha = 1;
 
 		if (fx.overlay) fx.overlay(t);
+		drawHover();
 	}
 
 	function run() {
@@ -480,6 +552,10 @@
 		}, { threshold: 0 }).observe(canvas);
 	}
 	document.addEventListener('visibilitychange', () => { visible = !document.hidden; });
+
+	canvas.addEventListener('pointermove', handleMove, { passive: true });
+	canvas.addEventListener('pointerdown', handleMove, { passive: true });
+	canvas.addEventListener('pointerleave', () => { lastPt = null; });
 
 	/* ---------- início ---------- */
 	activate();
