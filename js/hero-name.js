@@ -5,6 +5,7 @@
      lateral  — as bolinhas entram pelas laterais;
      onda     — as bolinhas se recolhem do caos;
      teclado  — as bolinhas aparecem da esquerda p/ a direita;
+     letras   — cada letra se monta por vez (esq -> dir);
      bordas   — as bolinhas entram pela borda mais próxima;
      glitch   — começa embaralhado e "trava" no lugar;
      vórtice  — as bolinhas espiralam até o nome;
@@ -46,6 +47,7 @@
 	let metal = [];
 	let glowRGB = [255, 255, 255], glowColor = 'rgb(255, 255, 255)';
 	let pulse = 0, glowFlash = 0;
+	let letterBounds = [], nLetters = 1;
 
 	/* ---------- cor ---------- */
 	const cssVar = name => getComputedStyle(root).getPropertyValue(name).trim();
@@ -98,18 +100,28 @@
 		return rgb(metal.length ? metal[metal.length - 1][1] : ACCENT);
 	}
 
+	/* índice da letra (0..nLetters-1) à qual pertence um x alvo */
+	function letterAt(x) {
+		for (let i = 0; i < letterBounds.length; i++) if (x < letterBounds[i][1]) return i;
+		return Math.max(0, letterBounds.length - 1);
+	}
+
 	/* aplica a fonte exata (peso 800 + letter-spacing -.045em do CSS) */
 	function applyFont(c, px) {
 		c.font = WEIGHT + ' ' + px + 'px ' + FAMILY;
 		if ('letterSpacing' in c) c.letterSpacing = (-0.045 * px) + 'px';
 	}
 
-	/* bolinha com halo de brilho — "glow" controlado por glow (0..1),
-	   que pulsa junto com a variável pulse */
+	/* bolinha com halo de brilho (mais forte): um halo interno + um halo
+	   externo mais suave, ambos na cor do glow, pulsando com `pulse` */
 	function glowDot(x, y, r, color, alpha, glow) {
 		if (glow > 0.001) {
-			ctx.globalAlpha = alpha * glow;
 			ctx.fillStyle = glowColor;
+			ctx.globalAlpha = alpha * glow * 0.45;
+			ctx.beginPath();
+			ctx.arc(x, y, r * 3.0, 0, TAU);
+			ctx.fill();
+			ctx.globalAlpha = alpha * glow;
 			ctx.beginPath();
 			ctx.arc(x, y, r * 1.7, 0, TAU);
 			ctx.fill();
@@ -139,6 +151,17 @@
 		o.fillStyle = '#fff';
 		o.fillText(TEXT, W / 2, H / 2);
 
+		/* limites de cada letra — usados pelo efeito "letras" */
+		nLetters = Math.max(1, TEXT.length);
+		const fullW = o.measureText(TEXT).width || 1;
+		const textLeft = W / 2 - fullW / 2;
+		letterBounds = [];
+		for (let i = 0; i < nLetters; i++) {
+			const a = o.measureText(TEXT.slice(0, i)).width;
+			const b = o.measureText(TEXT.slice(0, i + 1)).width;
+			letterBounds.push([textLeft + a, textLeft + b]);
+		}
+
 		let data;
 		try { data = o.getImageData(0, 0, W, H).data; }
 		catch (e) { return; }
@@ -161,6 +184,7 @@
 				tx: xs[i], ty: ys[i], x: xs[i], y: ys[i],
 				vx: 0, vy: 0, size: size, delay: 0,
 				scale: 1, scaleV: 0, rot: 0, rotV: 0, alpha: 1,
+				letter: letterAt(xs[i]),
 				color: nameColorAt(ys[i] / H)
 			};
 		}
@@ -226,7 +250,7 @@
 			a.y += a.vy * dt;
 			const alpha = Math.sin(Math.PI * (a.life / a.max)) * 0.45;
 			if (alpha <= 0.012) continue;
-			glowDot(a.x, a.y, a.size * 0.5, ambientColor, alpha, 0.06 + 0.1 * pulse);
+			glowDot(a.x, a.y, a.size * 0.5, ambientColor, alpha, 0.12 + 0.16 * pulse);
 		}
 		ctx.globalAlpha = 1;
 	}
@@ -278,7 +302,7 @@
 			if (a <= 0.01) continue;
 			const r = b.size * (1 - u * 0.45) * 0.5;
 			if (r <= 0) continue;
-			glowDot(b.x, b.y, r, b.color, a, 0.18 + 0.28 * pulse);
+			glowDot(b.x, b.y, r, b.color, a, 0.3 + 0.42 * pulse);
 		}
 		ctx.globalAlpha = 1;
 	}
@@ -383,6 +407,25 @@
 				}
 			},
 			params: () => ({ k: 0.2, damp: 0.7, grav: 0 })
+		},
+		{ /* letras: cada letra se monta por vez (esq -> dir) */
+			duration: 2.9,
+			init() {
+				for (const p of particles) {
+					p.x = p.tx;
+					p.y = p.ty - rnd(H * 0.12, H * 0.42);
+					p.vx = 0;
+					p.vy = rnd(0, 1);
+					p.scale = 0.35; p.scaleV = 0;
+					p.alpha = 0;
+					p.delay = (p.letter / Math.max(1, nLetters - 1)) * 0.62;
+				}
+			},
+			params: () => ({ k: 0.2, damp: 0.76, grav: 0.3 }),
+			tick(p, t) {
+				/* a letra surge (fade + crescimento) quando chega a sua vez */
+				p.alpha = smooth((t - p.delay) / 0.09);
+			}
 		},
 		{ /* bordas: as bolinhas entram pela borda mais próxima */
 			duration: 2.4,
@@ -526,7 +569,7 @@
 
 		/* pulso do brilho das bolinhas + decaimento do flash do nome */
 		pulse = 0.5 + 0.5 * Math.sin(now / 620);
-		if (glowFlash > 0) glowFlash = Math.max(0, glowFlash - dt / 0.7);
+		if (glowFlash > 0) glowFlash = Math.max(0, glowFlash - dt / 0.9);
 
 		ctx.clearRect(0, 0, W, H);
 		drawAmbient(dt);
@@ -584,7 +627,7 @@
 			if (pAlpha <= 0.004) continue;
 			const r = p.size * (p.scale > 0 ? p.scale : 0) * 0.5;
 			if (r <= 0) continue;
-			glowDot(p.x, p.y, r, p.color, p.alpha * pAlpha, 0.07 + 0.13 * pulse);
+			glowDot(p.x, p.y, r, p.color, p.alpha * pAlpha, 0.16 + 0.26 * pulse);
 		}
 		ctx.globalAlpha = 1;
 
@@ -592,11 +635,11 @@
 
 		if (nameLayer && hold > 0.004) {
 			/* brilho do nome montado: contínuo (pulsante) + flash na montagem */
-			const ng = hold * (0.4 + 0.4 * pulse) + glowFlash;
-			const ga = Math.min(0.8, 0.5 * ng);
+			const ng = hold * (0.55 + 0.45 * pulse) + glowFlash * 1.3;
+			const ga = Math.min(0.95, 0.62 * ng);
 			ctx.save();
 			ctx.shadowColor = 'rgba(' + (glowRGB[0] | 0) + ', ' + (glowRGB[1] | 0) + ', ' + (glowRGB[2] | 0) + ', ' + ga.toFixed(3) + ')';
-			ctx.shadowBlur = 26 * Math.min(1.5, ng);
+			ctx.shadowBlur = 40 * Math.min(1.6, ng);
 			ctx.globalAlpha = hold;
 			ctx.drawImage(nameLayer, 0, 0, W, H);
 			ctx.restore();
