@@ -112,18 +112,18 @@
 		if ('letterSpacing' in c) c.letterSpacing = (-0.045 * px) + 'px';
 	}
 
-	/* bolinha com halo de brilho (mais forte): um halo interno + um halo
-	   externo mais suave, ambos na cor do glow, pulsando com `pulse` */
+	/* bolinha com um halo de brilho discreto: um halo externo bem suave
+	   + um interno leve, na cor do glow, pulsando com `pulse` */
 	function glowDot(x, y, r, color, alpha, glow) {
 		if (glow > 0.001) {
 			ctx.fillStyle = glowColor;
-			ctx.globalAlpha = alpha * glow * 0.45;
+			ctx.globalAlpha = alpha * glow * 0.3;
 			ctx.beginPath();
-			ctx.arc(x, y, r * 3.0, 0, TAU);
+			ctx.arc(x, y, r * 2.4, 0, TAU);
 			ctx.fill();
 			ctx.globalAlpha = alpha * glow;
 			ctx.beginPath();
-			ctx.arc(x, y, r * 1.7, 0, TAU);
+			ctx.arc(x, y, r * 1.4, 0, TAU);
 			ctx.fill();
 		}
 		ctx.globalAlpha = alpha;
@@ -250,7 +250,7 @@
 			a.y += a.vy * dt;
 			const alpha = Math.sin(Math.PI * (a.life / a.max)) * 0.45;
 			if (alpha <= 0.012) continue;
-			glowDot(a.x, a.y, a.size * 0.5, ambientColor, alpha, 0.12 + 0.16 * pulse);
+			glowDot(a.x, a.y, a.size * 0.5, ambientColor, alpha, 0.06 + 0.08 * pulse);
 		}
 		ctx.globalAlpha = 1;
 	}
@@ -302,7 +302,7 @@
 			if (a <= 0.01) continue;
 			const r = b.size * (1 - u * 0.45) * 0.5;
 			if (r <= 0) continue;
-			glowDot(b.x, b.y, r, b.color, a, 0.3 + 0.42 * pulse);
+			glowDot(b.x, b.y, r, b.color, a, 0.15 + 0.22 * pulse);
 		}
 		ctx.globalAlpha = 1;
 	}
@@ -569,7 +569,7 @@
 
 		/* pulso do brilho das bolinhas + decaimento do flash do nome */
 		pulse = 0.5 + 0.5 * Math.sin(now / 620);
-		if (glowFlash > 0) glowFlash = Math.max(0, glowFlash - dt / 0.9);
+		if (glowFlash > 0) glowFlash = Math.max(0, glowFlash - dt / 0.7);
 
 		ctx.clearRect(0, 0, W, H);
 		drawAmbient(dt);
@@ -627,7 +627,7 @@
 			if (pAlpha <= 0.004) continue;
 			const r = p.size * (p.scale > 0 ? p.scale : 0) * 0.5;
 			if (r <= 0) continue;
-			glowDot(p.x, p.y, r, p.color, p.alpha * pAlpha, 0.16 + 0.26 * pulse);
+			glowDot(p.x, p.y, r, p.color, p.alpha * pAlpha, 0.08 + 0.12 * pulse);
 		}
 		ctx.globalAlpha = 1;
 
@@ -635,11 +635,11 @@
 
 		if (nameLayer && hold > 0.004) {
 			/* brilho do nome montado: contínuo (pulsante) + flash na montagem */
-			const ng = hold * (0.55 + 0.45 * pulse) + glowFlash * 1.3;
-			const ga = Math.min(0.95, 0.62 * ng);
+			const ng = hold * (0.32 + 0.28 * pulse) + glowFlash * 0.75;
+			const ga = Math.min(0.7, 0.5 * ng);
 			ctx.save();
 			ctx.shadowColor = 'rgba(' + (glowRGB[0] | 0) + ', ' + (glowRGB[1] | 0) + ', ' + (glowRGB[2] | 0) + ', ' + ga.toFixed(3) + ')';
-			ctx.shadowBlur = 40 * Math.min(1.6, ng);
+			ctx.shadowBlur = 22 * Math.min(1.4, ng);
 			ctx.globalAlpha = hold;
 			ctx.drawImage(nameLayer, 0, 0, W, H);
 			ctx.restore();
