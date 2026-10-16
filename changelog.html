@@ -1190,9 +1190,12 @@
 		if (!Number.isNaN(publishedDate.getTime())) {
 			const time = document.createElement('time');
 			time.dateTime = publishedAt;
+			// A release é publicada no fuso de referência do projeto (Brasília).
+			// Formatar em UTC jogava uma publicação da noite (ex.: 22h em -03)
+			// para o dia seguinte, batendo com a data errada em relação à ISO.
 			time.textContent = new Intl.DateTimeFormat('pt-BR', {
 				dateStyle: 'long',
-				timeZone: 'UTC'
+				timeZone: 'America/Sao_Paulo'
 			}).format(publishedDate);
 			time.dateTime = publishedAt;
 			metadata.append(time);
