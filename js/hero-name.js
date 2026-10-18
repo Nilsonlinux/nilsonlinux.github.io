@@ -345,11 +345,18 @@
 		const r = host.getBoundingClientRect();
 		W = Math.max(160, Math.round(r.width));
 		H = Math.max(48, Math.round(r.height));
-		dpr = Math.min(window.devicePixelRatio || 1, 2);
+		/* dpr do aparelho (até 3x, cobre celular). O backing store do canvas
+		   tem que casar EXATAMENTE com o tamanho em pixel físico: numa tela
+		   de escala fracionária (125%, 150%) ou 3x, W*dpr não é inteiro, e se
+		   o CSS ficar em "W" o navegador reamostra o bitmap inteiro — é o que
+		   deixava TODOS os contornos das letras serrilhados ("cortes"), já
+		   que o resto da página é vetor e continua nítido. O tamanho CSS vira
+		   backing/dpr, que fecha a conta em pixels físicos exatos. */
+		dpr = Math.min(window.devicePixelRatio || 1, 3);
 		canvas.width = Math.round(W * dpr);
 		canvas.height = Math.round(H * dpr);
-		canvas.style.width = W + 'px';
-		canvas.style.height = H + 'px';
+		canvas.style.width = (canvas.width / dpr) + 'px';
+		canvas.style.height = (canvas.height / dpr) + 'px';
 		ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 		computeFont();
 		buildParticles();
