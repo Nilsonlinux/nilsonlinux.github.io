@@ -224,7 +224,8 @@
 			font-size: clamp(4rem, 18vw, 11.7rem);
 			font-weight: 400; letter-spacing: 0; line-height: 1;
 			color: var(--accent);
-			-webkit-text-stroke: 1.5px color-mix(in srgb, var(--accent) 75%, transparent);
+			/* sem -webkit-text-stroke: o contorno de espessura fixa engorda os
+			   traços finos e arredonda os bicos da Metal Mania */
 		}
 		@supports ((background-clip: text) or (-webkit-background-clip: text)) {
 			.hero-name-text {
@@ -256,7 +257,7 @@
 			.hero-name.is-canvas .hero-name-text {
 				position: static; width: auto; height: auto; margin: 0; overflow: visible;
 				clip: auto; white-space: normal; display: flex; background: none;
-				color: var(--fg); -webkit-text-fill-color: var(--fg); -webkit-text-stroke: 0;
+				color: var(--fg); -webkit-text-fill-color: var(--fg);
 			}
 		}
 		.page-subtitle {
@@ -597,7 +598,7 @@
 	<script src="js/site.js?v=5" defer></script>
 	<!-- efeito de montagem do nome no hero (canvas). Ao mexer no arquivo,
 	     suba o ?v= para furar o cache dos navegadores. -->
-	<script src="js/hero-name.js?v=19" defer></script>
+	<script src="js/hero-name.js?v=20" defer></script>
 </head>
 <body>
 <div class="page-canvas">
@@ -648,8 +649,8 @@
 			<div class="site-shell">
 
 				<div class="page-header reveal">
-					<h1 class="hero-name" data-text="NLinuX" aria-label="NLinux">
-						<span class="hero-name-text">NLinuX</span>
+					<h1 class="hero-name" data-text="NLinux" aria-label="NLinux">
+						<span class="hero-name-text">NLinux</span>
 						<canvas aria-hidden="true"></canvas>
 					</h1>
 					<p class="page-subtitle">Seu sistema operacional pronto em minutos: <b>Umbriel</b>, <b>Noctalia V5</b> e instalador web de <b>10 passos</b> — direto do pendrive.</p>

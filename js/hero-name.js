@@ -221,9 +221,9 @@
 		for (let i = 0; i < metal.length; i++) g.addColorStop(metal[i][0], rgb(metal[i][1]));
 		c.fillStyle = g;
 		c.fillText(TEXT, W / 2, H / 2);
-		c.lineWidth = 1.5;
-		c.strokeStyle = 'rgba(' + (ACCENT[0] | 0) + ', ' + (ACCENT[1] | 0) + ', ' + (ACCENT[2] | 0) + ', 0.75)';
-		c.strokeText(TEXT, W / 2, H / 2);
+		/* sem contorno (strokeText): numa fonte de bicos finos como a Metal
+		   Mania o contorno de espessura fixa engorda os traços, fecha os vãos
+		   internos e arredonda as pontas — as bordas ficam sujas. */
 	}
 
 	function buildNameLayer() {
@@ -951,12 +951,14 @@
 		if (fx.overlay) fx.overlay(t);
 
 		if (nameLayer && hold > 0.004) {
-			/* brilho do nome montado: contínuo (pulsante) + flash na montagem */
+			/* brilho do nome montado: contínuo (pulsante) + flash na montagem.
+			   blur/alfa contidos para o halo não invadir os vãos das letras nem
+			   borrar as pontas (o halo é desenhado atrás, o nome segue nítido). */
 			const ng = hold * (0.32 + 0.28 * pulse) + glowFlash * 0.75;
-			const ga = Math.min(0.7, 0.5 * ng);
+			const ga = Math.min(0.55, 0.35 * ng);
 			ctx.save();
 			ctx.shadowColor = 'rgba(' + (glowRGB[0] | 0) + ', ' + (glowRGB[1] | 0) + ', ' + (glowRGB[2] | 0) + ', ' + ga.toFixed(3) + ')';
-			ctx.shadowBlur = 22 * Math.min(1.4, ng);
+			ctx.shadowBlur = 13 * Math.min(1.4, ng);
 			ctx.globalAlpha = hold;
 			ctx.drawImage(nameLayer, 0, 0, W, H);
 			ctx.restore();
