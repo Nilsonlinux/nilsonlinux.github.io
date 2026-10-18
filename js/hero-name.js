@@ -27,7 +27,7 @@
    nome se forma, e ao passar o mouse sobre o nome surgem bolinhas que
    seguram um gradiente de cor e somem num degrade. As bolinhas têm um
    brilho que pulsa. No fim de cada efeito as bolinhas se dissolvem numa
-   camada com a fonte real (Geist), então o nome 100% montado fica
+   camada com a fonte real (Metal Mania), então o nome 100% montado fica
    idêntico à tipografia — e ganha um brilho (flash ao montar + brilho
    suave contínuo). Segue o tema pelo --accent (amarelo no escuro, azul
    no claro) e respeita
@@ -43,8 +43,14 @@
 	const TEXT = host.dataset.text || (textEl && textEl.textContent.trim()) || 'NLinux';
 	const reduce = matchMedia('(prefers-reduced-motion: reduce)');
 
-	const WEIGHT = 800;
-	const FAMILY = 'Geist, Inter, ui-sans-serif, system-ui, sans-serif';
+	/* O nome usa a Metal Mania (estilo Iron Maiden). Precisa casar com o
+	   font-family/font-weight/letter-spacing do .hero-name-text no CSS;
+	   só essa fonte é usada para desenhar o nome — os rótulos do efeito
+	   continuam na fonte de UI (UI_FAMILY). A Metal Mania só tem 400. */
+	const WEIGHT = 400;
+	const FAMILY = '"Metal Mania", Geist, Inter, ui-sans-serif, system-ui, sans-serif';
+	const UI_FAMILY = 'Geist, Inter, ui-sans-serif, system-ui, sans-serif';
+	const TRACKING = 0;
 	const root = document.documentElement;
 
 	let W = 0, H = 0, dpr = 1, fontPx = 100;
@@ -117,10 +123,10 @@
 		return Math.max(0, letterBounds.length - 1);
 	}
 
-	/* aplica a fonte exata (peso 800 + letter-spacing -.045em do CSS) */
+	/* aplica a fonte exata do nome (Metal Mania + tracking do CSS) */
 	function applyFont(c, px) {
 		c.font = WEIGHT + ' ' + px + 'px ' + FAMILY;
-		if ('letterSpacing' in c) c.letterSpacing = (-0.045 * px) + 'px';
+		if ('letterSpacing' in c) c.letterSpacing = (TRACKING * px) + 'px';
 	}
 
 	/* bolinha com um halo de brilho discreto: um halo externo bem suave
@@ -202,7 +208,7 @@
 	}
 
 	/* ---------- camada do nome na fonte real ----------
-	   Desenha "NLinux" na fonte exata (Geist 800 + letter-spacing do CSS)
+	   Desenha o nome na fonte exata (Metal Mania + tracking do CSS)
 	   com o gradiente metálico. Ao fim de cada efeito as bolinhas dão lugar
 	   a esta camada, então o nome montado fica idêntico à tipografia. */
 	function paintName(c) {
@@ -737,7 +743,7 @@
 					ctx.save();
 					ctx.globalAlpha = on * fade * 0.9;
 					ctx.fillStyle = glowColor;
-					ctx.font = '600 ' + Math.max(8, fontPx * 0.14) + 'px ' + FAMILY;
+					ctx.font = '600 ' + Math.max(8, fontPx * 0.14) + 'px ' + UI_FAMILY;
 					ctx.textAlign = 'left';
 					ctx.textBaseline = 'bottom';
 					if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';

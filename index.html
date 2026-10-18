@@ -28,7 +28,7 @@
 	<title>NLinux · Nilsonlinux</title>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Metal+Mania&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.30.0/dist/tabler-icons.min.css">
 	<style>
 		:root, html[data-theme="dark"] {
@@ -209,7 +209,7 @@
 		   gradiente metálico logo abaixo. */
 		.hero-name {
 			position: relative;
-			height: clamp(3.6rem, 15vw, 10rem);
+			height: clamp(4.5rem, 20vw, 13rem);
 			margin: .1rem 0 .35rem;
 			overflow: hidden;
 		}
@@ -218,9 +218,11 @@
 		.hero-name-text {
 			display: flex; align-items: center; justify-content: center;
 			height: 100%;
-			font-family: Geist, Inter, ui-sans-serif, system-ui, sans-serif;
-			font-size: clamp(3rem, 13.5vw, 9rem);
-			font-weight: 800; letter-spacing: -.045em; line-height: 1;
+			/* Metal Mania é a fonte no estilo Iron Maiden; o mesmo par
+			   família/peso/tracking é usado pelo canvas (js/hero-name.js). */
+			font-family: 'Metal Mania', Geist, Inter, ui-sans-serif, system-ui, sans-serif;
+			font-size: clamp(4rem, 18vw, 11.7rem);
+			font-weight: 400; letter-spacing: 0; line-height: 1;
 			color: var(--accent);
 			-webkit-text-stroke: 1.5px color-mix(in srgb, var(--accent) 75%, transparent);
 		}
@@ -595,7 +597,7 @@
 	<script src="js/site.js?v=5" defer></script>
 	<!-- efeito de montagem do nome no hero (canvas). Ao mexer no arquivo,
 	     suba o ?v= para furar o cache dos navegadores. -->
-	<script src="js/hero-name.js?v=17" defer></script>
+	<script src="js/hero-name.js?v=18" defer></script>
 </head>
 <body>
 <div class="page-canvas">
@@ -646,8 +648,8 @@
 			<div class="site-shell">
 
 				<div class="page-header reveal">
-					<h1 class="hero-name" data-text="NLinux">
-						<span class="hero-name-text">NLinux</span>
+					<h1 class="hero-name" data-text="NLinuX" aria-label="NLinux">
+						<span class="hero-name-text">NLinuX</span>
 						<canvas aria-hidden="true"></canvas>
 					</h1>
 					<p class="page-subtitle">Seu sistema operacional pronto em minutos: <b>Umbriel</b>, <b>Noctalia V5</b> e instalador web de <b>10 passos</b> — direto do pendrive.</p>
