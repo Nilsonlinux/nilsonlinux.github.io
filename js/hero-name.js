@@ -183,8 +183,12 @@
 		try { data = o.getImageData(0, 0, W, H).data; }
 		catch (e) { return; }
 
-		const step = Math.max(4, Math.round(fontPx / 16));
-		const size = step * 1.35;
+		/* grade de amostragem (e diâmetro da bolinha). Precisa ser fina o
+		   bastante para os traços finos e os bicos da Metal Mania não virarem
+		   um borrão de bordas retas: com grade grossa as bolinhas se soldam,
+		   os vãos entre as letras somem e o nome montado perde o desenho. */
+		const step = Math.max(3, Math.round(fontPx / 26));
+		const size = step * 1.3;
 		const xs = [], ys = [];
 		for (let y = 0; y < H; y += step) {
 			for (let x = 0; x < W; x += step) {
