@@ -27,7 +27,7 @@
    nome se forma, e ao passar o mouse sobre o nome surgem bolinhas que
    seguram um gradiente de cor e somem num degrade. As bolinhas têm um
    brilho que pulsa. No fim de cada efeito as bolinhas se dissolvem numa
-   camada com a fonte real (Metal Mania), então o nome 100% montado fica
+   camada com a fonte real (Geist), então o nome 100% montado fica
    idêntico à tipografia — e ganha um brilho (flash ao montar + brilho
    suave contínuo). Segue o tema pelo --accent (amarelo no escuro, azul
    no claro) e respeita
@@ -43,14 +43,8 @@
 	const TEXT = host.dataset.text || (textEl && textEl.textContent.trim()) || 'NLinux';
 	const reduce = matchMedia('(prefers-reduced-motion: reduce)');
 
-	/* O nome usa a Metal Mania (estilo Iron Maiden). Precisa casar com o
-	   font-family/font-weight/letter-spacing do .hero-name-text no CSS;
-	   só essa fonte é usada para desenhar o nome — os rótulos do efeito
-	   continuam na fonte de UI (UI_FAMILY). A Metal Mania só tem 400. */
-	const WEIGHT = 400;
-	const FAMILY = '"Metal Mania", Geist, Inter, ui-sans-serif, system-ui, sans-serif';
-	const UI_FAMILY = 'Geist, Inter, ui-sans-serif, system-ui, sans-serif';
-	const TRACKING = 0;
+	const WEIGHT = 800;
+	const FAMILY = 'Geist, Inter, ui-sans-serif, system-ui, sans-serif';
 	const root = document.documentElement;
 
 	let W = 0, H = 0, dpr = 1, fontPx = 100;
@@ -63,7 +57,7 @@
 	const WHITE = [255, 255, 255], BLACK = [0, 0, 0];
 	let metal = [];
 	let glowRGB = [255, 255, 255], glowColor = 'rgb(255, 255, 255)';
-	let pulse = 0;
+	let pulse = 0, glowFlash = 0;
 	let letterBounds = [], nLetters = 1;
 
 	/* ---------- cor ---------- */
@@ -123,10 +117,10 @@
 		return Math.max(0, letterBounds.length - 1);
 	}
 
-	/* aplica a fonte exata do nome (Metal Mania + tracking do CSS) */
+	/* aplica a fonte exata (peso 800 + letter-spacing -.045em do CSS) */
 	function applyFont(c, px) {
 		c.font = WEIGHT + ' ' + px + 'px ' + FAMILY;
-		if ('letterSpacing' in c) c.letterSpacing = (TRACKING * px) + 'px';
+		if ('letterSpacing' in c) c.letterSpacing = (-0.045 * px) + 'px';
 	}
 
 	/* bolinha com um halo de brilho discreto: um halo externo bem suave
@@ -183,12 +177,8 @@
 		try { data = o.getImageData(0, 0, W, H).data; }
 		catch (e) { return; }
 
-		/* grade de amostragem (e diâmetro da bolinha). Precisa ser fina o
-		   bastante para os traços finos e os bicos da Metal Mania não virarem
-		   um borrão de bordas retas: com grade grossa as bolinhas se soldam,
-		   os vãos entre as letras somem e o nome montado perde o desenho. */
-		const step = Math.max(3, Math.round(fontPx / 26));
-		const size = step * 1.3;
+		const step = Math.max(4, Math.round(fontPx / 16));
+		const size = step * 1.35;
 		const xs = [], ys = [];
 		for (let y = 0; y < H; y += step) {
 			for (let x = 0; x < W; x += step) {
@@ -212,7 +202,7 @@
 	}
 
 	/* ---------- camada do nome na fonte real ----------
-	   Desenha o nome na fonte exata (Metal Mania + tracking do CSS)
+	   Desenha "NLinux" na fonte exata (Geist 800 + letter-spacing do CSS)
 	   com o gradiente metálico. Ao fim de cada efeito as bolinhas dão lugar
 	   a esta camada, então o nome montado fica idêntico à tipografia. */
 	function paintName(c) {
@@ -221,9 +211,9 @@
 		for (let i = 0; i < metal.length; i++) g.addColorStop(metal[i][0], rgb(metal[i][1]));
 		c.fillStyle = g;
 		c.fillText(TEXT, W / 2, H / 2);
-		/* sem contorno (strokeText): numa fonte de bicos finos como a Metal
-		   Mania o contorno de espessura fixa engorda os traços, fecha os vãos
-		   internos e arredonda as pontas — as bordas ficam sujas. */
+		c.lineWidth = 1.5;
+		c.strokeStyle = 'rgba(' + (ACCENT[0] | 0) + ', ' + (ACCENT[1] | 0) + ', ' + (ACCENT[2] | 0) + ', 0.75)';
+		c.strokeText(TEXT, W / 2, H / 2);
 	}
 
 	function buildNameLayer() {
@@ -345,18 +335,11 @@
 		const r = host.getBoundingClientRect();
 		W = Math.max(160, Math.round(r.width));
 		H = Math.max(48, Math.round(r.height));
-		/* dpr do aparelho (até 3x, cobre celular). O backing store do canvas
-		   tem que casar EXATAMENTE com o tamanho em pixel físico: numa tela
-		   de escala fracionária (125%, 150%) ou 3x, W*dpr não é inteiro, e se
-		   o CSS ficar em "W" o navegador reamostra o bitmap inteiro — é o que
-		   deixava TODOS os contornos das letras serrilhados ("cortes"), já
-		   que o resto da página é vetor e continua nítido. O tamanho CSS vira
-		   backing/dpr, que fecha a conta em pixels físicos exatos. */
-		dpr = Math.min(window.devicePixelRatio || 1, 3);
+		dpr = Math.min(window.devicePixelRatio || 1, 2);
 		canvas.width = Math.round(W * dpr);
 		canvas.height = Math.round(H * dpr);
-		canvas.style.width = (canvas.width / dpr) + 'px';
-		canvas.style.height = (canvas.height / dpr) + 'px';
+		canvas.style.width = W + 'px';
+		canvas.style.height = H + 'px';
 		ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 		computeFont();
 		buildParticles();
@@ -754,7 +737,7 @@
 					ctx.save();
 					ctx.globalAlpha = on * fade * 0.9;
 					ctx.fillStyle = glowColor;
-					ctx.font = '600 ' + Math.max(8, fontPx * 0.14) + 'px ' + UI_FAMILY;
+					ctx.font = '600 ' + Math.max(8, fontPx * 0.14) + 'px ' + FAMILY;
 					ctx.textAlign = 'left';
 					ctx.textBaseline = 'bottom';
 					if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
@@ -889,8 +872,9 @@
 		const dt = Math.min(0.05, last ? (now - last) / 1000 : 0.016);
 		last = now;
 
-		/* pulso do brilho (das bolinhas e do halo curto do nome montado) */
+		/* pulso do brilho das bolinhas + decaimento do flash do nome */
 		pulse = 0.5 + 0.5 * Math.sin(now / 620);
+		if (glowFlash > 0) glowFlash = Math.max(0, glowFlash - dt / 0.7);
 
 		ctx.clearRect(0, 0, W, H);
 		drawAmbient(dt);
@@ -904,7 +888,7 @@
 		let fx = EFFECTS[cur];
 		let t = (now - t0) / (fx.duration * 1000);
 		if (t >= 1) {
-			if (!settling) { settling = true; settleT0 = now; }
+			if (!settling) { settling = true; settleT0 = now; glowFlash = 1; }
 			if (now - settleT0 >= SETTLE * 1000) {
 				startEffect(cur + 1);
 				fx = EFFECTS[cur];
@@ -918,9 +902,6 @@
 
 		/* "hold": ao final do efeito, as bolinhas viram o nome na fonte real */
 		hold += ((t > 0.5 ? 1 : 0) - hold) * Math.min(1, dt / 0.22);
-		/* montado (segurando o nome): zera de vez, para nenhuma bolinha
-		   residual pontilhar as bordas das letras */
-		if (t >= 1) hold = 1;
 		const pAlpha = 1 - hold;
 
 		if (fx.underlay) fx.underlay(t);
@@ -950,7 +931,7 @@
 
 			if (fx.tick) fx.tick(p, t);
 
-			if (pAlpha <= 0.02) continue;
+			if (pAlpha <= 0.004) continue;
 			const r = p.size * (p.scale > 0 ? p.scale : 0) * 0.5;
 			if (r <= 0) continue;
 			glowDot(p.x, p.y, r, p.color, p.alpha * pAlpha, 0.08 + 0.12 * pulse);
@@ -960,18 +941,12 @@
 		if (fx.overlay) fx.overlay(t);
 
 		if (nameLayer && hold > 0.004) {
-			/* Brilho do nome montado: só o contínuo e curto (blur <= ~8px,
-			   alfa <= 0.21). A Metal Mania tem traços finos e vãos internos
-			   estreitos, e o flash que existia aqui (blur ~17px, alfa 0.47)
-			   fechava esses vãos: as bordas pareciam deformadas bem no
-			   instante em que o nome monta. Medido: halo de 0.55x a tinta
-			   antes 0.87x no instante do flash. O nome agora entra de uma vez
-			   (hold = 1), sem halo. */
-			const ng = hold * (0.32 + 0.28 * pulse);
-			const ga = Math.min(0.55, 0.35 * ng);
+			/* brilho do nome montado: contínuo (pulsante) + flash na montagem */
+			const ng = hold * (0.32 + 0.28 * pulse) + glowFlash * 0.75;
+			const ga = Math.min(0.7, 0.5 * ng);
 			ctx.save();
 			ctx.shadowColor = 'rgba(' + (glowRGB[0] | 0) + ', ' + (glowRGB[1] | 0) + ', ' + (glowRGB[2] | 0) + ', ' + ga.toFixed(3) + ')';
-			ctx.shadowBlur = 13 * Math.min(1.4, ng);
+			ctx.shadowBlur = 22 * Math.min(1.4, ng);
 			ctx.globalAlpha = hold;
 			ctx.drawImage(nameLayer, 0, 0, W, H);
 			ctx.restore();

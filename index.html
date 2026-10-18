@@ -28,7 +28,7 @@
 	<title>NLinux · Nilsonlinux</title>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Metal+Mania&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.30.0/dist/tabler-icons.min.css">
 	<style>
 		:root, html[data-theme="dark"] {
@@ -209,7 +209,7 @@
 		   gradiente metálico logo abaixo. */
 		.hero-name {
 			position: relative;
-			height: clamp(4.5rem, 20vw, 13rem);
+			height: clamp(3.6rem, 15vw, 10rem);
 			margin: .1rem 0 .35rem;
 			overflow: hidden;
 		}
@@ -218,14 +218,11 @@
 		.hero-name-text {
 			display: flex; align-items: center; justify-content: center;
 			height: 100%;
-			/* Metal Mania é a fonte no estilo Iron Maiden; o mesmo par
-			   família/peso/tracking é usado pelo canvas (js/hero-name.js). */
-			font-family: 'Metal Mania', Geist, Inter, ui-sans-serif, system-ui, sans-serif;
-			font-size: clamp(4rem, 18vw, 11.7rem);
-			font-weight: 400; letter-spacing: 0; line-height: 1;
+			font-family: Geist, Inter, ui-sans-serif, system-ui, sans-serif;
+			font-size: clamp(3rem, 13.5vw, 9rem);
+			font-weight: 800; letter-spacing: -.045em; line-height: 1;
 			color: var(--accent);
-			/* sem -webkit-text-stroke: o contorno de espessura fixa engorda os
-			   traços finos e arredonda os bicos da Metal Mania */
+			-webkit-text-stroke: 1.5px color-mix(in srgb, var(--accent) 75%, transparent);
 		}
 		@supports ((background-clip: text) or (-webkit-background-clip: text)) {
 			.hero-name-text {
@@ -257,7 +254,7 @@
 			.hero-name.is-canvas .hero-name-text {
 				position: static; width: auto; height: auto; margin: 0; overflow: visible;
 				clip: auto; white-space: normal; display: flex; background: none;
-				color: var(--fg); -webkit-text-fill-color: var(--fg);
+				color: var(--fg); -webkit-text-fill-color: var(--fg); -webkit-text-stroke: 0;
 			}
 		}
 		.page-subtitle {
@@ -598,7 +595,7 @@
 	<script src="js/site.js?v=5" defer></script>
 	<!-- efeito de montagem do nome no hero (canvas). Ao mexer no arquivo,
 	     suba o ?v= para furar o cache dos navegadores. -->
-	<script src="js/hero-name.js?v=23" defer></script>
+	<script src="js/hero-name.js?v=17" defer></script>
 </head>
 <body>
 <div class="page-canvas">
@@ -649,7 +646,7 @@
 			<div class="site-shell">
 
 				<div class="page-header reveal">
-					<h1 class="hero-name" data-text="NLinux" aria-label="NLinux">
+					<h1 class="hero-name" data-text="NLinux">
 						<span class="hero-name-text">NLinux</span>
 						<canvas aria-hidden="true"></canvas>
 					</h1>
