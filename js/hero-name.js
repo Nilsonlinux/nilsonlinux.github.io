@@ -912,6 +912,9 @@
 
 		/* "hold": ao final do efeito, as bolinhas viram o nome na fonte real */
 		hold += ((t > 0.5 ? 1 : 0) - hold) * Math.min(1, dt / 0.22);
+		/* montado (segurando o nome): zera de vez, para nenhuma bolinha
+		   residual pontilhar as bordas das letras */
+		if (t >= 1) hold = 1;
 		const pAlpha = 1 - hold;
 
 		if (fx.underlay) fx.underlay(t);
@@ -941,7 +944,7 @@
 
 			if (fx.tick) fx.tick(p, t);
 
-			if (pAlpha <= 0.004) continue;
+			if (pAlpha <= 0.02) continue;
 			const r = p.size * (p.scale > 0 ? p.scale : 0) * 0.5;
 			if (r <= 0) continue;
 			glowDot(p.x, p.y, r, p.color, p.alpha * pAlpha, 0.08 + 0.12 * pulse);
