@@ -63,7 +63,7 @@
 	const WHITE = [255, 255, 255], BLACK = [0, 0, 0];
 	let metal = [];
 	let glowRGB = [255, 255, 255], glowColor = 'rgb(255, 255, 255)';
-	let pulse = 0, glowFlash = 0;
+	let pulse = 0;
 	let letterBounds = [], nLetters = 1;
 
 	/* ---------- cor ---------- */
@@ -889,9 +889,8 @@
 		const dt = Math.min(0.05, last ? (now - last) / 1000 : 0.016);
 		last = now;
 
-		/* pulso do brilho das bolinhas + decaimento do flash do nome */
+		/* pulso do brilho (das bolinhas e do halo curto do nome montado) */
 		pulse = 0.5 + 0.5 * Math.sin(now / 620);
-		if (glowFlash > 0) glowFlash = Math.max(0, glowFlash - dt / 0.7);
 
 		ctx.clearRect(0, 0, W, H);
 		drawAmbient(dt);
@@ -905,7 +904,7 @@
 		let fx = EFFECTS[cur];
 		let t = (now - t0) / (fx.duration * 1000);
 		if (t >= 1) {
-			if (!settling) { settling = true; settleT0 = now; glowFlash = 1; }
+			if (!settling) { settling = true; settleT0 = now; }
 			if (now - settleT0 >= SETTLE * 1000) {
 				startEffect(cur + 1);
 				fx = EFFECTS[cur];
@@ -961,10 +960,14 @@
 		if (fx.overlay) fx.overlay(t);
 
 		if (nameLayer && hold > 0.004) {
-			/* brilho do nome montado: contínuo (pulsante) + flash na montagem.
-			   blur/alfa contidos para o halo não invadir os vãos das letras nem
-			   borrar as pontas (o halo é desenhado atrás, o nome segue nítido). */
-			const ng = hold * (0.32 + 0.28 * pulse) + glowFlash * 0.75;
+			/* Brilho do nome montado: só o contínuo e curto (blur <= ~8px,
+			   alfa <= 0.21). A Metal Mania tem traços finos e vãos internos
+			   estreitos, e o flash que existia aqui (blur ~17px, alfa 0.47)
+			   fechava esses vãos: as bordas pareciam deformadas bem no
+			   instante em que o nome monta. Medido: halo de 0.55x a tinta
+			   antes 0.87x no instante do flash. O nome agora entra de uma vez
+			   (hold = 1), sem halo. */
+			const ng = hold * (0.32 + 0.28 * pulse);
 			const ga = Math.min(0.55, 0.35 * ng);
 			ctx.save();
 			ctx.shadowColor = 'rgba(' + (glowRGB[0] | 0) + ', ' + (glowRGB[1] | 0) + ', ' + (glowRGB[2] | 0) + ', ' + ga.toFixed(3) + ')';
