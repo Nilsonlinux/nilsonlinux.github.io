@@ -342,11 +342,11 @@
 		.github-release > summary::-webkit-details-marker { display: none; }
 		.github-release { transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease; }
 		.github-release:hover, .github-release:focus-within {
-			border-color: #fff06a;
-			box-shadow: var(--shadow-card), 0 0 0 1px rgb(255 240 106 / .7), 0 0 22px rgb(255 232 64 / .48), 0 0 44px rgb(255 224 32 / .2);
+			border-color: color-mix(in srgb, var(--accent) 70%, var(--border));
+			box-shadow: var(--shadow-card), 0 0 0 1px color-mix(in srgb, var(--accent) 40%, transparent);
 			transform: translateY(-2px);
 		}
-		.github-release > summary:focus-visible { outline: 2px solid #fff06a; outline-offset: -3px; }
+		.github-release > summary:focus-visible { outline: 2px solid color-mix(in srgb, var(--accent) 65%, transparent); outline-offset: -3px; }
 		.github-release > summary::after { content: "+"; flex: 0 0 auto; color: var(--accent); font-size: 1.5rem; line-height: 1; transition: transform .2s; }
 		.github-release[open] > summary { border-bottom: 1px solid var(--border); }
 		.github-release[open] > summary::after { content: "−"; }
