@@ -342,11 +342,16 @@
 		.github-release > summary::-webkit-details-marker { display: none; }
 		.github-release { transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease; }
 		.github-release:hover, .github-release:focus-within {
-			border-color: color-mix(in srgb, var(--accent) 70%, var(--border));
-			box-shadow: var(--shadow-card), 0 0 0 1px color-mix(in srgb, var(--accent) 40%, transparent);
+			/* brilho contido e seguindo o tema (var(--gh-hover): amarelo no
+			   escuro, azul no claro) — antes era um halo amarelo fixo de
+			   22px/44px que ignorava o tema claro */
+			border-color: color-mix(in srgb, var(--gh-hover) 55%, var(--border));
+			box-shadow: var(--shadow-card-hover),
+				0 0 0 1px color-mix(in srgb, var(--gh-hover) 30%, transparent),
+				0 0 14px -6px color-mix(in srgb, var(--gh-hover) 32%, transparent);
 			transform: translateY(-2px);
 		}
-		.github-release > summary:focus-visible { outline: 2px solid color-mix(in srgb, var(--accent) 65%, transparent); outline-offset: -3px; }
+		.github-release > summary:focus-visible { outline: 2px solid color-mix(in srgb, var(--gh-hover) 60%, transparent); outline-offset: -3px; }
 		.github-release > summary::after { content: "+"; flex: 0 0 auto; color: var(--accent); font-size: 1.5rem; line-height: 1; transition: transform .2s; }
 		.github-release[open] > summary { border-bottom: 1px solid var(--border); }
 		.github-release[open] > summary::after { content: "−"; }
