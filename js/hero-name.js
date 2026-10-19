@@ -335,11 +335,15 @@
 		const r = host.getBoundingClientRect();
 		W = Math.max(160, Math.round(r.width));
 		H = Math.max(48, Math.round(r.height));
-		dpr = Math.min(window.devicePixelRatio || 1, 2);
+		/* dpr até 3x e o tamanho CSS derivado do próprio backing store: assim
+		   canvas.width/height == tamanho físico exato (W*dpr) e o navegador
+		   não reescala o bitmap (em dpr 3x o nome saía serrilhado). Não mexe
+		   em nada visível: em dpr <= 2 os valores são idênticos aos de antes. */
+		dpr = Math.min(window.devicePixelRatio || 1, 3);
 		canvas.width = Math.round(W * dpr);
 		canvas.height = Math.round(H * dpr);
-		canvas.style.width = W + 'px';
-		canvas.style.height = H + 'px';
+		canvas.style.width = (canvas.width / dpr) + 'px';
+		canvas.style.height = (canvas.height / dpr) + 'px';
 		ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 		computeFont();
 		buildParticles();
