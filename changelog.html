@@ -362,8 +362,21 @@
 		.github-release-summary { min-width: 0; }
 		.github-release-summary .doc-h3 { margin: 0; }
 		.github-release-summary .doc-p { margin: .35rem 0 0; }
-		.github-release-content { padding: 1.1rem 1.2rem; }
-		.github-release-content > :last-child { margin-bottom: 0; }
+		/* abertura deslizante: o conteúdo mora dentro de .github-release-body,
+		   que é a única linha do grid de .github-release-content. Animando
+		   0fr -> 1fr o card abre deslizando (sem JS: vale para qualquer
+		   navegador com grid, que é pré-requisito do próprio site). O
+		   fechamento mantém o comportamento padrão do <details>. */
+		.github-release-content { display: grid; grid-template-rows: 1fr; }
+		.github-release-body { min-height: 0; overflow: hidden; padding: 1.1rem 1.2rem; }
+		.github-release-body > :last-child { margin-bottom: 0; }
+		@keyframes release-slide {
+			from { grid-template-rows: 0fr; opacity: 0; transform: translateY(-12px); }
+			to { grid-template-rows: 1fr; opacity: 1; transform: none; }
+		}
+		.github-release[open] > .github-release-content {
+			animation: release-slide .34s cubic-bezier(.22, .61, .36, 1);
+		}
 		.github-image-viewer { width: min(96vw, 90rem); max-width: none; max-height: 94vh; padding: 1rem; border: 1px solid var(--border); border-radius: 1rem; background: var(--surface); color: var(--fg); }
 		.github-image-viewer::backdrop { background: rgb(0 0 0 / .82); backdrop-filter: blur(6px); }
 		.github-image-viewer img { display: block; max-width: 100%; max-height: calc(94vh - 5rem); margin: 0 auto; object-fit: contain; }
@@ -1261,6 +1274,12 @@
 			});
 			content.append(list);
 		}
+		// Wrapper único com todo o conteúdo: é a linha do grid que anima
+		// quando o card abre (efeito deslizante).
+		const body = document.createElement('div');
+		body.className = 'github-release-body';
+		while (content.firstChild) body.append(content.firstChild);
+		content.append(body);
 		card.append(content);
 		releaseList.append(card);
 		addReleaseToToc(release, card);
