@@ -91,9 +91,9 @@
 
 				<div class="badge-row reveal">
 					<span class="badge badge-community"><i class="ti ti-world" aria-hidden="true"></i> On Noctalia Community</span>
-					<span class="badge badge-version-diff" title="Versão da Community diferente da desta página"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Community v1.0.8 <span class="vs">vs</span> aqui v1.0.7</span>
+					<span class="badge badge-community" title="Versão da Community em dia"><i class="ti ti-checks" aria-hidden="true"></i> Community v1.0.8</span>
 					<a class="reaction-btn" data-reaction data-folder="world-radio" href="#" target="_blank" rel="noopener noreferrer" title="Curtir no GitHub"><i class="ti ti-thumb-up" aria-hidden="true"></i><strong data-likes>0</strong><span data-likes-word> joinhas</span></a>
-					<span class="badge"><i class="ti ti-edit" aria-hidden="true"></i> v1.0.7</span>
+					<span class="badge"><i class="ti ti-edit" aria-hidden="true"></i> v1.0.8</span>
 					<span class="badge"><i class="ti ti-user" aria-hidden="true"></i> Nilsonlinux</span>
 				</div>
 
@@ -106,8 +106,8 @@
 						<h1>World Radio</h1>
 <p>Browse thousands of internet radio stations from around the world and play
 them straight from a Noctalia panel - each country shows its flag, and while a
-station plays, its logo appears in the media widget thanks to mpv's
-<code>--cover-art-files</code>.</p>
+station plays, its name and logo appear in Noctalia's media widget through
+mpv-mpris.</p>
 <h2>Plugin</h2>
 <table>
 <thead>
@@ -152,13 +152,15 @@ station plays, its logo appears in the media widget thanks to mpv's
   removed; they persist across restarts in a separate file.</li>
 <li><strong>Playback via mpv</strong> - stations are played through <code>mpv</code> at 85% volume
   (falls back to <code>ffplay</code> when mpv is missing). Starting a new station stops
-  the previous one. The mini player shows a pulsing green live icon while a
-  station is playing, with the current track under the station name (when the
-  stream broadcasts song metadata).</li>
-<li><strong>Station logo in the media widget</strong> - the playing station's favicon is
-  passed to mpv via <code>--cover-art-files</code>, which makes mpv-mpris publish it as
-  <code>mpris:artUrl</code>; Noctalia's media tab then shows the station's own logo. For
-  local radios the optional cover URL you set is used as the logo.</li>
+  the previous one. mpv is started with <code>--force-media-title</code> set to the
+  station name, so the media panel shows the station instead of the stream's
+  generic title. The mini player shows a pulsing green live icon while a
+  station is playing.</li>
+<li><strong>Station name and logo in the media widget</strong> - before playback starts the
+  station's favicon is downloaded and passed to mpv via <code>--cover-art-files</code>;
+  mpv-mpris publishes it as <code>mpris:artUrl</code>, so Noctalia's media panel shows
+  both the station name and its own logo. For local radios the optional cover
+  URL you set is used as the logo.</li>
 <li><strong>Now playing on the bar</strong> - while a station plays, the bar widget shows its
   name next to the icon (configurable, see <code>show_now_playing</code>) and a tooltip
  with "Now playing: <code>&lt;station&gt;</code>".</li>
@@ -172,16 +174,15 @@ automatically falls back to <code>ffplay</code> (provided by <code>ffmpeg</code>
 <li><code>mpv</code> - the primary player used by the plugin (declared dependency).</li>
 <li><code>ffmpeg</code> - only used as the <code>ffplay</code> fallback when <code>mpv</code> is not installed
   (declared dependency).</li>
-<li><code>mpv-mpris</code> - <em>optional</em>. Required for the station's logo to appear in
-  Noctalia's media widget/tab and for the current track to show in the mini
-  player: mpv embeds the cover via <code>--cover-art-files</code>, but <code>mpv-mpris</code> is
-  what publishes MPRIS (<code>mpris:artUrl</code>, <code>xesam:title</code>), and Noctalia reads
-  the artwork from exactly that property. Without it Noctalia sees no MPRIS
-  player, so no now-playing info and no artwork.</li>
-<li><code>playerctl</code> - <em>optional</em>. Used to query MPRIS for the current track title,
-  shown under the station name in the mini player. Needs <code>mpv-mpris</code> to be
-  present too: without either of them the mini player simply hides the track
-  line.</li>
+<li><code>mpv-mpris</code> - <strong>required</strong> for Noctalia's media panel integration. It
+  publishes mpv as an MPRIS player, including the station title (<code>xesam:title</code>)
+  and the artwork (<code>mpris:artUrl</code>). Install the distro package (for example
+  <code>sudo pacman -S mpv-mpris</code> on Arch/Artix) or drop <code>mpris.so</code> into
+  <code>~/.config/mpv/scripts/</code>. Without it Noctalia sees no MPRIS player, so the
+  media panel keeps saying nothing is playing.</li>
+<li><code>playerctl</code> - <em>optional</em>. Used by the mini player to read a separate track
+  title from MPRIS when the player exposes one; it is not needed for the media
+  panel or for playback.</li>
 <li><strong>Network</strong> - reaching <code>radio-browser.info</code> is required for the country
   list, the stats cards, all station lists and searches. No API key or
   account is needed; the service is a public, free API.</li>
@@ -210,8 +211,8 @@ automatically falls back to <code>ffplay</code> (provided by <code>ffmpeg</code>
    stations; <code>+</code> lets you add one with a stream URL (an optional name and an
    optional cover image URL). Use the pencil button to edit it and the trash
    button to remove it.</li>
-<li>While a station plays, check the media widget for the station's logo, and
-   the bar for the now-playing name.</li>
+<li>While a station plays, check the media widget for the station's name and
+   logo, and the bar for the now-playing name.</li>
 </ol>
 <h2>Settings</h2>
 <h3>Bar Widget</h3>
@@ -234,7 +235,7 @@ automatically falls back to <code>ffplay</code> (provided by <code>ffmpeg</code>
 <tr>
 <td><code>show_now_playing</code></td>
 <td><code>bool</code></td>
-<td><code>true</code></td>
+<td><code>false</code></td>
 <td>Show the currently playing station name next to the icon (the tooltip always keeps it).</td>
 </tr>
 </tbody>
@@ -274,10 +275,10 @@ the bar text, tooltip and icon.</p>
   player process is still alive; deleting <code>playing.json</code> clears it.</li>
 <li>Station logos sometimes fail to download (some favicons return 403/404) -
   playback is never blocked by that; the station just plays without artwork.</li>
-<li>The track title under the station name depends on the station broadcasting
-  stream metadata (ICY "StreamTitle"): only stations that send it will show a
-  title, and only while <code>playerctl</code> + <code>mpv-mpris</code> are installed. Stations
-  without stream metadata never show a title.</li>
+<li>The media panel title is forced to the station name, so it stays readable
+  even for streams that would otherwise report a generic <code>stream</code> title. The
+  mini player's separate track line is shown only when <code>playerctl</code> +
+  <code>mpv-mpris</code> expose a title different from the station name.</li>
 </ul>
 <h2>License</h2>
 <p>MIT</p>
@@ -294,7 +295,12 @@ the bar text, tooltip and icon.</p>
 							<tbody>
 								
 								<tr>
-									<td><span class="version-cell">v1.0.7 <span class="version-latest">latest</span></span></td>
+									<td><span class="version-cell">v1.0.8 <span class="version-latest">latest</span></span></td>
+									<td>43</td>
+									<td>26 out 2026</td>
+								</tr>
+								<tr>
+									<td><span class="version-cell">v1.0.7</span></td>
 									<td>24</td>
 									<td>17 set 2026</td>
 								</tr>
