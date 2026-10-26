@@ -91,13 +91,13 @@
 
 				<div class="badge-row reveal">
 					<span class="badge badge-community"><i class="ti ti-world" aria-hidden="true"></i> On Noctalia Community</span>
-					<span class="badge badge-community" title="Versão da Community em dia"><i class="ti ti-checks" aria-hidden="true"></i> Community v1.0.8</span>
+					<span class="badge badge-version-diff" title="Versão da Community diferente da desta página"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Community v1.0.8 <span class="vs">vs</span> aqui v1.1.0</span>
 					<a class="reaction-btn" data-reaction data-folder="world-radio" href="#" target="_blank" rel="noopener noreferrer" title="Curtir no GitHub"><i class="ti ti-thumb-up" aria-hidden="true"></i><strong data-likes>0</strong><span data-likes-word> joinhas</span></a>
-					<span class="badge"><i class="ti ti-edit" aria-hidden="true"></i> v1.0.8</span>
+					<span class="badge"><i class="ti ti-edit" aria-hidden="true"></i> v1.1.0</span>
 					<span class="badge"><i class="ti ti-user" aria-hidden="true"></i> Nilsonlinux</span>
 				</div>
 
-				<div class="tag-row reveal"><a href="../../plugins.html" class="tag-badge">audio</a><a href="../../plugins.html" class="tag-badge">music</a><a href="../../plugins.html" class="tag-badge">network</a><a href="../../plugins.html" class="tag-badge">panel</a><a href="../../plugins.html" class="tag-badge">bar</a><a href="../../plugins.html" class="tag-badge">utility</a>
+				<div class="tag-row reveal"><a href="../../plugins.html" class="tag-badge">audio</a><a href="../../plugins.html" class="tag-badge">music</a><a href="../../plugins.html" class="tag-badge">network</a><a href="../../plugins.html" class="tag-badge">panel</a><a href="../../plugins.html" class="tag-badge">bar</a><a href="../../plugins.html" class="tag-badge">utility</a><a href="../../plugins.html" class="tag-badge">service</a>
 				</div>
 
 				<div class="about-section reveal">
@@ -123,7 +123,7 @@ mpv-mpris.</p>
 </tr>
 <tr>
 <td>Entries</td>
-<td>Bar widget: <code>radio</code>; Panel: <code>Panel</code></td>
+<td>Bar widget: <code>radio</code>; Panel: <code>Panel</code>; Service: <code>sync</code></td>
 </tr>
 </tbody>
 </table>
@@ -151,16 +151,22 @@ mpv-mpris.</p>
   one can be edited later (name, URL or cover), played, favorited, or
   removed; they persist across restarts in a separate file.</li>
 <li><strong>Playback via mpv</strong> - stations are played through <code>mpv</code> at 85% volume
-  (falls back to <code>ffplay</code> when mpv is missing). Starting a new station stops
-  the previous one. mpv is started with <code>--force-media-title</code> set to the
-  station name, so the media panel shows the station instead of the stream's
-  generic title. The mini player shows a pulsing green live icon while a
-  station is playing.</li>
-<li><strong>Station name and logo in the media widget</strong> - before playback starts the
-  station's favicon is downloaded and passed to mpv via <code>--cover-art-files</code>;
-  mpv-mpris publishes it as <code>mpris:artUrl</code>, so Noctalia's media panel shows
-  both the station name and its own logo. For local radios the optional cover
-  URL you set is used as the logo.</li>
+  (falls back to <code>ffplay</code> when mpv is missing; station switching needs mpv).
+  Starting a station gives mpv the whole source list as a playlist, so the
+  panel's mini player and Noctalia's native media controls can move between
+  stations with Next/Previous. The mini player shows a pulsing green live icon
+  while a station is playing.</li>
+<li><strong>Station switching</strong> - scroll <strong>up</strong> on the bar widget for the next station
+  and <strong>down</strong> for the previous one (one move per gesture), or use the Next /
+  Previous buttons in Noctalia's media widget. A headless service keeps the
+  current station in sync with mpv even while the panel is closed.</li>
+<li><strong>Station name and logo in the media widget</strong> - mpv labels every playlist
+  entry with the station name. When an entry starts, the bundled helper sets
+  <code>force-media-title</code> and <code>cover-art-files</code> for that entry, and mpv-mpris
+  publishes them as <code>xesam:title</code> and <code>mpris:artUrl</code>, so Noctalia's media
+  panel shows the station name and its own logo. The station you start is
+  downloaded first; other stations use their cached logo (or none). For local
+  radios the optional cover URL you set is used as the logo.</li>
 <li><strong>Now playing on the bar</strong> - while a station plays, the bar widget shows its
   name next to the icon (configurable, see <code>show_now_playing</code>) and a tooltip
  with "Now playing: <code>&lt;station&gt;</code>".</li>
@@ -176,13 +182,16 @@ automatically falls back to <code>ffplay</code> (provided by <code>ffmpeg</code>
   (declared dependency).</li>
 <li><code>mpv-mpris</code> - <strong>required</strong> for Noctalia's media panel integration. It
   publishes mpv as an MPRIS player, including the station title (<code>xesam:title</code>)
-  and the artwork (<code>mpris:artUrl</code>). Install the distro package (for example
-  <code>sudo pacman -S mpv-mpris</code> on Arch/Artix) or drop <code>mpris.so</code> into
+  and the artwork (<code>mpris:artUrl</code>), and exposes the Next/Previous actions used
+  by the media widget and by wheel switching. Install the distro package (for
+  example <code>sudo pacman -S mpv-mpris</code> on Arch/Artix) or drop <code>mpris.so</code> into
   <code>~/.config/mpv/scripts/</code>. Without it Noctalia sees no MPRIS player, so the
   media panel keeps saying nothing is playing.</li>
+<li><code>glib2</code> - provides <code>gdbus</code> (declared dependency). The background service uses
+  it to call MPRIS Next/Previous on mpv.</li>
 <li><code>playerctl</code> - <em>optional</em>. Used by the mini player to read a separate track
   title from MPRIS when the player exposes one; it is not needed for the media
-  panel or for playback.</li>
+  panel, playback or station switching.</li>
 <li><strong>Network</strong> - reaching <code>radio-browser.info</code> is required for the country
   list, the stats cards, all station lists and searches. No API key or
   account is needed; the service is a public, free API.</li>
@@ -212,7 +221,10 @@ automatically falls back to <code>ffplay</code> (provided by <code>ffmpeg</code>
    optional cover image URL). Use the pencil button to edit it and the trash
    button to remove it.</li>
 <li>While a station plays, check the media widget for the station's name and
-   logo, and the bar for the now-playing name.</li>
+   logo, and the bar for the now-playing name. Scroll up/down over the bar
+   widget to move to the next/previous station, or press Next/Previous in the
+   media widget; both work with the panel closed. The panel's mini player has
+   its own previous/next buttons as well.</li>
 </ol>
 <h2>Settings</h2>
 <h3>Bar Widget</h3>
@@ -241,44 +253,60 @@ automatically falls back to <code>ffplay</code> (provided by <code>ffmpeg</code>
 </tbody>
 </table>
 <h2>IPC</h2>
-<p>Only the panel toggle is exposed:</p>
+<p>Panel toggle and station transport:</p>
 <pre><code class="language-sh">noctalia msg panel-toggle nilsonlinux/world-radio:Panel
+noctalia msg plugin nilsonlinux/world-radio:sync all next
+noctalia msg plugin nilsonlinux/world-radio:sync all previous
 </code></pre>
-<p>While a station plays, the plugin publishes <code>{ name, uuid, url }</code> on the
-<code>playing</code> state channel (<code>noctalia.state</code>); <code>widget.luau</code> watches it to update
-the bar text, tooltip and icon.</p>
+<p>While a station plays, the plugin publishes
+<code>{ name, uuid, url, flag, session, pos }</code> on the <code>playing</code> state channel
+(<code>noctalia.state</code>); <code>widget.luau</code> watches it to update the bar text, tooltip
+and icon, and the panel watches it to adopt stations changed from outside the
+panel. The bar widget publishes <code>{ id, dir }</code> on <code>skip_request</code>; the service
+turns each new id into an MPRIS Next (<code>dir = 1</code>) or Previous (<code>dir = -1</code>).</p>
 <h2>Notes</h2>
 <ul>
-<li>The plugin has no background service: all fetching, caching and playback is
-  driven from the panel, so nothing runs while the panel is closed.</li>
+<li>A headless <code>sync</code> service runs for the whole session. It follows mpv's
+  playlist position (<code>now.json</code>), keeps <code>playing.json</code> pointing at the station
+  that is actually playing, publishes the widget state, and performs
+  Next/Previous through MPRIS for wheel gestures. Fetching and browsing still
+  happen only in the panel.</li>
 <li><strong>Network calls</strong> - the plugin talks to <code>radio-browser.info</code>
   (<code>de1.api.radio-browser.info</code>) using <code>/json/countries</code>, <code>/json/stats</code>, and
   <code>/json/stations/search</code> (<code>hidebroken=true</code>, ordered by votes) with a
-  <code>User-Agent</code> of <code>nilsonlinux/world-radio/1.0.0</code>. No credentials are sent.</li>
+  <code>User-Agent</code> of <code>nilsonlinux/world-radio/1.1.0</code>. No credentials are sent.</li>
 <li><strong>Processes</strong> - playback spawns <code>mpv</code> (or <code>ffplay</code>) per station; the PID is
-  stored in <code>player.pid</code> so the next play/Stop kills it cleanly. Before any
-  <code>kill</code>, the PID is cross-checked against <code>/proc/&lt;pid&gt;/comm</code> and
-  <code>/proc/&lt;pid&gt;/cmdline</code> to confirm the process is actually <code>mpv</code>/<code>ffplay</code>, so
-  a stale pid file that was recycled by an unrelated process is never
-  signalled. The debounce and animation timers shell out to <code>sleep</code>.</li>
+  stored in <code>player.pid</code> so the next play/Stop kills it cleanly. mpv is given
+  the whole queue as <code>--playlist</code> with <code>--loop-playlist=force</code>, so its MPRIS
+  Next/Previous wrap around the queue. Before any <code>kill</code>, the PID is
+  cross-checked against <code>/proc/&lt;pid&gt;/comm</code> and <code>/proc/&lt;pid&gt;/cmdline</code> to confirm
+  the process is actually <code>mpv</code>/<code>ffplay</code>, so a stale pid file that was recycled
+  by an unrelated process is never signalled. The debounce and animation timers
+  shell out to <code>sleep</code>.</li>
 <li><strong>Files</strong> - runtime data lives in the plugin's data directory and survives
   reloads: <code>countries.json</code> and <code>stats.json</code> (4h cache), <code>favorites.json</code>,
-  <code>custom-stations.json</code>, <code>playing.json</code> (mini player state), <code>thumbs/</code>
-  (downloaded favicons) and <code>player.pid</code>. All of them can be safely deleted
-  to force a refresh. Favicon file names derive from a sanitised station id
-  (non <code>[A-Za-z0-9_-]</code> characters are stripped) and downloads only accept
+  <code>custom-stations.json</code>, <code>playing.json</code> (mini player state + session),
+  <code>queue.m3u</code> / <code>covers.txt</code> (mpv playlist and per-entry logos), <code>now.json</code>
+  (current playlist position written by the mpv helper), <code>thumbs/</code> (downloaded
+  favicons) and <code>player.pid</code>. All of them can be safely deleted to force a
+  refresh. Favicon file names derive from a sanitised station id (non
+  <code>[A-Za-z0-9_-]</code> characters are stripped) and downloads only accept
   <code>http(s)://</code> artwork URLs, so a remote station id or favicon cannot write
   outside <code>thumbs/</code>.</li>
-<li>While a station plays, the mini player state is persisted to <code>playing.json</code>.
-  If the plugin reloads (for example after toggling another plugin in
-  Settings), the panel restores the mini player on next open as long as the
-  player process is still alive; deleting <code>playing.json</code> clears it.</li>
+<li>While a station plays, the mini player state and the mpv session token are
+  persisted to <code>playing.json</code>. If the plugin reloads (for example after
+  toggling another plugin in Settings), the panel restores the mini player on
+  next open as long as the player process is still alive, and the service
+  ignores a <code>now.json</code> left behind by an older session. Deleting
+  <code>playing.json</code> clears it.</li>
 <li>Station logos sometimes fail to download (some favicons return 403/404) -
-  playback is never blocked by that; the station just plays without artwork.</li>
-<li>The media panel title is forced to the station name, so it stays readable
-  even for streams that would otherwise report a generic <code>stream</code> title. The
-  mini player's separate track line is shown only when <code>playerctl</code> +
-  <code>mpv-mpris</code> expose a title different from the station name.</li>
+  playback is never blocked by that; the station just plays without artwork.
+  Covers are resolved from the favicon cache when each playlist entry starts;
+  only the station you start is downloaded before playback.</li>
+<li>The media panel title is forced to the station name for each playlist entry,
+  so it stays readable even for streams that would otherwise report a generic
+  <code>stream</code> title. The mini player's separate track line is shown only when
+  <code>playerctl</code> + <code>mpv-mpris</code> expose a title different from the station name.</li>
 </ul>
 <h2>License</h2>
 <p>MIT</p>
@@ -295,7 +323,7 @@ the bar text, tooltip and icon.</p>
 							<tbody>
 								
 								<tr>
-									<td><span class="version-cell">v1.0.8 <span class="version-latest">latest</span></span></td>
+									<td><span class="version-cell">v1.1.0 <span class="version-latest">latest</span></span></td>
 									<td>43</td>
 									<td>26 out 2026</td>
 								</tr>
