@@ -419,8 +419,8 @@
 				<section class="content-section reveal">
 					<div class="cta-panel">
 						<div class="cta-heart">❤️</div>
-						<h2>Quatro formas de doar</h2>
-						<p>Escolha Pix, PayPal, Ko-fi ou transferência bancária. Qualquer valor faz a diferença — e não precisa ser todo mês.</p>
+						<h2>Cinco formas de doar</h2>
+						<p>Escolha Pix, PayPal, Ko-fi, Buy Me a Coffee ou transferência bancária. Qualquer valor faz a diferença — e não precisa ser todo mês.</p>
 						<!-- estes botões são as abas. O .tablist de baixo duplicava
 						     exatamente estas quatro opções, então foi removido e o JS passou
 						     a ler o tablist daqui. -->
@@ -428,6 +428,7 @@
 							<a class="btn-primary" role="tab" id="tab-pix" aria-controls="doar-pix" aria-selected="true" href="#doar-pix" data-tab="pix"><i class="ti ti-qrcode"></i><span>Apoiar com Pix</span></a>
 							<a class="btn-ghost" role="tab" id="tab-paypal" aria-controls="doar-paypal" aria-selected="false" href="#doar-paypal" data-tab="paypal"><i class="ti ti-brand-paypal"></i> PayPal</a>
 							<a class="btn-ghost" role="tab" id="tab-kofi" aria-controls="doar-kofi" aria-selected="false" href="#doar-kofi" data-tab="kofi"><i class="ti ti-coffee"></i> Ko-fi</a>
+							<a class="btn-ghost" role="tab" id="tab-bmc" aria-controls="doar-bmc" aria-selected="false" href="#doar-bmc" data-tab="bmc"><i class="ti ti-cup"></i> Buy Me a Coffee</a>
 							<a class="btn-ghost" role="tab" id="tab-conta" aria-controls="doar-conta" aria-selected="false" href="#doar-conta" data-tab="conta"><i class="ti ti-building-bank"></i> Transferência</a>
 						</div>
 					</div>
@@ -497,6 +498,22 @@
 									<p class="placeholder-note">A página do projeto no Ko-fi, onde a contribuição é feita direto na plataforma. Aceita cartão e, se você quiser, um valor fixo por mês — é o que mais ajuda a manter os projetos no ar.</p>
 									<div class="cta-actions" style="justify-content:flex-start;margin-top:1.1rem">
 										<a class="btn-primary" href="https://ko-fi.com/nilsonlinux/gallery#galleryItemView" target="_blank" rel="noopener noreferrer"><i class="ti ti-coffee"></i> Abrir no Ko-fi</a>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="tabpanel" role="tabpanel" id="doar-bmc" aria-labelledby="tab-bmc" tabindex="0" hidden>
+							<div class="donate-body">
+								<div class="qr-side">
+									<i class="ti ti-cup" style="font-size:3rem;color:var(--accent)"></i>
+									<p class="placeholder-note">buymeacoffee.com/nilsonlinux</p>
+								</div>
+								<div>
+									<h3 class="section-title">Buy Me a Coffee <span class="count">cartão ou por mês</span></h3>
+									<p class="placeholder-note">Pague um café direto na plataforma do Buy Me a Coffee. Aceita cartão e também valores recorrentes, sem precisar de conta no Brasil. Uma das formas mais simples de apoiar quem mantém o NLinux e os plugins.</p>
+									<div class="cta-actions" style="justify-content:flex-start;margin-top:1.1rem">
+										<a class="btn-primary" href="https://buymeacoffee.com/nilsonlinux" target="_blank" rel="noopener noreferrer"><i class="ti ti-cup"></i> Abrir no Buy Me a Coffee</a>
 									</div>
 								</div>
 							</div>
