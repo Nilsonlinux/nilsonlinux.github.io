@@ -683,7 +683,7 @@
 							<div class="step-num">1</div>
 							<div>
 								<h3>Abra pelo ícone na dock</h3>
-								<p>O ícone da loja já vem fixado na dock. O mesmo atalho aparece no menu do sistema e na Área de Trabalho como <b>FalconOS Software</b>. Nada de instalar nada antes: ela já vem na ISO. No terminal, <code>nlinux-software</code> faz o mesmo.</p>
+								<p>O ícone da loja já vem fixado na dock. O mesmo atalho aparece no menu do sistema e na Área de Trabalho como <b>FalconOS Software</b>. Nada de instalar nada antes: ela já vem na ISO. No terminal, <code>falconos-software</code> faz o mesmo.</p>
 							</div>
 						</div>
 						<div class="step-row">
@@ -712,17 +712,17 @@
 					<div class="code-block">
 						<div class="code-head"><span>terminal</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
 						<pre><code><span class="c"># abre a loja nativa (atalho do menu: "FalconOS Software")</span>
-<span class="p">nlinux-software</span>
+<span class="p">falconos-software</span>
 
 <span class="c"># a loja checa o catálogo a cada 15s; para olhar mais de perto:</span>
-NLINUX_CATALOG_CHECK=5 <span class="p">nlinux-software</span></code></pre>
+FALCONOS_CATALOG_CHECK=5 <span class="p">falconos-software</span></code></pre>
 					</div>
 
 					<div class="note">
 						<i class="ti ti-info-circle"></i>
 						<div>
-							<p>Curadoria separada da instalação: a versão que vai na ISO é só cliente do catálogo. O painel de curadoria (fora da distro) edita os aplicativos, gera o pacote e assina com GPG o <code>tar.gz</code> publicado no repositório <a class="link-accent" href="https://github.com/Nilsonlinux/nlinux-software" target="_blank" rel="noopener noreferrer">Nilsonlinux/nlinux-software</a>, que é de onde a loja baixa o catálogo — por isso o update chega sem reinstalar a ISO.</p>
-							<p>São dois executáveis independentes, e só um vai para a distro: <code>./nlinux-software-admin</code> roda a loja com a página de curadoria (<code>/admin</code>), onde os aplicativos são criados, editados e excluídos; <code>./nlinux-software</code> roda o build de distribuição, sem arquivos nem rotas de administração. É a segunda que o <code>install.sh</code> instala em <code>/opt/nlinux-software</code> — o <code>admin</code> não existe no sistema instalado.</p>
+							<p>Curadoria separada da instalação: a versão que vai na ISO é só cliente do catálogo. O painel de curadoria (fora da distro) edita os aplicativos, gera o pacote e assina com GPG o <code>tar.gz</code> publicado no <a class="link-accent" href="https://github.com/Nilsonlinux/nlinux-software" target="_blank" rel="noopener noreferrer">repositório da loja no GitHub</a>, que é de onde a loja baixa o catálogo — por isso o update chega sem reinstalar a ISO.</p>
+							<p>São dois executáveis independentes, e só um vai para a distro: <code>./falconos-software-admin</code> roda a loja com a página de curadoria (<code>/admin</code>), onde os aplicativos são criados, editados e excluídos; <code>./falconos-software</code> roda o build de distribuição, sem arquivos nem rotas de administração. É a segunda que o <code>install.sh</code> instala em <code>/opt/falconos-software</code> — o <code>admin</code> não existe no sistema instalado.</p>
 							<p>E os números desta página (<b data-cat="revision">…</b>, <b data-cat="apps">…</b> apps, <b data-cat="categories">…</b> categorias) são lidos desse mesmo repositório no carregamento: quando a curadoria publica um catálogo novo, esta página muda sozinha, sem ninguém editar o site.</p>
 						</div>
 					</div>
@@ -741,7 +741,7 @@ NLINUX_CATALOG_CHECK=5 <span class="p">nlinux-software</span></code></pre>
 							</ul>
 						</div>
 						<div class="stack-card">
-							<h3><i class="ti ti-app-window"></i> nlinux-software</h3>
+							<h3><i class="ti ti-app-window"></i> falconos-software</h3>
 							<ul>
 								<li><b>janela</b> GTK 3 + WebKit2GTK 4.1</li>
 								<li>UI em HTML/CSS/JS + Tabler Icons</li>
