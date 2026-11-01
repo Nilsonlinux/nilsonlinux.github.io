@@ -1,5 +1,5 @@
 /* ============================================================
-   NLinux · variáveis compartilhadas do site
+   FalconOS · variáveis compartilhadas do site
 
    DADOS DA ÚLTIMA ISO — fonte única da verdade.
    Publicou uma ISO nova? Troque SOMENTE as três linhas abaixo
@@ -48,7 +48,7 @@ document.querySelectorAll('[data-iso-sha256]').forEach(el => {
 });
 
 /* ============================================================
-   CATÁLOGO DA NLINUX SOFTWARE
+   CATÁLOGO DA FALCONOS SOFTWARE
    A revisão, a contagem de apps e a de categorias saem do
    catalog-head.json publicado no repositório da loja:
 

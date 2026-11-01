@@ -1,10 +1,10 @@
-# NLinux — página oficial
+# FalconOS — página oficial
 
-Este repositório é o código da **página oficial do NLinux**, publicada pelo GitHub Pages em
+Este repositório é o código da **página oficial do FalconOS**, publicada pelo GitHub Pages em
 <https://nilsonlinux.github.io/>.
 
 O site é estático (HTML + CSS + JS, sem etapa de build): o que está no branch `main` é o que
-está no ar. O **NLinux** é uma distribuição Linux baseada no **Arch Linux**, com desktop
+está no ar. O **FalconOS** é uma distribuição Linux baseada no **Arch Linux**, com desktop
 Wayland **Umbriel + Noctalia** e um **instalador visual em 10 etapas** — a ISO gera um ambiente
 ao vivo que boota direto no desktop e instala por uma interface web no navegador.
 
@@ -34,14 +34,14 @@ ao vivo que boota direto no desktop e instala por uma interface web no navegador
   internet) e **Completo online** (`pacstrap` dos pacotes + AUR via `yay`).
 - **Armazenamento**: `systemd-boot`, `ext4` ou `btrfs` (subvolumes `@`, `@home`, `@log`,
   `@pkg`) e criptografia **LUKS2** opcional.
-- **NLinux Software** — loja embarcada (`PackageKit` + `AppStream` + `Flathub`).
+- **FalconOS Software** — loja embarcada (`PackageKit` + `AppStream` + `Flathub`).
 - **opencode** — agente de programação com IA, **pré-instalado** no ambiente ao vivo e no
   sistema instalado, com atalho na lista de aplicativos (abre no kitty).
 - **Aplicativos do desktop**: Firefox, kitty, fish + starship, fastfetch, Nautilus,
   GNOME Text Editor, Spotify, Discord, Telegram Desktop, gpu-screen-recorder,
   mpv/ffmpeg/imagemagick, Flatpak/PackageKit/AppStream.
 - **Repositórios do pacman**: `core`, `extra` e `multilib` (de onde sai o Steam).
-- **Branding NLinux** no `/etc/os-release`, `/etc/issue`, `/etc/motd`, no menu de boot e no
+- **Branding FalconOS** no `/etc/os-release`, `/etc/issue`, `/etc/motd`, no menu de boot e no
   rótulo da partição.
 
 ### Requisitos e acesso
@@ -69,7 +69,7 @@ baixar.html         download da ISO (link, data, sha256 e contagem de cliques)
 changelog.html      releases, puxadas da API do GitHub
 docs.html           documentação da distro
 recursos.html       recursos do sistema
-loja.html           catálogo da loja NLinux Software
+loja.html           catálogo da loja FalconOS Software
 compilar.html       como compilar a ISO
 plugins.html        plugins públicos do projeto
 doar.html           apoio ao projeto
@@ -101,7 +101,7 @@ python3 -m http.server 8000
 
 - Site: <https://nilsonlinux.github.io/>
 - Build da ISO / instalador: <https://github.com/Nilsonlinux/nlinux-iso-build>
-- Loja NLinux Software: <https://github.com/Nilsonlinux/nlinux-software>
+- Loja FalconOS Software: <https://github.com/Nilsonlinux/nlinux-software>
 
 ## Licença
 

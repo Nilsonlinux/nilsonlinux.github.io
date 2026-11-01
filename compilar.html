@@ -12,20 +12,20 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<link rel="canonical" href="https://nilsonlinux.github.io/compilar.html" />
-	<link rel="icon" href="img/nlinux-logo.png" type="image/png" />
-	<meta name="description" content="Como compilar a ISO do NLinux do zero: requisitos do host, archiso, etapas do chroot, listas de pacotes, personalização e variáveis do instalador." />
+	<link rel="icon" href="img/falconos.png" type="image/png" />
+	<meta name="description" content="Como compilar a ISO do FalconOS do zero: requisitos do host, archiso, etapas do chroot, listas de pacotes, personalização e variáveis do instalador." />
 	<meta name="theme-color" content="#070722" />
-	<meta property="og:title" content="Compilar a ISO · NLinux" />
-	<meta property="og:description" content="Como compilar a ISO do NLinux do zero: requisitos do host, archiso, etapas do chroot, listas de pacotes, personalização e variáveis do instalador." />
+	<meta property="og:title" content="Compilar a ISO · FalconOS" />
+	<meta property="og:description" content="Como compilar a ISO do FalconOS do zero: requisitos do host, archiso, etapas do chroot, listas de pacotes, personalização e variáveis do instalador." />
 	<meta property="og:type" content="website" />
 	<meta property="og:url" content="https://nilsonlinux.github.io/compilar.html" />
-	<meta property="og:image" content="https://nilsonlinux.github.io/img/nlinux-logo.png" />
-	<meta property="og:image:alt" content="Logo do NLinux" />
+	<meta property="og:image" content="https://nilsonlinux.github.io/img/falconos.png" />
+	<meta property="og:image:alt" content="Logo do FalconOS" />
 	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:title" content="Compilar a ISO · NLinux" />
-	<meta name="twitter:description" content="Como compilar a ISO do NLinux do zero: requisitos do host, archiso, etapas do chroot, listas de pacotes, personalização e variáveis do instalador." />
-	<meta name="twitter:image" content="https://nilsonlinux.github.io/img/nlinux-logo.png" />
-	<title>Compilar a ISO · NLinux · Nilsonlinux</title>
+	<meta name="twitter:title" content="Compilar a ISO · FalconOS" />
+	<meta name="twitter:description" content="Como compilar a ISO do FalconOS do zero: requisitos do host, archiso, etapas do chroot, listas de pacotes, personalização e variáveis do instalador." />
+	<meta name="twitter:image" content="https://nilsonlinux.github.io/img/falconos.png" />
+	<title>Compilar a ISO · FalconOS · Nilsonlinux</title>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -546,14 +546,14 @@
 		<header class="site-header">
 			<div class="site-header-inner">
 				<a href="index.html" class="brand">
-					<img src="img/nlinux-logo.png" alt="NLinux" width="40" height="40" />
+					<img src="img/falconos.png" alt="FalconOS" width="40" height="40" />
 					<span class="brand-label">
-						<span class="brand-name">NLinux</span>
+						<span class="brand-name">FalconOS</span>
 						<span class="brand-tag">compilar a ISO</span>
 					</span>
 				</a>
 				<nav class="main-nav" aria-label="Páginas do site">
-					<a href="index.html" class="has-badge"><i class="ti ti-disc"></i>&nbsp;NLinux<span class="nav-badge"><img src="img/tux.png" alt="Linux"></span></a>
+					<a href="index.html" class="has-badge"><i class="ti ti-disc"></i>&nbsp;FalconOS<span class="nav-badge"><img src="img/tux.png" alt="Linux"></span></a>
 					<a href="baixar.html"><i class="ti ti-download"></i>&nbsp;Baixar</a>
 					<a href="recursos.html"><i class="ti ti-adjustments-horizontal"></i>&nbsp;Recursos</a>
 					<a href="loja.html"><i class="ti ti-shopping-bag"></i>&nbsp;Loja</a>
@@ -563,15 +563,15 @@
 					<a href="plugins.html"><i class="ti ti-plug"></i>&nbsp;Plugins</a>
 				</nav>
 				<div class="header-actions">
-					<a class="icon-btn icon-btn-telegram" href="https://t.me/NLinuxOS" target="_blank" rel="noopener noreferrer" aria-label="Canal do Telegram NLinuxOS" title="Telegram NLinuxOS"><i class="ti ti-brand-telegram"></i></a>
-					<a class="icon-btn icon-btn-gh" href="https://github.com/Nilsonlinux" target="_blank" rel="noopener noreferrer" aria-label="GitHub do NLinux" title="GitHub"><i class="ti ti-brand-github"></i></a>
+					<a class="icon-btn icon-btn-telegram" href="https://t.me/NLinuxOS" target="_blank" rel="noopener noreferrer" aria-label="Canal do Telegram FalconOS" title="Telegram FalconOS"><i class="ti ti-brand-telegram"></i></a>
+					<a class="icon-btn icon-btn-gh" href="https://github.com/Nilsonlinux" target="_blank" rel="noopener noreferrer" aria-label="GitHub do FalconOS" title="GitHub"><i class="ti ti-brand-github"></i></a>
 					<button type="button" class="icon-btn" id="themeToggle" aria-label="Alternar tema" title="Tema"><i class="ti ti-sun-moon"></i></button>
 					<a class="btn-primary" href="baixar.html"><i class="ti ti-download"></i><span class="btn-label">Baixar ISO</span></a>
 					<button type="button" class="icon-btn nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false" title="Menu"><i class="ti ti-menu-2"></i></button>
 				</div>
 			</div>
 			<nav class="mobile-nav" id="mobileMenu" aria-label="Páginas do site (menu móvel)">
-				<a href="index.html" class="has-badge"><i class="ti ti-disc"></i>&nbsp;NLinux<span class="nav-badge"><img src="img/tux.png" alt="Linux"></span></a>
+				<a href="index.html" class="has-badge"><i class="ti ti-disc"></i>&nbsp;FalconOS<span class="nav-badge"><img src="img/tux.png" alt="Linux"></span></a>
 				<a href="baixar.html"><i class="ti ti-download"></i>&nbsp;Baixar</a>
 				<a href="recursos.html"><i class="ti ti-adjustments-horizontal"></i>&nbsp;Recursos</a>
 				<a href="loja.html"><i class="ti ti-shopping-bag"></i>&nbsp;Loja</a>
@@ -586,8 +586,8 @@
 			<div class="site-shell">
 
 				<header class="page-header reveal">
-					<h1>Compilar a ISO do NLinux</h1>
-					<p class="page-subtitle">Para quem quer compilar a distribuição ou modificá-la. Se você só quer instalar o NLinux, a documentação do usuário está em <a class="link-accent" href="docs.html">docs.html</a>.</p>
+					<h1>Compilar a ISO do FalconOS</h1>
+					<p class="page-subtitle">Para quem quer compilar a distribuição ou modificá-la. Se você só quer instalar o FalconOS, a documentação do usuário está em <a class="link-accent" href="docs.html">docs.html</a>.</p>
 					<div class="page-badges">
 						<span class="page-badge"><i class="ti ti-hammer"></i> archiso</span>
 						<span class="page-badge"><i class="ti ti-terminal-2"></i> shell root no host Arch</span>
@@ -626,8 +626,8 @@
 						<!-- ---------- Quando usar esta página ---------- -->
 						<section class="doc-sec reveal" id="quando-usar">
 							<h2 class="doc-h2"><i class="ti ti-info-circle"></i> Quando usar esta página<a class="anchor ti ti-link" href="#quando-usar" aria-label="Link para esta seção"></a></h2>
-							<p class="doc-p">Esta página é para quem quer <strong>compilar a distribuição</strong> ou <strong>modificá-la</strong>: montar a ISO do zero, entender como o sistema é construído, trocar a lista de pacotes ou ajustar o instalador. Não faz parte do caminho de quem só quer instalar o NLinux — para isso, veja a <a class="link-accent" href="docs.html">documentação do usuário</a>.</p>
-							<p class="doc-p">O NLinux é uma distro <strong>rolling</strong>: não existe um "build oficial" com regras fixas, e o que você compila depende do estado dos repositórios no momento do build. Espera-se divergência entre duas máquinas. O que existe é um processo reproduzível, e é isso que está documentado aqui.</p>
+							<p class="doc-p">Esta página é para quem quer <strong>compilar a distribuição</strong> ou <strong>modificá-la</strong>: montar a ISO do zero, entender como o sistema é construído, trocar a lista de pacotes ou ajustar o instalador. Não faz parte do caminho de quem só quer instalar o FalconOS — para isso, veja a <a class="link-accent" href="docs.html">documentação do usuário</a>.</p>
+							<p class="doc-p">O FalconOS é uma distro <strong>rolling</strong>: não existe um "build oficial" com regras fixas, e o que você compila depende do estado dos repositórios no momento do build. Espera-se divergência entre duas máquinas. O que existe é um processo reproduzível, e é isso que está documentado aqui.</p>
 							<div class="specs-grid">
 								<div class="spec-box"><span>Host</span><b>Arch Linux</b></div>
 								<div class="spec-box"><span>Ferramentas</span><b>archiso</b></div>
@@ -659,10 +659,10 @@ cd nlinux-iso-build
 							<p class="doc-p">O que o <code>build-iso.sh</code> faz, em ordem:</p>
 							<ol class="doc-ul">
 								<li class="doc-li">Instala o <code>archiso</code> se faltar e <strong>regenera</strong> <code>iso/profile/</code> a partir do perfil releng instalado (compatível com a versão do <code>mkarchiso</code>).</li>
-								<li class="doc-li">Aplica os metadados de <code>iso/profiledef.sh</code> (nome/label/versão = <code>nlinux</code>, publisher <code>NLinux &lt;https://nlinux.dev&gt;</code>).</li>
+								<li class="doc-li">Aplica os metadados de <code>iso/profiledef.sh</code> (nome/label/versão = <code>nlinux</code>, publisher <code>FalconOS &lt;https://nlinux.dev&gt;</code>).</li>
 								<li class="doc-li">Anexa <code>iso/packages.live</code> à lista de pacotes do live e copia a camada <code>iso/airootfs/</code> (autologin, auto-run, branding, serviços do live).</li>
-								<li class="doc-li">Embute o projeto em <code>/opt/noctalia-installer</code> no live (<code>install.sh</code>, <code>install/</code>, <code>config/</code>, <code>packages/</code>, <code>web/</code>) e a <strong>Loja NLinux Software</strong> em <code>/opt/nlinux-software</code>, a partir da cópia publicada em <code>nlinux-software/</code>.</li>
-								<li class="doc-li">Transforma o boot: <strong>systemd-boot</strong> (UEFI), <strong>GRUB</strong> (UEFI) e <strong>syslinux</strong> (BIOS), com títulos, itens e a splash do NLinux.</li>
+								<li class="doc-li">Embute o projeto em <code>/opt/noctalia-installer</code> no live (<code>install.sh</code>, <code>install/</code>, <code>config/</code>, <code>packages/</code>, <code>web/</code>) e a <strong>Loja FalconOS Software</strong> em <code>/opt/nlinux-software</code>, a partir da cópia publicada em <code>nlinux-software/</code>.</li>
+								<li class="doc-li">Transforma o boot: <strong>systemd-boot</strong> (UEFI), <strong>GRUB</strong> (UEFI) e <strong>syslinux</strong> (BIOS), com títulos, itens e a splash do FalconOS.</li>
 								<li class="doc-li">Roda <code>mkarchiso -v</code> — que executa a camada <code>iso/airootfs/root/customize_airootfs.sh</code> no chroot do build (AUR, greetd, usuário do live, autologin) — e gera a ISO (~2,9 GB).</li>
 							</ol>
 							<div class="foot-links">
@@ -705,7 +705,7 @@ gpg --verify nlinux-software/nlinux-software-v&lt;N&gt;.tar.gz.asc nlinux-softwa
 								<i class="ti ti-alert-triangle"></i>
 								<p>Não rode dois builds ao mesmo tempo: o script roda em um namespace de mounts privado e desmonta mounts deixados por builds interrompidos antes de começar. A camada do live compila os pacotes AUR via <code>yay</code> em duas etapas (<code>noctalia-greeter</code>, <code>xdg-desktop-portal-umbriel-git</code> e <code>xwayland-satellite-git</code> primeiro; depois <code>umbriel-git</code> e <code>whatsapp-linux-desktop-bin</code>, que dependem do portal) — por isso o build é <strong>lento</strong> (Rust/cargo) e precisa de internet.</p>
 							</div>
-							<p class="doc-p">Depois de gerar, grave a ISO com <code>dd</code> ou balenaEtcher e valide na máquina de destino. Detalhes da release na <a class="link-accent" href="baixar.html">página do NLinux</a>.</p>
+							<p class="doc-p">Depois de gerar, grave a ISO com <code>dd</code> ou balenaEtcher e valide na máquina de destino. Detalhes da release na <a class="link-accent" href="baixar.html">página do FalconOS</a>.</p>
 						</section>
 
 						<!-- ---------- Estrutura ---------- -->
@@ -725,7 +725,7 @@ iso/packages.live         pacotes extras do live (ISO)
 iso/airootfs/             camada over do live (branding, auto-run, atalhos)
 iso/profiledef.sh         metadados da ISO (nome, label, versão)
 config/                   dotfiles aplicados ao usuário (live e instalado)
-nlinux-software/          Loja NLinux Software embutida no live
+nlinux-software/          Loja FalconOS Software embutida no live
 NLinux.jpg / splash.png   arte do menu de boot</code></pre>
 							</div>
 						</section>
@@ -738,7 +738,7 @@ NLinux.jpg / splash.png   arte do menu de boot</code></pre>
 								<table class="tbl">
 									<thead><tr><th>#</th><th>Arquivo</th><th>O que faz</th></tr></thead>
 									<tbody>
-										<tr><td>1</td><td class="mono">10-system.sh</td><td>Fuso, locale, keymap, hostname/hosts, branding do <code>os-release</code>, <code>pacman</code>, <code>pacman-key</code>, initramfs (com <code>sd-encrypt</code> quando há LUKS), <strong>zram</strong>, usuários e senhas (shell <strong>fish</strong>), sudoers e <strong>systemd-boot</strong> com a entrada NLinux</td></tr>
+										<tr><td>1</td><td class="mono">10-system.sh</td><td>Fuso, locale, keymap, hostname/hosts, branding do <code>os-release</code>, <code>pacman</code>, <code>pacman-key</code>, initramfs (com <code>sd-encrypt</code> quando há LUKS), <strong>zram</strong>, usuários e senhas (shell <strong>fish</strong>), sudoers e <strong>systemd-boot</strong> com a entrada FalconOS</td></tr>
 										<tr><td>2</td><td class="mono">20-aur.sh</td><td>Usuário de sistema <code>greeter</code>; usuário temporário <code>builder</code> (sudo sem senha) para instalar o <code>yay-bin</code> e rodar <code>yay -S</code> dos pacotes AUR; remove o <code>builder</code> no final</td></tr>
 										<tr><td>3</td><td class="mono">30-greetd.sh</td><td><code>/etc/greetd/config.toml</code> com o <strong>noctalia-greeter</strong> (sessão padrão <code>umbriel</code>)</td></tr>
 										<tr><td>4</td><td class="mono">40-user-config.sh</td><td>Copia <code>config/.config</code> → <code>~/.config</code> e <code>config/.local</code> → <code>~/.local</code> (ícones/cursor Bibata, logo do fastfetch), resolvendo templates <code>.tpl</code> com o layout do teclado</td></tr>
@@ -858,9 +858,9 @@ NLinux.jpg / splash.png   arte do menu de boot</code></pre>
 				<div class="footer-grid">
 					<div class="footer-brand">
 						<div class="footer-brand-logo">
-							<img src="img/nlinux-logo.png" alt="NLinux" width="40" height="40" />
+							<img src="img/falconos.png" alt="FalconOS" width="40" height="40" />
 							<div>
-								<p style="font-weight:600;letter-spacing:-.01em">NLinux</p>
+								<p style="font-weight:600;letter-spacing:-.01em">FalconOS</p>
 								<p style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.12em;color:var(--faint)">documentação</p>
 							</div>
 						</div>
@@ -880,8 +880,8 @@ NLinux.jpg / splash.png   arte do menu de boot</code></pre>
 								<li><a href="compilar.html">Compilar a ISO</a></li>
 							</ul>
 						</nav>
-						<nav class="footer-col" aria-label="NLinux">
-							<p>NLinux</p>
+						<nav class="footer-col" aria-label="FalconOS">
+							<p>FalconOS</p>
 							<ul>
 								<li><a href="index.html">Visão geral</a></li>
 								<li><a href="loja.html">Loja de software</a></li>
@@ -910,7 +910,7 @@ NLinux.jpg / splash.png   arte do menu de boot</code></pre>
 					</div>
 				</div>
 				<div class="footer-bottom">
-					<p>© <span id="year"></span> Nilsonlinux · NLinux — Arch, Umbriel e Noctalia V5.</p>
+					<p>© <span id="year"></span> Nilsonlinux · FalconOS — Arch, Umbriel e Noctalia V5.</p>
 					<p>base archlinux · compositor greetd/umbriel · shell noctalia v5</p>
 				</div>
 			</div>
