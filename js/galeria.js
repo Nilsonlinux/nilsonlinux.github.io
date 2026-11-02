@@ -4,7 +4,7 @@
 	const $ = s => document.querySelector(s);
 
 	// número de telas em img/instalador: falconos-instalador-01.png … falconos-instalador-NN.png
-	const SCREENS = 24;
+	const SCREENS = 23;
 	const screenSrc = i => `img/instalador/falconos-instalador-${String(i).padStart(2, '0')}.png`;
 
 	// o modal é criado aqui: as páginas só precisam do botão [data-lb-open]
