@@ -1,0 +1,38 @@
+name: Update RSS feed
+
+on:
+  schedule:
+    # A cada 6 horas. O feed só muda quando há release nova no
+    # falconos-iso-build, então o workflow evita commits desnecessários.
+    - cron: "41 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-feed
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate feed.xml from GitHub releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/update_feed.py
+
+      - name: Commit and push feed
+        run: |
+          if [ -z "$(git status --porcelain -- feed.xml)" ]; then
+            echo "No feed changes; nothing to commit."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -- feed.xml
+            git commit -m "Update RSS feed"
+            git push
+          fi

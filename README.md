@@ -62,12 +62,33 @@ sha256sum falconos-2026.11.02-x86_64.iso
 
 ---
 
+## Feed RSS
+
+As releases também ficam disponíveis em **RSS 2.0**:
+
+- Feed: <https://nilsonlinux.github.io/feed.xml>
+- Descrição: notas de cada release, com link para o download da ISO e o sha256.
+
+O `feed.xml` é gerado por `scripts/update_feed.py`, que lê as releases do GitHub
+(o Atom entrega as notas já renderizadas em HTML) e é executado pelo workflow
+`.github/workflows/update-feed.yml` a cada 6 horas. Para atualizar à mão:
+
+```bash
+python3 scripts/update_feed.py
+```
+
+As páginas incluem `<link rel="alternate" type="application/rss+xml">` para o
+leitor de feeds detectar o endereço automaticamente.
+
+---
+
 ## Estrutura do site
 
 ```
 index.html          home (nome do hero desenhado em <canvas>)
 baixar.html         download da ISO (link, data, sha256 e contagem de cliques)
 changelog.html      releases, puxadas da API do GitHub
+feed.xml            RSS 2.0 das releases (gerado por scripts/update_feed.py)
 docs.html           documentação da distro
 recursos.html       recursos do sistema
 loja.html           catálogo da loja FalconOS Software
