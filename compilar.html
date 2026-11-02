@@ -652,7 +652,7 @@
 git clone https://github.com/Nilsonlinux/nlinux-iso-build.git
 cd nlinux-iso-build
 
-<span class="c"># gera iso/out/nlinux-&lt;data&gt;-x86_64.iso</span>
+<span class="c"># gera iso/out/falconos-&lt;data&gt;-x86_64.iso</span>
 ./build-iso.sh
 
 <span class="c"># regerar a arte do menu de boot BIOS (precisa de Python + Pillow)</span>
@@ -661,9 +661,9 @@ cd nlinux-iso-build
 							<p class="doc-p">O que o <code>build-iso.sh</code> faz, em ordem:</p>
 							<ol class="doc-ul">
 								<li class="doc-li">Instala o <code>archiso</code> se faltar e <strong>regenera</strong> <code>iso/profile/</code> a partir do perfil releng instalado (compatível com a versão do <code>mkarchiso</code>).</li>
-								<li class="doc-li">Aplica os metadados de <code>iso/profiledef.sh</code> (nome/label/versão = <code>nlinux</code>, publisher <code>FalconOS &lt;https://nlinux.dev&gt;</code>).</li>
+								<li class="doc-li">Aplica os metadados de <code>iso/profiledef.sh</code> (nome/label/versão = <code>falconos</code>, publisher <code>FalconOS &lt;https://nlinux.dev&gt;</code>).</li>
 								<li class="doc-li">Anexa <code>iso/packages.live</code> à lista de pacotes do live e copia a camada <code>iso/airootfs/</code> (autologin, auto-run, branding, serviços do live).</li>
-								<li class="doc-li">Embute o projeto em <code>/opt/noctalia-installer</code> no live (<code>install.sh</code>, <code>install/</code>, <code>config/</code>, <code>packages/</code>, <code>web/</code>) e a <strong>Loja FalconOS Software</strong> em <code>/opt/nlinux-software</code>, a partir da cópia publicada em <code>nlinux-software/</code>.</li>
+								<li class="doc-li">Embute o projeto em <code>/opt/noctalia-installer</code> no live (<code>install.sh</code>, <code>install/</code>, <code>config/</code>, <code>packages/</code>, <code>web/</code>) e a <strong>Loja FalconOS Software</strong> em <code>/opt/falconos-software</code>, a partir da cópia publicada em <code>falconos-software/</code>.</li>
 								<li class="doc-li">Transforma o boot: <strong>systemd-boot</strong> (UEFI), <strong>GRUB</strong> (UEFI) e <strong>syslinux</strong> (BIOS), com títulos, itens e a splash do FalconOS.</li>
 								<li class="doc-li">Roda <code>mkarchiso -v</code> — que executa a camada <code>iso/airootfs/root/customize_airootfs.sh</code> no chroot do build (AUR, greetd, usuário do live, autologin) — e gera a ISO (~2,9 GB).</li>
 							</ol>
@@ -671,29 +671,29 @@ cd nlinux-iso-build
 								<a class="btn-ghost" href="https://github.com/Nilsonlinux/nlinux-iso-build" target="_blank" rel="noopener noreferrer"><i class="ti ti-brand-github"></i> Repositório do build</a>
 							</div>
 							<h3 class="doc-h3"><i class="ti ti-shopping-bag"></i> Atualizar a loja embutida na ISO</h3>
-							<p class="doc-p"><code>nlinux-software/</code> é a cópia do build publicado da loja (<a class="link-accent" href="https://github.com/Nilsonlinux/nlinux-software" target="_blank" rel="noopener noreferrer">Nilsonlinux/nlinux-software</a>) que o <code>build-iso.sh</code> embute em <code>/opt/nlinux-software</code>. O script não instala a loja: ele monta a imagem a partir do que está <strong>commitado</strong> na pasta, e por isso ela nunca pode ficar modificada sem commit — uma pasta editada faria a ISO usar uma loja diferente da que está no repositório.</p>
+							<p class="doc-p"><code>falconos-software/</code> é a cópia do build publicado da loja (<a class="link-accent" href="https://github.com/Nilsonlinux/nlinux-software" target="_blank" rel="noopener noreferrer">Nilsonlinux/nlinux-software</a>) que o <code>build-iso.sh</code> embute em <code>/opt/falconos-software</code>. O script não instala a loja: ele monta a imagem a partir do que está <strong>commitado</strong> na pasta, e por isso ela nunca pode ficar modificada sem commit — uma pasta editada faria a ISO usar uma loja diferente da que está no repositório.</p>
 							<div class="callout">
 								<i class="ti ti-info-circle"></i>
-								<p><strong>Na maior parte das vezes não é preciso fazer isso à mão.</strong> Ao gerar a versão da loja, o passo 8 do build da curadoria (<code>sync_iso_store</code>) apaga, recopla e <strong>commita</strong> <code>nlinux-software/</code> a partir do build recém-gerado, antes de publicar. Basta abrir a curadoria e clicar em <strong>“Gerar versão da loja”</strong>. Só a subpasta da loja entra no commit — se você estiver editando outras coisas do projeto da ISO, elas ficam pendentes e intactas.</p>
+								<p><strong>Na maior parte das vezes não é preciso fazer isso à mão.</strong> Ao gerar a versão da loja, o passo 8 do build da curadoria (<code>sync_iso_store</code>) apaga, recopla e <strong>commita</strong> <code>falconos-software/</code> a partir do build recém-gerado, antes de publicar. Basta abrir a curadoria e clicar em <strong>“Gerar versão da loja”</strong>. Só a subpasta da loja entra no commit — se você estiver editando outras coisas do projeto da ISO, elas ficam pendentes e intactas.</p>
 							</div>
 							<div class="code-block">
 								<div class="code-head"><span>terminal · conferir o que está embarcado</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
 								<pre><code><span class="c"># dentro de nlinux-iso-build</span>
-grep revision nlinux-software/catalog-head.json
+grep revision falconos-software/catalog-head.json
 git log -1 --oneline</code></pre>
 							</div>
 							<p class="doc-p">O próprio <code>build-iso.sh</code> faz essa conferência antes de embutir a loja: ele compara a revisão do <code>catalog-head.json</code> embarcado com a publicação no GitHub. Se a publicada for maior, sai um aviso em amarelo dizendo que a imagem vai ficar com a loja velha. Sem <code>curl</code> ou sem rede, ele avisa e segue — a conferência nunca segura o build. Caso a curadoria falhe ao espelhar, o caminho manual continua valendo:</p>
 							<div class="code-block">
 								<div class="code-head"><span>terminal · espelhar a loja manualmente (fallback)</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
 								<pre><code><span class="c"># dentro de nlinux-iso-build</span>
-rm -rf nlinux-software &amp;&amp; mkdir nlinux-software
+rm -rf falconos-software &amp;&amp; mkdir falconos-software
 git clone --depth 1 https://github.com/Nilsonlinux/nlinux-software.git /tmp/loja
-cp -a /tmp/loja/. nlinux-software/
-rm -rf nlinux-software/.git nlinux-software/*.tar.gz nlinux-software/*.tar.gz.asc
+cp -a /tmp/loja/. falconos-software/
+rm -rf falconos-software/.git falconos-software/*.tar.gz falconos-software/*.tar.gz.asc
 
 <span class="c"># conferindo a revisão e a assinatura do pacote publicado</span>
-cat nlinux-software/catalog-head.json
-gpg --verify nlinux-software/nlinux-software-v&lt;N&gt;.tar.gz.asc nlinux-software/nlinux-software-v&lt;N&gt;.tar.gz</code></pre>
+cat falconos-software/catalog-head.json
+gpg --verify falconos-software/falconos-software-v&lt;N&gt;.tar.gz.asc falconos-software/falconos-software-v&lt;N&gt;.tar.gz</code></pre>
 							</div>
 							<div class="callout">
 								<i class="ti ti-info-circle"></i>
@@ -701,7 +701,7 @@ gpg --verify nlinux-software/nlinux-software-v&lt;N&gt;.tar.gz.asc nlinux-softwa
 							</div>
 							<div class="callout">
 								<i class="ti ti-info-circle"></i>
-								<p>Desde a v117 o app <strong>não grava mais dentro do <code>/opt</code></strong>: o catálogo e as mídias ficam em <code>~/.local/share/nlinux/store/apps</code> e a árvore em <code>/opt/nlinux-software</code> é só a semente, somente-leitura. Por isso <code>customize_airootfs.sh</code> (live) e <code>40-user-config.sh</code> (instalado) semeiam a pasta do usuário em vez de <code>chown</code> no <code>/opt</code> — a primeira abertura da loja já encontra tudo, sem esperar cópia.</p>
+								<p>Desde a v117 o app <strong>não grava mais dentro do <code>/opt</code></strong>: o catálogo e as mídias ficam em <code>~/.local/share/falconos/store/apps</code> e a árvore em <code>/opt/falconos-software</code> é só a semente, somente-leitura. Por isso <code>customize_airootfs.sh</code> (live) e <code>40-user-config.sh</code> (instalado) semeiam a pasta do usuário em vez de <code>chown</code> no <code>/opt</code> — a primeira abertura da loja já encontra tudo, sem esperar cópia.</p>
 							</div>
 							<div class="callout warn">
 								<i class="ti ti-alert-triangle"></i>
@@ -717,7 +717,7 @@ gpg --verify nlinux-software/nlinux-software-v&lt;N&gt;.tar.gz.asc nlinux-softwa
 							<div class="code-block">
 								<div class="code-head"><span>nlinux-iso-build</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
 								<pre><code>build-iso.sh              gera a ISO (sudo; limpa mounts de builds interrompidos)
-make-splash.sh            gera splash.png a partir de NLinux.jpg (menu BIOS)
+make-splash.sh            gera splash.png a partir de FalconOS.jpg (menu BIOS)
 install.sh                instalador principal (web-installed; GUI_DRIVEN=1)
 install/translations.py   traduções do instalador (7 idiomas)
 install/chroot/           etapas executadas dentro do chroot do sistema instalado
@@ -727,8 +727,8 @@ iso/packages.live         pacotes extras do live (ISO)
 iso/airootfs/             camada over do live (branding, auto-run, atalhos)
 iso/profiledef.sh         metadados da ISO (nome, label, versão)
 config/                   dotfiles aplicados ao usuário (live e instalado)
-nlinux-software/          Loja FalconOS Software embutida no live
-NLinux.jpg / splash.png   arte do menu de boot</code></pre>
+falconos-software/          Loja FalconOS Software embutida no live
+FalconOS.jpg / splash.png   arte do menu de boot</code></pre>
 							</div>
 						</section>
 
@@ -744,7 +744,7 @@ NLinux.jpg / splash.png   arte do menu de boot</code></pre>
 										<tr><td>2</td><td class="mono">20-aur.sh</td><td>Usuário de sistema <code>greeter</code>; usuário temporário <code>builder</code> (sudo sem senha) para instalar o <code>yay-bin</code> e rodar <code>yay -S</code> dos pacotes AUR; remove o <code>builder</code> no final</td></tr>
 										<tr><td>3</td><td class="mono">30-greetd.sh</td><td><code>/etc/greetd/config.toml</code> com o <strong>noctalia-greeter</strong> (sessão padrão <code>umbriel</code>)</td></tr>
 										<tr><td>4</td><td class="mono">40-user-config.sh</td><td>Copia <code>config/.config</code> → <code>~/.config</code> e <code>config/.local</code> → <code>~/.local</code> (ícones/cursor Bibata, logo do fastfetch), resolvendo templates <code>.tpl</code> com o layout do teclado</td></tr>
-										<tr><td>5</td><td class="mono">41-welcome.sh</td><td>Marca <code>/etc/nlinux-installed</code> e instala o <code>nlinux-welcome</code> (janela única no 1º login)</td></tr>
+										<tr><td>5</td><td class="mono">41-welcome.sh</td><td>Marca <code>/etc/falconos-installed</code> e instala o <code>falconos-welcome</code> (janela única no 1º login)</td></tr>
 										<tr><td>6</td><td class="mono">50-services.sh</td><td>Habilita NetworkManager, bluetooth, greetd, accounts-daemon e <strong>packagekit</strong>; adiciona o <strong>Flathub</strong> como remoto Flatpak do usuário; roda <strong><code>appstreamcli refresh --force</code></strong> (metadados AppStream para a loja e o App Center); escreve <code>/etc/environment</code> (Wayland + cursor <code>Bibata-Modern-Ice</code>) e liga o NTP com <code>systemd-timesyncd</code></td></tr>
 									</tbody>
 								</table>
@@ -798,7 +798,7 @@ NLinux.jpg / splash.png   arte do menu de boot</code></pre>
 								</div>
 								<div class="mini-card">
 									<h4><i class="ti ti-photo"></i> Arte do boot</h4>
-									<p>Substitua <code>NLinux.jpg</code> e rode <code>./make-splash.sh</code> (640×480, menu syslinux).</p>
+									<p>Substitua <code>FalconOS.jpg</code> e rode <code>./make-splash.sh</code> (640×480, menu syslinux).</p>
 								</div>
 							</div>
 							<div class="callout">
@@ -820,10 +820,10 @@ NLinux.jpg / splash.png   arte do menu de boot</code></pre>
 								<table class="tbl">
 									<thead><tr><th>Variável</th><th>Padrão</th><th>Para que serve</th></tr></thead>
 									<tbody>
-										<tr><td class="mono">INSTALL_USER / INSTALL_USER_PASS</td><td class="mono">nlinux / nlinux</td><td>Nome e senha do usuário criado</td></tr>
-										<tr><td class="mono">ROOT_PASS</td><td class="mono">nlinux</td><td>Senha do root (o padrão é a mesma do usuário)</td></tr>
-										<tr><td class="mono">LUKS_PASS</td><td class="mono">nlinux</td><td>Senha de desbloqueio do disco</td></tr>
-										<tr><td class="mono">HOSTNAME</td><td class="mono">nlinux</td><td>Nome da máquina</td></tr>
+										<tr><td class="mono">INSTALL_USER / INSTALL_USER_PASS</td><td class="mono">falconos / falconos</td><td>Nome e senha do usuário criado</td></tr>
+										<tr><td class="mono">ROOT_PASS</td><td class="mono">falconos</td><td>Senha do root (o padrão é a mesma do usuário)</td></tr>
+										<tr><td class="mono">LUKS_PASS</td><td class="mono">falconos</td><td>Senha de desbloqueio do disco</td></tr>
+										<tr><td class="mono">HOSTNAME</td><td class="mono">falconos</td><td>Nome da máquina</td></tr>
 										<tr><td class="mono">LOCALE / KEYMAP / ZONEINFO</td><td class="mono">pt_BR.UTF-8 / br-abnt2 / America/Sao_Paulo</td><td>Idioma, teclado e fuso do sistema</td></tr>
 										<tr><td class="mono">MIRROR</td><td class="mono">(vazio = automático)</td><td>URL base do espelho de repositórios</td></tr>
 										<tr><td class="mono">OFFLINE</td><td class="mono">1</td><td><code>1</code> = rápida (offline), <code>0</code> = completa (online)</td></tr>
@@ -896,7 +896,7 @@ NLinux.jpg / splash.png   arte do menu de boot</code></pre>
 							<ul>
 								<li><a href="https://github.com/Nilsonlinux" target="_blank" rel="noopener noreferrer">GitHub</a></li>
 								<li><a href="https://github.com/Nilsonlinux/nlinux-iso-build" target="_blank" rel="noopener noreferrer">nlinux-iso-build</a></li>
-								<li><a href="https://github.com/Nilsonlinux/nlinux-software" target="_blank" rel="noopener noreferrer">nlinux-software</a></li>
+								<li><a href="https://github.com/Nilsonlinux/nlinux-software" target="_blank" rel="noopener noreferrer">falconos-software</a></li>
 								<li><a href="plugins.html">Plugins</a></li>
 							</ul>
 						</nav>

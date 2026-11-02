@@ -674,11 +674,11 @@
 								<div class="spec-box"><span>Criptografia</span><b>LUKS2 opcional</b></div>
 								<div class="spec-box"><span>Shell do usuário</span><b>fish</b></div>
 								<div class="spec-box"><span>Terminal</span><b>kitty</b></div>
-								<div class="spec-box"><span>Loja</span><b>nlinux-software</b></div>
-								<div class="spec-box"><span>Hostname</span><b>nlinux</b></div>
+								<div class="spec-box"><span>Loja</span><b>falconos-software</b></div>
+								<div class="spec-box"><span>Hostname</span><b>falconos</b></div>
 								<div class="spec-box"><span>Locale</span><b>9 opções</b></div>
 							</div>
-							<p class="doc-p">O sistema instalado já vem com a <a class="link-accent" href="loja.html">Loja FalconOS Software</a> em <code>/opt/nlinux-software</code>, `yay` para AUR e a janela de boas-vindas no primeiro login.</p>
+							<p class="doc-p">O sistema instalado já vem com a <a class="link-accent" href="loja.html">Loja FalconOS Software</a> em <code>/opt/falconos-software</code>, `yay` para AUR e a janela de boas-vindas no primeiro login.</p>
 							<div class="callout">
 								<i class="ti ti-info-circle"></i>
 								<p>Guia rápido: <a class="link-accent" href="#gravar">grave a ISO</a> → <a class="link-accent" href="#live">boote no live</a> → abra o <strong>Instalar FalconOS</strong> na tela inicial → siga os <a class="link-accent" href="#instalar">10 passos</a> → reinicie e escolha <strong>FalconOS</strong> na lista de boot.</p>
@@ -722,7 +722,7 @@
 lsblk -d -o NAME,SIZE,MODEL,TRAN
 
 <span class="c"># grava a ISO (substitua /dev/sdX pelo pendrive)</span>
-sudo dd if=nlinux-ISO-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync
+sudo dd if=falconos-ISO-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync
 
 <span class="c"># alternativa: balenaEtcher / Ventoy</span></code></pre>
 							</div>
@@ -746,7 +746,7 @@ sudo dd if=nlinux-ISO-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync
 							<div class="card-grid">
 								<div class="mini-card">
 									<h4><i class="ti ti-login-2"></i> Login do live</h4>
-									<p>Usuário <code>nlinux</code> · senha <code>nlinux</code>. O mesmo usuário tem sudo sem senha, usado pelo instalador web.</p>
+									<p>Usuário <code>falconos</code> · senha <code>falconos</code>. O mesmo usuário tem sudo sem senha, usado pelo instalador web.</p>
 								</div>
 								<div class="mini-card">
 									<h4><i class="ti ti-terminal-2"></i> Terminais</h4>
@@ -761,7 +761,7 @@ sudo dd if=nlinux-ISO-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync
 									<p>Os mesmos apps da instalação: Firefox, kitty, fish, Nautilus, Discord, Telegram e a Loja FalconOS Software.</p>
 								</div>
 							</div>
-							<p class="doc-p">O instalador é aberto pelo atalho <strong>Instalar FalconOS</strong> (desktop ou menu), que sobe o servidor local e abre o Firefox em modo kiosk apontando para <code>http://127.0.0.1:8765</code>. Para trocar a porta: <code>NLINUX_WEB_PORT=9000</code>. O log do servidor fica em <code>/tmp/nlinux-web.log</code>.</p>
+							<p class="doc-p">O instalador é aberto pelo atalho <strong>Instalar FalconOS</strong> (desktop ou menu), que sobe o servidor local e abre o Firefox em modo kiosk apontando para <code>http://127.0.0.1:8765</code>. Para trocar a porta: <code>FALCONOS_WEB_PORT=9000</code>. O log do servidor fica em <code>/tmp/falconos-web.log</code>.</p>
 							<div class="callout">
 								<i class="ti ti-info-circle"></i>
 								<p>Não existe instalador TUI: a instalação é <strong>exclusivamente</strong> pelo navegador. O atalho só funciona com desktop gráfico e Firefox presentes no live.</p>
@@ -842,7 +842,7 @@ sudo dd if=nlinux-ISO-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync
 									<div class="step-num">9</div>
 									<div>
 										<h4>Usuário, hostname e senha</h4>
-										<p>Nome de usuário (minúsculas, números, <code>_</code> e <code>-</code>), hostname (padrão <code>nlinux</code>), senha com confirmação e a opção de usar a <strong>mesma senha do root</strong>. O shell do usuário é <code>fish</code>.</p>
+										<p>Nome de usuário (minúsculas, números, <code>_</code> e <code>-</code>), hostname (padrão <code>falconos</code>), senha com confirmação e a opção de usar a <strong>mesma senha do root</strong>. O shell do usuário é <code>fish</code>.</p>
 									</div>
 								</div>
 								<div class="step-row">
@@ -862,7 +862,7 @@ sudo dd if=nlinux-ISO-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync
 						<!-- ---------- Resiliência ---------- -->
 						<section class="doc-sec reveal" id="resiliencia">
 							<h2 class="doc-h2"><i class="ti ti-refresh"></i> Se a página ou o servidor caírem<a class="anchor ti ti-link" href="#resiliencia" aria-label="Link para esta seção"></a></h2>
-							<p class="doc-p"><strong>A instalação não depende do navegador nem do servidor.</strong> A saída do <code>install.sh</code> vai para um <em>arquivo</em> de log (<code>/tmp/nlinux-install.log</code>) que o servidor apenas acompanha — não um pipe. O estado (etapa, %, últimas linhas, código de saída) fica no servidor, com checkpoint em <code>/tmp/nlinux-install-state.json</code> a cada 5 s. Na prática, nenhuma queda de janela trava nem reinicia a instalação.</p>
+							<p class="doc-p"><strong>A instalação não depende do navegador nem do servidor.</strong> A saída do <code>install.sh</code> vai para um <em>arquivo</em> de log (<code>/tmp/falconos-install.log</code>) que o servidor apenas acompanha — não um pipe. O estado (etapa, %, últimas linhas, código de saída) fica no servidor, com checkpoint em <code>/tmp/falconos-install-state.json</code> a cada 5 s. Na prática, nenhuma queda de janela trava nem reinicia a instalação.</p>
 							<div class="tbl-wrap">
 								<table class="tbl">
 									<thead><tr><th>Situação</th><th>O que acontece</th></tr></thead>
@@ -873,7 +873,7 @@ sudo dd if=nlinux-ISO-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync
 										<tr><td>O formulário é enviado duas vezes</td><td><code>POST /api/install</code> devolve <strong>409</strong> com o estado atual e a página volta ao painel: ninguém apaga o disco por cima da instalação que está rodando.</td></tr>
 										<tr><td>O <code>install.sh</code> morre sem escrever o resultado (morto por sinal ou OOM)</td><td>O watchdog da execução reanexada encerra o painel como falha explícita, em vez de girar para sempre.</td></tr>
 										<tr><td>Erro de verdade na instalação</td><td>O <code>install.sh</code> aborta e grava <code>/var/log/install-error.log</code> <strong>no disco instalado</strong>, com as últimas 150 linhas do log, antes de desmontar.</td></tr>
-										<tr><td>Instalação termina mas algo no boot ficou errado</td><td>O log inteiro é copiado para <code>/var/log/nlinux-install.log</code> <strong>no disco instalado</strong>, mesmo quando a instalação deu certo. O do live vive em <code>/tmp</code>, que se perde no reboot.</td></tr>
+										<tr><td>Instalação termina mas algo no boot ficou errado</td><td>O log inteiro é copiado para <code>/var/log/falconos-install.log</code> <strong>no disco instalado</strong>, mesmo quando a instalação deu certo. O do live vive em <code>/tmp</code>, que se perde no reboot.</td></tr>
 										<tr><td>Falha de espelho no modo online</td><td>O <code>pacstrap</code> tenta até <strong>3 vezes</strong> — o pacman reaproveita o cache entre elas — antes de abortar com dica de rede/mirror.</td></tr>
 									</tbody>
 								</table>
@@ -888,10 +888,10 @@ sudo dd if=nlinux-ISO-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync
 curl -s http://127.0.0.1:8765/api/status
 
 <span class="c"># log vivo da instalação</span>
-tail -f /tmp/nlinux-install.log
+tail -f /tmp/falconos-install.log
 
 <span class="c"># reinícios e erros do servidor</span>
-tail -f /tmp/nlinux-web.log</code></pre>
+tail -f /tmp/falconos-web.log</code></pre>
 							</div>
 						</section>
 
@@ -936,21 +936,21 @@ tail -f /tmp/nlinux-web.log</code></pre>
 								<li class="doc-li"><strong>Serviços habilitados:</strong> NetworkManager, bluetooth, greetd, accounts-daemon, packagekit e <code>rtkit-daemon</code>, além do NTP (<code>systemd-timesyncd</code>). O <strong>NetworkManager é o único gerente de rede</strong>: o instalador desabilita o <code>systemd-networkd</code> e o <code>systemd-networkd-wait-online</code>, porque o preset do Arch (<code>90-systemd.preset</code>) os habilita e, com os dois no boot, eles disputam o mesmo link. O <code>rtkit</code> é o que dá prioridade realtime ao PipeWire e ao WirePlumber (sem ele a sessão abre, mas o áudio perde prioridade e o portal do desktop avisa). O Flatpak recebe o <strong>Flathub</strong> como remoto do usuário e a instalação roda <code>appstreamcli refresh --force</code> para baixar os metadados AppStream — é assim que o App Center e a loja conseguem listar os programas (o primeiro acesso ainda baixa um pouco de dados, e precisa de rede).</li>
 								<li class="doc-li"><strong>Login</strong> pelo greetd com noctalia-greeter; o Wayland e o cursor <code>Bibata-Modern-Ice</code> vêm de <code>/etc/environment</code>.</li>
 								<li class="doc-li"><strong>Som de interface</strong> (o bip do volume e o som de notificação) já vem configurado: o som de notificação é o do FalconOS e o bip de volume é o padrão do freedesktop. O print toca um som só — o clique da câmera — e o aviso de &ldquo;captura salva&rdquo; aparece em silêncio. A música continua indo pelo PipeWire, num caminho separado.</li>
-								<li class="doc-li"><strong>Loja FalconOS Software</strong> copiada para <code>/opt/nlinux-software</code>, com o atalho <em>FalconOS Software</em> no menu, um atalho na Área de Trabalho e o ícone já fixado na dock.</li>
-								<li class="doc-li"><strong>Boas-vindas</strong> na primeira sessão (janela única em GTK3, disparada pelo autostart do Umbriel). Para ver de novo: <code>nlinux-welcome --menu</code>.</li>
-								<li class="doc-li"><strong>Identidade da distro:</strong> <code>/etc/nlinux-installed</code> marca o primeiro boot e <code>/etc/nlinux-release</code> grava nome, versão (data) e data de instalação.</li>
+								<li class="doc-li"><strong>Loja FalconOS Software</strong> copiada para <code>/opt/falconos-software</code>, com o atalho <em>FalconOS Software</em> no menu, um atalho na Área de Trabalho e o ícone já fixado na dock.</li>
+								<li class="doc-li"><strong>Boas-vindas</strong> na primeira sessão (janela única em GTK3, disparada pelo autostart do Umbriel). Para ver de novo: <code>falconos-welcome --menu</code>.</li>
+								<li class="doc-li"><strong>Identidade da distro:</strong> <code>/etc/falconos-installed</code> marca o primeiro boot e <code>/etc/falconos-release</code> grava nome, versão (data) e data de instalação.</li>
 								<li class="doc-li">O instalador é <strong>removido</strong> do sistema instalado: <code>/opt/noctalia-installer</code>, binários e atalhos do instalador saem do disco.</li>
 							</ul>
 							<div class="callout">
 								<i class="ti ti-info-circle"></i>
-								<p>Se a instalação falhar, o instalador grava o motivo <strong>no disco de destino</strong> em <code>/var/log/install-error.log</code> (com as últimas 150 linhas do log), antes de desmontar. Ainda no live, o log da instalação fica em <code>/tmp/nlinux-install.log</code>.</p>
+								<p>Se a instalação falhar, o instalador grava o motivo <strong>no disco de destino</strong> em <code>/var/log/install-error.log</code> (com as últimas 150 linhas do log), antes de desmontar. Ainda no live, o log da instalação fica em <code>/tmp/falconos-install.log</code>.</p>
 							</div>
 							<h3 class="doc-h3"><i class="ti ti-wand"></i> Ajustes sugeridos depois de instalar</h3>
 							<ul class="doc-ul">
 								<li class="doc-li">Ajuste o compositor em <code>~/.config/umbriel/config.toml</code>: teclas, layouts e regras de janela.</li>
 								<li class="doc-li">Hardware especial, atualizações e pacotes da AUR passam pelo <code>yay</code>, que já vem instalado.</li>
 								<li class="doc-li"><strong>Repositórios:</strong> <code>core</code>, <code>extra</code> e <code>multilib</code>. O <code>multilib</code> vem habilitado, então dá para instalar programas 32-bit e é de lá que sai o Steam. Ele também entra na loja e no App Center, que leem os três bancos de pacotes. Para conferir: <code>pacman-conf --repo-list</code>.</li>
-								<li class="doc-li">O banco de dados do <code>pacman</code> é sincronizado sozinho a cada inicialização pelo serviço <code>nlinux-pacman-refresh.service</code>. Ele roda como root, sem pedir senha, e em segundo plano — o boot não espera por ele. Para ver o resultado: <code>journalctl -b -u nlinux-pacman-refresh.service</code>. Na instalação rápida offline (a padrão) ele também fica no sistema instalado, porque a cópia do pendrive leva a unit junto; na instalação completa online, que monta o sistema a partir da lista de pacotes e não do pendrive, ele não é instalado. <strong>Atenção:</strong> ele roda <code>pacman -Sy</code> <em>sem</em> o <code>-u</code>, ou seja, só atualiza o banco e não os pacotes. Para atualizar o sistema inteiro use <code>sudo pacman -Syu</code> (ou <code>yay -Syu</code>); um <code>-Sy</code> sozinho, seguido da instalação de um pacote novo, pode trazer um pacote compilado contra bibliotecas que você ainda não tem.</li>
+								<li class="doc-li">O banco de dados do <code>pacman</code> é sincronizado sozinho a cada inicialização pelo serviço <code>falconos-pacman-refresh.service</code>. Ele roda como root, sem pedir senha, e em segundo plano — o boot não espera por ele. Para ver o resultado: <code>journalctl -b -u falconos-pacman-refresh.service</code>. Na instalação rápida offline (a padrão) ele também fica no sistema instalado, porque a cópia do pendrive leva a unit junto; na instalação completa online, que monta o sistema a partir da lista de pacotes e não do pendrive, ele não é instalado. <strong>Atenção:</strong> ele roda <code>pacman -Sy</code> <em>sem</em> o <code>-u</code>, ou seja, só atualiza o banco e não os pacotes. Para atualizar o sistema inteiro use <code>sudo pacman -Syu</code> (ou <code>yay -Syu</code>); um <code>-Sy</code> sozinho, seguido da instalação de um pacote novo, pode trazer um pacote compilado contra bibliotecas que você ainda não tem.</li>
 								<li class="doc-li">As dependências de build (compiladores, <code>meson</code>, <code>wlroots0.20</code>, Rust) ficam no sistema porque o build da loja precisa delas — dá para removê-las depois se quiser enxugar.</li>
 							</ul>
 						</section>
@@ -1038,7 +1038,7 @@ capsule = true
 							<p class="doc-p">Um arquivo pode puxar outro com <code>[include]</code>, o que serve para deixar um preset de barra em arquivo próprio e combiná-lo com o resto.</p>
 
 							<h3 class="doc-h3"><i class="ti ti-volume"></i> Sons</h3>
-							<p class="doc-p">Na seção <code>[audio]</code>. A distro vem com <code>sound_theme = "nlinux"</code>, que troca <strong>apenas o som de notificação</strong> pelo do FalconOS; o bip de volume é o padrão do <code>freedesktop</code>, que esse tema herda. Música continua indo pelo PipeWire, num caminho separado — trocar o tema não mexe nela.</p>
+							<p class="doc-p">Na seção <code>[audio]</code>. A distro vem com <code>sound_theme = "falconos"</code>, que troca <strong>apenas o som de notificação</strong> pelo do FalconOS; o bip de volume é o padrão do <code>freedesktop</code>, que esse tema herda. Música continua indo pelo PipeWire, num caminho separado — trocar o tema não mexe nela.</p>
 
 							<h3 class="doc-h3"><i class="ti ti-brush"></i> Templates de tema</h3>
 							<p class="doc-p">Com <code>[theme.templates]</code> e <code>builtin_ids = [ "gtk3", "gtk4", "kitty", "starship" ]</code>, trocar o tema no Noctalia também regera o visual dos aplicativos GTK, do terminal e do prompt — em vez de cada programa ficar com a cor antiga.</p>
@@ -1083,7 +1083,7 @@ capsule = true
 								</table>
 							</div>
 							<h3 class="doc-h3"><i class="ti ti-layout-grid"></i> Dock e autostart</h3>
-							<p class="doc-p">O Noctalia abre com o dock habilitado, smart auto-hide e estes aplicativos fixados: Telegram, WhatsApp, Firefox, Discord, kitty, Nautilus, Spotify e a <strong>Loja FalconOS Software</strong>. O Umbriel sobe <code>noctalia</code>, <code>nlinux-welcome</code>, WhatsApp e Telegram no autostart, e os temas são aplicados em GTK3, GTK4, kitty e starship a partir de um único conjunto de templates.</p>
+							<p class="doc-p">O Noctalia abre com o dock habilitado, smart auto-hide e estes aplicativos fixados: Telegram, WhatsApp, Firefox, Discord, kitty, Nautilus, Spotify e a <strong>Loja FalconOS Software</strong>. O Umbriel sobe <code>noctalia</code>, <code>falconos-welcome</code>, WhatsApp e Telegram no autostart, e os temas são aplicados em GTK3, GTK4, kitty e starship a partir de um único conjunto de templates.</p>
 						</section>
 
 						<!-- ---------- Loja ---------- -->
@@ -1091,7 +1091,7 @@ capsule = true
 							<h2 class="doc-h2"><i class="ti ti-shopping-bag"></i> Loja de software<span class="pill">catálogo <span data-cat="revision">…</span></span><a class="anchor ti ti-link" href="loja.html" aria-label="Link para esta seção"></a></h2>
 							<div class="doc-lead">
 								<img src="img/falconos-software.png" alt="FalconOS Software" width="54" height="54" loading="lazy" />
-								<p class="doc-p">A <strong>FalconOS Software</strong> já vem instalada na ISO e no sistema instalado (<code>/opt/nlinux-software</code>, comando <code>nlinux-software</code>, atalho <em>FalconOS Software</em> no menu, atalho na Área de Trabalho e ícone já fixado na dock). O app fica somente-leitura em <code>/opt</code> e trabalha com uma cópia própria em <code>~/.local/share/nlinux/store/apps</code>, já semeada na instalação — é lá que o catálogo e as mídias são atualizados. O catálogo reúne <strong><span data-cat="apps">…</span> aplicativos</strong> em <strong><span data-cat="categories">…</span> categorias</strong>, com busca, ficha do app, capturas de tela e instalação via polkit. A interface é traduzida para <strong>7 idiomas</strong> (pt, en, es, fr, de, it e ja) a partir do locale escolhido no instalador; locales fora dessa lista caem para inglês.</p>
+								<p class="doc-p">A <strong>FalconOS Software</strong> já vem instalada na ISO e no sistema instalado (<code>/opt/falconos-software</code>, comando <code>falconos-software</code>, atalho <em>FalconOS Software</em> no menu, atalho na Área de Trabalho e ícone já fixado na dock). O app fica somente-leitura em <code>/opt</code> e trabalha com uma cópia própria em <code>~/.local/share/falconos/store/apps</code>, já semeada na instalação — é lá que o catálogo e as mídias são atualizados. O catálogo reúne <strong><span data-cat="apps">…</span> aplicativos</strong> em <strong><span data-cat="categories">…</span> categorias</strong>, com busca, ficha do app, capturas de tela e instalação via polkit. A interface é traduzida para <strong>7 idiomas</strong> (pt, en, es, fr, de, it e ja) a partir do locale escolhido no instalador; locales fora dessa lista caem para inglês.</p>
 							</div>
 							<div class="pill-row">
 								<span class="pill">busca com /</span>
@@ -1116,7 +1116,7 @@ capsule = true
 
 							<details class="faq-item">
 								<summary><i class="ti ti-alert-circle"></i> A instalação falhou. Onde eu leio o erro?<span class="chev"><i class="ti ti-plus"></i><i class="ti ti-minus"></i></span></summary>
-								<div class="faq-body">O erro é gravado <strong>no disco de destino</strong> antes de desmontar: <code>/var/log/install-error.log</code>, com as últimas 150 linhas do log da instalação. Monte a partição do sistema e leia esse arquivo. No live, o log da instalação fica em <code>/tmp/nlinux-install.log</code> (é o que o painel acompanha) e o do servidor web em <code>/tmp/nlinux-web.log</code>. Para acompanhar ao vivo: <code>tail -f /tmp/nlinux-install.log</code>.</div>
+								<div class="faq-body">O erro é gravado <strong>no disco de destino</strong> antes de desmontar: <code>/var/log/install-error.log</code>, com as últimas 150 linhas do log da instalação. Monte a partição do sistema e leia esse arquivo. No live, o log da instalação fica em <code>/tmp/falconos-install.log</code> (é o que o painel acompanha) e o do servidor web em <code>/tmp/falconos-web.log</code>. Para acompanhar ao vivo: <code>tail -f /tmp/falconos-install.log</code>.</div>
 							</details>
 
 							<details class="faq-item">
@@ -1146,7 +1146,7 @@ capsule = true
 
 							<details class="faq-item">
 								<summary><i class="ti ti-alert-circle"></i> O FalconOS não aparece na lista de boot da firmware<span class="chev"><i class="ti ti-plus"></i><i class="ti ti-minus"></i></span></summary>
-								<div class="faq-body">Normalmente o disco aparece como <strong>FalconOS</strong>. Há três sintomas, e cada um tem uma causa diferente:<br><br><strong>1. Aparece como <em>Linux Boot Manager</em>.</strong> A reescrita do rótulo não deu certo e o instalador manteve a entrada como o <code>bootctl</code> deixou — por segurança, ele nunca apaga a única entrada que existe e nunca deixa a máquina sem entrada além do fallback <code>/EFI/BOOT/BOOTX64.EFI</code>.<br><br><strong>2. Só aparece <code>UEFI: &lt;disco&gt;</code> / <code>UEFI OS</code>, sem o <em>FalconOS</em>.</strong> A entrada existiu, mas a firmware a apagou da NVRAM no boot seguinte porque não conseguiu abrir o arquivo do loader. A firmware <strong>descarta da NVRAM toda entrada que ela não resolve</strong> — não há como mantê-la à força. A causa quase sempre é o <code>/boot/EFI/systemd/systemd-bootx64.efi</code> não estar na ESP. Isso também acontece naturalmente quando a ESP é recriada (nova instalação no mesmo disco): as entradas antigas apontam para o GUID da partição que não existe mais e somem do menu, o que é o comportamento correto.<br><br><strong>3. O rótulo estava certo na instalação e sumiu depois.</strong> Foi o caso de a entrada escolhida ser a do <em>fallback</em> (<code>systemd-boot-fallbackx64.efi</code>) em vez da principal: ela some junto com a firmware. O instalador hoje escolhe pelo arquivo em disco justamente para não errar isso.<br><br>O motivo exato está no log: <code>sudo cat /var/log/nlinux-install.log</code>, procurando por <code>renomeada</code> (a linha de sucesso traz o rótulo antigo, o novo e quantos bytes o rótulo ocupava), por <code>loader presente</code> / <code>SEM O ARQUIVO</code> (o que a firmware vai descartar) e por <code>NVRAM</code> (o estado da lista de boot antes e depois). <br><br>Um detalhe que costuma enganar: <code>efibootmgr -b 0001 -L "FalconOS"</code> <strong>não renomeia nada</strong> nesta versão — o <code>--label</code> só é lido por <code>--create</code> e por <code>--delete</code>. É o que a maioria das wiki manda fazer, e é um no-op. Também aparece como <code>UEFI: &lt;disco&gt;</code> quando não há <code>efibootmgr</code> no live, porque aí só o fallback <code>/EFI/BOOT/BOOTX64.EFI</code> é gravado. Enquanto isso, você sempre pode entrar no menu de boot da firmware (normalmente F8/F11/F12) e escolher a entrada manualmente.</div>
+								<div class="faq-body">Normalmente o disco aparece como <strong>FalconOS</strong>. Há três sintomas, e cada um tem uma causa diferente:<br><br><strong>1. Aparece como <em>Linux Boot Manager</em>.</strong> A reescrita do rótulo não deu certo e o instalador manteve a entrada como o <code>bootctl</code> deixou — por segurança, ele nunca apaga a única entrada que existe e nunca deixa a máquina sem entrada além do fallback <code>/EFI/BOOT/BOOTX64.EFI</code>.<br><br><strong>2. Só aparece <code>UEFI: &lt;disco&gt;</code> / <code>UEFI OS</code>, sem o <em>FalconOS</em>.</strong> A entrada existiu, mas a firmware a apagou da NVRAM no boot seguinte porque não conseguiu abrir o arquivo do loader. A firmware <strong>descarta da NVRAM toda entrada que ela não resolve</strong> — não há como mantê-la à força. A causa quase sempre é o <code>/boot/EFI/systemd/systemd-bootx64.efi</code> não estar na ESP. Isso também acontece naturalmente quando a ESP é recriada (nova instalação no mesmo disco): as entradas antigas apontam para o GUID da partição que não existe mais e somem do menu, o que é o comportamento correto.<br><br><strong>3. O rótulo estava certo na instalação e sumiu depois.</strong> Foi o caso de a entrada escolhida ser a do <em>fallback</em> (<code>systemd-boot-fallbackx64.efi</code>) em vez da principal: ela some junto com a firmware. O instalador hoje escolhe pelo arquivo em disco justamente para não errar isso.<br><br>O motivo exato está no log: <code>sudo cat /var/log/falconos-install.log</code>, procurando por <code>renomeada</code> (a linha de sucesso traz o rótulo antigo, o novo e quantos bytes o rótulo ocupava), por <code>loader presente</code> / <code>SEM O ARQUIVO</code> (o que a firmware vai descartar) e por <code>NVRAM</code> (o estado da lista de boot antes e depois). <br><br>Um detalhe que costuma enganar: <code>efibootmgr -b 0001 -L "FalconOS"</code> <strong>não renomeia nada</strong> nesta versão — o <code>--label</code> só é lido por <code>--create</code> e por <code>--delete</code>. É o que a maioria das wiki manda fazer, e é um no-op. Também aparece como <code>UEFI: &lt;disco&gt;</code> quando não há <code>efibootmgr</code> no live, porque aí só o fallback <code>/EFI/BOOT/BOOTX64.EFI</code> é gravado. Enquanto isso, você sempre pode entrar no menu de boot da firmware (normalmente F8/F11/F12) e escolher a entrada manualmente.</div>
 							</details>
 
 							<details class="faq-item">
@@ -1221,7 +1221,7 @@ capsule = true
 							<ul>
 								<li><a href="https://github.com/Nilsonlinux" target="_blank" rel="noopener noreferrer">GitHub</a></li>
 								<li><a href="https://github.com/Nilsonlinux/nlinux-iso-build" target="_blank" rel="noopener noreferrer">nlinux-iso-build</a></li>
-								<li><a href="https://github.com/Nilsonlinux/nlinux-software" target="_blank" rel="noopener noreferrer">nlinux-software</a></li>
+								<li><a href="https://github.com/Nilsonlinux/nlinux-software" target="_blank" rel="noopener noreferrer">falconos-software</a></li>
 								<li><a href="plugins.html">Plugins</a></li>
 							</ul>
 						</nav>

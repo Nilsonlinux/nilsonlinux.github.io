@@ -12,7 +12,7 @@
      · [data-iso-sha256]   → hash sha256 da mesma ISO
 
    O sha256 tem de ser o do MESMO arquivo que o link aponta. Ele sai
-   do build local:  sha256sum iso/out/nlinux-<data>-x86_64.iso
+   do build local:  sha256sum iso/out/falconos-<data>-x86_64.iso
    Se a ISO foi re-gerada depois de publicada, o hash muda e o link
    precisa ir para o arquivo novo — conferir um hash velho contra um
    arquivo novo dá erro e derruba a confiança no resto da página.
@@ -20,12 +20,12 @@
    O conteúdo no HTML é só a reserva para quando o JS não carrega:
    nunca aponta para um arquivo ou uma data desatualizada.
    ============================================================ */
-const NLINUX_ISO_URL = 'https://drive.google.com/file/d/1OGHENI3Fs6Up4eLDzPFMtUIGkut3XqV2/view?usp=sharing';
-const NLINUX_ISO_DATE = '2026-10-15';
-const NLINUX_ISO_SHA256 = 'ec807478bfe6ef9b1b9bb837de6213e1b08ab32b7abf2a3ff29caff762ebe55b';
+const FALCONOS_ISO_URL = 'https://drive.google.com/file/d/1OGHENI3Fs6Up4eLDzPFMtUIGkut3XqV2/view?usp=sharing';
+const FALCONOS_ISO_DATE = '2026-10-15';
+const FALCONOS_ISO_SHA256 = 'ec807478bfe6ef9b1b9bb837de6213e1b08ab32b7abf2a3ff29caff762ebe55b';
 
 document.querySelectorAll('[data-iso-download]').forEach(link => {
-	link.href = NLINUX_ISO_URL;
+	link.href = FALCONOS_ISO_URL;
 });
 
 /* "2026-09-29" → "segunda-feira, 29 de setembro de 2026". A data é montada
@@ -39,12 +39,12 @@ const isoDateBr = iso => {
 };
 
 document.querySelectorAll('[data-iso-date]').forEach(el => {
-	el.textContent = isoDateBr(NLINUX_ISO_DATE);
-	el.setAttribute('datetime', NLINUX_ISO_DATE);
+	el.textContent = isoDateBr(FALCONOS_ISO_DATE);
+	el.setAttribute('datetime', FALCONOS_ISO_DATE);
 });
 
 document.querySelectorAll('[data-iso-sha256]').forEach(el => {
-	el.textContent = NLINUX_ISO_SHA256;
+	el.textContent = FALCONOS_ISO_SHA256;
 });
 
 /* ============================================================
@@ -64,7 +64,7 @@ document.querySelectorAll('[data-iso-sha256]').forEach(el => {
    ============================================================ */
 (() => {
 	const RAW = 'https://raw.githubusercontent.com/Nilsonlinux/nlinux-software/main/';
-	const CACHE = 'nlinux-catalog-v1';
+	const CACHE = 'falconos-catalog-v1';
 	const META = ['stats', 'distro', 'supported'];
 
 	const paint = data => {
@@ -114,7 +114,7 @@ document.querySelectorAll('[data-iso-sha256]').forEach(el => {
    ============================================================ */
 (() => {
 	const TTL = 6 * 60 * 60 * 1000;      // 6 horas
-	const CACHE = 'nlinux-gh-v1';
+	const CACHE = 'falconos-gh-v1';
 
 	// "https://github.com/dono/repo/tree/main/x" → "dono/repo"
 	const repoDo = link => link.getAttribute('href')
@@ -305,7 +305,7 @@ document.querySelectorAll('[data-iso-sha256]').forEach(el => {
 	const NS = 'nilsonlinux';
 	const KEY = 'cliques-iso';
 	const TTL = 2 * 60 * 1000;           // 2 minutos
-	const CACHE = 'nlinux-dl-v1';
+	const CACHE = 'falconos-dl-v1';
 
 	const alvos = document.querySelectorAll('[data-dl-count]');
 	if (!alvos.length) return;

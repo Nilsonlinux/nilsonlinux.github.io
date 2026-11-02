@@ -14,7 +14,7 @@ ao vivo que boota direto no desktop e instala por uma interface web no navegador
 
 | | |
 |---|---|
-| Arquivo | `nlinux-2026.10.15-x86_64.iso` |
+| Arquivo | `falconos-2026.10.15-x86_64.iso` |
 | Tamanho | 3 096 641 536 bytes (~2,9 GiB) |
 | Arquitetura | `x86_64` |
 | Data | 15 de outubro de 2026 |
@@ -50,12 +50,12 @@ ao vivo que boota direto no desktop e instala por uma interface web no navegador
 - **UEFI é necessário para instalar**; as opções de boot por BIOS servem para experimentar o
   ambiente ao vivo.
 - Internet: opcional no modo Rápido offline; necessária no modo Completo online.
-- Login do ambiente ao vivo: usuário **`nlinux`**, senha **`nlinux`**.
+- Login do ambiente ao vivo: usuário **`falconos`**, senha **`falconos`**.
 
 ### Como conferir o download
 
 ```bash
-sha256sum nlinux-2026.10.15-x86_64.iso
+sha256sum falconos-2026.10.15-x86_64.iso
 # ec807478bfe6ef9b1b9bb837de6213e1b08ab32b7abf2a3ff29caff762ebe55b
 ```
 
