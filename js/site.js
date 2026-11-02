@@ -20,9 +20,9 @@
    O conteúdo no HTML é só a reserva para quando o JS não carrega:
    nunca aponta para um arquivo ou uma data desatualizada.
    ============================================================ */
-const FALCONOS_ISO_URL = 'https://drive.google.com/file/d/1OGHENI3Fs6Up4eLDzPFMtUIGkut3XqV2/view?usp=sharing';
-const FALCONOS_ISO_DATE = '2026-10-15';
-const FALCONOS_ISO_SHA256 = 'ec807478bfe6ef9b1b9bb837de6213e1b08ab32b7abf2a3ff29caff762ebe55b';
+const FALCONOS_ISO_URL = 'https://drive.google.com/file/d/1foh_WS4DnkBy_rJ5mo-6_AzOTCcFKxyk/view?usp=drive_link';
+const FALCONOS_ISO_DATE = '2026-11-02';
+const FALCONOS_ISO_SHA256 = '85dd555c2da8199389c721d7a31db548d59f57a785c11b1b22ddbfa223178f9d';
 
 document.querySelectorAll('[data-iso-download]').forEach(link => {
 	link.href = FALCONOS_ISO_URL;

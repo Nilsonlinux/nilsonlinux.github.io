@@ -10,16 +10,16 @@ ao vivo que boota direto no desktop e instala por uma interface web no navegador
 
 ---
 
-## A ISO — release `2026.10.15`
+## A ISO — release `2026.11.02`
 
 | | |
 |---|---|
-| Arquivo | `falconos-2026.10.15-x86_64.iso` |
-| Tamanho | 3 096 641 536 bytes (~2,9 GiB) |
+| Arquivo | `falconos-2026.11.02-x86_64.iso` |
+| Tamanho | 3 135 602 688 bytes (~2,9 GiB) |
 | Arquitetura | `x86_64` |
-| Data | 15 de outubro de 2026 |
-| Download | [Google Drive](https://drive.google.com/file/d/1OGHENI3Fs6Up4eLDzPFMtUIGkut3XqV2/view?usp=sharing) |
-| sha256 | `ec807478bfe6ef9b1b9bb837de6213e1b08ab32b7abf2a3ff29caff762ebe55b` |
+| Data | 2 de novembro de 2026 |
+| Download | [Google Drive](https://drive.google.com/file/d/1foh_WS4DnkBy_rJ5mo-6_AzOTCcFKxyk/view?usp=drive_link) |
+| sha256 | `85dd555c2da8199389c721d7a31db548d59f57a785c11b1b22ddbfa223178f9d` |
 
 ### O que a ISO contém
 
@@ -39,7 +39,8 @@ ao vivo que boota direto no desktop e instala por uma interface web no navegador
   sistema instalado, com atalho na lista de aplicativos (abre no kitty).
 - **Aplicativos do desktop**: Firefox, kitty, fish + starship, fastfetch, Nautilus,
   GNOME Text Editor, Spotify, Discord, Telegram Desktop, gpu-screen-recorder,
-  mpv/ffmpeg/imagemagick, Flatpak/PackageKit/AppStream.
+  mpv (com `mpv-mpris`)/ffmpeg/imagemagick, Flatpak/PackageKit/AppStream.
+- **Timeshift** — snapshots do sistema para backup e restauração, já incluído na instalação.
 - **Repositórios do pacman**: `core`, `extra` e `multilib` (de onde sai o Steam).
 - **Branding FalconOS** no `/etc/os-release`, `/etc/issue`, `/etc/motd`, no menu de boot e no
   rótulo da partição.
@@ -55,8 +56,8 @@ ao vivo que boota direto no desktop e instala por uma interface web no navegador
 ### Como conferir o download
 
 ```bash
-sha256sum falconos-2026.10.15-x86_64.iso
-# ec807478bfe6ef9b1b9bb837de6213e1b08ab32b7abf2a3ff29caff762ebe55b
+sha256sum falconos-2026.11.02-x86_64.iso
+# 85dd555c2da8199389c721d7a31db548d59f57a785c11b1b22ddbfa223178f9d
 ```
 
 ---
