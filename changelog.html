@@ -681,7 +681,7 @@
 								<i class="ti ti-info-circle"></i>
 								<p><strong>FalconOS é rolling.</strong> Uma ISO é uma fotografia: os repositórios do Arch continuam andando depois dela. Por isso duas pessoas que instalaram a mesma ISO em dias diferentes podem ter pacotes diferentes. Para o dia a dia, atualize com <code>sudo pacman -Syu</code> em vez de reinstalar.</p>
 							</div>
-							<p class="doc-p">As versões são carregadas das <a class="link-accent" href="https://github.com/Nilsonlinux/nlinux-iso-build/releases" target="_blank" rel="noopener noreferrer">GitHub Releases do nlinux-iso-build</a>.</p>
+							<p class="doc-p">As versões são carregadas das <a class="link-accent" href="https://github.com/Nilsonlinux/falconos-iso-build/releases" target="_blank" rel="noopener noreferrer">GitHub Releases do falconos-iso-build</a>.</p>
 						</section>
 
 						<section class="doc-sec reveal" id="github-releases">
@@ -742,8 +742,8 @@
 							<p>Projeto</p>
 							<ul>
 								<li><a href="https://github.com/Nilsonlinux" target="_blank" rel="noopener noreferrer">GitHub</a></li>
-								<li><a href="https://github.com/Nilsonlinux/nlinux-iso-build" target="_blank" rel="noopener noreferrer">nlinux-iso-build</a></li>
-								<li><a href="https://github.com/Nilsonlinux/nlinux-software" target="_blank" rel="noopener noreferrer">falconos-software</a></li>
+								<li><a href="https://github.com/Nilsonlinux/falconos-iso-build" target="_blank" rel="noopener noreferrer">falconos-iso-build</a></li>
+								<li><a href="https://github.com/Nilsonlinux/falconos-software" target="_blank" rel="noopener noreferrer">falconos-software</a></li>
 								<li><a href="plugins.html">Plugins</a></li>
 							</ul>
 						</nav>
@@ -923,7 +923,7 @@
 	const releaseStatus = $('#githubReleaseStatus');
 	const releaseList = $('#githubReleaseList');
 	const latestReleaseBadge = $('#latestReleaseBadge');
-	const releasesPage = 'https://github.com/Nilsonlinux/nlinux-iso-build/releases';
+	const releasesPage = 'https://github.com/Nilsonlinux/falconos-iso-build/releases';
 	const setReleaseStatus = (message, linkText) => {
 		releaseStatus.replaceChildren(document.createTextNode(`${message} `));
 		const link = document.createElement('a');
@@ -1289,7 +1289,7 @@
 	const loadGithubReleases = async () => {
 		try {
 			const response = await fetch(
-				'https://api.github.com/repos/Nilsonlinux/nlinux-iso-build/releases?per_page=100',
+				'https://api.github.com/repos/Nilsonlinux/falconos-iso-build/releases?per_page=100',
 				{ headers: { Accept: 'application/vnd.github+json' }, cache: 'no-store' }
 			);
 			if (!response.ok) throw new Error(`GitHub API respondeu HTTP ${response.status}`);

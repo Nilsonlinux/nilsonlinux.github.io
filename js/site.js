@@ -52,7 +52,7 @@ document.querySelectorAll('[data-iso-sha256]').forEach(el => {
    A revisão, a contagem de apps e a de categorias saem do
    catalog-head.json publicado no repositório da loja:
 
-     github.com/Nilsonlinux/nlinux-software/blob/main/catalog-head.json
+     github.com/Nilsonlinux/falconos-software/blob/main/catalog-head.json
 
    Não há nada de versão hardcoded no HTML: publicar um catálogo
    novo atualiza todas as páginas do site sem editar nada. No HTML
@@ -63,7 +63,7 @@ document.querySelectorAll('[data-iso-sha256]').forEach(el => {
    guardado no localStorage.
    ============================================================ */
 (() => {
-	const RAW = 'https://raw.githubusercontent.com/Nilsonlinux/nlinux-software/main/';
+	const RAW = 'https://raw.githubusercontent.com/Nilsonlinux/falconos-software/main/';
 	const CACHE = 'falconos-catalog-v1';
 	const META = ['stats', 'distro', 'supported'];
 

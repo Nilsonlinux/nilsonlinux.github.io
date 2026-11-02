@@ -100,8 +100,8 @@ python3 -m http.server 8000
 ## Links
 
 - Site: <https://nilsonlinux.github.io/>
-- Build da ISO / instalador: <https://github.com/Nilsonlinux/nlinux-iso-build>
-- Loja FalconOS Software: <https://github.com/Nilsonlinux/nlinux-software>
+- Build da ISO / instalador: <https://github.com/Nilsonlinux/falconos-iso-build>
+- Loja FalconOS Software: <https://github.com/Nilsonlinux/falconos-software>
 
 ## Licença
 

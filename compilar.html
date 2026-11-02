@@ -594,7 +594,7 @@
 						<span class="page-badge"><i class="ti ti-hammer"></i> archiso</span>
 						<span class="page-badge"><i class="ti ti-terminal-2"></i> shell root no host Arch</span>
 						<span class="page-badge"><i class="ti ti-package"></i> imagem ~3 GB</span>
-						<span class="page-badge"><i class="ti ti-brand-github"></i> nlinux-iso-build</span>
+						<span class="page-badge"><i class="ti ti-brand-github"></i> falconos-iso-build</span>
 					</div>
 				</header>
 
@@ -639,18 +639,18 @@
 								<div class="spec-box"><span>Licença da ISO</span><b>CC-BY-SA 4.0</b></div>
 							</div>
 							<p class="doc-p"><strong>Requisitos do host:</strong> Arch Linux com <code>git</code>, <code>archiso</code> e <code>qemu-desktop</code>. O build roda <code>makepkg</code> e <code>pacstrap</code> em chroot, então precisa de <code>root</code> e de espaço para a imagem de trabalho. Não é preciso <code>sudo</code> em passo algum se você for <code>root</code>.</p>
-							<p class="doc-p">O repositório é <a class="link-accent" href="https://github.com/Nilsonlinux/nlinux-iso-build" target="_blank" rel="noopener noreferrer">Nilsonlinux/nlinux-iso-build</a>. Correções e pull requests são bem-vindos.</p>
+							<p class="doc-p">O repositório é <a class="link-accent" href="https://github.com/Nilsonlinux/falconos-iso-build" target="_blank" rel="noopener noreferrer">Nilsonlinux/falconos-iso-build</a>. Correções e pull requests são bem-vindos.</p>
 						</section>
 
 						<!-- ---------- Build ---------- -->
 						<section class="doc-sec reveal" id="build">
 							<h2 class="doc-h2"><i class="ti ti-hammer"></i> Gerar a ISO<a class="anchor ti ti-link" href="#build" aria-label="Link para esta seção"></a></h2>
-							<p class="doc-p">Tudo o que monta a ISO é aberto: o projeto <a class="link-accent" href="https://github.com/Nilsonlinux/nlinux-iso-build" target="_blank" rel="noopener noreferrer">Nilsonlinux/nlinux-iso-build</a> reúne o <code>build-iso.sh</code>, a camada <code>iso/airootfs/</code>, o <code>install.sh</code> do instalador, a lista de pacotes do live e o <code>make-splash.sh</code>. Em uma máquina Arch Linux, dentro do projeto:</p>
+							<p class="doc-p">Tudo o que monta a ISO é aberto: o projeto <a class="link-accent" href="https://github.com/Nilsonlinux/falconos-iso-build" target="_blank" rel="noopener noreferrer">Nilsonlinux/falconos-iso-build</a> reúne o <code>build-iso.sh</code>, a camada <code>iso/airootfs/</code>, o <code>install.sh</code> do instalador, a lista de pacotes do live e o <code>make-splash.sh</code>. Em uma máquina Arch Linux, dentro do projeto:</p>
 							<div class="code-block">
 								<div class="code-head"><span>terminal</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
 								<pre><code><span class="c"># pegando o projeto (precisa de git; o build usa sudo)</span>
-git clone https://github.com/Nilsonlinux/nlinux-iso-build.git
-cd nlinux-iso-build
+git clone https://github.com/Nilsonlinux/falconos-iso-build.git
+cd falconos-iso-build
 
 <span class="c"># gera iso/out/falconos-&lt;data&gt;-x86_64.iso</span>
 ./build-iso.sh
@@ -668,26 +668,26 @@ cd nlinux-iso-build
 								<li class="doc-li">Roda <code>mkarchiso -v</code> — que executa a camada <code>iso/airootfs/root/customize_airootfs.sh</code> no chroot do build (AUR, greetd, usuário do live, autologin) — e gera a ISO (~2,9 GB).</li>
 							</ol>
 							<div class="foot-links">
-								<a class="btn-ghost" href="https://github.com/Nilsonlinux/nlinux-iso-build" target="_blank" rel="noopener noreferrer"><i class="ti ti-brand-github"></i> Repositório do build</a>
+								<a class="btn-ghost" href="https://github.com/Nilsonlinux/falconos-iso-build" target="_blank" rel="noopener noreferrer"><i class="ti ti-brand-github"></i> Repositório do build</a>
 							</div>
 							<h3 class="doc-h3"><i class="ti ti-shopping-bag"></i> Atualizar a loja embutida na ISO</h3>
-							<p class="doc-p"><code>falconos-software/</code> é a cópia do build publicado da loja (<a class="link-accent" href="https://github.com/Nilsonlinux/nlinux-software" target="_blank" rel="noopener noreferrer">Nilsonlinux/nlinux-software</a>) que o <code>build-iso.sh</code> embute em <code>/opt/falconos-software</code>. O script não instala a loja: ele monta a imagem a partir do que está <strong>commitado</strong> na pasta, e por isso ela nunca pode ficar modificada sem commit — uma pasta editada faria a ISO usar uma loja diferente da que está no repositório.</p>
+							<p class="doc-p"><code>falconos-software/</code> é a cópia do build publicado da loja (<a class="link-accent" href="https://github.com/Nilsonlinux/falconos-software" target="_blank" rel="noopener noreferrer">Nilsonlinux/falconos-software</a>) que o <code>build-iso.sh</code> embute em <code>/opt/falconos-software</code>. O script não instala a loja: ele monta a imagem a partir do que está <strong>commitado</strong> na pasta, e por isso ela nunca pode ficar modificada sem commit — uma pasta editada faria a ISO usar uma loja diferente da que está no repositório.</p>
 							<div class="callout">
 								<i class="ti ti-info-circle"></i>
 								<p><strong>Na maior parte das vezes não é preciso fazer isso à mão.</strong> Ao gerar a versão da loja, o passo 8 do build da curadoria (<code>sync_iso_store</code>) apaga, recopla e <strong>commita</strong> <code>falconos-software/</code> a partir do build recém-gerado, antes de publicar. Basta abrir a curadoria e clicar em <strong>“Gerar versão da loja”</strong>. Só a subpasta da loja entra no commit — se você estiver editando outras coisas do projeto da ISO, elas ficam pendentes e intactas.</p>
 							</div>
 							<div class="code-block">
 								<div class="code-head"><span>terminal · conferir o que está embarcado</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
-								<pre><code><span class="c"># dentro de nlinux-iso-build</span>
+								<pre><code><span class="c"># dentro de falconos-iso-build</span>
 grep revision falconos-software/catalog-head.json
 git log -1 --oneline</code></pre>
 							</div>
 							<p class="doc-p">O próprio <code>build-iso.sh</code> faz essa conferência antes de embutir a loja: ele compara a revisão do <code>catalog-head.json</code> embarcado com a publicação no GitHub. Se a publicada for maior, sai um aviso em amarelo dizendo que a imagem vai ficar com a loja velha. Sem <code>curl</code> ou sem rede, ele avisa e segue — a conferência nunca segura o build. Caso a curadoria falhe ao espelhar, o caminho manual continua valendo:</p>
 							<div class="code-block">
 								<div class="code-head"><span>terminal · espelhar a loja manualmente (fallback)</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
-								<pre><code><span class="c"># dentro de nlinux-iso-build</span>
+								<pre><code><span class="c"># dentro de falconos-iso-build</span>
 rm -rf falconos-software &amp;&amp; mkdir falconos-software
-git clone --depth 1 https://github.com/Nilsonlinux/nlinux-software.git /tmp/loja
+git clone --depth 1 https://github.com/Nilsonlinux/falconos-software.git /tmp/loja
 cp -a /tmp/loja/. falconos-software/
 rm -rf falconos-software/.git falconos-software/*.tar.gz falconos-software/*.tar.gz.asc
 
@@ -713,9 +713,9 @@ gpg --verify falconos-software/falconos-software-v&lt;N&gt;.tar.gz.asc falconos-
 						<!-- ---------- Estrutura ---------- -->
 						<section class="doc-sec reveal" id="estrutura">
 							<h2 class="doc-h2"><i class="ti ti-folder"></i> Estrutura do projeto<a class="anchor ti ti-link" href="#estrutura" aria-label="Link para esta seção"></a></h2>
-							<p class="doc-p">Esse é o layout do repositório <a class="link-accent" href="https://github.com/Nilsonlinux/nlinux-iso-build" target="_blank" rel="noopener noreferrer">Nilsonlinux/nlinux-iso-build</a>, com o <code>README.md</code> detalhando cada etapa.</p>
+							<p class="doc-p">Esse é o layout do repositório <a class="link-accent" href="https://github.com/Nilsonlinux/falconos-iso-build" target="_blank" rel="noopener noreferrer">Nilsonlinux/falconos-iso-build</a>, com o <code>README.md</code> detalhando cada etapa.</p>
 							<div class="code-block">
-								<div class="code-head"><span>nlinux-iso-build</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
+								<div class="code-head"><span>falconos-iso-build</span><button type="button" class="copy-btn" data-copy>copiar</button></div>
 								<pre><code>build-iso.sh              gera a ISO (sudo; limpa mounts de builds interrompidos)
 make-splash.sh            gera splash.png a partir de FalconOS.jpg (menu BIOS)
 install.sh                instalador principal (web-installed; GUI_DRIVEN=1)
@@ -845,7 +845,7 @@ FalconOS.jpg / splash.png   arte do menu de boot</code></pre>
 							<div class="foot-links">
 								<a class="btn-primary" href="baixar.html"><i class="ti ti-download"></i><span>Baixar a ISO</span></a>
 								<a class="btn-ghost" href="loja.html"><i class="ti ti-shopping-bag"></i> Sobre a loja</a>
-								<a class="btn-ghost" href="https://github.com/Nilsonlinux/nlinux-iso-build" target="_blank" rel="noopener noreferrer"><i class="ti ti-brand-github"></i> Código-fonte</a>
+								<a class="btn-ghost" href="https://github.com/Nilsonlinux/falconos-iso-build" target="_blank" rel="noopener noreferrer"><i class="ti ti-brand-github"></i> Código-fonte</a>
 							</div>
 						</section>
 
@@ -895,8 +895,8 @@ FalconOS.jpg / splash.png   arte do menu de boot</code></pre>
 							<p>Projeto</p>
 							<ul>
 								<li><a href="https://github.com/Nilsonlinux" target="_blank" rel="noopener noreferrer">GitHub</a></li>
-								<li><a href="https://github.com/Nilsonlinux/nlinux-iso-build" target="_blank" rel="noopener noreferrer">nlinux-iso-build</a></li>
-								<li><a href="https://github.com/Nilsonlinux/nlinux-software" target="_blank" rel="noopener noreferrer">falconos-software</a></li>
+								<li><a href="https://github.com/Nilsonlinux/falconos-iso-build" target="_blank" rel="noopener noreferrer">falconos-iso-build</a></li>
+								<li><a href="https://github.com/Nilsonlinux/falconos-software" target="_blank" rel="noopener noreferrer">falconos-software</a></li>
 								<li><a href="plugins.html">Plugins</a></li>
 							</ul>
 						</nav>
