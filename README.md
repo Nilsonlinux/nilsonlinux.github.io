@@ -10,16 +10,16 @@ ao vivo que boota direto no desktop e instala por uma interface web no navegador
 
 ---
 
-## A ISO — release `2026.11.02`
+## A ISO — release `2026.11.03`
 
 | | |
 |---|---|
-| Arquivo | `falconos-2026.11.02-x86_64.iso` |
-| Tamanho | 3 135 602 688 bytes (~2,9 GiB) |
+| Arquivo | `falconos-2026.11.03-x86_64.iso` |
+| Tamanho | 3 138 404 352 bytes (~2,9 GiB) |
 | Arquitetura | `x86_64` |
-| Data | 2 de novembro de 2026 |
-| Download | [Google Drive](https://drive.google.com/file/d/1foh_WS4DnkBy_rJ5mo-6_AzOTCcFKxyk/view?usp=drive_link) |
-| sha256 | `85dd555c2da8199389c721d7a31db548d59f57a785c11b1b22ddbfa223178f9d` |
+| Data | 3 de novembro de 2026 |
+| Download | [Google Drive](https://drive.google.com/file/d/1OwX09j8_L7ikGAhdyWwYPVtuHDfo1CtK/view?usp=sharing) |
+| sha256 | `92ce5f420d335d23f4bf64ec6fe61886166163e7eb48fe1af459b9cec2754551` |
 
 ### O que a ISO contém
 
@@ -56,8 +56,8 @@ ao vivo que boota direto no desktop e instala por uma interface web no navegador
 ### Como conferir o download
 
 ```bash
-sha256sum falconos-2026.11.02-x86_64.iso
-# 85dd555c2da8199389c721d7a31db548d59f57a785c11b1b22ddbfa223178f9d
+sha256sum falconos-2026.11.03-x86_64.iso
+# 92ce5f420d335d23f4bf64ec6fe61886166163e7eb48fe1af459b9cec2754551
 ```
 
 ---
