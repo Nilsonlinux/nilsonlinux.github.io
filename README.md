@@ -91,6 +91,7 @@ changelog.html      releases, puxadas da API do GitHub
 feed.xml            RSS 2.0 das releases (gerado por scripts/update_feed.py)
 docs.html           documentação da distro
 recursos.html       recursos do sistema
+about-en.html       resumo do projeto em inglês (submissão ao DistroWatch)
 loja.html           catálogo da loja FalconOS Software
 compilar.html       como compilar a ISO
 plugins.html        plugins públicos do projeto
