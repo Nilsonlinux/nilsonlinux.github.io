@@ -336,6 +336,17 @@
 		.github-release-notes .doc-p { white-space: pre-wrap; overflow-wrap: anywhere; }
 		.github-release-notes .github-release-center { text-align: center; white-space: normal; }
 		.github-release-notes .github-release-quote { padding-left: .85rem; border-left: 3px solid color-mix(in srgb, var(--accent) 55%, transparent); color: var(--fg-dim); }
+		.github-release-code {
+			margin: .85rem 0; padding: .8rem .9rem; overflow-x: auto;
+			border: 1px solid var(--border); border-radius: .75rem;
+			background: color-mix(in srgb, var(--bg2) 85%, transparent);
+			font: 500 .76rem/1.6 "JetBrains Mono", monospace; color: var(--fg);
+			white-space: pre;
+		}
+		.github-release-code code {
+			font: inherit; color: inherit; background: none;
+			padding: 0; border: 0; white-space: inherit;
+		}
 		.github-release-image { margin: .75rem 0 1rem; }
 		.github-release-image img { display: block; width: 100%; max-height: 42rem; object-fit: contain; border: 1px solid var(--border); border-radius: .75rem; background: var(--surface-2); cursor: zoom-in; }
 		.github-release-image figcaption { margin-top: .35rem; color: var(--faint); font-size: .75rem; }
@@ -1106,6 +1117,24 @@
 		for (let i = 0; i < lines.length; i++) {
 			const text = lines[i].trim();
 			if (!text) { list = null; continue; }
+			const fence = text.match(/^```[\w+-]*$/);
+			if (fence) {
+				list = null;
+				const codeLines = [];
+				let end = i + 1;
+				while (end < lines.length && lines[end].trim() !== '```') {
+					codeLines.push(lines[end]);
+					end++;
+				}
+				const pre = document.createElement('pre');
+				pre.className = 'github-release-code';
+				const code = document.createElement('code');
+				code.textContent = codeLines.join('\n');
+				pre.append(code);
+				container.append(pre);
+				i = end;
+				continue;
+			}
 			const centered = /^<(div|p|h[1-6])\b[^>]*\balign=["']?center["']?/i.test(text)
 				? renderCenteredBlock(i)
 				: null;
