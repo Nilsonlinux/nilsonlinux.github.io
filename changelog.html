@@ -378,14 +378,19 @@
 		.github-release-summary { min-width: 0; }
 		.github-release-summary .doc-h3 { margin: 0; }
 		.github-release-summary .doc-p { margin: .35rem 0 0; }
-		.github-release-verified {
+		.github-release-badge {
 			display: inline-flex; align-items: center; gap: .25rem; margin-left: .5rem;
 			padding: .12rem .45rem; border: 1px solid color-mix(in srgb, var(--verified) 45%, transparent);
 			border-radius: 999px; background: color-mix(in srgb, var(--verified) 9%, transparent);
 			color: var(--verified); font-size: .68rem; font-weight: 700; line-height: 1.35;
 			white-space: nowrap; vertical-align: middle;
 		}
-		.github-release-verified .ti { font-size: .8rem; }
+		.github-release-badge .ti { font-size: .8rem; }
+		.github-release-badge-signed {
+			border-color: color-mix(in srgb, var(--accent-3) 45%, transparent);
+			background: color-mix(in srgb, var(--accent-3) 9%, transparent);
+			color: var(--accent-3);
+		}
 		/* abertura deslizante: o conteúdo mora dentro de .github-release-body,
 		   que é a única linha do grid de .github-release-content. Animando
 		   0fr -> 1fr o card abre deslizando (sem JS: vale para qualquer
@@ -959,8 +964,8 @@
 		link.textContent = linkText;
 		releaseStatus.append(link);
 	};
-	const verifyReleaseTag = async tag => {
-		if (typeof tag !== 'string' || !tag) return false;
+	const getReleaseTagSignatureStatus = async tag => {
+		if (typeof tag !== 'string' || !tag) return { signed: false, verified: false };
 		const api = 'https://api.github.com/repos/Nilsonlinux/nlinux-iso-build';
 		try {
 			const refResponse = await fetch(`${api}/git/ref/tags/${encodeURIComponent(tag)}`, {
@@ -970,7 +975,9 @@
 			if (!refResponse.ok) throw new Error(`GitHub API respondeu HTTP ${refResponse.status} ao consultar ${tag}`);
 			const ref = await refResponse.json();
 			if (ref.ref !== `refs/tags/${tag}` || ref.object?.type !== 'tag' ||
-				!/^[a-f0-9]{40,64}$/i.test(ref.object.sha || '')) return false;
+				!/^[a-f0-9]{40,64}$/i.test(ref.object.sha || '')) {
+				return { signed: false, verified: false };
+			}
 
 			const tagResponse = await fetch(`${api}/git/tags/${ref.object.sha}`, {
 				headers: { Accept: 'application/vnd.github+json' },
@@ -978,12 +985,17 @@
 			});
 			if (!tagResponse.ok) throw new Error(`GitHub API respondeu HTTP ${tagResponse.status} ao verificar ${tag}`);
 			const tagObject = await tagResponse.json();
-			return tagObject.tag === tag &&
-				tagObject.verification?.verified === true &&
-				tagObject.verification.reason === 'valid';
+			const verification = tagObject.verification || {};
+			const signed = tagObject.tag === tag &&
+				typeof verification.signature === 'string' &&
+				verification.signature.length > 0;
+			return {
+				signed,
+				verified: signed && verification.verified === true && verification.reason === 'valid'
+			};
 		} catch (error) {
 			console.warn(`Não foi possível verificar a assinatura GPG da release ${tag}.`, error);
-			return false;
+			return { signed: false, verified: false };
 		}
 	};
 	// URLs permitidas nos links markdown das releases. Qualquer outra coisa
@@ -1297,17 +1309,29 @@
 			metadata.append(byline);
 		}
 		summaryContent.append(metadata);
-		verifyReleaseTag(release.tag_name).then(verified => {
-			if (!verified) return;
-			const badge = document.createElement('span');
-			badge.className = 'github-release-verified';
-			badge.title = 'Assinatura GPG do tag verificada pelo GitHub';
-			badge.setAttribute('aria-label', 'Release verificada por assinatura GPG');
-			const icon = document.createElement('i');
-			icon.className = 'ti ti-shield-check';
-			icon.setAttribute('aria-hidden', 'true');
-			badge.append(icon, ' Verificado e assinado');
-			metadata.append(' ', badge);
+		getReleaseTagSignatureStatus(release.tag_name).then(status => {
+			if (status.verified) {
+				const badge = document.createElement('span');
+				badge.className = 'github-release-badge';
+				badge.title = 'Assinatura do tag verificada pelo GitHub';
+				badge.setAttribute('aria-label', 'Release verificada pelo GitHub');
+				const icon = document.createElement('i');
+				icon.className = 'ti ti-shield-check';
+				icon.setAttribute('aria-hidden', 'true');
+				badge.append(icon, ' Verificado');
+				metadata.append(' ', badge);
+			}
+			if (status.signed) {
+				const badge = document.createElement('span');
+				badge.className = 'github-release-badge github-release-badge-signed';
+				badge.title = 'Tag assinada digitalmente';
+				badge.setAttribute('aria-label', 'Release assinada digitalmente');
+				const icon = document.createElement('i');
+				icon.className = 'ti ti-signature';
+				icon.setAttribute('aria-hidden', 'true');
+				badge.append(icon, ' Assinado');
+				metadata.append(' ', badge);
+			}
 		});
 		headingGroup.append(summaryContent);
 		summary.append(headingGroup);
