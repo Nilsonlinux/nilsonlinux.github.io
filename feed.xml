@@ -12,7 +12,7 @@
     <generator>scripts/update_feed.py</generator>
     <atom:link href="https://nilsonlinux.github.io/feed.xml" rel="self" type="application/rss+xml"/>
     <image>
-      <url>https://nilsonlinux.github.io/img/falconos-512.png</url>
+      <url>https://nilsonlinux.github.io/img/nlinux-512.png</url>
       <title>NLinux — releases</title>
       <link>https://nilsonlinux.github.io/changelog.html</link>
     </image>

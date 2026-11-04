@@ -33,25 +33,6 @@ ROOT = Path(__file__).resolve().parent.parent
 OUTPUT = ROOT / "feed.xml"
 
 
-def brand(value: str) -> str:
-    """Normaliza a marca antiga nas notas vindas do GitHub."""
-    value = value.replace("FALCONOS", "NLINUX")
-    value = value.replace("FalconOS", "NLinux")
-    value = value.replace("falconos", "nlinux")
-    # Frases que ficariam autocontraditórias depois da renomeação.
-    value = value.replace(
-        "o antigo nome NLinux sai de cena e tudo passa a se chamar",
-        "a identidade NLinux é consolidada e tudo passa a usar o nome",
-    )
-    value = value.replace("NLinux agora é NLinux", "Identidade NLinux consolidada")
-    value = value.replace(
-        "renomeados de <code>nlinux-*</code> para <code>nlinux-*</code>",
-        "padronizados com o prefixo <code>nlinux-*</code>",
-    )
-    value = value.replace("Já tem o NLinux/NLinux instalado?", "Já tem o NLinux instalado?")
-    return value
-
-
 def fetch(url: str, accept: str) -> bytes:
     headers = {
         "User-Agent": "nlinux-site-feed/1.0",
@@ -142,10 +123,6 @@ def main() -> None:
     if not entries:
         raise SystemExit("Nenhuma release encontrada no feed do GitHub")
 
-    for entry in entries:
-        entry["title"] = brand(entry["title"])
-        entry["content"] = brand(entry["content"])
-
     entries.sort(key=lambda item: item["date"], reverse=True)
     latest = entries[0]["date"]
 
@@ -166,7 +143,7 @@ def main() -> None:
         "    <generator>scripts/update_feed.py</generator>",
         f'    <atom:link href="{FEED_URL}" rel="self" type="application/rss+xml"/>',
         "    <image>",
-        f"      <url>{SITE}/img/falconos-512.png</url>",
+        f"      <url>{SITE}/img/nlinux-512.png</url>",
         "      <title>NLinux — releases</title>",
         f"      <link>{CHANGELOG_URL}</link>",
         "    </image>",

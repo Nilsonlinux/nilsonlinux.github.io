@@ -22,12 +22,12 @@
 	<meta property="og:description" content="Changelog do NLinux por ISO: o que mudou em cada versão, com o sha256 da imagem para conferir o download." />
 	<meta property="og:type" content="website" />
 	<meta property="og:url" content="https://nilsonlinux.github.io/changelog.html" />
-	<meta property="og:image" content="https://nilsonlinux.github.io/img/falconos-og.jpg" />
+	<meta property="og:image" content="https://nilsonlinux.github.io/img/nlinux-og.jpg" />
 	<meta property="og:image:alt" content="Logo do NLinux" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content="Changelog · NLinux" />
 	<meta name="twitter:description" content="Changelog do NLinux por ISO: o que mudou em cada versão, com o sha256 da imagem para conferir o download." />
-	<meta name="twitter:image" content="https://nilsonlinux.github.io/img/falconos-og.jpg" />
+	<meta name="twitter:image" content="https://nilsonlinux.github.io/img/nlinux-og.jpg" />
 	<title>Changelog · NLinux · Nilsonlinux</title>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -614,7 +614,7 @@
 		<header class="site-header">
 			<div class="site-header-inner">
 				<a href="index.html" class="brand">
-					<img src="img/falconos-logo.png" alt="NLinux" width="40" height="40" />
+					<img src="img/nlinux-logo.png" alt="NLinux" width="40" height="40" />
 					<span class="brand-label">
 						<span class="brand-name">NLinux</span>
 						<span class="brand-tag">changelog</span>
@@ -720,7 +720,7 @@
 				<div class="footer-grid">
 					<div class="footer-brand">
 						<div class="footer-brand-logo">
-							<img src="img/falconos-logo.png" alt="NLinux" width="40" height="40" />
+							<img src="img/nlinux-logo.png" alt="NLinux" width="40" height="40" />
 							<div>
 								<p style="font-weight:600;letter-spacing:-.01em">NLinux</p>
 								<p style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.12em;color:var(--faint)">documentação</p>
@@ -1203,7 +1203,7 @@
 		const author = release.author;
 		const avatar = document.createElement('img');
 		avatar.className = 'github-release-avatar';
-		avatar.src = 'img/falconos.png';
+		avatar.src = 'img/nlinux.png';
 		avatar.alt = author?.login ? `Foto de perfil de ${author.login} no GitHub` : 'NLinux';
 		avatar.width = 64;
 		avatar.height = 64;
@@ -1214,7 +1214,7 @@
 				if (avatarUrl.protocol === 'https:' && avatarUrl.hostname === 'avatars.githubusercontent.com') {
 					avatar.src = avatarUrl.href;
 					avatar.addEventListener('error', () => {
-						avatar.src = 'img/falconos.png';
+						avatar.src = 'img/nlinux.png';
 						avatar.alt = 'NLinux';
 					}, { once: true });
 				}
@@ -1329,26 +1329,8 @@
 			const data = await response.json();
 			if (!Array.isArray(data)) throw new Error('A resposta da API do GitHub não é uma lista de releases');
 
-			// As releases antigas foram publicadas com a marca anterior.
-			// Normaliza o texto exibido sem alterar o registro no GitHub.
-			const brand = value => String(value ?? '')
-				.replaceAll('FALCONOS', 'NLINUX')
-				.replaceAll('FalconOS', 'NLinux')
-				.replaceAll('falconos', 'nlinux')
-				.replaceAll('o antigo nome NLinux sai de cena e tudo passa a se chamar',
-					'a identidade NLinux é consolidada e tudo passa a usar o nome')
-				.replaceAll('NLinux agora é NLinux', 'Identidade NLinux consolidada')
-				.replaceAll('renomeados de `nlinux-*` para `nlinux-*`',
-					'padronizados com o prefixo `nlinux-*`')
-				.replaceAll('Já tem o NLinux/NLinux instalado?', 'Já tem o NLinux instalado?');
-
 			const releases = data
 				.filter(release => !release.draft && !release.prerelease)
-				.map(release => ({
-					...release,
-					name: brand(release.name),
-					body: brand(release.body),
-				}))
 				.sort((a, b) => Date.parse(b.published_at || b.created_at) - Date.parse(a.published_at || a.created_at));
 			if (releases.length) {
 				latestReleaseBadge.replaceChildren();
