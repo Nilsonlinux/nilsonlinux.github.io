@@ -1,5 +1,5 @@
-/* FalconOS — efeito do nome no hero (canvas).
-   Monta "FalconOS" com bolinhas/partículas e vai alternando efeitos:
+/* NLinux — efeito do nome no hero (canvas).
+   Monta "NLinux" com bolinhas/partículas e vai alternando efeitos:
      chuva    — bolinhas caem de cima e se encaixam;
      converge — umas caem de cima e outras sobem de baixo, devagar;
      explosão — o nome estoura em partículas e se recompõe;
@@ -40,7 +40,7 @@
 	if (!canvas || !canvas.getContext) return;
 	const ctx = canvas.getContext('2d');
 	const textEl = host.querySelector('.hero-name-text');
-	const TEXT = host.dataset.text || (textEl && textEl.textContent.trim()) || 'FalconOS';
+	const TEXT = host.dataset.text || (textEl && textEl.textContent.trim()) || 'NLinux';
 	const reduce = matchMedia('(prefers-reduced-motion: reduce)');
 
 	const WEIGHT = 800;
@@ -202,7 +202,7 @@
 	}
 
 	/* ---------- camada do nome na fonte real ----------
-	   Desenha "FalconOS" na fonte exata (Geist 800 + letter-spacing do CSS)
+	   Desenha "NLinux" na fonte exata (Geist 800 + letter-spacing do CSS)
 	   com o gradiente metálico. Ao fim de cada efeito as bolinhas dão lugar
 	   a esta camada, então o nome montado fica idêntico à tipografia. */
 	function paintName(c) {

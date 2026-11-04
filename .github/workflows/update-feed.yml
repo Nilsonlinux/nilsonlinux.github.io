@@ -3,7 +3,7 @@ name: Update RSS feed
 on:
   schedule:
     # A cada 6 horas. O feed só muda quando há release nova no
-    # falconos-iso-build, então o workflow evita commits desnecessários.
+    # nlinux-iso-build, então o workflow evita commits desnecessários.
     - cron: "41 */6 * * *"
   workflow_dispatch:
 

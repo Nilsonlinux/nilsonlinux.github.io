@@ -13,7 +13,7 @@
 			<div class="lb-heading">
 				<span class="lb-heading-icon"><i class="ti ti-device-desktop-analytics"></i></span>
 				<div class="lb-titles">
-					<p class="lb-title" id="lbTitle">FalconOS · live e instalador</p>
+					<p class="lb-title" id="lbTitle">NLinux · live e instalador</p>
 					<p class="lb-subtitle">ISO ao vivo · instalador web em 10 passos</p>
 				</div>
 			</div>
@@ -87,7 +87,7 @@
 		const src = GALLERY[lbIndex];
 		lbFrame.classList.add('swap', 'loading');
 		lbImage.src = src;
-		lbImage.alt = `FalconOS — tela ${lbIndex + 1} de ${GALLERY.length} (live e instalador)`;
+		lbImage.alt = `NLinux — tela ${lbIndex + 1} de ${GALLERY.length} (live e instalador)`;
 		lbOpenLink.href = src;
 		lbCurrent.textContent = lbIndex + 1;
 		lbCaption.innerHTML = `Tela <b>${pad(lbIndex + 1)}</b> de <b>${GALLERY.length}</b>`;

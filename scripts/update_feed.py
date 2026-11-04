@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Gera o feed.xml (RSS 2.0) a partir do feed Atom das releases do FalconOS.
+"""Gera o feed.xml (RSS 2.0) a partir do feed Atom das releases do NLinux.
 
 O GitHub já entrega as notas de release renderizadas em HTML no
 `releases.atom`, então o script não precisa de Markdown nem de dependências
@@ -25,17 +25,36 @@ from xml.sax.saxutils import escape
 SITE = "https://nilsonlinux.github.io"
 FEED_URL = f"{SITE}/feed.xml"
 CHANGELOG_URL = f"{SITE}/changelog.html"
-SOURCE_URL = "https://github.com/Nilsonlinux/falconos-iso-build/releases.atom"
-API_URL = "https://api.github.com/repos/Nilsonlinux/falconos-iso-build/releases?per_page=100"
+SOURCE_URL = "https://github.com/Nilsonlinux/nlinux-iso-build/releases.atom"
+API_URL = "https://api.github.com/repos/Nilsonlinux/nlinux-iso-build/releases?per_page=100"
 
 ATOM = "{http://www.w3.org/2005/Atom}"
 ROOT = Path(__file__).resolve().parent.parent
 OUTPUT = ROOT / "feed.xml"
 
 
+def brand(value: str) -> str:
+    """Normaliza a marca antiga nas notas vindas do GitHub."""
+    value = value.replace("FALCONOS", "NLINUX")
+    value = value.replace("FalconOS", "NLinux")
+    value = value.replace("falconos", "nlinux")
+    # Frases que ficariam autocontraditórias depois da renomeação.
+    value = value.replace(
+        "o antigo nome NLinux sai de cena e tudo passa a se chamar",
+        "a identidade NLinux é consolidada e tudo passa a usar o nome",
+    )
+    value = value.replace("NLinux agora é NLinux", "Identidade NLinux consolidada")
+    value = value.replace(
+        "renomeados de <code>nlinux-*</code> para <code>nlinux-*</code>",
+        "padronizados com o prefixo <code>nlinux-*</code>",
+    )
+    value = value.replace("Já tem o NLinux/NLinux instalado?", "Já tem o NLinux instalado?")
+    return value
+
+
 def fetch(url: str, accept: str) -> bytes:
     headers = {
-        "User-Agent": "falconos-site-feed/1.0",
+        "User-Agent": "nlinux-site-feed/1.0",
         "Accept": accept,
     }
     token = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
@@ -63,7 +82,7 @@ def releases_from_api() -> list[dict[str, str]]:
             continue
         releases.append(
             {
-                "title": release.get("name") or release.get("tag_name") or "FalconOS",
+                "title": release.get("name") or release.get("tag_name") or "NLinux",
                 "link": release["html_url"],
                 "date": release.get("published_at") or release.get("created_at"),
                 "body": release.get("body") or "",
@@ -97,7 +116,7 @@ def main() -> None:
         href = link.get("href") if link is not None else text(entry, "id")
         content = entry.find(f"{ATOM}content")
         atom_entries[href] = {
-            "title": text(entry, "title", "FalconOS"),
+            "title": text(entry, "title", "NLinux"),
             "link": href,
             "date": parse_date(text(entry, "updated")),
             "content": content.text if content is not None and content.text else "",
@@ -123,6 +142,10 @@ def main() -> None:
     if not entries:
         raise SystemExit("Nenhuma release encontrada no feed do GitHub")
 
+    for entry in entries:
+        entry["title"] = brand(entry["title"])
+        entry["content"] = brand(entry["content"])
+
     entries.sort(key=lambda item: item["date"], reverse=True)
     latest = entries[0]["date"]
 
@@ -131,9 +154,9 @@ def main() -> None:
         '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" '
         'xmlns:content="http://purl.org/rss/1.0/modules/content/">',
         "  <channel>",
-        "    <title>FalconOS — releases</title>",
+        "    <title>NLinux — releases</title>",
         f"    <link>{CHANGELOG_URL}</link>",
-        "    <description>Novas versões do FalconOS: notas de release, "
+        "    <description>Novas versões do NLinux: notas de release, "
         "download da ISO e checksum sha256.</description>",
         "    <language>pt-BR</language>",
         "    <copyright>© Nilsonlinux</copyright>",
@@ -144,7 +167,7 @@ def main() -> None:
         f'    <atom:link href="{FEED_URL}" rel="self" type="application/rss+xml"/>',
         "    <image>",
         f"      <url>{SITE}/img/falconos-512.png</url>",
-        "      <title>FalconOS — releases</title>",
+        "      <title>NLinux — releases</title>",
         f"      <link>{CHANGELOG_URL}</link>",
         "    </image>",
     ]

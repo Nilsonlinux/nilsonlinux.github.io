@@ -1,5 +1,5 @@
 /* ============================================================
-   FalconOS · variáveis compartilhadas do site
+   NLinux · variáveis compartilhadas do site
 
    DADOS DA ÚLTIMA ISO — fonte única da verdade.
    Publicou uma ISO nova? Troque SOMENTE as três linhas abaixo
@@ -12,7 +12,7 @@
      · [data-iso-sha256]   → hash sha256 da mesma ISO
 
    O sha256 tem de ser o do MESMO arquivo que o link aponta. Ele sai
-   do build local:  sha256sum iso/out/falconos-<data>-x86_64.iso
+   do build local:  sha256sum iso/out/nlinux-<data>-x86_64.iso
    Se a ISO foi re-gerada depois de publicada, o hash muda e o link
    precisa ir para o arquivo novo — conferir um hash velho contra um
    arquivo novo dá erro e derruba a confiança no resto da página.
@@ -20,12 +20,12 @@
    O conteúdo no HTML é só a reserva para quando o JS não carrega:
    nunca aponta para um arquivo ou uma data desatualizada.
    ============================================================ */
-const FALCONOS_ISO_URL = 'https://drive.google.com/file/d/1OwX09j8_L7ikGAhdyWwYPVtuHDfo1CtK/view?usp=sharing';
-const FALCONOS_ISO_DATE = '2026-11-03';
-const FALCONOS_ISO_SHA256 = '92ce5f420d335d23f4bf64ec6fe61886166163e7eb48fe1af459b9cec2754551';
+const NLINUX_ISO_URL = 'https://drive.google.com/file/d/1OwX09j8_L7ikGAhdyWwYPVtuHDfo1CtK/view?usp=sharing';
+const NLINUX_ISO_DATE = '2026-11-03';
+const NLINUX_ISO_SHA256 = '92ce5f420d335d23f4bf64ec6fe61886166163e7eb48fe1af459b9cec2754551';
 
 document.querySelectorAll('[data-iso-download]').forEach(link => {
-	link.href = FALCONOS_ISO_URL;
+	link.href = NLINUX_ISO_URL;
 });
 
 /* "2026-09-29" → "segunda-feira, 29 de setembro de 2026". A data é montada
@@ -39,20 +39,20 @@ const isoDateBr = iso => {
 };
 
 document.querySelectorAll('[data-iso-date]').forEach(el => {
-	el.textContent = isoDateBr(FALCONOS_ISO_DATE);
-	el.setAttribute('datetime', FALCONOS_ISO_DATE);
+	el.textContent = isoDateBr(NLINUX_ISO_DATE);
+	el.setAttribute('datetime', NLINUX_ISO_DATE);
 });
 
 document.querySelectorAll('[data-iso-sha256]').forEach(el => {
-	el.textContent = FALCONOS_ISO_SHA256;
+	el.textContent = NLINUX_ISO_SHA256;
 });
 
 /* ============================================================
-   CATÁLOGO DA FALCONOS SOFTWARE
+   CATÁLOGO DA NLINUX SOFTWARE
    A revisão, a contagem de apps e a de categorias saem do
    catalog-head.json publicado no repositório da loja:
 
-     github.com/Nilsonlinux/falconos-software/blob/main/catalog-head.json
+     github.com/Nilsonlinux/nlinux-software/blob/main/catalog-head.json
 
    Não há nada de versão hardcoded no HTML: publicar um catálogo
    novo atualiza todas as páginas do site sem editar nada. No HTML
@@ -63,8 +63,8 @@ document.querySelectorAll('[data-iso-sha256]').forEach(el => {
    guardado no localStorage.
    ============================================================ */
 (() => {
-	const RAW = 'https://raw.githubusercontent.com/Nilsonlinux/falconos-software/main/';
-	const CACHE = 'falconos-catalog-v1';
+	const RAW = 'https://raw.githubusercontent.com/Nilsonlinux/nlinux-software/main/';
+	const CACHE = 'nlinux-catalog-v1';
 	const META = ['stats', 'distro', 'supported'];
 
 	const paint = data => {
@@ -114,7 +114,7 @@ document.querySelectorAll('[data-iso-sha256]').forEach(el => {
    ============================================================ */
 (() => {
 	const TTL = 6 * 60 * 60 * 1000;      // 6 horas
-	const CACHE = 'falconos-gh-v1';
+	const CACHE = 'nlinux-gh-v1';
 
 	// "https://github.com/dono/repo/tree/main/x" → "dono/repo"
 	const repoDo = link => link.getAttribute('href')
@@ -305,7 +305,7 @@ document.querySelectorAll('[data-iso-sha256]').forEach(el => {
 	const NS = 'nilsonlinux';
 	const KEY = 'cliques-iso';
 	const TTL = 2 * 60 * 1000;           // 2 minutos
-	const CACHE = 'falconos-dl-v1';
+	const CACHE = 'nlinux-dl-v1';
 
 	const alvos = document.querySelectorAll('[data-dl-count]');
 	if (!alvos.length) return;

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>FalconOS — releases</title>
+    <title>NLinux — releases</title>
     <link>https://nilsonlinux.github.io/changelog.html</link>
-    <description>Novas versões do FalconOS: notas de release, download da ISO e checksum sha256.</description>
+    <description>Novas versões do NLinux: notas de release, download da ISO e checksum sha256.</description>
     <language>pt-BR</language>
     <copyright>© Nilsonlinux</copyright>
     <ttl>360</ttl>
@@ -13,38 +13,38 @@
     <atom:link href="https://nilsonlinux.github.io/feed.xml" rel="self" type="application/rss+xml"/>
     <image>
       <url>https://nilsonlinux.github.io/img/falconos-512.png</url>
-      <title>FalconOS — releases</title>
+      <title>NLinux — releases</title>
       <link>https://nilsonlinux.github.io/changelog.html</link>
     </image>
     <item>
-      <title>FalconOS 2026.11.03</title>
-      <link>https://github.com/Nilsonlinux/falconos-iso-build/releases/tag/2026.11.03</link>
-      <guid isPermaLink="true">https://github.com/Nilsonlinux/falconos-iso-build/releases/tag/2026.11.03</guid>
+      <title>NLinux 2026.11.03</title>
+      <link>https://github.com/Nilsonlinux/nlinux-iso-build/releases/tag/2026.11.03</link>
+      <guid isPermaLink="true">https://github.com/Nilsonlinux/nlinux-iso-build/releases/tag/2026.11.03</guid>
       <pubDate>Tue, 03 Nov 2026 14:33:11 +0000</pubDate>
-      <description><![CDATA[<h1>FalconOS — release 2026.11.03</h1>
+      <description><![CDATA[<h1>NLinux — release 2026.11.03</h1>
 <h2 align="center">⬇️ Download</h2>
 <p align="center">
-  <a href="https://drive.google.com/file/d/1OwX09j8_L7ikGAhdyWwYPVtuHDfo1CtK/view?usp=sharing" rel="nofollow">FalconOS ISO (Google Drive)</a> — ISO live, ~2,9 GB, para <code>x86_64</code>.<br>
+  <a href="https://drive.google.com/file/d/1OwX09j8_L7ikGAhdyWwYPVtuHDfo1CtK/view?usp=sharing" rel="nofollow">NLinux ISO (Google Drive)</a> — ISO live, ~2,9 GB, para <code>x86_64</code>.<br>
   sha256 da ISO <code>92ce5f420d335d23f4bf64ec6fe61886166163e7eb48fe1af459b9cec2754551</code>
 </p>
-<p>Terceira release pública do FalconOS. A grande mudança desta versão é a <strong>identidade definitiva da distribuição</strong>: o antigo nome NLinux sai de cena e tudo passa a se chamar <strong>FalconOS</strong> — nome do sistema, usuário do ambiente live, hostname padrão, instalador, loja, serviços, arquivos de configuração, arte e repositórios. Junto vêm o <strong>Timeshift</strong> para snapshots do sistema, o <strong>mpv-mpris</strong> para integração de mídia com o player e ajustes visuais no Noctalia.</p>
+<p>Terceira release pública do NLinux. A grande mudança desta versão é a <strong>identidade definitiva da distribuição</strong>: a identidade NLinux é consolidada e tudo passa a usar o nome <strong>NLinux</strong> — nome do sistema, usuário do ambiente live, hostname padrão, instalador, loja, serviços, arquivos de configuração, arte e repositórios. Junto vêm o <strong>Timeshift</strong> para snapshots do sistema, o <strong>mpv-mpris</strong> para integração de mídia com o player e ajustes visuais no Noctalia.</p>
 <h2>✨ Novidades</h2>
 <ul>
 <li>
-<p><strong>NLinux agora é FalconOS</strong>: a renomeação foi completa e não ficou só na tela.</p>
+<p><strong>Identidade NLinux consolidada</strong>: a renomeação foi completa e não ficou só na tela.</p>
 <ul>
-<li><code>/etc/os-release</code>, <code>/etc/issue</code>, <code>/etc/motd</code>, hostname e label da ISO usam <strong>FalconOS</strong>.</li>
-<li>O usuário do ambiente live passa a ser <strong><code>falconos</code></strong>, com senha <strong><code>falconos</code></strong>.</li>
-<li>O hostname padrão da instalação passa a ser <strong><code>falconos</code></strong>.</li>
-<li>Instalador, loja, serviços systemd, pacote Python da loja e arquivos internos foram renomeados de <code>nlinux-*</code> para <code>falconos-*</code>.</li>
-<li>Os repositórios oficiais também mudaram: <a href="https://github.com/Nilsonlinux/falconos-iso-build"><code>falconos-iso-build</code></a>, <a href="https://github.com/Nilsonlinux/falconos-software"><code>falconos-software</code></a> e <a href="https://github.com/Nilsonlinux/falconos-software-admin"><code>falconos-software-admin</code></a>.</li>
+<li><code>/etc/os-release</code>, <code>/etc/issue</code>, <code>/etc/motd</code>, hostname e label da ISO usam <strong>NLinux</strong>.</li>
+<li>O usuário do ambiente live passa a ser <strong><code>nlinux</code></strong>, com senha <strong><code>nlinux</code></strong>.</li>
+<li>O hostname padrão da instalação passa a ser <strong><code>nlinux</code></strong>.</li>
+<li>Instalador, loja, serviços systemd, pacote Python da loja e arquivos internos foram padronizados com o prefixo <code>nlinux-*</code>.</li>
+<li>Os repositórios oficiais também mudaram: <a href="https://github.com/Nilsonlinux/nlinux-iso-build"><code>nlinux-iso-build</code></a>, <a href="https://github.com/Nilsonlinux/nlinux-software"><code>nlinux-software</code></a> e <a href="https://github.com/Nilsonlinux/nlinux-software-admin"><code>nlinux-software-admin</code></a>.</li>
 </ul>
 </li>
 <li>
-<p><strong>Nova identidade visual</strong>: logo novo no menu de boot, no fastfetch, na tela de boas-vindas, no instalador, na loja e nos ícones do sistema, com a arte de fundo atualizada (<code>FalconOS.jpg</code> / <code>splash.png</code>). Os temas de som e os nomes dos arquivos de arte também seguem a nova marca.</p>
+<p><strong>Nova identidade visual</strong>: logo novo no menu de boot, no fastfetch, na tela de boas-vindas, no instalador, na loja e nos ícones do sistema, com a arte de fundo atualizada (<code>NLinux.jpg</code> / <code>splash.png</code>). Os temas de som e os nomes dos arquivos de arte também seguem a nova marca.</p>
 </li>
 </ul>
-<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://raw.githubusercontent.com/Nilsonlinux/falconos-iso-build/main/install/chroot/falconos-welcome/welcome-logo.png"><img src="https://raw.githubusercontent.com/Nilsonlinux/falconos-iso-build/main/install/chroot/falconos-welcome/welcome-logo.png" alt="FalconOS" style="max-width: 100%;"></a></p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://raw.githubusercontent.com/Nilsonlinux/nlinux-iso-build/main/install/chroot/nlinux-welcome/welcome-logo.png"><img src="https://raw.githubusercontent.com/Nilsonlinux/nlinux-iso-build/main/install/chroot/nlinux-welcome/welcome-logo.png" alt="NLinux" style="max-width: 100%;"></a></p>
 <ul>
 <li>
 <p><strong>Timeshift incluído</strong>: o Timeshift vem na lista de pacotes do desktop e é instalado tanto no modo <strong>Rápido offline</strong> quanto no <strong>Completo online</strong>. Dá para criar snapshots do sistema e restaurar depois, com interface gráfica e assistente próprio.</p>
@@ -56,20 +56,20 @@
 <p><strong>Noctalia</strong>: os grupos da barra (RAM/CPU/temperatura e clima/relógio) passaram a usar <code>surface_container</code> como preenchimento, com contraste mais consistente com o tema.</p>
 </li>
 <li>
-<p><strong>Comunidade no Telegram</strong>: o site oficial agora aponta para o grupo <a href="https://t.me/FalconOSCommunity" rel="nofollow">FalconOS Community</a>.</p>
+<p><strong>Comunidade no Telegram</strong>: o site oficial agora aponta para o grupo <a href="https://t.me/NLinuxCommunity" rel="nofollow">NLinux Community</a>.</p>
 </li>
 </ul>
 <h2>🔧 Também nesta versão</h2>
 <ul>
-<li><strong>Instalador e loja com a marca nova</strong>: janela, atalhos, caminhos em <code>/opt</code>, nomes dos binários e mensagens internas foram ajustados para FalconOS; o instalador continua com as <strong>10 etapas</strong> e os dois modos de instalação.</li>
-<li><strong>Serviços renomeados</strong>: <code>falconos-pacman-refresh.service</code> e os arquivos de sudoers do build agora usam o prefixo <code>falconos-</code>.</li>
+<li><strong>Instalador e loja com a marca nova</strong>: janela, atalhos, caminhos em <code>/opt</code>, nomes dos binários e mensagens internas foram ajustados para NLinux; o instalador continua com as <strong>10 etapas</strong> e os dois modos de instalação.</li>
+<li><strong>Serviços renomeados</strong>: <code>nlinux-pacman-refresh.service</code> e os arquivos de sudoers do build agora usam o prefixo <code>nlinux-</code>.</li>
 <li><strong>Documentação atualizada</strong>: README, notas de licença e textos de terceiros acompanham o novo nome, os novos repositórios e os pacotes incluídos.</li>
-<li><strong>Catálogo da loja</strong>: revisão 373, com <strong>63 aplicativos</strong>, servida automaticamente pelo FalconOS Software.</li>
+<li><strong>Catálogo da loja</strong>: revisão 373, com <strong>63 aplicativos</strong>, servida automaticamente pelo NLinux Software.</li>
 </ul>
-<h2>⬆️ Já tem o FalconOS/NLinux instalado?</h2>
+<h2>⬆️ Já tem o NLinux instalado?</h2>
 <ul>
 <li>Atualize os pacotes normalmente: <code>sudo pacman -Syu</code>.</li>
-<li>Para ter a identidade nova por completo — usuário live <code>falconos</code>, caminhos <code>falconos-*</code>, arte e menu atualizados — o caminho recomendado é <strong>instalar a ISO 2026.11.03</strong>. A renomeação mexe em caminhos do sistema que não são migrados por uma atualização de pacotes.</li>
+<li>Para ter a identidade nova por completo — usuário live <code>nlinux</code>, caminhos <code>nlinux-*</code>, arte e menu atualizados — o caminho recomendado é <strong>instalar a ISO 2026.11.03</strong>. A renomeação mexe em caminhos do sistema que não são migrados por uma atualização de pacotes.</li>
 <li>O Timeshift pode ser instalado em sistemas já existentes com <code>sudo pacman -S timeshift</code>.</li>
 <li>O mpv-mpris pode ser instalado com <code>sudo pacman -S mpv-mpris</code>.</li>
 </ul>
@@ -78,52 +78,52 @@
 <li>Arquitetura <code>x86_64</code>; pendrive de 8 GB ou mais.</li>
 <li><strong>UEFI é necessário para instalar.</strong> A ISO também inclui opções de boot BIOS para experimentar o ambiente live.</li>
 <li>Internet: opcional na instalação rápida offline; necessária na instalação completa online.</li>
-<li>Login do ambiente live: usuário <strong><code>falconos</code></strong>, senha <strong><code>falconos</code></strong>.</li>
+<li>Login do ambiente live: usuário <strong><code>nlinux</code></strong>, senha <strong><code>nlinux</code></strong>.</li>
 </ul>
 <blockquote>
 <p>Antes de alterar partições, faça backup dos dados. Em dual boot com Windows, desative o BitLocker e a Inicialização Rápida/hibernação antes de prosseguir.</p>
 </blockquote>
 <h2>✅ Como conferir o download</h2>
-<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" data-snippet-clipboard-copy-content="sha256sum falconos-2026.11.03-x86_64.iso
-# 92ce5f420d335d23f4bf64ec6fe61886166163e7eb48fe1af459b9cec2754551"><pre>sha256sum falconos-2026.11.03-x86_64.iso
+<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" data-snippet-clipboard-copy-content="sha256sum nlinux-2026.11.03-x86_64.iso
+# 92ce5f420d335d23f4bf64ec6fe61886166163e7eb48fe1af459b9cec2754551"><pre>sha256sum nlinux-2026.11.03-x86_64.iso
 <span class="pl-c"><span class="pl-c">#</span> 92ce5f420d335d23f4bf64ec6fe61886166163e7eb48fe1af459b9cec2754551</span></pre></div>
 <h2>📚 Documentação</h2>
 <ul>
-<li><a href="https://nilsonlinux.github.io/docs.html" rel="nofollow">Documentação do FalconOS</a></li>
+<li><a href="https://nilsonlinux.github.io/docs.html" rel="nofollow">Documentação do NLinux</a></li>
 <li><a href="https://nilsonlinux.github.io/changelog.html" rel="nofollow">Changelog</a></li>
 <li><a href="https://nilsonlinux.github.io/recursos.html" rel="nofollow">Recursos da distribuição</a></li>
-<li><a href="https://nilsonlinux.github.io/loja.html" rel="nofollow">Loja FalconOS Software</a></li>
-<li><a href="https://github.com/Nilsonlinux/falconos-iso-build">Código e instruções para compilar a ISO</a></li>
+<li><a href="https://nilsonlinux.github.io/loja.html" rel="nofollow">Loja NLinux Software</a></li>
+<li><a href="https://github.com/Nilsonlinux/nlinux-iso-build">Código e instruções para compilar a ISO</a></li>
 </ul>
 <h2>📦 Versões anteriores</h2>
 <ul>
-<li><a href="https://github.com/Nilsonlinux/falconos-iso-build/releases/tag/2026.10.15">FalconOS 2026.10.15</a> — opencode incluído, GPL-3.0 explícito e atualização sem interrupções.</li>
-<li><a href="https://github.com/Nilsonlinux/falconos-iso-build/releases/tag/2026.10.09">FalconOS 2026.10.09</a> — primeira release pública.</li>
+<li><a href="https://github.com/Nilsonlinux/nlinux-iso-build/releases/tag/2026.10.15">NLinux 2026.10.15</a> — opencode incluído, GPL-3.0 explícito e atualização sem interrupções.</li>
+<li><a href="https://github.com/Nilsonlinux/nlinux-iso-build/releases/tag/2026.10.09">NLinux 2026.10.09</a> — primeira release pública.</li>
 </ul>]]></description>
-      <content:encoded><![CDATA[<h1>FalconOS — release 2026.11.03</h1>
+      <content:encoded><![CDATA[<h1>NLinux — release 2026.11.03</h1>
 <h2 align="center">⬇️ Download</h2>
 <p align="center">
-  <a href="https://drive.google.com/file/d/1OwX09j8_L7ikGAhdyWwYPVtuHDfo1CtK/view?usp=sharing" rel="nofollow">FalconOS ISO (Google Drive)</a> — ISO live, ~2,9 GB, para <code>x86_64</code>.<br>
+  <a href="https://drive.google.com/file/d/1OwX09j8_L7ikGAhdyWwYPVtuHDfo1CtK/view?usp=sharing" rel="nofollow">NLinux ISO (Google Drive)</a> — ISO live, ~2,9 GB, para <code>x86_64</code>.<br>
   sha256 da ISO <code>92ce5f420d335d23f4bf64ec6fe61886166163e7eb48fe1af459b9cec2754551</code>
 </p>
-<p>Terceira release pública do FalconOS. A grande mudança desta versão é a <strong>identidade definitiva da distribuição</strong>: o antigo nome NLinux sai de cena e tudo passa a se chamar <strong>FalconOS</strong> — nome do sistema, usuário do ambiente live, hostname padrão, instalador, loja, serviços, arquivos de configuração, arte e repositórios. Junto vêm o <strong>Timeshift</strong> para snapshots do sistema, o <strong>mpv-mpris</strong> para integração de mídia com o player e ajustes visuais no Noctalia.</p>
+<p>Terceira release pública do NLinux. A grande mudança desta versão é a <strong>identidade definitiva da distribuição</strong>: a identidade NLinux é consolidada e tudo passa a usar o nome <strong>NLinux</strong> — nome do sistema, usuário do ambiente live, hostname padrão, instalador, loja, serviços, arquivos de configuração, arte e repositórios. Junto vêm o <strong>Timeshift</strong> para snapshots do sistema, o <strong>mpv-mpris</strong> para integração de mídia com o player e ajustes visuais no Noctalia.</p>
 <h2>✨ Novidades</h2>
 <ul>
 <li>
-<p><strong>NLinux agora é FalconOS</strong>: a renomeação foi completa e não ficou só na tela.</p>
+<p><strong>Identidade NLinux consolidada</strong>: a renomeação foi completa e não ficou só na tela.</p>
 <ul>
-<li><code>/etc/os-release</code>, <code>/etc/issue</code>, <code>/etc/motd</code>, hostname e label da ISO usam <strong>FalconOS</strong>.</li>
-<li>O usuário do ambiente live passa a ser <strong><code>falconos</code></strong>, com senha <strong><code>falconos</code></strong>.</li>
-<li>O hostname padrão da instalação passa a ser <strong><code>falconos</code></strong>.</li>
-<li>Instalador, loja, serviços systemd, pacote Python da loja e arquivos internos foram renomeados de <code>nlinux-*</code> para <code>falconos-*</code>.</li>
-<li>Os repositórios oficiais também mudaram: <a href="https://github.com/Nilsonlinux/falconos-iso-build"><code>falconos-iso-build</code></a>, <a href="https://github.com/Nilsonlinux/falconos-software"><code>falconos-software</code></a> e <a href="https://github.com/Nilsonlinux/falconos-software-admin"><code>falconos-software-admin</code></a>.</li>
+<li><code>/etc/os-release</code>, <code>/etc/issue</code>, <code>/etc/motd</code>, hostname e label da ISO usam <strong>NLinux</strong>.</li>
+<li>O usuário do ambiente live passa a ser <strong><code>nlinux</code></strong>, com senha <strong><code>nlinux</code></strong>.</li>
+<li>O hostname padrão da instalação passa a ser <strong><code>nlinux</code></strong>.</li>
+<li>Instalador, loja, serviços systemd, pacote Python da loja e arquivos internos foram padronizados com o prefixo <code>nlinux-*</code>.</li>
+<li>Os repositórios oficiais também mudaram: <a href="https://github.com/Nilsonlinux/nlinux-iso-build"><code>nlinux-iso-build</code></a>, <a href="https://github.com/Nilsonlinux/nlinux-software"><code>nlinux-software</code></a> e <a href="https://github.com/Nilsonlinux/nlinux-software-admin"><code>nlinux-software-admin</code></a>.</li>
 </ul>
 </li>
 <li>
-<p><strong>Nova identidade visual</strong>: logo novo no menu de boot, no fastfetch, na tela de boas-vindas, no instalador, na loja e nos ícones do sistema, com a arte de fundo atualizada (<code>FalconOS.jpg</code> / <code>splash.png</code>). Os temas de som e os nomes dos arquivos de arte também seguem a nova marca.</p>
+<p><strong>Nova identidade visual</strong>: logo novo no menu de boot, no fastfetch, na tela de boas-vindas, no instalador, na loja e nos ícones do sistema, com a arte de fundo atualizada (<code>NLinux.jpg</code> / <code>splash.png</code>). Os temas de som e os nomes dos arquivos de arte também seguem a nova marca.</p>
 </li>
 </ul>
-<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://raw.githubusercontent.com/Nilsonlinux/falconos-iso-build/main/install/chroot/falconos-welcome/welcome-logo.png"><img src="https://raw.githubusercontent.com/Nilsonlinux/falconos-iso-build/main/install/chroot/falconos-welcome/welcome-logo.png" alt="FalconOS" style="max-width: 100%;"></a></p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://raw.githubusercontent.com/Nilsonlinux/nlinux-iso-build/main/install/chroot/nlinux-welcome/welcome-logo.png"><img src="https://raw.githubusercontent.com/Nilsonlinux/nlinux-iso-build/main/install/chroot/nlinux-welcome/welcome-logo.png" alt="NLinux" style="max-width: 100%;"></a></p>
 <ul>
 <li>
 <p><strong>Timeshift incluído</strong>: o Timeshift vem na lista de pacotes do desktop e é instalado tanto no modo <strong>Rápido offline</strong> quanto no <strong>Completo online</strong>. Dá para criar snapshots do sistema e restaurar depois, com interface gráfica e assistente próprio.</p>
@@ -135,20 +135,20 @@
 <p><strong>Noctalia</strong>: os grupos da barra (RAM/CPU/temperatura e clima/relógio) passaram a usar <code>surface_container</code> como preenchimento, com contraste mais consistente com o tema.</p>
 </li>
 <li>
-<p><strong>Comunidade no Telegram</strong>: o site oficial agora aponta para o grupo <a href="https://t.me/FalconOSCommunity" rel="nofollow">FalconOS Community</a>.</p>
+<p><strong>Comunidade no Telegram</strong>: o site oficial agora aponta para o grupo <a href="https://t.me/NLinuxCommunity" rel="nofollow">NLinux Community</a>.</p>
 </li>
 </ul>
 <h2>🔧 Também nesta versão</h2>
 <ul>
-<li><strong>Instalador e loja com a marca nova</strong>: janela, atalhos, caminhos em <code>/opt</code>, nomes dos binários e mensagens internas foram ajustados para FalconOS; o instalador continua com as <strong>10 etapas</strong> e os dois modos de instalação.</li>
-<li><strong>Serviços renomeados</strong>: <code>falconos-pacman-refresh.service</code> e os arquivos de sudoers do build agora usam o prefixo <code>falconos-</code>.</li>
+<li><strong>Instalador e loja com a marca nova</strong>: janela, atalhos, caminhos em <code>/opt</code>, nomes dos binários e mensagens internas foram ajustados para NLinux; o instalador continua com as <strong>10 etapas</strong> e os dois modos de instalação.</li>
+<li><strong>Serviços renomeados</strong>: <code>nlinux-pacman-refresh.service</code> e os arquivos de sudoers do build agora usam o prefixo <code>nlinux-</code>.</li>
 <li><strong>Documentação atualizada</strong>: README, notas de licença e textos de terceiros acompanham o novo nome, os novos repositórios e os pacotes incluídos.</li>
-<li><strong>Catálogo da loja</strong>: revisão 373, com <strong>63 aplicativos</strong>, servida automaticamente pelo FalconOS Software.</li>
+<li><strong>Catálogo da loja</strong>: revisão 373, com <strong>63 aplicativos</strong>, servida automaticamente pelo NLinux Software.</li>
 </ul>
-<h2>⬆️ Já tem o FalconOS/NLinux instalado?</h2>
+<h2>⬆️ Já tem o NLinux instalado?</h2>
 <ul>
 <li>Atualize os pacotes normalmente: <code>sudo pacman -Syu</code>.</li>
-<li>Para ter a identidade nova por completo — usuário live <code>falconos</code>, caminhos <code>falconos-*</code>, arte e menu atualizados — o caminho recomendado é <strong>instalar a ISO 2026.11.03</strong>. A renomeação mexe em caminhos do sistema que não são migrados por uma atualização de pacotes.</li>
+<li>Para ter a identidade nova por completo — usuário live <code>nlinux</code>, caminhos <code>nlinux-*</code>, arte e menu atualizados — o caminho recomendado é <strong>instalar a ISO 2026.11.03</strong>. A renomeação mexe em caminhos do sistema que não são migrados por uma atualização de pacotes.</li>
 <li>O Timeshift pode ser instalado em sistemas já existentes com <code>sudo pacman -S timeshift</code>.</li>
 <li>O mpv-mpris pode ser instalado com <code>sudo pacman -S mpv-mpris</code>.</li>
 </ul>
@@ -157,63 +157,63 @@
 <li>Arquitetura <code>x86_64</code>; pendrive de 8 GB ou mais.</li>
 <li><strong>UEFI é necessário para instalar.</strong> A ISO também inclui opções de boot BIOS para experimentar o ambiente live.</li>
 <li>Internet: opcional na instalação rápida offline; necessária na instalação completa online.</li>
-<li>Login do ambiente live: usuário <strong><code>falconos</code></strong>, senha <strong><code>falconos</code></strong>.</li>
+<li>Login do ambiente live: usuário <strong><code>nlinux</code></strong>, senha <strong><code>nlinux</code></strong>.</li>
 </ul>
 <blockquote>
 <p>Antes de alterar partições, faça backup dos dados. Em dual boot com Windows, desative o BitLocker e a Inicialização Rápida/hibernação antes de prosseguir.</p>
 </blockquote>
 <h2>✅ Como conferir o download</h2>
-<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" data-snippet-clipboard-copy-content="sha256sum falconos-2026.11.03-x86_64.iso
-# 92ce5f420d335d23f4bf64ec6fe61886166163e7eb48fe1af459b9cec2754551"><pre>sha256sum falconos-2026.11.03-x86_64.iso
+<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" data-snippet-clipboard-copy-content="sha256sum nlinux-2026.11.03-x86_64.iso
+# 92ce5f420d335d23f4bf64ec6fe61886166163e7eb48fe1af459b9cec2754551"><pre>sha256sum nlinux-2026.11.03-x86_64.iso
 <span class="pl-c"><span class="pl-c">#</span> 92ce5f420d335d23f4bf64ec6fe61886166163e7eb48fe1af459b9cec2754551</span></pre></div>
 <h2>📚 Documentação</h2>
 <ul>
-<li><a href="https://nilsonlinux.github.io/docs.html" rel="nofollow">Documentação do FalconOS</a></li>
+<li><a href="https://nilsonlinux.github.io/docs.html" rel="nofollow">Documentação do NLinux</a></li>
 <li><a href="https://nilsonlinux.github.io/changelog.html" rel="nofollow">Changelog</a></li>
 <li><a href="https://nilsonlinux.github.io/recursos.html" rel="nofollow">Recursos da distribuição</a></li>
-<li><a href="https://nilsonlinux.github.io/loja.html" rel="nofollow">Loja FalconOS Software</a></li>
-<li><a href="https://github.com/Nilsonlinux/falconos-iso-build">Código e instruções para compilar a ISO</a></li>
+<li><a href="https://nilsonlinux.github.io/loja.html" rel="nofollow">Loja NLinux Software</a></li>
+<li><a href="https://github.com/Nilsonlinux/nlinux-iso-build">Código e instruções para compilar a ISO</a></li>
 </ul>
 <h2>📦 Versões anteriores</h2>
 <ul>
-<li><a href="https://github.com/Nilsonlinux/falconos-iso-build/releases/tag/2026.10.15">FalconOS 2026.10.15</a> — opencode incluído, GPL-3.0 explícito e atualização sem interrupções.</li>
-<li><a href="https://github.com/Nilsonlinux/falconos-iso-build/releases/tag/2026.10.09">FalconOS 2026.10.09</a> — primeira release pública.</li>
+<li><a href="https://github.com/Nilsonlinux/nlinux-iso-build/releases/tag/2026.10.15">NLinux 2026.10.15</a> — opencode incluído, GPL-3.0 explícito e atualização sem interrupções.</li>
+<li><a href="https://github.com/Nilsonlinux/nlinux-iso-build/releases/tag/2026.10.09">NLinux 2026.10.09</a> — primeira release pública.</li>
 </ul>]]></content:encoded>
     </item>
     <item>
-      <title>FalconOS 2026.10.15</title>
-      <link>https://github.com/Nilsonlinux/falconos-iso-build/releases/tag/2026.10.15</link>
-      <guid isPermaLink="true">https://github.com/Nilsonlinux/falconos-iso-build/releases/tag/2026.10.15</guid>
+      <title>NLinux 2026.10.15</title>
+      <link>https://github.com/Nilsonlinux/nlinux-iso-build/releases/tag/2026.10.15</link>
+      <guid isPermaLink="true">https://github.com/Nilsonlinux/nlinux-iso-build/releases/tag/2026.10.15</guid>
       <pubDate>Fri, 16 Oct 2026 01:08:55 +0000</pubDate>
-      <description><![CDATA[<h1>FalconOS — release 2026.10.15</h1>
+      <description><![CDATA[<h1>NLinux — release 2026.10.15</h1>
 <h2 align="center">⬇️ Download</h2>
 <p align="center">
-  <a href="https://drive.google.com/file/d/1OGHENI3Fs6Up4eLDzPFMtUIGkut3XqV2/view?usp=sharing" rel="nofollow">FalconOS ISO (Google Drive)</a> — ISO live, ~2,9 GB, para <code>x86_64</code>.<br>
+  <a href="https://drive.google.com/file/d/1OGHENI3Fs6Up4eLDzPFMtUIGkut3XqV2/view?usp=sharing" rel="nofollow">NLinux ISO (Google Drive)</a> — ISO live, ~2,9 GB, para <code>x86_64</code>.<br>
   sha256 da ISO <code>ec807478bfe6ef9b1b9bb837de6213e1b08ab32b7abf2a3ff29caff762ebe55b</code>
 </p>
-<p>Segunda release pública do FalconOS. Mantém a base Arch Linux com desktop Wayland Umbriel, shell Noctalia V5, instalador visual em 10 etapas e a loja FalconOS Software — e agora traz o agente de programação <strong>opencode</strong> já instalado, licenciamento GPL-3.0 explícito, atualização do sistema sem interrupções e uma janela de boas-vindas mais informativa.</p>
+<p>Segunda release pública do NLinux. Mantém a base Arch Linux com desktop Wayland Umbriel, shell Noctalia V5, instalador visual em 10 etapas e a loja NLinux Software — e agora traz o agente de programação <strong>opencode</strong> já instalado, licenciamento GPL-3.0 explícito, atualização do sistema sem interrupções e uma janela de boas-vindas mais informativa.</p>
 <h2>✨ Novidades</h2>
 <ul>
 <li><strong>opencode incluído no sistema</strong>: o agente de programação com IA (repositório <code>extra</code>) vem pré-instalado tanto no ambiente live quanto no sistema instalado, e ganha <strong>atalho próprio na lista de aplicativos</strong> — abre no terminal kitty. Antes ele só podia ser instalado pela loja.</li>
 </ul>
-<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://raw.githubusercontent.com/Nilsonlinux/falconos-software/main/src/apps/assets/opencode-1.png"><img src="https://raw.githubusercontent.com/Nilsonlinux/falconos-software/main/src/apps/assets/opencode-1.png" alt="opencode no FalconOS" style="max-width: 100%;"></a></p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://raw.githubusercontent.com/Nilsonlinux/nlinux-software/main/src/apps/assets/opencode-1.png"><img src="https://raw.githubusercontent.com/Nilsonlinux/nlinux-software/main/src/apps/assets/opencode-1.png" alt="opencode no NLinux" style="max-width: 100%;"></a></p>
 <ul>
 <li><strong>Atualização do sistema sem interrupções</strong>: a atualização pela loja passou a rodar <code>pacman -Syu</code> de forma automática. Não é mais preciso digitar <code>s</code>/<code>y</code>, e a caixa "Resposta solicitada pelo pacman" deixou de aparecer quando não há pergunta real. Instalação, remoção e pacotes da AUR continuam pedindo confirmação quando de fato existe uma pergunta.</li>
-<li><strong>Janela de boas-vindas mais clara</strong>: passa a mostrar a <strong>Data de instalação</strong> e a <strong>Versão atual (releases)</strong>, consultada na última release publicada. O nome "App Center" foi trocado por <strong>FalconOS Software</strong> nos sete idiomas.</li>
+<li><strong>Janela de boas-vindas mais clara</strong>: passa a mostrar a <strong>Data de instalação</strong> e a <strong>Versão atual (releases)</strong>, consultada na última release publicada. O nome "App Center" foi trocado por <strong>NLinux Software</strong> nos sete idiomas.</li>
 <li><strong>Licenciamento explícito</strong>: a distribuição e a loja embarcada agora trazem a licença <strong>GPL-3.0-or-later</strong>, o arquivo <strong>THIRD_PARTY_NOTICES.md</strong> com os avisos de terceiros e cabeçalhos <strong>SPDX</strong> nos fontes.</li>
 </ul>
 <h2>🔧 Também nesta versão</h2>
 <ul>
 <li><strong>Catálogo da loja atualizado</strong>: revisão 373, com <strong>63 aplicativos</strong> — entrou o <strong>guvcview</strong> (visualização de webcam de dispositivos V4L2). A loja baixa o catálogo novo automaticamente.</li>
-<li><strong>Assinatura GPG das releases</strong>: a chave pública passa a ser publicada no repositório (<code>falconos-releases-gpg-pub.asc</code>), junto das instruções de verificação de tags e commits.</li>
+<li><strong>Assinatura GPG das releases</strong>: a chave pública passa a ser publicada no repositório (<code>nlinux-releases-gpg-pub.asc</code>), junto das instruções de verificação de tags e commits.</li>
 <li><strong>Noctalia</strong>: atalhos de sessão desativados na tela de bloqueio (<code>show_shortcuts = false</code>).</li>
 <li><strong>Documentação</strong> do projeto atualizada, incluindo as seções de licença, assinatura GPG e do opencode.</li>
 </ul>
-<h2>⬆️ Já tem o FalconOS instalado?</h2>
+<h2>⬆️ Já tem o NLinux instalado?</h2>
 <ul>
 <li>Atualize o sistema: <code>sudo pacman -Syu</code>.</li>
 <li>Instale o opencode: <code>sudo pacman -S opencode</code> — o atalho aparece no menu depois disso.</li>
-<li>A loja FalconOS Software baixa o catálogo novo (revisão 373) automaticamente.</li>
+<li>A loja NLinux Software baixa o catálogo novo (revisão 373) automaticamente.</li>
 </ul>
 <h2>💾 Requisitos</h2>
 <ul>
@@ -226,45 +226,45 @@
 </blockquote>
 <h2>📚 Documentação</h2>
 <ul>
-<li><a href="https://nilsonlinux.github.io/docs.html" rel="nofollow">Documentação do FalconOS</a></li>
+<li><a href="https://nilsonlinux.github.io/docs.html" rel="nofollow">Documentação do NLinux</a></li>
 <li><a href="https://nilsonlinux.github.io/changelog.html" rel="nofollow">Changelog</a></li>
 <li><a href="https://nilsonlinux.github.io/recursos.html" rel="nofollow">Recursos da distribuição</a></li>
-<li><a href="https://nilsonlinux.github.io/loja.html" rel="nofollow">Loja FalconOS Software</a></li>
-<li><a href="https://github.com/Nilsonlinux/falconos-iso-build">Código e instruções para compilar a ISO</a></li>
+<li><a href="https://nilsonlinux.github.io/loja.html" rel="nofollow">Loja NLinux Software</a></li>
+<li><a href="https://github.com/Nilsonlinux/nlinux-iso-build">Código e instruções para compilar a ISO</a></li>
 </ul>
 <h2>📦 Versões anteriores</h2>
 <ul>
-<li><a href="https://github.com/Nilsonlinux/falconos-iso-build/releases/tag/2026.10.09">FalconOS 2026.10.09</a> — primeira release pública.</li>
+<li><a href="https://github.com/Nilsonlinux/nlinux-iso-build/releases/tag/2026.10.09">NLinux 2026.10.09</a> — primeira release pública.</li>
 </ul>]]></description>
-      <content:encoded><![CDATA[<h1>FalconOS — release 2026.10.15</h1>
+      <content:encoded><![CDATA[<h1>NLinux — release 2026.10.15</h1>
 <h2 align="center">⬇️ Download</h2>
 <p align="center">
-  <a href="https://drive.google.com/file/d/1OGHENI3Fs6Up4eLDzPFMtUIGkut3XqV2/view?usp=sharing" rel="nofollow">FalconOS ISO (Google Drive)</a> — ISO live, ~2,9 GB, para <code>x86_64</code>.<br>
+  <a href="https://drive.google.com/file/d/1OGHENI3Fs6Up4eLDzPFMtUIGkut3XqV2/view?usp=sharing" rel="nofollow">NLinux ISO (Google Drive)</a> — ISO live, ~2,9 GB, para <code>x86_64</code>.<br>
   sha256 da ISO <code>ec807478bfe6ef9b1b9bb837de6213e1b08ab32b7abf2a3ff29caff762ebe55b</code>
 </p>
-<p>Segunda release pública do FalconOS. Mantém a base Arch Linux com desktop Wayland Umbriel, shell Noctalia V5, instalador visual em 10 etapas e a loja FalconOS Software — e agora traz o agente de programação <strong>opencode</strong> já instalado, licenciamento GPL-3.0 explícito, atualização do sistema sem interrupções e uma janela de boas-vindas mais informativa.</p>
+<p>Segunda release pública do NLinux. Mantém a base Arch Linux com desktop Wayland Umbriel, shell Noctalia V5, instalador visual em 10 etapas e a loja NLinux Software — e agora traz o agente de programação <strong>opencode</strong> já instalado, licenciamento GPL-3.0 explícito, atualização do sistema sem interrupções e uma janela de boas-vindas mais informativa.</p>
 <h2>✨ Novidades</h2>
 <ul>
 <li><strong>opencode incluído no sistema</strong>: o agente de programação com IA (repositório <code>extra</code>) vem pré-instalado tanto no ambiente live quanto no sistema instalado, e ganha <strong>atalho próprio na lista de aplicativos</strong> — abre no terminal kitty. Antes ele só podia ser instalado pela loja.</li>
 </ul>
-<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://raw.githubusercontent.com/Nilsonlinux/falconos-software/main/src/apps/assets/opencode-1.png"><img src="https://raw.githubusercontent.com/Nilsonlinux/falconos-software/main/src/apps/assets/opencode-1.png" alt="opencode no FalconOS" style="max-width: 100%;"></a></p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://raw.githubusercontent.com/Nilsonlinux/nlinux-software/main/src/apps/assets/opencode-1.png"><img src="https://raw.githubusercontent.com/Nilsonlinux/nlinux-software/main/src/apps/assets/opencode-1.png" alt="opencode no NLinux" style="max-width: 100%;"></a></p>
 <ul>
 <li><strong>Atualização do sistema sem interrupções</strong>: a atualização pela loja passou a rodar <code>pacman -Syu</code> de forma automática. Não é mais preciso digitar <code>s</code>/<code>y</code>, e a caixa "Resposta solicitada pelo pacman" deixou de aparecer quando não há pergunta real. Instalação, remoção e pacotes da AUR continuam pedindo confirmação quando de fato existe uma pergunta.</li>
-<li><strong>Janela de boas-vindas mais clara</strong>: passa a mostrar a <strong>Data de instalação</strong> e a <strong>Versão atual (releases)</strong>, consultada na última release publicada. O nome "App Center" foi trocado por <strong>FalconOS Software</strong> nos sete idiomas.</li>
+<li><strong>Janela de boas-vindas mais clara</strong>: passa a mostrar a <strong>Data de instalação</strong> e a <strong>Versão atual (releases)</strong>, consultada na última release publicada. O nome "App Center" foi trocado por <strong>NLinux Software</strong> nos sete idiomas.</li>
 <li><strong>Licenciamento explícito</strong>: a distribuição e a loja embarcada agora trazem a licença <strong>GPL-3.0-or-later</strong>, o arquivo <strong>THIRD_PARTY_NOTICES.md</strong> com os avisos de terceiros e cabeçalhos <strong>SPDX</strong> nos fontes.</li>
 </ul>
 <h2>🔧 Também nesta versão</h2>
 <ul>
 <li><strong>Catálogo da loja atualizado</strong>: revisão 373, com <strong>63 aplicativos</strong> — entrou o <strong>guvcview</strong> (visualização de webcam de dispositivos V4L2). A loja baixa o catálogo novo automaticamente.</li>
-<li><strong>Assinatura GPG das releases</strong>: a chave pública passa a ser publicada no repositório (<code>falconos-releases-gpg-pub.asc</code>), junto das instruções de verificação de tags e commits.</li>
+<li><strong>Assinatura GPG das releases</strong>: a chave pública passa a ser publicada no repositório (<code>nlinux-releases-gpg-pub.asc</code>), junto das instruções de verificação de tags e commits.</li>
 <li><strong>Noctalia</strong>: atalhos de sessão desativados na tela de bloqueio (<code>show_shortcuts = false</code>).</li>
 <li><strong>Documentação</strong> do projeto atualizada, incluindo as seções de licença, assinatura GPG e do opencode.</li>
 </ul>
-<h2>⬆️ Já tem o FalconOS instalado?</h2>
+<h2>⬆️ Já tem o NLinux instalado?</h2>
 <ul>
 <li>Atualize o sistema: <code>sudo pacman -Syu</code>.</li>
 <li>Instale o opencode: <code>sudo pacman -S opencode</code> — o atalho aparece no menu depois disso.</li>
-<li>A loja FalconOS Software baixa o catálogo novo (revisão 373) automaticamente.</li>
+<li>A loja NLinux Software baixa o catálogo novo (revisão 373) automaticamente.</li>
 </ul>
 <h2>💾 Requisitos</h2>
 <ul>
@@ -277,33 +277,33 @@
 </blockquote>
 <h2>📚 Documentação</h2>
 <ul>
-<li><a href="https://nilsonlinux.github.io/docs.html" rel="nofollow">Documentação do FalconOS</a></li>
+<li><a href="https://nilsonlinux.github.io/docs.html" rel="nofollow">Documentação do NLinux</a></li>
 <li><a href="https://nilsonlinux.github.io/changelog.html" rel="nofollow">Changelog</a></li>
 <li><a href="https://nilsonlinux.github.io/recursos.html" rel="nofollow">Recursos da distribuição</a></li>
-<li><a href="https://nilsonlinux.github.io/loja.html" rel="nofollow">Loja FalconOS Software</a></li>
-<li><a href="https://github.com/Nilsonlinux/falconos-iso-build">Código e instruções para compilar a ISO</a></li>
+<li><a href="https://nilsonlinux.github.io/loja.html" rel="nofollow">Loja NLinux Software</a></li>
+<li><a href="https://github.com/Nilsonlinux/nlinux-iso-build">Código e instruções para compilar a ISO</a></li>
 </ul>
 <h2>📦 Versões anteriores</h2>
 <ul>
-<li><a href="https://github.com/Nilsonlinux/falconos-iso-build/releases/tag/2026.10.09">FalconOS 2026.10.09</a> — primeira release pública.</li>
+<li><a href="https://github.com/Nilsonlinux/nlinux-iso-build/releases/tag/2026.10.09">NLinux 2026.10.09</a> — primeira release pública.</li>
 </ul>]]></content:encoded>
     </item>
     <item>
-      <title>FalconOS 2026.10.09</title>
-      <link>https://github.com/Nilsonlinux/falconos-iso-build/releases/tag/2026.10.09</link>
-      <guid isPermaLink="true">https://github.com/Nilsonlinux/falconos-iso-build/releases/tag/2026.10.09</guid>
+      <title>NLinux 2026.10.09</title>
+      <link>https://github.com/Nilsonlinux/nlinux-iso-build/releases/tag/2026.10.09</link>
+      <guid isPermaLink="true">https://github.com/Nilsonlinux/nlinux-iso-build/releases/tag/2026.10.09</guid>
       <pubDate>Sat, 03 Oct 2026 21:11:32 +0000</pubDate>
-      <description><![CDATA[<h1>FalconOS — primeira release pública</h1>
-<p>A primeira release pública do FalconOS: uma distribuição baseada em Arch Linux, com desktop Wayland Umbriel, shell Noctalia V5, instalador visual e a loja FalconOS Software já incluída.</p>
-<a target="_blank" rel="noopener noreferrer" href="https://private-user-images.githubusercontent.com/22534130/665253204-814eb651-1da1-45c5-9e1d-a1a14cd815a8.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4MjI4NDAsIm5iZiI6MTc5MzgyMjU0MCwicGF0aCI6Ii8yMjUzNDEzMC82NjUyNTMyMDQtODE0ZWI2NTEtMWRhMS00NWM1LTllMWQtYTFhMTRjZDgxNWE4LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIwMDIyMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWZiYjAwOGE1YTQ2ZmI5ZmRhYmFkYTgwY2U2ZTE0ZGMzNTIyMjkwM2NhODNkMDc4OTcxMDQ5NTEzZDZjYzM1NjcmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.ZXP4DBs2kzcj2ht1P-Si4k5of50ZODcEOuu_gpAxeIE"><img width="1366" height="768" alt="image" src="https://private-user-images.githubusercontent.com/22534130/665253204-814eb651-1da1-45c5-9e1d-a1a14cd815a8.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4MjI4NDAsIm5iZiI6MTc5MzgyMjU0MCwicGF0aCI6Ii8yMjUzNDEzMC82NjUyNTMyMDQtODE0ZWI2NTEtMWRhMS00NWM1LTllMWQtYTFhMTRjZDgxNWE4LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIwMDIyMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWZiYjAwOGE1YTQ2ZmI5ZmRhYmFkYTgwY2U2ZTE0ZGMzNTIyMjkwM2NhODNkMDc4OTcxMDQ5NTEzZDZjYzM1NjcmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.ZXP4DBs2kzcj2ht1P-Si4k5of50ZODcEOuu_gpAxeIE" content-type-secured-asset="image/png" style="max-width: 100%; height: auto; max-height: 768px;"></a>
-<h2>✨ O que vem no FalconOS</h2>
+      <description><![CDATA[<h1>NLinux — primeira release pública</h1>
+<p>A primeira release pública do NLinux: uma distribuição baseada em Arch Linux, com desktop Wayland Umbriel, shell Noctalia V5, instalador visual e a loja NLinux Software já incluída.</p>
+<a target="_blank" rel="noopener noreferrer" href="https://private-user-images.githubusercontent.com/22534130/665253204-814eb651-1da1-45c5-9e1d-a1a14cd815a8.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4Mjc4MDIsIm5iZiI6MTc5MzgyNzUwMiwicGF0aCI6Ii8yMjUzNDEzMC82NjUyNTMyMDQtODE0ZWI2NTEtMWRhMS00NWM1LTllMWQtYTFhMTRjZDgxNWE4LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIxMjUwMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWExNTZjYTg4NWY5MTBhOWQ5ZmJjM2ZhNzkzNGRjOWRhYWRmYTVjNmFhYjhmZDRlMjlmNThkYWZlNDBjYjI4M2MmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.h2Dqu20yHWX4lqYn45ItWiG6OXn6Q_Gx9m_lzTW3bDA"><img width="1366" height="768" alt="image" src="https://private-user-images.githubusercontent.com/22534130/665253204-814eb651-1da1-45c5-9e1d-a1a14cd815a8.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4Mjc4MDIsIm5iZiI6MTc5MzgyNzUwMiwicGF0aCI6Ii8yMjUzNDEzMC82NjUyNTMyMDQtODE0ZWI2NTEtMWRhMS00NWM1LTllMWQtYTFhMTRjZDgxNWE4LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIxMjUwMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWExNTZjYTg4NWY5MTBhOWQ5ZmJjM2ZhNzkzNGRjOWRhYWRmYTVjNmFhYjhmZDRlMjlmNThkYWZlNDBjYjI4M2MmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.h2Dqu20yHWX4lqYn45ItWiG6OXn6Q_Gx9m_lzTW3bDA" content-type-secured-asset="image/png" style="max-width: 100%; height: auto; max-height: 768px;"></a>
+<h2>✨ O que vem no NLinux</h2>
 <ul>
 <li><strong>Arch Linux rolling</strong>, em uma ISO ao vivo para computadores <code>x86_64</code>.</li>
 <li><strong>Desktop Wayland</strong> com compositor Umbriel, shell Noctalia V5 e tela de login greetd com noctalia-greeter.</li>
 <li><strong>Instalador visual em 10 etapas</strong>, aberto no navegador a partir do ambiente live. Ele mostra o progresso real da instalação.</li>
 <li><strong>Instalação rápida offline</strong>, a opção padrão, que copia o sistema a partir do pendrive sem precisar de internet.</li>
 </ul>
-<a target="_blank" rel="noopener noreferrer" href="https://private-user-images.githubusercontent.com/22534130/664861106-298f0c84-a0ff-4bb1-a3e5-981b83c32736.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4MjI4NDAsIm5iZiI6MTc5MzgyMjU0MCwicGF0aCI6Ii8yMjUzNDEzMC82NjQ4NjExMDYtMjk4ZjBjODQtYTBmZi00YmIxLWEzZTUtOTgxYjgzYzMyNzM2LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIwMDIyMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTRlMzAwOGY4MTk1ZmMyNmE5MzU2OTljODI3ODRkYjMzODg0NDRmYmEwZWU4MjNiNTliYjEwMWI2ZGQ2YzQ1ZWMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.CRhftZ7831bEDVElFs7kvaVHRslU7ExmEtX6g5mp52A"><img width="1366" height="768" alt="falconos-instalador-17" src="https://private-user-images.githubusercontent.com/22534130/664861106-298f0c84-a0ff-4bb1-a3e5-981b83c32736.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4MjI4NDAsIm5iZiI6MTc5MzgyMjU0MCwicGF0aCI6Ii8yMjUzNDEzMC82NjQ4NjExMDYtMjk4ZjBjODQtYTBmZi00YmIxLWEzZTUtOTgxYjgzYzMyNzM2LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIwMDIyMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTRlMzAwOGY4MTk1ZmMyNmE5MzU2OTljODI3ODRkYjMzODg0NDRmYmEwZWU4MjNiNTliYjEwMWI2ZGQ2YzQ1ZWMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.CRhftZ7831bEDVElFs7kvaVHRslU7ExmEtX6g5mp52A" content-type-secured-asset="image/png" style="max-width: 100%; height: auto; max-height: 768px;"></a>
+<a target="_blank" rel="noopener noreferrer" href="https://private-user-images.githubusercontent.com/22534130/664861106-298f0c84-a0ff-4bb1-a3e5-981b83c32736.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4Mjc4MDIsIm5iZiI6MTc5MzgyNzUwMiwicGF0aCI6Ii8yMjUzNDEzMC82NjQ4NjExMDYtMjk4ZjBjODQtYTBmZi00YmIxLWEzZTUtOTgxYjgzYzMyNzM2LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIxMjUwMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTExYTRlY2Y5YzQ4MDRjZjc2NjBlN2VhYzBjYjNmYWRiNDFkMTVhNzY1NzhhYTQzYzliYzI5NGVhZmIzMTRlMGMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.yyRa2E7z4cqABeu53d4kvwXwlOW6arb1YPKpzbTcdyk"><img width="1366" height="768" alt="nlinux-instalador-17" src="https://private-user-images.githubusercontent.com/22534130/664861106-298f0c84-a0ff-4bb1-a3e5-981b83c32736.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4Mjc4MDIsIm5iZiI6MTc5MzgyNzUwMiwicGF0aCI6Ii8yMjUzNDEzMC82NjQ4NjExMDYtMjk4ZjBjODQtYTBmZi00YmIxLWEzZTUtOTgxYjgzYzMyNzM2LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIxMjUwMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTExYTRlY2Y5YzQ4MDRjZjc2NjBlN2VhYzBjYjNmYWRiNDFkMTVhNzY1NzhhYTQzYzliYzI5NGVhZmIzMTRlMGMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.yyRa2E7z4cqABeu53d4kvwXwlOW6arb1YPKpzbTcdyk" content-type-secured-asset="image/png" style="max-width: 100%; height: auto; max-height: 768px;"></a>
 - **Instalação completa online**, que instala os pacotes com `pacstrap` e compila os componentes AUR necessários.
 - **Escolha de ext4 ou btrfs**. No btrfs, o instalador cria subvolumes para raiz, home, logs e cache de pacotes.
 - **Criptografia opcional com LUKS2**.
@@ -311,7 +311,7 @@
 - **Seleção de perfil gráfico**.
 <h2>🧭 Instalador</h2>
 <p>O assistente reúne as principais escolhas em um fluxo guiado:<br>
-<a target="_blank" rel="noopener noreferrer" href="https://private-user-images.githubusercontent.com/22534130/692587413-26f4f92c-459a-4d38-8b28-8933e82efa47.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4MjI4NDAsIm5iZiI6MTc5MzgyMjU0MCwicGF0aCI6Ii8yMjUzNDEzMC82OTI1ODc0MTMtMjZmNGY5MmMtNDU5YS00ZDM4LThiMjgtODkzM2U4MmVmYTQ3LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIwMDIyMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTA5ZjQ1YjFjZGEwMTBkOTI2MTIxYTk1NGE2ZThkOTRlYjI0YjVkMTMyZWEwZmJmYzBlOTJlZDlhNjQ4MmNhNWUmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.EJuRdPeN9oQctANIHDFyMxwhnKVi7VaArBPdY57Yo6M"><img width="1366" height="768" alt="falconos-instalador-01" src="https://private-user-images.githubusercontent.com/22534130/692587413-26f4f92c-459a-4d38-8b28-8933e82efa47.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4MjI4NDAsIm5iZiI6MTc5MzgyMjU0MCwicGF0aCI6Ii8yMjUzNDEzMC82OTI1ODc0MTMtMjZmNGY5MmMtNDU5YS00ZDM4LThiMjgtODkzM2U4MmVmYTQ3LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIwMDIyMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTA5ZjQ1YjFjZGEwMTBkOTI2MTIxYTk1NGE2ZThkOTRlYjI0YjVkMTMyZWEwZmJmYzBlOTJlZDlhNjQ4MmNhNWUmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.EJuRdPeN9oQctANIHDFyMxwhnKVi7VaArBPdY57Yo6M" content-type-secured-asset="image/png" style="max-width: 100%; height: auto; max-height: 768px;"></a></p>
+<a target="_blank" rel="noopener noreferrer" href="https://private-user-images.githubusercontent.com/22534130/692587413-26f4f92c-459a-4d38-8b28-8933e82efa47.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4Mjc4MDIsIm5iZiI6MTc5MzgyNzUwMiwicGF0aCI6Ii8yMjUzNDEzMC82OTI1ODc0MTMtMjZmNGY5MmMtNDU5YS00ZDM4LThiMjgtODkzM2U4MmVmYTQ3LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIxMjUwMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTExMTE5ZjBjZTcyOTIxMGU5NGRlMzYzM2I4NDVhMTJmZGM3MjUzZTRlYjZkYzhiZWUyOWYzYTc2OGYyOTViM2ImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.312ct3rE1jpJxYH-z03Urm43KBHxlevitJrVmlfTMAY"><img width="1366" height="768" alt="nlinux-instalador-01" src="https://private-user-images.githubusercontent.com/22534130/692587413-26f4f92c-459a-4d38-8b28-8933e82efa47.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4Mjc4MDIsIm5iZiI6MTc5MzgyNzUwMiwicGF0aCI6Ii8yMjUzNDEzMC82OTI1ODc0MTMtMjZmNGY5MmMtNDU5YS00ZDM4LThiMjgtODkzM2U4MmVmYTQ3LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIxMjUwMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTExMTE5ZjBjZTcyOTIxMGU5NGRlMzYzM2I4NDVhMTJmZGM3MjUzZTRlYjZkYzhiZWUyOWYzYTc2OGYyOTViM2ImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.312ct3rE1jpJxYH-z03Urm43KBHxlevitJrVmlfTMAY" content-type-secured-asset="image/png" style="max-width: 100%; height: auto; max-height: 768px;"></a></p>
 <ol>
 <li>Idioma, teclado e fuso horário.</li>
 <li>Disco de destino.</li>
@@ -325,8 +325,8 @@
 <li>Revisão das escolhas e confirmação.</li>
 </ol>
 <p>A instalação rápida copia o sistema do pendrive e pode ser feita sem rede. A instalação online baixa os pacotes e precisa de conexão. O painel de progresso acompanha a execução; se a janela ou o navegador for fechado, a instalação continua em segundo plano e pode ser retomada no painel.</p>
-<h2>🛍️ FalconOS Software</h2>
-<a target="_blank" rel="noopener noreferrer" href="https://private-user-images.githubusercontent.com/22534130/692588023-955ef258-b585-499d-bece-c93cf00d93be.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4MjI4NDAsIm5iZiI6MTc5MzgyMjU0MCwicGF0aCI6Ii8yMjUzNDEzMC82OTI1ODgwMjMtOTU1ZWYyNTgtYjU4NS00OTlkLWJlY2UtYzkzY2YwMGQ5M2JlLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIwMDIyMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTQ0ZmRkYTE1NTg2OTUxYWI3Zjg3OWU1MjFlYWIwYjFkNDQ0MDg4ZWE4MjY5NjM3Nzg2YjJiMDRjMzAxNTVjNzUmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.B-Rf61rKPS_-dBCraxraOP5FwCcBhpAhs_6YervebZk"><img width="1366" height="768" alt="falconos-instalador-23" src="https://private-user-images.githubusercontent.com/22534130/692588023-955ef258-b585-499d-bece-c93cf00d93be.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4MjI4NDAsIm5iZiI6MTc5MzgyMjU0MCwicGF0aCI6Ii8yMjUzNDEzMC82OTI1ODgwMjMtOTU1ZWYyNTgtYjU4NS00OTlkLWJlY2UtYzkzY2YwMGQ5M2JlLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIwMDIyMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTQ0ZmRkYTE1NTg2OTUxYWI3Zjg3OWU1MjFlYWIwYjFkNDQ0MDg4ZWE4MjY5NjM3Nzg2YjJiMDRjMzAxNTVjNzUmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.B-Rf61rKPS_-dBCraxraOP5FwCcBhpAhs_6YervebZk" content-type-secured-asset="image/png" style="max-width: 100%; height: auto; max-height: 768px;"></a>
+<h2>🛍️ NLinux Software</h2>
+<a target="_blank" rel="noopener noreferrer" href="https://private-user-images.githubusercontent.com/22534130/692588023-955ef258-b585-499d-bece-c93cf00d93be.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4Mjc4MDIsIm5iZiI6MTc5MzgyNzUwMiwicGF0aCI6Ii8yMjUzNDEzMC82OTI1ODgwMjMtOTU1ZWYyNTgtYjU4NS00OTlkLWJlY2UtYzkzY2YwMGQ5M2JlLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIxMjUwMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTQ3ZDZmZTRkYTk1YzczMGYxZTkwZWIyYzE1YmUzZWJiMGI0YjRlYWRlNzI2OGE4MmYyMWJiMWQ1ODc0YzY2YTAmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.m6OBczXlI1s7K8Z_b-beO7PMLYl_u3ld1p2TV5q5pqo"><img width="1366" height="768" alt="nlinux-instalador-23" src="https://private-user-images.githubusercontent.com/22534130/692588023-955ef258-b585-499d-bece-c93cf00d93be.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4Mjc4MDIsIm5iZiI6MTc5MzgyNzUwMiwicGF0aCI6Ii8yMjUzNDEzMC82OTI1ODgwMjMtOTU1ZWYyNTgtYjU4NS00OTlkLWJlY2UtYzkzY2YwMGQ5M2JlLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIxMjUwMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTQ3ZDZmZTRkYTk1YzczMGYxZTkwZWIyYzE1YmUzZWJiMGI0YjRlYWRlNzI2OGE4MmYyMWJiMWQ1ODc0YzY2YTAmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.m6OBczXlI1s7K8Z_b-beO7PMLYl_u3ld1p2TV5q5pqo" content-type-secured-asset="image/png" style="max-width: 100%; height: auto; max-height: 768px;"></a>
 <p>A loja acompanha a distro como aplicativo nativo, não como uma aba de navegador. Ela oferece:</p>
 <ul>
 <li>Busca, categorias, filtro de aplicativos instalados e detalhes dos pacotes.</li>
@@ -368,28 +368,28 @@
 <li>Atualização do sistema com indicação do progresso real.</li>
 <li>Catálogo da loja disponível no ambiente live, inclusive sem conexão.</li>
 <li>Multilib habilitado por padrão.</li>
-<li>Som de notificação próprio do FalconOS e ajustes no áudio da interface.</li>
+<li>Som de notificação próprio do NLinux e ajustes no áudio da interface.</li>
 <li>Melhorias no boot UEFI, incluindo compatibilidade com firmwares que não mantêm variáveis de boot na NVRAM.</li>
 <li>Barra superior reorganizada, relógio com segundos e indicadores de sistema simplificados.</li>
 </ul>
 <h2>📚 Documentação</h2>
 <ul>
-<li><a href="https://nilsonlinux.github.io/docs.html" rel="nofollow">Documentação do FalconOS</a></li>
+<li><a href="https://nilsonlinux.github.io/docs.html" rel="nofollow">Documentação do NLinux</a></li>
 <li><a href="https://nilsonlinux.github.io/recursos.html" rel="nofollow">Recursos da distribuição</a></li>
-<li><a href="https://nilsonlinux.github.io/loja.html" rel="nofollow">Loja FalconOS Software</a></li>
+<li><a href="https://nilsonlinux.github.io/loja.html" rel="nofollow">Loja NLinux Software</a></li>
 <li><a href="https://github.com/Nilsonlinux/nlinux-iso-build">Código e instruções para compilar a ISO</a></li>
 </ul>]]></description>
-      <content:encoded><![CDATA[<h1>FalconOS — primeira release pública</h1>
-<p>A primeira release pública do FalconOS: uma distribuição baseada em Arch Linux, com desktop Wayland Umbriel, shell Noctalia V5, instalador visual e a loja FalconOS Software já incluída.</p>
-<a target="_blank" rel="noopener noreferrer" href="https://private-user-images.githubusercontent.com/22534130/665253204-814eb651-1da1-45c5-9e1d-a1a14cd815a8.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4MjI4NDAsIm5iZiI6MTc5MzgyMjU0MCwicGF0aCI6Ii8yMjUzNDEzMC82NjUyNTMyMDQtODE0ZWI2NTEtMWRhMS00NWM1LTllMWQtYTFhMTRjZDgxNWE4LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIwMDIyMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWZiYjAwOGE1YTQ2ZmI5ZmRhYmFkYTgwY2U2ZTE0ZGMzNTIyMjkwM2NhODNkMDc4OTcxMDQ5NTEzZDZjYzM1NjcmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.ZXP4DBs2kzcj2ht1P-Si4k5of50ZODcEOuu_gpAxeIE"><img width="1366" height="768" alt="image" src="https://private-user-images.githubusercontent.com/22534130/665253204-814eb651-1da1-45c5-9e1d-a1a14cd815a8.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4MjI4NDAsIm5iZiI6MTc5MzgyMjU0MCwicGF0aCI6Ii8yMjUzNDEzMC82NjUyNTMyMDQtODE0ZWI2NTEtMWRhMS00NWM1LTllMWQtYTFhMTRjZDgxNWE4LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIwMDIyMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWZiYjAwOGE1YTQ2ZmI5ZmRhYmFkYTgwY2U2ZTE0ZGMzNTIyMjkwM2NhODNkMDc4OTcxMDQ5NTEzZDZjYzM1NjcmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.ZXP4DBs2kzcj2ht1P-Si4k5of50ZODcEOuu_gpAxeIE" content-type-secured-asset="image/png" style="max-width: 100%; height: auto; max-height: 768px;"></a>
-<h2>✨ O que vem no FalconOS</h2>
+      <content:encoded><![CDATA[<h1>NLinux — primeira release pública</h1>
+<p>A primeira release pública do NLinux: uma distribuição baseada em Arch Linux, com desktop Wayland Umbriel, shell Noctalia V5, instalador visual e a loja NLinux Software já incluída.</p>
+<a target="_blank" rel="noopener noreferrer" href="https://private-user-images.githubusercontent.com/22534130/665253204-814eb651-1da1-45c5-9e1d-a1a14cd815a8.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4Mjc4MDIsIm5iZiI6MTc5MzgyNzUwMiwicGF0aCI6Ii8yMjUzNDEzMC82NjUyNTMyMDQtODE0ZWI2NTEtMWRhMS00NWM1LTllMWQtYTFhMTRjZDgxNWE4LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIxMjUwMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWExNTZjYTg4NWY5MTBhOWQ5ZmJjM2ZhNzkzNGRjOWRhYWRmYTVjNmFhYjhmZDRlMjlmNThkYWZlNDBjYjI4M2MmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.h2Dqu20yHWX4lqYn45ItWiG6OXn6Q_Gx9m_lzTW3bDA"><img width="1366" height="768" alt="image" src="https://private-user-images.githubusercontent.com/22534130/665253204-814eb651-1da1-45c5-9e1d-a1a14cd815a8.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4Mjc4MDIsIm5iZiI6MTc5MzgyNzUwMiwicGF0aCI6Ii8yMjUzNDEzMC82NjUyNTMyMDQtODE0ZWI2NTEtMWRhMS00NWM1LTllMWQtYTFhMTRjZDgxNWE4LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIxMjUwMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWExNTZjYTg4NWY5MTBhOWQ5ZmJjM2ZhNzkzNGRjOWRhYWRmYTVjNmFhYjhmZDRlMjlmNThkYWZlNDBjYjI4M2MmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.h2Dqu20yHWX4lqYn45ItWiG6OXn6Q_Gx9m_lzTW3bDA" content-type-secured-asset="image/png" style="max-width: 100%; height: auto; max-height: 768px;"></a>
+<h2>✨ O que vem no NLinux</h2>
 <ul>
 <li><strong>Arch Linux rolling</strong>, em uma ISO ao vivo para computadores <code>x86_64</code>.</li>
 <li><strong>Desktop Wayland</strong> com compositor Umbriel, shell Noctalia V5 e tela de login greetd com noctalia-greeter.</li>
 <li><strong>Instalador visual em 10 etapas</strong>, aberto no navegador a partir do ambiente live. Ele mostra o progresso real da instalação.</li>
 <li><strong>Instalação rápida offline</strong>, a opção padrão, que copia o sistema a partir do pendrive sem precisar de internet.</li>
 </ul>
-<a target="_blank" rel="noopener noreferrer" href="https://private-user-images.githubusercontent.com/22534130/664861106-298f0c84-a0ff-4bb1-a3e5-981b83c32736.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4MjI4NDAsIm5iZiI6MTc5MzgyMjU0MCwicGF0aCI6Ii8yMjUzNDEzMC82NjQ4NjExMDYtMjk4ZjBjODQtYTBmZi00YmIxLWEzZTUtOTgxYjgzYzMyNzM2LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIwMDIyMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTRlMzAwOGY4MTk1ZmMyNmE5MzU2OTljODI3ODRkYjMzODg0NDRmYmEwZWU4MjNiNTliYjEwMWI2ZGQ2YzQ1ZWMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.CRhftZ7831bEDVElFs7kvaVHRslU7ExmEtX6g5mp52A"><img width="1366" height="768" alt="falconos-instalador-17" src="https://private-user-images.githubusercontent.com/22534130/664861106-298f0c84-a0ff-4bb1-a3e5-981b83c32736.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4MjI4NDAsIm5iZiI6MTc5MzgyMjU0MCwicGF0aCI6Ii8yMjUzNDEzMC82NjQ4NjExMDYtMjk4ZjBjODQtYTBmZi00YmIxLWEzZTUtOTgxYjgzYzMyNzM2LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIwMDIyMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTRlMzAwOGY4MTk1ZmMyNmE5MzU2OTljODI3ODRkYjMzODg0NDRmYmEwZWU4MjNiNTliYjEwMWI2ZGQ2YzQ1ZWMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.CRhftZ7831bEDVElFs7kvaVHRslU7ExmEtX6g5mp52A" content-type-secured-asset="image/png" style="max-width: 100%; height: auto; max-height: 768px;"></a>
+<a target="_blank" rel="noopener noreferrer" href="https://private-user-images.githubusercontent.com/22534130/664861106-298f0c84-a0ff-4bb1-a3e5-981b83c32736.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4Mjc4MDIsIm5iZiI6MTc5MzgyNzUwMiwicGF0aCI6Ii8yMjUzNDEzMC82NjQ4NjExMDYtMjk4ZjBjODQtYTBmZi00YmIxLWEzZTUtOTgxYjgzYzMyNzM2LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIxMjUwMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTExYTRlY2Y5YzQ4MDRjZjc2NjBlN2VhYzBjYjNmYWRiNDFkMTVhNzY1NzhhYTQzYzliYzI5NGVhZmIzMTRlMGMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.yyRa2E7z4cqABeu53d4kvwXwlOW6arb1YPKpzbTcdyk"><img width="1366" height="768" alt="nlinux-instalador-17" src="https://private-user-images.githubusercontent.com/22534130/664861106-298f0c84-a0ff-4bb1-a3e5-981b83c32736.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4Mjc4MDIsIm5iZiI6MTc5MzgyNzUwMiwicGF0aCI6Ii8yMjUzNDEzMC82NjQ4NjExMDYtMjk4ZjBjODQtYTBmZi00YmIxLWEzZTUtOTgxYjgzYzMyNzM2LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIxMjUwMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTExYTRlY2Y5YzQ4MDRjZjc2NjBlN2VhYzBjYjNmYWRiNDFkMTVhNzY1NzhhYTQzYzliYzI5NGVhZmIzMTRlMGMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.yyRa2E7z4cqABeu53d4kvwXwlOW6arb1YPKpzbTcdyk" content-type-secured-asset="image/png" style="max-width: 100%; height: auto; max-height: 768px;"></a>
 - **Instalação completa online**, que instala os pacotes com `pacstrap` e compila os componentes AUR necessários.
 - **Escolha de ext4 ou btrfs**. No btrfs, o instalador cria subvolumes para raiz, home, logs e cache de pacotes.
 - **Criptografia opcional com LUKS2**.
@@ -397,7 +397,7 @@
 - **Seleção de perfil gráfico**.
 <h2>🧭 Instalador</h2>
 <p>O assistente reúne as principais escolhas em um fluxo guiado:<br>
-<a target="_blank" rel="noopener noreferrer" href="https://private-user-images.githubusercontent.com/22534130/692587413-26f4f92c-459a-4d38-8b28-8933e82efa47.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4MjI4NDAsIm5iZiI6MTc5MzgyMjU0MCwicGF0aCI6Ii8yMjUzNDEzMC82OTI1ODc0MTMtMjZmNGY5MmMtNDU5YS00ZDM4LThiMjgtODkzM2U4MmVmYTQ3LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIwMDIyMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTA5ZjQ1YjFjZGEwMTBkOTI2MTIxYTk1NGE2ZThkOTRlYjI0YjVkMTMyZWEwZmJmYzBlOTJlZDlhNjQ4MmNhNWUmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.EJuRdPeN9oQctANIHDFyMxwhnKVi7VaArBPdY57Yo6M"><img width="1366" height="768" alt="falconos-instalador-01" src="https://private-user-images.githubusercontent.com/22534130/692587413-26f4f92c-459a-4d38-8b28-8933e82efa47.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4MjI4NDAsIm5iZiI6MTc5MzgyMjU0MCwicGF0aCI6Ii8yMjUzNDEzMC82OTI1ODc0MTMtMjZmNGY5MmMtNDU5YS00ZDM4LThiMjgtODkzM2U4MmVmYTQ3LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIwMDIyMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTA5ZjQ1YjFjZGEwMTBkOTI2MTIxYTk1NGE2ZThkOTRlYjI0YjVkMTMyZWEwZmJmYzBlOTJlZDlhNjQ4MmNhNWUmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.EJuRdPeN9oQctANIHDFyMxwhnKVi7VaArBPdY57Yo6M" content-type-secured-asset="image/png" style="max-width: 100%; height: auto; max-height: 768px;"></a></p>
+<a target="_blank" rel="noopener noreferrer" href="https://private-user-images.githubusercontent.com/22534130/692587413-26f4f92c-459a-4d38-8b28-8933e82efa47.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4Mjc4MDIsIm5iZiI6MTc5MzgyNzUwMiwicGF0aCI6Ii8yMjUzNDEzMC82OTI1ODc0MTMtMjZmNGY5MmMtNDU5YS00ZDM4LThiMjgtODkzM2U4MmVmYTQ3LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIxMjUwMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTExMTE5ZjBjZTcyOTIxMGU5NGRlMzYzM2I4NDVhMTJmZGM3MjUzZTRlYjZkYzhiZWUyOWYzYTc2OGYyOTViM2ImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.312ct3rE1jpJxYH-z03Urm43KBHxlevitJrVmlfTMAY"><img width="1366" height="768" alt="nlinux-instalador-01" src="https://private-user-images.githubusercontent.com/22534130/692587413-26f4f92c-459a-4d38-8b28-8933e82efa47.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4Mjc4MDIsIm5iZiI6MTc5MzgyNzUwMiwicGF0aCI6Ii8yMjUzNDEzMC82OTI1ODc0MTMtMjZmNGY5MmMtNDU5YS00ZDM4LThiMjgtODkzM2U4MmVmYTQ3LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIxMjUwMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTExMTE5ZjBjZTcyOTIxMGU5NGRlMzYzM2I4NDVhMTJmZGM3MjUzZTRlYjZkYzhiZWUyOWYzYTc2OGYyOTViM2ImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.312ct3rE1jpJxYH-z03Urm43KBHxlevitJrVmlfTMAY" content-type-secured-asset="image/png" style="max-width: 100%; height: auto; max-height: 768px;"></a></p>
 <ol>
 <li>Idioma, teclado e fuso horário.</li>
 <li>Disco de destino.</li>
@@ -411,8 +411,8 @@
 <li>Revisão das escolhas e confirmação.</li>
 </ol>
 <p>A instalação rápida copia o sistema do pendrive e pode ser feita sem rede. A instalação online baixa os pacotes e precisa de conexão. O painel de progresso acompanha a execução; se a janela ou o navegador for fechado, a instalação continua em segundo plano e pode ser retomada no painel.</p>
-<h2>🛍️ FalconOS Software</h2>
-<a target="_blank" rel="noopener noreferrer" href="https://private-user-images.githubusercontent.com/22534130/692588023-955ef258-b585-499d-bece-c93cf00d93be.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4MjI4NDAsIm5iZiI6MTc5MzgyMjU0MCwicGF0aCI6Ii8yMjUzNDEzMC82OTI1ODgwMjMtOTU1ZWYyNTgtYjU4NS00OTlkLWJlY2UtYzkzY2YwMGQ5M2JlLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIwMDIyMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTQ0ZmRkYTE1NTg2OTUxYWI3Zjg3OWU1MjFlYWIwYjFkNDQ0MDg4ZWE4MjY5NjM3Nzg2YjJiMDRjMzAxNTVjNzUmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.B-Rf61rKPS_-dBCraxraOP5FwCcBhpAhs_6YervebZk"><img width="1366" height="768" alt="falconos-instalador-23" src="https://private-user-images.githubusercontent.com/22534130/692588023-955ef258-b585-499d-bece-c93cf00d93be.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4MjI4NDAsIm5iZiI6MTc5MzgyMjU0MCwicGF0aCI6Ii8yMjUzNDEzMC82OTI1ODgwMjMtOTU1ZWYyNTgtYjU4NS00OTlkLWJlY2UtYzkzY2YwMGQ5M2JlLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIwMDIyMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTQ0ZmRkYTE1NTg2OTUxYWI3Zjg3OWU1MjFlYWIwYjFkNDQ0MDg4ZWE4MjY5NjM3Nzg2YjJiMDRjMzAxNTVjNzUmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.B-Rf61rKPS_-dBCraxraOP5FwCcBhpAhs_6YervebZk" content-type-secured-asset="image/png" style="max-width: 100%; height: auto; max-height: 768px;"></a>
+<h2>🛍️ NLinux Software</h2>
+<a target="_blank" rel="noopener noreferrer" href="https://private-user-images.githubusercontent.com/22534130/692588023-955ef258-b585-499d-bece-c93cf00d93be.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4Mjc4MDIsIm5iZiI6MTc5MzgyNzUwMiwicGF0aCI6Ii8yMjUzNDEzMC82OTI1ODgwMjMtOTU1ZWYyNTgtYjU4NS00OTlkLWJlY2UtYzkzY2YwMGQ5M2JlLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIxMjUwMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTQ3ZDZmZTRkYTk1YzczMGYxZTkwZWIyYzE1YmUzZWJiMGI0YjRlYWRlNzI2OGE4MmYyMWJiMWQ1ODc0YzY2YTAmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.m6OBczXlI1s7K8Z_b-beO7PMLYl_u3ld1p2TV5q5pqo"><img width="1366" height="768" alt="nlinux-instalador-23" src="https://private-user-images.githubusercontent.com/22534130/692588023-955ef258-b585-499d-bece-c93cf00d93be.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4Mjc4MDIsIm5iZiI6MTc5MzgyNzUwMiwicGF0aCI6Ii8yMjUzNDEzMC82OTI1ODgwMjMtOTU1ZWYyNTgtYjU4NS00OTlkLWJlY2UtYzkzY2YwMGQ5M2JlLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIxMjUwMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTQ3ZDZmZTRkYTk1YzczMGYxZTkwZWIyYzE1YmUzZWJiMGI0YjRlYWRlNzI2OGE4MmYyMWJiMWQ1ODc0YzY2YTAmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.m6OBczXlI1s7K8Z_b-beO7PMLYl_u3ld1p2TV5q5pqo" content-type-secured-asset="image/png" style="max-width: 100%; height: auto; max-height: 768px;"></a>
 <p>A loja acompanha a distro como aplicativo nativo, não como uma aba de navegador. Ela oferece:</p>
 <ul>
 <li>Busca, categorias, filtro de aplicativos instalados e detalhes dos pacotes.</li>
@@ -454,15 +454,15 @@
 <li>Atualização do sistema com indicação do progresso real.</li>
 <li>Catálogo da loja disponível no ambiente live, inclusive sem conexão.</li>
 <li>Multilib habilitado por padrão.</li>
-<li>Som de notificação próprio do FalconOS e ajustes no áudio da interface.</li>
+<li>Som de notificação próprio do NLinux e ajustes no áudio da interface.</li>
 <li>Melhorias no boot UEFI, incluindo compatibilidade com firmwares que não mantêm variáveis de boot na NVRAM.</li>
 <li>Barra superior reorganizada, relógio com segundos e indicadores de sistema simplificados.</li>
 </ul>
 <h2>📚 Documentação</h2>
 <ul>
-<li><a href="https://nilsonlinux.github.io/docs.html" rel="nofollow">Documentação do FalconOS</a></li>
+<li><a href="https://nilsonlinux.github.io/docs.html" rel="nofollow">Documentação do NLinux</a></li>
 <li><a href="https://nilsonlinux.github.io/recursos.html" rel="nofollow">Recursos da distribuição</a></li>
-<li><a href="https://nilsonlinux.github.io/loja.html" rel="nofollow">Loja FalconOS Software</a></li>
+<li><a href="https://nilsonlinux.github.io/loja.html" rel="nofollow">Loja NLinux Software</a></li>
 <li><a href="https://github.com/Nilsonlinux/nlinux-iso-build">Código e instruções para compilar a ISO</a></li>
 </ul>]]></content:encoded>
     </item>
