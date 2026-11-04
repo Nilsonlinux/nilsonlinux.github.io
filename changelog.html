@@ -50,6 +50,7 @@
 			--accent-2: #9bfece;
 			--accent-3: #a9aefe;
 			--on-accent: #0e0e43;
+			--verified: #3fb950;
 			--warn: #ffc46b;
 			--danger: #ff9a9a;
 			--shadow-card: 0 1px 2px rgba(0,0,0,.35), 0 12px 32px -12px rgba(0,0,0,.55);
@@ -71,6 +72,7 @@
 			--accent-2: #c9a32a;
 			--accent-3: #6b74f0;
 			--on-accent: #ffffff;
+			--verified: #238636;
 			--warn: #b46a00;
 			--danger: #c0392b;
 			--shadow-card: 0 1px 2px rgba(45,49,128,.1), 0 12px 32px -12px rgba(45,49,128,.22);
@@ -376,6 +378,14 @@
 		.github-release-summary { min-width: 0; }
 		.github-release-summary .doc-h3 { margin: 0; }
 		.github-release-summary .doc-p { margin: .35rem 0 0; }
+		.github-release-verified {
+			display: inline-flex; align-items: center; gap: .25rem; margin-left: .5rem;
+			padding: .12rem .45rem; border: 1px solid color-mix(in srgb, var(--verified) 45%, transparent);
+			border-radius: 999px; background: color-mix(in srgb, var(--verified) 9%, transparent);
+			color: var(--verified); font-size: .68rem; font-weight: 700; line-height: 1.35;
+			white-space: nowrap; vertical-align: middle;
+		}
+		.github-release-verified .ti { font-size: .8rem; }
 		/* abertura deslizante: o conteúdo mora dentro de .github-release-body,
 		   que é a única linha do grid de .github-release-content. Animando
 		   0fr -> 1fr o card abre deslizando (sem JS: vale para qualquer
@@ -949,6 +959,33 @@
 		link.textContent = linkText;
 		releaseStatus.append(link);
 	};
+	const verifyReleaseTag = async tag => {
+		if (typeof tag !== 'string' || !tag) return false;
+		const api = 'https://api.github.com/repos/Nilsonlinux/nlinux-iso-build';
+		try {
+			const refResponse = await fetch(`${api}/git/ref/tags/${encodeURIComponent(tag)}`, {
+				headers: { Accept: 'application/vnd.github+json' },
+				cache: 'no-store'
+			});
+			if (!refResponse.ok) throw new Error(`GitHub API respondeu HTTP ${refResponse.status} ao consultar ${tag}`);
+			const ref = await refResponse.json();
+			if (ref.ref !== `refs/tags/${tag}` || ref.object?.type !== 'tag' ||
+				!/^[a-f0-9]{40,64}$/i.test(ref.object.sha || '')) return false;
+
+			const tagResponse = await fetch(`${api}/git/tags/${ref.object.sha}`, {
+				headers: { Accept: 'application/vnd.github+json' },
+				cache: 'no-store'
+			});
+			if (!tagResponse.ok) throw new Error(`GitHub API respondeu HTTP ${tagResponse.status} ao verificar ${tag}`);
+			const tagObject = await tagResponse.json();
+			return tagObject.tag === tag &&
+				tagObject.verification?.verified === true &&
+				tagObject.verification.reason === 'valid';
+		} catch (error) {
+			console.warn(`Não foi possível verificar a assinatura GPG da release ${tag}.`, error);
+			return false;
+		}
+	};
 	// URLs permitidas nos links markdown das releases. Qualquer outra coisa
 	// (javascript:, data:) é descartada, porque o texto vem da API do GitHub.
 	const safeHref = href => {
@@ -1260,6 +1297,18 @@
 			metadata.append(byline);
 		}
 		summaryContent.append(metadata);
+		verifyReleaseTag(release.tag_name).then(verified => {
+			if (!verified) return;
+			const badge = document.createElement('span');
+			badge.className = 'github-release-verified';
+			badge.title = 'Assinatura GPG do tag verificada pelo GitHub';
+			badge.setAttribute('aria-label', 'Release verificada por assinatura GPG');
+			const icon = document.createElement('i');
+			icon.className = 'ti ti-shield-check';
+			icon.setAttribute('aria-hidden', 'true');
+			badge.append(icon, ' Verificado e assinado');
+			metadata.append(' ', badge);
+		});
 		headingGroup.append(summaryContent);
 		summary.append(headingGroup);
 		card.append(summary);
