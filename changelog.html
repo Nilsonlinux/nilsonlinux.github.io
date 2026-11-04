@@ -301,6 +301,7 @@
 			border-left-color: var(--accent); font-weight: 600;
 		}
 		.toc-list a .ti { font-size: .95rem; flex-shrink: 0; opacity: .85; }
+		.toc-list a .github-release-toc-icon { margin-left: auto; color: var(--faint); }
 		.toc-list li.hidden { display: none; }
 		.toc-empty { padding: .5rem .55rem; font-size: .78rem; color: var(--faint); }
 		.toc-group {
@@ -934,6 +935,10 @@
 		const icon = document.createElement('i');
 		icon.className = 'ti ti-history';
 		link.append(icon, ` ${release.name || release.tag_name}`);
+		const githubIcon = document.createElement('i');
+		githubIcon.className = 'ti ti-brand-github github-release-toc-icon';
+		githubIcon.setAttribute('aria-hidden', 'true');
+		link.append(githubIcon);
 		link.addEventListener('click', () => { card.open = true; });
 		item.append(link);
 		tocList.append(item);
