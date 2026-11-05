@@ -22,162 +22,66 @@
       <guid isPermaLink="true">https://github.com/Nilsonlinux/nlinux-iso-build/releases/tag/2026.11.03</guid>
       <pubDate>Tue, 03 Nov 2026 14:33:11 +0000</pubDate>
       <description><![CDATA[<h1>NLinux — release 2026.11.03</h1>
-<h2 align="center">⬇️ Download</h2>
-<p align="center">
-  <a href="https://drive.google.com/file/d/1OwX09j8_L7ikGAhdyWwYPVtuHDfo1CtK/view?usp=sharing" rel="nofollow">NLinux ISO (Google Drive)</a> — ISO live, ~2,9 GB, para <code>x86_64</code>.<br>
-  sha256 da ISO <code>92ce5f420d335d23f4bf64ec6fe61886166163e7eb48fe1af459b9cec2754551</code>
-</p>
-<p>Terceira release pública do NLinux. A grande mudança desta versão é a <strong>identidade definitiva da distribuição</strong>: a identidade NLinux é consolidada e tudo passa a usar o nome <strong>NLinux</strong> — nome do sistema, usuário do ambiente live, hostname padrão, instalador, loja, serviços, arquivos de configuração, arte e repositórios. Junto vêm o <strong>Timeshift</strong> para snapshots do sistema, o <strong>mpv-mpris</strong> para integração de mídia com o player e ajustes visuais no Noctalia.</p>
-<h2>✨ Novidades</h2>
+<p>Terceira release pública do NLinux, com a identidade da distribuição consolidada no sistema, no instalador, na loja, nos serviços, na documentação e nos repositórios.</p>
+<h2>Download</h2>
+<p><a href="https://drive.google.com/file/d/1OwX09j8_L7ikGAhdyWwYPVtuHDfo1CtK/view?usp=sharing" rel="nofollow">Baixar a ISO NLinux no Google Drive</a> — ISO live para <code>x86_64</code>, aproximadamente 2,9 GB.</p>
+<p>SHA-256: <code>92ce5f420d335d23f4bf64ec6fe61886166163e7eb48fe1af459b9cec2754551</code></p>
+<h2>Novidades</h2>
 <ul>
-<li>
-<p><strong>Identidade NLinux consolidada</strong>: a renomeação foi completa e não ficou só na tela.</p>
-<ul>
-<li><code>/etc/os-release</code>, <code>/etc/issue</code>, <code>/etc/motd</code>, hostname e label da ISO usam <strong>NLinux</strong>.</li>
-<li>O usuário do ambiente live passa a ser <strong><code>nlinux</code></strong>, com senha <strong><code>nlinux</code></strong>.</li>
-<li>O hostname padrão da instalação passa a ser <strong><code>nlinux</code></strong>.</li>
-<li>Instalador, loja, serviços systemd, pacote Python da loja e arquivos internos foram padronizados com o prefixo <code>nlinux-*</code>.</li>
-<li>Os repositórios oficiais também mudaram: <a href="https://github.com/Nilsonlinux/nlinux-iso-build"><code>nlinux-iso-build</code></a>, <a href="https://github.com/Nilsonlinux/nlinux-software"><code>nlinux-software</code></a> e <a href="https://github.com/Nilsonlinux/nlinux-software-admin"><code>nlinux-software-admin</code></a>.</li>
+<li>Identidade NLinux aplicada ao sistema, ao usuário live (<code>nlinux</code>), ao hostname, ao instalador, à loja, aos serviços e aos arquivos de configuração.</li>
+<li>Visual atualizado no menu de boot, no fastfetch, na tela de boas-vindas, no instalador e nos ícones.</li>
+<li>Timeshift incluído para snapshots e restauração do sistema.</li>
+<li>Integração MPRIS do mpv para controles de mídia.</li>
+<li>Ajustes visuais no Noctalia e catálogo da loja com 63 aplicativos.</li>
+<li>Site oficial atualizado com a comunidade NLinux no Telegram.</li>
 </ul>
-</li>
-<li>
-<p><strong>Nova identidade visual</strong>: logo novo no menu de boot, no fastfetch, na tela de boas-vindas, no instalador, na loja e nos ícones do sistema, com a arte de fundo atualizada (<code>NLinux.jpg</code> / <code>splash.png</code>). Os temas de som e os nomes dos arquivos de arte também seguem a nova marca.</p>
-</li>
-</ul>
-<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://raw.githubusercontent.com/Nilsonlinux/nlinux-iso-build/main/install/chroot/nlinux-welcome/welcome-logo.png"><img src="https://raw.githubusercontent.com/Nilsonlinux/nlinux-iso-build/main/install/chroot/nlinux-welcome/welcome-logo.png" alt="NLinux" style="max-width: 100%;"></a></p>
-<ul>
-<li>
-<p><strong>Timeshift incluído</strong>: o Timeshift vem na lista de pacotes do desktop e é instalado tanto no modo <strong>Rápido offline</strong> quanto no <strong>Completo online</strong>. Dá para criar snapshots do sistema e restaurar depois, com interface gráfica e assistente próprio.</p>
-</li>
-<li>
-<p><strong>mpv-mpris</strong>: o mpv passa a expor controles de mídia pelo MPRIS, então as teclas <strong>Play/Pause/Próxima/Anterior</strong> e os widgets de mídia do Noctalia controlam o player direto, sem plugin extra.</p>
-</li>
-<li>
-<p><strong>Noctalia</strong>: os grupos da barra (RAM/CPU/temperatura e clima/relógio) passaram a usar <code>surface_container</code> como preenchimento, com contraste mais consistente com o tema.</p>
-</li>
-<li>
-<p><strong>Comunidade no Telegram</strong>: o site oficial agora aponta para o grupo <a href="https://t.me/NLinuxCommunity" rel="nofollow">NLinux Community</a>.</p>
-</li>
-</ul>
-<h2>🔧 Também nesta versão</h2>
-<ul>
-<li><strong>Instalador e loja com a marca nova</strong>: janela, atalhos, caminhos em <code>/opt</code>, nomes dos binários e mensagens internas foram ajustados para NLinux; o instalador continua com as <strong>10 etapas</strong> e os dois modos de instalação.</li>
-<li><strong>Serviços renomeados</strong>: <code>nlinux-pacman-refresh.service</code> e os arquivos de sudoers do build agora usam o prefixo <code>nlinux-</code>.</li>
-<li><strong>Documentação atualizada</strong>: README, notas de licença e textos de terceiros acompanham o novo nome, os novos repositórios e os pacotes incluídos.</li>
-<li><strong>Catálogo da loja</strong>: revisão 373, com <strong>63 aplicativos</strong>, servida automaticamente pelo NLinux Software.</li>
-</ul>
-<h2>⬆️ Já tem o NLinux instalado?</h2>
-<ul>
-<li>Atualize os pacotes normalmente: <code>sudo pacman -Syu</code>.</li>
-<li>Para ter a identidade nova por completo — usuário live <code>nlinux</code>, caminhos <code>nlinux-*</code>, arte e menu atualizados — o caminho recomendado é <strong>instalar a ISO 2026.11.03</strong>. A renomeação mexe em caminhos do sistema que não são migrados por uma atualização de pacotes.</li>
-<li>O Timeshift pode ser instalado em sistemas já existentes com <code>sudo pacman -S timeshift</code>.</li>
-<li>O mpv-mpris pode ser instalado com <code>sudo pacman -S mpv-mpris</code>.</li>
-</ul>
-<h2>💾 Requisitos</h2>
+<h2>Requisitos e instalação</h2>
 <ul>
 <li>Arquitetura <code>x86_64</code>; pendrive de 8 GB ou mais.</li>
-<li><strong>UEFI é necessário para instalar.</strong> A ISO também inclui opções de boot BIOS para experimentar o ambiente live.</li>
-<li>Internet: opcional na instalação rápida offline; necessária na instalação completa online.</li>
-<li>Login do ambiente live: usuário <strong><code>nlinux</code></strong>, senha <strong><code>nlinux</code></strong>.</li>
+<li>UEFI necessário para instalar. A ISO também oferece opções BIOS para experimentar o ambiente live.</li>
+<li>A instalação rápida funciona offline; a instalação completa requer internet.</li>
+<li>Login do ambiente live: usuário <code>nlinux</code>, senha <code>nlinux</code>.</li>
+<li>Para conferir o download: <code>sha256sum nlinux-2026.11.03-x86_64.iso</code>.</li>
 </ul>
-<blockquote>
-<p>Antes de alterar partições, faça backup dos dados. Em dual boot com Windows, desative o BitLocker e a Inicialização Rápida/hibernação antes de prosseguir.</p>
-</blockquote>
-<h2>✅ Como conferir o download</h2>
-<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" data-snippet-clipboard-copy-content="sha256sum nlinux-2026.11.03-x86_64.iso
-# 92ce5f420d335d23f4bf64ec6fe61886166163e7eb48fe1af459b9cec2754551"><pre>sha256sum nlinux-2026.11.03-x86_64.iso
-<span class="pl-c"><span class="pl-c">#</span> 92ce5f420d335d23f4bf64ec6fe61886166163e7eb48fe1af459b9cec2754551</span></pre></div>
-<h2>📚 Documentação</h2>
+<p>Faça backup antes de alterar partições. Em dual boot com Windows, desative BitLocker, Inicialização Rápida e hibernação antes de prosseguir.</p>
+<h2>Documentação</h2>
 <ul>
 <li><a href="https://nilsonlinux.github.io/docs.html" rel="nofollow">Documentação do NLinux</a></li>
 <li><a href="https://nilsonlinux.github.io/changelog.html" rel="nofollow">Changelog</a></li>
-<li><a href="https://nilsonlinux.github.io/recursos.html" rel="nofollow">Recursos da distribuição</a></li>
-<li><a href="https://nilsonlinux.github.io/loja.html" rel="nofollow">Loja NLinux Software</a></li>
+<li><a href="https://nilsonlinux.github.io/recursos.html" rel="nofollow">Recursos</a></li>
+<li><a href="https://nilsonlinux.github.io/loja.html" rel="nofollow">NLinux Software</a></li>
 <li><a href="https://github.com/Nilsonlinux/nlinux-iso-build">Código e instruções para compilar a ISO</a></li>
-</ul>
-<h2>📦 Versões anteriores</h2>
-<ul>
-<li><a href="https://github.com/Nilsonlinux/nlinux-iso-build/releases/tag/2026.10.15">NLinux 2026.10.15</a> — opencode incluído, GPL-3.0 explícito e atualização sem interrupções.</li>
-<li><a href="https://github.com/Nilsonlinux/nlinux-iso-build/releases/tag/2026.10.09">NLinux 2026.10.09</a> — primeira release pública.</li>
 </ul>]]></description>
       <content:encoded><![CDATA[<h1>NLinux — release 2026.11.03</h1>
-<h2 align="center">⬇️ Download</h2>
-<p align="center">
-  <a href="https://drive.google.com/file/d/1OwX09j8_L7ikGAhdyWwYPVtuHDfo1CtK/view?usp=sharing" rel="nofollow">NLinux ISO (Google Drive)</a> — ISO live, ~2,9 GB, para <code>x86_64</code>.<br>
-  sha256 da ISO <code>92ce5f420d335d23f4bf64ec6fe61886166163e7eb48fe1af459b9cec2754551</code>
-</p>
-<p>Terceira release pública do NLinux. A grande mudança desta versão é a <strong>identidade definitiva da distribuição</strong>: a identidade NLinux é consolidada e tudo passa a usar o nome <strong>NLinux</strong> — nome do sistema, usuário do ambiente live, hostname padrão, instalador, loja, serviços, arquivos de configuração, arte e repositórios. Junto vêm o <strong>Timeshift</strong> para snapshots do sistema, o <strong>mpv-mpris</strong> para integração de mídia com o player e ajustes visuais no Noctalia.</p>
-<h2>✨ Novidades</h2>
+<p>Terceira release pública do NLinux, com a identidade da distribuição consolidada no sistema, no instalador, na loja, nos serviços, na documentação e nos repositórios.</p>
+<h2>Download</h2>
+<p><a href="https://drive.google.com/file/d/1OwX09j8_L7ikGAhdyWwYPVtuHDfo1CtK/view?usp=sharing" rel="nofollow">Baixar a ISO NLinux no Google Drive</a> — ISO live para <code>x86_64</code>, aproximadamente 2,9 GB.</p>
+<p>SHA-256: <code>92ce5f420d335d23f4bf64ec6fe61886166163e7eb48fe1af459b9cec2754551</code></p>
+<h2>Novidades</h2>
 <ul>
-<li>
-<p><strong>Identidade NLinux consolidada</strong>: a renomeação foi completa e não ficou só na tela.</p>
-<ul>
-<li><code>/etc/os-release</code>, <code>/etc/issue</code>, <code>/etc/motd</code>, hostname e label da ISO usam <strong>NLinux</strong>.</li>
-<li>O usuário do ambiente live passa a ser <strong><code>nlinux</code></strong>, com senha <strong><code>nlinux</code></strong>.</li>
-<li>O hostname padrão da instalação passa a ser <strong><code>nlinux</code></strong>.</li>
-<li>Instalador, loja, serviços systemd, pacote Python da loja e arquivos internos foram padronizados com o prefixo <code>nlinux-*</code>.</li>
-<li>Os repositórios oficiais também mudaram: <a href="https://github.com/Nilsonlinux/nlinux-iso-build"><code>nlinux-iso-build</code></a>, <a href="https://github.com/Nilsonlinux/nlinux-software"><code>nlinux-software</code></a> e <a href="https://github.com/Nilsonlinux/nlinux-software-admin"><code>nlinux-software-admin</code></a>.</li>
+<li>Identidade NLinux aplicada ao sistema, ao usuário live (<code>nlinux</code>), ao hostname, ao instalador, à loja, aos serviços e aos arquivos de configuração.</li>
+<li>Visual atualizado no menu de boot, no fastfetch, na tela de boas-vindas, no instalador e nos ícones.</li>
+<li>Timeshift incluído para snapshots e restauração do sistema.</li>
+<li>Integração MPRIS do mpv para controles de mídia.</li>
+<li>Ajustes visuais no Noctalia e catálogo da loja com 63 aplicativos.</li>
+<li>Site oficial atualizado com a comunidade NLinux no Telegram.</li>
 </ul>
-</li>
-<li>
-<p><strong>Nova identidade visual</strong>: logo novo no menu de boot, no fastfetch, na tela de boas-vindas, no instalador, na loja e nos ícones do sistema, com a arte de fundo atualizada (<code>NLinux.jpg</code> / <code>splash.png</code>). Os temas de som e os nomes dos arquivos de arte também seguem a nova marca.</p>
-</li>
-</ul>
-<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://raw.githubusercontent.com/Nilsonlinux/nlinux-iso-build/main/install/chroot/nlinux-welcome/welcome-logo.png"><img src="https://raw.githubusercontent.com/Nilsonlinux/nlinux-iso-build/main/install/chroot/nlinux-welcome/welcome-logo.png" alt="NLinux" style="max-width: 100%;"></a></p>
-<ul>
-<li>
-<p><strong>Timeshift incluído</strong>: o Timeshift vem na lista de pacotes do desktop e é instalado tanto no modo <strong>Rápido offline</strong> quanto no <strong>Completo online</strong>. Dá para criar snapshots do sistema e restaurar depois, com interface gráfica e assistente próprio.</p>
-</li>
-<li>
-<p><strong>mpv-mpris</strong>: o mpv passa a expor controles de mídia pelo MPRIS, então as teclas <strong>Play/Pause/Próxima/Anterior</strong> e os widgets de mídia do Noctalia controlam o player direto, sem plugin extra.</p>
-</li>
-<li>
-<p><strong>Noctalia</strong>: os grupos da barra (RAM/CPU/temperatura e clima/relógio) passaram a usar <code>surface_container</code> como preenchimento, com contraste mais consistente com o tema.</p>
-</li>
-<li>
-<p><strong>Comunidade no Telegram</strong>: o site oficial agora aponta para o grupo <a href="https://t.me/NLinuxCommunity" rel="nofollow">NLinux Community</a>.</p>
-</li>
-</ul>
-<h2>🔧 Também nesta versão</h2>
-<ul>
-<li><strong>Instalador e loja com a marca nova</strong>: janela, atalhos, caminhos em <code>/opt</code>, nomes dos binários e mensagens internas foram ajustados para NLinux; o instalador continua com as <strong>10 etapas</strong> e os dois modos de instalação.</li>
-<li><strong>Serviços renomeados</strong>: <code>nlinux-pacman-refresh.service</code> e os arquivos de sudoers do build agora usam o prefixo <code>nlinux-</code>.</li>
-<li><strong>Documentação atualizada</strong>: README, notas de licença e textos de terceiros acompanham o novo nome, os novos repositórios e os pacotes incluídos.</li>
-<li><strong>Catálogo da loja</strong>: revisão 373, com <strong>63 aplicativos</strong>, servida automaticamente pelo NLinux Software.</li>
-</ul>
-<h2>⬆️ Já tem o NLinux instalado?</h2>
-<ul>
-<li>Atualize os pacotes normalmente: <code>sudo pacman -Syu</code>.</li>
-<li>Para ter a identidade nova por completo — usuário live <code>nlinux</code>, caminhos <code>nlinux-*</code>, arte e menu atualizados — o caminho recomendado é <strong>instalar a ISO 2026.11.03</strong>. A renomeação mexe em caminhos do sistema que não são migrados por uma atualização de pacotes.</li>
-<li>O Timeshift pode ser instalado em sistemas já existentes com <code>sudo pacman -S timeshift</code>.</li>
-<li>O mpv-mpris pode ser instalado com <code>sudo pacman -S mpv-mpris</code>.</li>
-</ul>
-<h2>💾 Requisitos</h2>
+<h2>Requisitos e instalação</h2>
 <ul>
 <li>Arquitetura <code>x86_64</code>; pendrive de 8 GB ou mais.</li>
-<li><strong>UEFI é necessário para instalar.</strong> A ISO também inclui opções de boot BIOS para experimentar o ambiente live.</li>
-<li>Internet: opcional na instalação rápida offline; necessária na instalação completa online.</li>
-<li>Login do ambiente live: usuário <strong><code>nlinux</code></strong>, senha <strong><code>nlinux</code></strong>.</li>
+<li>UEFI necessário para instalar. A ISO também oferece opções BIOS para experimentar o ambiente live.</li>
+<li>A instalação rápida funciona offline; a instalação completa requer internet.</li>
+<li>Login do ambiente live: usuário <code>nlinux</code>, senha <code>nlinux</code>.</li>
+<li>Para conferir o download: <code>sha256sum nlinux-2026.11.03-x86_64.iso</code>.</li>
 </ul>
-<blockquote>
-<p>Antes de alterar partições, faça backup dos dados. Em dual boot com Windows, desative o BitLocker e a Inicialização Rápida/hibernação antes de prosseguir.</p>
-</blockquote>
-<h2>✅ Como conferir o download</h2>
-<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" data-snippet-clipboard-copy-content="sha256sum nlinux-2026.11.03-x86_64.iso
-# 92ce5f420d335d23f4bf64ec6fe61886166163e7eb48fe1af459b9cec2754551"><pre>sha256sum nlinux-2026.11.03-x86_64.iso
-<span class="pl-c"><span class="pl-c">#</span> 92ce5f420d335d23f4bf64ec6fe61886166163e7eb48fe1af459b9cec2754551</span></pre></div>
-<h2>📚 Documentação</h2>
+<p>Faça backup antes de alterar partições. Em dual boot com Windows, desative BitLocker, Inicialização Rápida e hibernação antes de prosseguir.</p>
+<h2>Documentação</h2>
 <ul>
 <li><a href="https://nilsonlinux.github.io/docs.html" rel="nofollow">Documentação do NLinux</a></li>
 <li><a href="https://nilsonlinux.github.io/changelog.html" rel="nofollow">Changelog</a></li>
-<li><a href="https://nilsonlinux.github.io/recursos.html" rel="nofollow">Recursos da distribuição</a></li>
-<li><a href="https://nilsonlinux.github.io/loja.html" rel="nofollow">Loja NLinux Software</a></li>
+<li><a href="https://nilsonlinux.github.io/recursos.html" rel="nofollow">Recursos</a></li>
+<li><a href="https://nilsonlinux.github.io/loja.html" rel="nofollow">NLinux Software</a></li>
 <li><a href="https://github.com/Nilsonlinux/nlinux-iso-build">Código e instruções para compilar a ISO</a></li>
-</ul>
-<h2>📦 Versões anteriores</h2>
-<ul>
-<li><a href="https://github.com/Nilsonlinux/nlinux-iso-build/releases/tag/2026.10.15">NLinux 2026.10.15</a> — opencode incluído, GPL-3.0 explícito e atualização sem interrupções.</li>
-<li><a href="https://github.com/Nilsonlinux/nlinux-iso-build/releases/tag/2026.10.09">NLinux 2026.10.09</a> — primeira release pública.</li>
 </ul>]]></content:encoded>
     </item>
     <item>
@@ -186,106 +90,64 @@
       <guid isPermaLink="true">https://github.com/Nilsonlinux/nlinux-iso-build/releases/tag/2026.10.15</guid>
       <pubDate>Fri, 16 Oct 2026 01:08:55 +0000</pubDate>
       <description><![CDATA[<h1>NLinux — release 2026.10.15</h1>
-<h2 align="center">⬇️ Download</h2>
-<p align="center">
-  <a href="https://drive.google.com/file/d/1OGHENI3Fs6Up4eLDzPFMtUIGkut3XqV2/view?usp=sharing" rel="nofollow">NLinux ISO (Google Drive)</a> — ISO live, ~2,9 GB, para <code>x86_64</code>.<br>
-  sha256 da ISO <code>ec807478bfe6ef9b1b9bb837de6213e1b08ab32b7abf2a3ff29caff762ebe55b</code>
-</p>
-<p>Segunda release pública do NLinux. Mantém a base Arch Linux com desktop Wayland Umbriel, shell Noctalia V5, instalador visual em 10 etapas e a loja NLinux Software — e agora traz o agente de programação <strong>opencode</strong> já instalado, licenciamento GPL-3.0 explícito, atualização do sistema sem interrupções e uma janela de boas-vindas mais informativa.</p>
-<h2>✨ Novidades</h2>
+<p>Segunda release pública do NLinux, baseada em Arch Linux, com desktop Wayland Umbriel, shell Noctalia V5, instalador visual em 10 etapas e NLinux Software.</p>
+<h2>Download</h2>
+<p><a href="https://drive.google.com/file/d/1OGHENI3Fs6Up4eLDzPFMtUIGkut3XqV2/view?usp=sharing" rel="nofollow">Baixar a ISO NLinux no Google Drive</a> — ISO live para <code>x86_64</code>, aproximadamente 2,9 GB.</p>
+<p>SHA-256: <code>ec807478bfe6ef9b1b9bb837de6213e1b08ab32b7abf2a3ff29caff762ebe55b</code></p>
+<h2>Novidades</h2>
 <ul>
-<li><strong>opencode incluído no sistema</strong>: o agente de programação com IA (repositório <code>extra</code>) vem pré-instalado tanto no ambiente live quanto no sistema instalado, e ganha <strong>atalho próprio na lista de aplicativos</strong> — abre no terminal kitty. Antes ele só podia ser instalado pela loja.</li>
+<li><strong>opencode incluído</strong> no ambiente live e no sistema instalado, com atalho no menu de aplicativos.</li>
+<li>Atualização do sistema pela loja com <code>pacman -Syu</code>, sem prompts desnecessários; instalações, remoções e pacotes AUR continuam pedindo confirmação quando necessário.</li>
+<li>Janela de boas-vindas com data de instalação e versão atual.</li>
+<li>Licença GPL-3.0-or-later, avisos de terceiros e cabeçalhos SPDX.</li>
+<li>Catálogo da loja na revisão 373, com 63 aplicativos, incluindo guvcview.</li>
+<li>Chave pública GPG e instruções para verificar commits e tags.</li>
+<li>Atalhos de sessão desativados na tela de bloqueio do Noctalia.</li>
 </ul>
-<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://raw.githubusercontent.com/Nilsonlinux/nlinux-software/main/src/apps/assets/opencode-1.png"><img src="https://raw.githubusercontent.com/Nilsonlinux/nlinux-software/main/src/apps/assets/opencode-1.png" alt="opencode no NLinux" style="max-width: 100%;"></a></p>
-<ul>
-<li><strong>Atualização do sistema sem interrupções</strong>: a atualização pela loja passou a rodar <code>pacman -Syu</code> de forma automática. Não é mais preciso digitar <code>s</code>/<code>y</code>, e a caixa "Resposta solicitada pelo pacman" deixou de aparecer quando não há pergunta real. Instalação, remoção e pacotes da AUR continuam pedindo confirmação quando de fato existe uma pergunta.</li>
-<li><strong>Janela de boas-vindas mais clara</strong>: passa a mostrar a <strong>Data de instalação</strong> e a <strong>Versão atual (releases)</strong>, consultada na última release publicada. O nome "App Center" foi trocado por <strong>NLinux Software</strong> nos sete idiomas.</li>
-<li><strong>Licenciamento explícito</strong>: a distribuição e a loja embarcada agora trazem a licença <strong>GPL-3.0-or-later</strong>, o arquivo <strong>THIRD_PARTY_NOTICES.md</strong> com os avisos de terceiros e cabeçalhos <strong>SPDX</strong> nos fontes.</li>
-</ul>
-<h2>🔧 Também nesta versão</h2>
-<ul>
-<li><strong>Catálogo da loja atualizado</strong>: revisão 373, com <strong>63 aplicativos</strong> — entrou o <strong>guvcview</strong> (visualização de webcam de dispositivos V4L2). A loja baixa o catálogo novo automaticamente.</li>
-<li><strong>Assinatura GPG das releases</strong>: a chave pública passa a ser publicada no repositório (<code>nlinux-releases-gpg-pub.asc</code>), junto das instruções de verificação de tags e commits.</li>
-<li><strong>Noctalia</strong>: atalhos de sessão desativados na tela de bloqueio (<code>show_shortcuts = false</code>).</li>
-<li><strong>Documentação</strong> do projeto atualizada, incluindo as seções de licença, assinatura GPG e do opencode.</li>
-</ul>
-<h2>⬆️ Já tem o NLinux instalado?</h2>
-<ul>
-<li>Atualize o sistema: <code>sudo pacman -Syu</code>.</li>
-<li>Instale o opencode: <code>sudo pacman -S opencode</code> — o atalho aparece no menu depois disso.</li>
-<li>A loja NLinux Software baixa o catálogo novo (revisão 373) automaticamente.</li>
-</ul>
-<h2>💾 Requisitos</h2>
+<h2>Requisitos</h2>
 <ul>
 <li>Arquitetura <code>x86_64</code>; pendrive de 8 GB ou mais.</li>
-<li><strong>UEFI é necessário para instalar.</strong> A ISO também inclui opções de boot BIOS para experimentar o ambiente live.</li>
-<li>Internet: opcional na instalação rápida offline; necessária na instalação completa online.</li>
+<li>UEFI necessário para instalar; a ISO também inclui opções BIOS para experimentar o ambiente live.</li>
+<li>A instalação rápida funciona offline; a instalação completa requer internet.</li>
 </ul>
-<blockquote>
-<p>Antes de alterar partições, faça backup dos dados. Em dual boot com Windows, desative o BitLocker e a Inicialização Rápida/hibernação antes de prosseguir.</p>
-</blockquote>
-<h2>📚 Documentação</h2>
+<p>Faça backup antes de alterar partições. Em dual boot com Windows, desative BitLocker, Inicialização Rápida e hibernação antes de prosseguir.</p>
+<h2>Documentação</h2>
 <ul>
 <li><a href="https://nilsonlinux.github.io/docs.html" rel="nofollow">Documentação do NLinux</a></li>
 <li><a href="https://nilsonlinux.github.io/changelog.html" rel="nofollow">Changelog</a></li>
-<li><a href="https://nilsonlinux.github.io/recursos.html" rel="nofollow">Recursos da distribuição</a></li>
-<li><a href="https://nilsonlinux.github.io/loja.html" rel="nofollow">Loja NLinux Software</a></li>
+<li><a href="https://nilsonlinux.github.io/recursos.html" rel="nofollow">Recursos</a></li>
+<li><a href="https://nilsonlinux.github.io/loja.html" rel="nofollow">NLinux Software</a></li>
 <li><a href="https://github.com/Nilsonlinux/nlinux-iso-build">Código e instruções para compilar a ISO</a></li>
-</ul>
-<h2>📦 Versões anteriores</h2>
-<ul>
-<li><a href="https://github.com/Nilsonlinux/nlinux-iso-build/releases/tag/2026.10.09">NLinux 2026.10.09</a> — primeira release pública.</li>
 </ul>]]></description>
       <content:encoded><![CDATA[<h1>NLinux — release 2026.10.15</h1>
-<h2 align="center">⬇️ Download</h2>
-<p align="center">
-  <a href="https://drive.google.com/file/d/1OGHENI3Fs6Up4eLDzPFMtUIGkut3XqV2/view?usp=sharing" rel="nofollow">NLinux ISO (Google Drive)</a> — ISO live, ~2,9 GB, para <code>x86_64</code>.<br>
-  sha256 da ISO <code>ec807478bfe6ef9b1b9bb837de6213e1b08ab32b7abf2a3ff29caff762ebe55b</code>
-</p>
-<p>Segunda release pública do NLinux. Mantém a base Arch Linux com desktop Wayland Umbriel, shell Noctalia V5, instalador visual em 10 etapas e a loja NLinux Software — e agora traz o agente de programação <strong>opencode</strong> já instalado, licenciamento GPL-3.0 explícito, atualização do sistema sem interrupções e uma janela de boas-vindas mais informativa.</p>
-<h2>✨ Novidades</h2>
+<p>Segunda release pública do NLinux, baseada em Arch Linux, com desktop Wayland Umbriel, shell Noctalia V5, instalador visual em 10 etapas e NLinux Software.</p>
+<h2>Download</h2>
+<p><a href="https://drive.google.com/file/d/1OGHENI3Fs6Up4eLDzPFMtUIGkut3XqV2/view?usp=sharing" rel="nofollow">Baixar a ISO NLinux no Google Drive</a> — ISO live para <code>x86_64</code>, aproximadamente 2,9 GB.</p>
+<p>SHA-256: <code>ec807478bfe6ef9b1b9bb837de6213e1b08ab32b7abf2a3ff29caff762ebe55b</code></p>
+<h2>Novidades</h2>
 <ul>
-<li><strong>opencode incluído no sistema</strong>: o agente de programação com IA (repositório <code>extra</code>) vem pré-instalado tanto no ambiente live quanto no sistema instalado, e ganha <strong>atalho próprio na lista de aplicativos</strong> — abre no terminal kitty. Antes ele só podia ser instalado pela loja.</li>
+<li><strong>opencode incluído</strong> no ambiente live e no sistema instalado, com atalho no menu de aplicativos.</li>
+<li>Atualização do sistema pela loja com <code>pacman -Syu</code>, sem prompts desnecessários; instalações, remoções e pacotes AUR continuam pedindo confirmação quando necessário.</li>
+<li>Janela de boas-vindas com data de instalação e versão atual.</li>
+<li>Licença GPL-3.0-or-later, avisos de terceiros e cabeçalhos SPDX.</li>
+<li>Catálogo da loja na revisão 373, com 63 aplicativos, incluindo guvcview.</li>
+<li>Chave pública GPG e instruções para verificar commits e tags.</li>
+<li>Atalhos de sessão desativados na tela de bloqueio do Noctalia.</li>
 </ul>
-<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://raw.githubusercontent.com/Nilsonlinux/nlinux-software/main/src/apps/assets/opencode-1.png"><img src="https://raw.githubusercontent.com/Nilsonlinux/nlinux-software/main/src/apps/assets/opencode-1.png" alt="opencode no NLinux" style="max-width: 100%;"></a></p>
-<ul>
-<li><strong>Atualização do sistema sem interrupções</strong>: a atualização pela loja passou a rodar <code>pacman -Syu</code> de forma automática. Não é mais preciso digitar <code>s</code>/<code>y</code>, e a caixa "Resposta solicitada pelo pacman" deixou de aparecer quando não há pergunta real. Instalação, remoção e pacotes da AUR continuam pedindo confirmação quando de fato existe uma pergunta.</li>
-<li><strong>Janela de boas-vindas mais clara</strong>: passa a mostrar a <strong>Data de instalação</strong> e a <strong>Versão atual (releases)</strong>, consultada na última release publicada. O nome "App Center" foi trocado por <strong>NLinux Software</strong> nos sete idiomas.</li>
-<li><strong>Licenciamento explícito</strong>: a distribuição e a loja embarcada agora trazem a licença <strong>GPL-3.0-or-later</strong>, o arquivo <strong>THIRD_PARTY_NOTICES.md</strong> com os avisos de terceiros e cabeçalhos <strong>SPDX</strong> nos fontes.</li>
-</ul>
-<h2>🔧 Também nesta versão</h2>
-<ul>
-<li><strong>Catálogo da loja atualizado</strong>: revisão 373, com <strong>63 aplicativos</strong> — entrou o <strong>guvcview</strong> (visualização de webcam de dispositivos V4L2). A loja baixa o catálogo novo automaticamente.</li>
-<li><strong>Assinatura GPG das releases</strong>: a chave pública passa a ser publicada no repositório (<code>nlinux-releases-gpg-pub.asc</code>), junto das instruções de verificação de tags e commits.</li>
-<li><strong>Noctalia</strong>: atalhos de sessão desativados na tela de bloqueio (<code>show_shortcuts = false</code>).</li>
-<li><strong>Documentação</strong> do projeto atualizada, incluindo as seções de licença, assinatura GPG e do opencode.</li>
-</ul>
-<h2>⬆️ Já tem o NLinux instalado?</h2>
-<ul>
-<li>Atualize o sistema: <code>sudo pacman -Syu</code>.</li>
-<li>Instale o opencode: <code>sudo pacman -S opencode</code> — o atalho aparece no menu depois disso.</li>
-<li>A loja NLinux Software baixa o catálogo novo (revisão 373) automaticamente.</li>
-</ul>
-<h2>💾 Requisitos</h2>
+<h2>Requisitos</h2>
 <ul>
 <li>Arquitetura <code>x86_64</code>; pendrive de 8 GB ou mais.</li>
-<li><strong>UEFI é necessário para instalar.</strong> A ISO também inclui opções de boot BIOS para experimentar o ambiente live.</li>
-<li>Internet: opcional na instalação rápida offline; necessária na instalação completa online.</li>
+<li>UEFI necessário para instalar; a ISO também inclui opções BIOS para experimentar o ambiente live.</li>
+<li>A instalação rápida funciona offline; a instalação completa requer internet.</li>
 </ul>
-<blockquote>
-<p>Antes de alterar partições, faça backup dos dados. Em dual boot com Windows, desative o BitLocker e a Inicialização Rápida/hibernação antes de prosseguir.</p>
-</blockquote>
-<h2>📚 Documentação</h2>
+<p>Faça backup antes de alterar partições. Em dual boot com Windows, desative BitLocker, Inicialização Rápida e hibernação antes de prosseguir.</p>
+<h2>Documentação</h2>
 <ul>
 <li><a href="https://nilsonlinux.github.io/docs.html" rel="nofollow">Documentação do NLinux</a></li>
 <li><a href="https://nilsonlinux.github.io/changelog.html" rel="nofollow">Changelog</a></li>
-<li><a href="https://nilsonlinux.github.io/recursos.html" rel="nofollow">Recursos da distribuição</a></li>
-<li><a href="https://nilsonlinux.github.io/loja.html" rel="nofollow">Loja NLinux Software</a></li>
+<li><a href="https://nilsonlinux.github.io/recursos.html" rel="nofollow">Recursos</a></li>
+<li><a href="https://nilsonlinux.github.io/loja.html" rel="nofollow">NLinux Software</a></li>
 <li><a href="https://github.com/Nilsonlinux/nlinux-iso-build">Código e instruções para compilar a ISO</a></li>
-</ul>
-<h2>📦 Versões anteriores</h2>
-<ul>
-<li><a href="https://github.com/Nilsonlinux/nlinux-iso-build/releases/tag/2026.10.09">NLinux 2026.10.09</a> — primeira release pública.</li>
 </ul>]]></content:encoded>
     </item>
     <item>
@@ -294,175 +156,71 @@
       <guid isPermaLink="true">https://github.com/Nilsonlinux/nlinux-iso-build/releases/tag/2026.10.09</guid>
       <pubDate>Sat, 03 Oct 2026 21:11:32 +0000</pubDate>
       <description><![CDATA[<h1>NLinux — primeira release pública</h1>
-<p>A primeira release pública do NLinux: uma distribuição baseada em Arch Linux, com desktop Wayland Umbriel, shell Noctalia V5, instalador visual e a loja NLinux Software já incluída.</p>
-<a target="_blank" rel="noopener noreferrer" href="https://private-user-images.githubusercontent.com/22534130/665253204-814eb651-1da1-45c5-9e1d-a1a14cd815a8.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4Mjc4MDIsIm5iZiI6MTc5MzgyNzUwMiwicGF0aCI6Ii8yMjUzNDEzMC82NjUyNTMyMDQtODE0ZWI2NTEtMWRhMS00NWM1LTllMWQtYTFhMTRjZDgxNWE4LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIxMjUwMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWExNTZjYTg4NWY5MTBhOWQ5ZmJjM2ZhNzkzNGRjOWRhYWRmYTVjNmFhYjhmZDRlMjlmNThkYWZlNDBjYjI4M2MmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.h2Dqu20yHWX4lqYn45ItWiG6OXn6Q_Gx9m_lzTW3bDA"><img width="1366" height="768" alt="image" src="https://private-user-images.githubusercontent.com/22534130/665253204-814eb651-1da1-45c5-9e1d-a1a14cd815a8.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4Mjc4MDIsIm5iZiI6MTc5MzgyNzUwMiwicGF0aCI6Ii8yMjUzNDEzMC82NjUyNTMyMDQtODE0ZWI2NTEtMWRhMS00NWM1LTllMWQtYTFhMTRjZDgxNWE4LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIxMjUwMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWExNTZjYTg4NWY5MTBhOWQ5ZmJjM2ZhNzkzNGRjOWRhYWRmYTVjNmFhYjhmZDRlMjlmNThkYWZlNDBjYjI4M2MmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.h2Dqu20yHWX4lqYn45ItWiG6OXn6Q_Gx9m_lzTW3bDA" content-type-secured-asset="image/png" style="max-width: 100%; height: auto; max-height: 768px;"></a>
-<h2>✨ O que vem no NLinux</h2>
+<p>A primeira release pública do NLinux: distribuição baseada em Arch Linux, com desktop Wayland Umbriel, shell Noctalia V5, instalador visual e NLinux Software.</p>
+<h2>O que vem no NLinux</h2>
 <ul>
-<li><strong>Arch Linux rolling</strong>, em uma ISO ao vivo para computadores <code>x86_64</code>.</li>
-<li><strong>Desktop Wayland</strong> com compositor Umbriel, shell Noctalia V5 e tela de login greetd com noctalia-greeter.</li>
-<li><strong>Instalador visual em 10 etapas</strong>, aberto no navegador a partir do ambiente live. Ele mostra o progresso real da instalação.</li>
-<li><strong>Instalação rápida offline</strong>, a opção padrão, que copia o sistema a partir do pendrive sem precisar de internet.</li>
+<li>Arch Linux rolling em ISO live para computadores <code>x86_64</code>.</li>
+<li>Desktop Wayland com compositor Umbriel, shell Noctalia V5 e tela de login greetd com noctalia-greeter.</li>
+<li>Instalador visual em 10 etapas, com progresso real da instalação.</li>
+<li>Instalação rápida offline ou instalação completa online com <code>pacstrap</code> e componentes AUR.</li>
+<li>Sistemas de arquivos ext4 ou btrfs, criptografia opcional LUKS2, perfis gráficos e opções para instalação ao lado de outro sistema.</li>
+<li>NLinux Software como aplicativo nativo, com busca, categorias, autenticação do sistema, catálogo local, suporte a pacotes Arch e AUR, sete idiomas e temas claro e escuro.</li>
 </ul>
-<a target="_blank" rel="noopener noreferrer" href="https://private-user-images.githubusercontent.com/22534130/664861106-298f0c84-a0ff-4bb1-a3e5-981b83c32736.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4Mjc4MDIsIm5iZiI6MTc5MzgyNzUwMiwicGF0aCI6Ii8yMjUzNDEzMC82NjQ4NjExMDYtMjk4ZjBjODQtYTBmZi00YmIxLWEzZTUtOTgxYjgzYzMyNzM2LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIxMjUwMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTExYTRlY2Y5YzQ4MDRjZjc2NjBlN2VhYzBjYjNmYWRiNDFkMTVhNzY1NzhhYTQzYzliYzI5NGVhZmIzMTRlMGMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.yyRa2E7z4cqABeu53d4kvwXwlOW6arb1YPKpzbTcdyk"><img width="1366" height="768" alt="nlinux-instalador-17" src="https://private-user-images.githubusercontent.com/22534130/664861106-298f0c84-a0ff-4bb1-a3e5-981b83c32736.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4Mjc4MDIsIm5iZiI6MTc5MzgyNzUwMiwicGF0aCI6Ii8yMjUzNDEzMC82NjQ4NjExMDYtMjk4ZjBjODQtYTBmZi00YmIxLWEzZTUtOTgxYjgzYzMyNzM2LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIxMjUwMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTExYTRlY2Y5YzQ4MDRjZjc2NjBlN2VhYzBjYjNmYWRiNDFkMTVhNzY1NzhhYTQzYzliYzI5NGVhZmIzMTRlMGMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.yyRa2E7z4cqABeu53d4kvwXwlOW6arb1YPKpzbTcdyk" content-type-secured-asset="image/png" style="max-width: 100%; height: auto; max-height: 768px;"></a>
-- **Instalação completa online**, que instala os pacotes com `pacstrap` e compila os componentes AUR necessários.
-- **Escolha de ext4 ou btrfs**. No btrfs, o instalador cria subvolumes para raiz, home, logs e cache de pacotes.
-- **Criptografia opcional com LUKS2**.
-- **Opções de instalação** para apagar o disco ou instalar ao lado de outro sistema, incluindo Windows.
-- **Seleção de perfil gráfico**.
-<h2>🧭 Instalador</h2>
-<p>O assistente reúne as principais escolhas em um fluxo guiado:<br>
-<a target="_blank" rel="noopener noreferrer" href="https://private-user-images.githubusercontent.com/22534130/692587413-26f4f92c-459a-4d38-8b28-8933e82efa47.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4Mjc4MDIsIm5iZiI6MTc5MzgyNzUwMiwicGF0aCI6Ii8yMjUzNDEzMC82OTI1ODc0MTMtMjZmNGY5MmMtNDU5YS00ZDM4LThiMjgtODkzM2U4MmVmYTQ3LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIxMjUwMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTExMTE5ZjBjZTcyOTIxMGU5NGRlMzYzM2I4NDVhMTJmZGM3MjUzZTRlYjZkYzhiZWUyOWYzYTc2OGYyOTViM2ImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.312ct3rE1jpJxYH-z03Urm43KBHxlevitJrVmlfTMAY"><img width="1366" height="768" alt="nlinux-instalador-01" src="https://private-user-images.githubusercontent.com/22534130/692587413-26f4f92c-459a-4d38-8b28-8933e82efa47.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4Mjc4MDIsIm5iZiI6MTc5MzgyNzUwMiwicGF0aCI6Ii8yMjUzNDEzMC82OTI1ODc0MTMtMjZmNGY5MmMtNDU5YS00ZDM4LThiMjgtODkzM2U4MmVmYTQ3LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIxMjUwMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTExMTE5ZjBjZTcyOTIxMGU5NGRlMzYzM2I4NDVhMTJmZGM3MjUzZTRlYjZkYzhiZWUyOWYzYTc2OGYyOTViM2ImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.312ct3rE1jpJxYH-z03Urm43KBHxlevitJrVmlfTMAY" content-type-secured-asset="image/png" style="max-width: 100%; height: auto; max-height: 768px;"></a></p>
-<ol>
-<li>Idioma, teclado e fuso horário.</li>
-<li>Disco de destino.</li>
-<li>Instalação apagando o disco ou ao lado de outro sistema.</li>
-<li>Sistema de arquivos: ext4 ou btrfs.</li>
-<li>Espelho de pacotes.</li>
-<li>Instalação rápida offline ou completa online.</li>
-<li>Criptografia LUKS2 opcional.</li>
-<li>Perfil gráfico.</li>
-<li>Usuário, nome da máquina e senha.</li>
-<li>Revisão das escolhas e confirmação.</li>
-</ol>
-<p>A instalação rápida copia o sistema do pendrive e pode ser feita sem rede. A instalação online baixa os pacotes e precisa de conexão. O painel de progresso acompanha a execução; se a janela ou o navegador for fechado, a instalação continua em segundo plano e pode ser retomada no painel.</p>
-<h2>🛍️ NLinux Software</h2>
-<a target="_blank" rel="noopener noreferrer" href="https://private-user-images.githubusercontent.com/22534130/692588023-955ef258-b585-499d-bece-c93cf00d93be.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4Mjc4MDIsIm5iZiI6MTc5MzgyNzUwMiwicGF0aCI6Ii8yMjUzNDEzMC82OTI1ODgwMjMtOTU1ZWYyNTgtYjU4NS00OTlkLWJlY2UtYzkzY2YwMGQ5M2JlLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIxMjUwMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTQ3ZDZmZTRkYTk1YzczMGYxZTkwZWIyYzE1YmUzZWJiMGI0YjRlYWRlNzI2OGE4MmYyMWJiMWQ1ODc0YzY2YTAmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.m6OBczXlI1s7K8Z_b-beO7PMLYl_u3ld1p2TV5q5pqo"><img width="1366" height="768" alt="nlinux-instalador-23" src="https://private-user-images.githubusercontent.com/22534130/692588023-955ef258-b585-499d-bece-c93cf00d93be.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4Mjc4MDIsIm5iZiI6MTc5MzgyNzUwMiwicGF0aCI6Ii8yMjUzNDEzMC82OTI1ODgwMjMtOTU1ZWYyNTgtYjU4NS00OTlkLWJlY2UtYzkzY2YwMGQ5M2JlLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIxMjUwMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTQ3ZDZmZTRkYTk1YzczMGYxZTkwZWIyYzE1YmUzZWJiMGI0YjRlYWRlNzI2OGE4MmYyMWJiMWQ1ODc0YzY2YTAmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.m6OBczXlI1s7K8Z_b-beO7PMLYl_u3ld1p2TV5q5pqo" content-type-secured-asset="image/png" style="max-width: 100%; height: auto; max-height: 768px;"></a>
-<p>A loja acompanha a distro como aplicativo nativo, não como uma aba de navegador. Ela oferece:</p>
+<h2>Instalador</h2>
+<p>O fluxo de instalação reúne idioma, teclado e fuso horário; disco e sistema de arquivos; espelho de pacotes; modo offline ou online; criptografia; perfil gráfico; conta de usuário; e confirmação final. A instalação rápida funciona sem rede; a instalação online requer conexão.</p>
+<h2>Sistema instalado</h2>
 <ul>
-<li>Busca, categorias, filtro de aplicativos instalados e detalhes dos pacotes.</li>
-<li>Instalação com autenticação do sistema e progresso da transação.</li>
-<li>Aplicativos dos repositórios do Arch e opções AUR compatíveis com <code>paru</code> ou <code>yay</code>.</li>
-<li>Catálogo e mídias armazenados localmente, para continuar abrindo sem conexão.</li>
-<li>Atualização automática do catálogo quando uma nova versão é publicada.</li>
-<li>Verificação SHA-256 dos assets do catálogo e assinatura GPG do pacote da loja.</li>
-<li>Interface em português, inglês, espanhol, francês, alemão, italiano e japonês.</li>
-<li>Tema claro e escuro.</li>
-</ul>
-<h2>🌐 Idiomas</h2>
-<p>O instalador permite selecionar entre Brasil, Estados Unidos, Portugal, Reino Unido, Espanha, França, Alemanha, Itália e Japão. A escolha configura conjuntamente o idioma do sistema, o teclado, o fuso horário e o idioma do instalador.</p>
-<p>A interface da loja está disponível em sete idiomas: português, inglês, espanhol, francês, alemão, italiano e japonês.</p>
-<h2>💾 Requisitos e instalação</h2>
-<ul>
-<li>Arquitetura: <code>x86_64</code>.</li>
-<li>ISO: aproximadamente 2,9 GB.</li>
-<li>Pendrive recomendado: 8 GB ou maior.</li>
-<li><strong>UEFI é necessário para instalar.</strong> A ISO também inclui opções de boot BIOS para experimentar o ambiente live, mas o instalador exige UEFI.</li>
-<li>Para dual boot, é necessária uma partição EFI FAT32 existente e mais de 5 GiB livres. O instalador pode oferecer o redimensionamento de partição NTFS quando necessário.</li>
-<li>Como referência, 20 GB ou mais de espaço em disco deixam margem para o sistema, aplicativos e atualizações.</li>
-<li>Internet: opcional na instalação rápida offline; necessária na instalação completa online.</li>
-</ul>
-<blockquote>
-<p>Antes de alterar partições ou redimensionar NTFS, faça backup dos dados. Em dual boot com Windows, desative o BitLocker e a Inicialização Rápida/hibernação antes de prosseguir. No modo de apagar o disco, os dados do disco selecionado serão removidos.</p>
-</blockquote>
-<h2>⚙️ Sistema instalado</h2>
-<ul>
-<li>Boot com systemd-boot e suporte a LUKS2 no initramfs quando a criptografia é escolhida.</li>
-<li>Swap em zram, configurado até metade da memória RAM, com limite de 4 GB.</li>
-<li>Repositórios <code>core</code>, <code>extra</code> e <code>multilib</code>; multilib vem habilitado.</li>
-<li>NetworkManager como gerenciador de rede, Bluetooth e sincronização de horário.</li>
+<li>systemd-boot e suporte a LUKS2 no initramfs quando a criptografia é escolhida.</li>
+<li>Swap em zram; repositórios <code>core</code>, <code>extra</code> e <code>multilib</code>; NetworkManager e Bluetooth.</li>
 <li><code>yay</code> incluído para tarefas relacionadas à AUR.</li>
-<li>Atualize o sistema com <code>sudo pacman -Syu</code>.</li>
+<li>Atualize com <code>sudo pacman -Syu</code>.</li>
 </ul>
-<h2>📝 Destaques desta primeira versão</h2>
+<h2>Requisitos</h2>
 <ul>
-<li>Atualização do sistema com indicação do progresso real.</li>
-<li>Catálogo da loja disponível no ambiente live, inclusive sem conexão.</li>
-<li>Multilib habilitado por padrão.</li>
-<li>Som de notificação próprio do NLinux e ajustes no áudio da interface.</li>
-<li>Melhorias no boot UEFI, incluindo compatibilidade com firmwares que não mantêm variáveis de boot na NVRAM.</li>
-<li>Barra superior reorganizada, relógio com segundos e indicadores de sistema simplificados.</li>
+<li>Arquitetura <code>x86_64</code>; ISO de aproximadamente 2,9 GB; pendrive recomendado de 8 GB ou maior.</li>
+<li>UEFI necessário para instalar. A ISO também inclui opções BIOS para experimentar o ambiente live.</li>
+<li>Para dual boot, use uma partição EFI FAT32 e faça backup antes de alterar partições. Em dual boot com Windows, desative BitLocker, Inicialização Rápida e hibernação.</li>
+<li>A instalação rápida funciona offline; a completa requer internet.</li>
 </ul>
-<h2>📚 Documentação</h2>
+<h2>Documentação</h2>
 <ul>
 <li><a href="https://nilsonlinux.github.io/docs.html" rel="nofollow">Documentação do NLinux</a></li>
-<li><a href="https://nilsonlinux.github.io/recursos.html" rel="nofollow">Recursos da distribuição</a></li>
-<li><a href="https://nilsonlinux.github.io/loja.html" rel="nofollow">Loja NLinux Software</a></li>
+<li><a href="https://nilsonlinux.github.io/recursos.html" rel="nofollow">Recursos</a></li>
+<li><a href="https://nilsonlinux.github.io/loja.html" rel="nofollow">NLinux Software</a></li>
 <li><a href="https://github.com/Nilsonlinux/nlinux-iso-build">Código e instruções para compilar a ISO</a></li>
 </ul>]]></description>
       <content:encoded><![CDATA[<h1>NLinux — primeira release pública</h1>
-<p>A primeira release pública do NLinux: uma distribuição baseada em Arch Linux, com desktop Wayland Umbriel, shell Noctalia V5, instalador visual e a loja NLinux Software já incluída.</p>
-<a target="_blank" rel="noopener noreferrer" href="https://private-user-images.githubusercontent.com/22534130/665253204-814eb651-1da1-45c5-9e1d-a1a14cd815a8.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4Mjc4MDIsIm5iZiI6MTc5MzgyNzUwMiwicGF0aCI6Ii8yMjUzNDEzMC82NjUyNTMyMDQtODE0ZWI2NTEtMWRhMS00NWM1LTllMWQtYTFhMTRjZDgxNWE4LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIxMjUwMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWExNTZjYTg4NWY5MTBhOWQ5ZmJjM2ZhNzkzNGRjOWRhYWRmYTVjNmFhYjhmZDRlMjlmNThkYWZlNDBjYjI4M2MmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.h2Dqu20yHWX4lqYn45ItWiG6OXn6Q_Gx9m_lzTW3bDA"><img width="1366" height="768" alt="image" src="https://private-user-images.githubusercontent.com/22534130/665253204-814eb651-1da1-45c5-9e1d-a1a14cd815a8.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4Mjc4MDIsIm5iZiI6MTc5MzgyNzUwMiwicGF0aCI6Ii8yMjUzNDEzMC82NjUyNTMyMDQtODE0ZWI2NTEtMWRhMS00NWM1LTllMWQtYTFhMTRjZDgxNWE4LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIxMjUwMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWExNTZjYTg4NWY5MTBhOWQ5ZmJjM2ZhNzkzNGRjOWRhYWRmYTVjNmFhYjhmZDRlMjlmNThkYWZlNDBjYjI4M2MmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.h2Dqu20yHWX4lqYn45ItWiG6OXn6Q_Gx9m_lzTW3bDA" content-type-secured-asset="image/png" style="max-width: 100%; height: auto; max-height: 768px;"></a>
-<h2>✨ O que vem no NLinux</h2>
+<p>A primeira release pública do NLinux: distribuição baseada em Arch Linux, com desktop Wayland Umbriel, shell Noctalia V5, instalador visual e NLinux Software.</p>
+<h2>O que vem no NLinux</h2>
 <ul>
-<li><strong>Arch Linux rolling</strong>, em uma ISO ao vivo para computadores <code>x86_64</code>.</li>
-<li><strong>Desktop Wayland</strong> com compositor Umbriel, shell Noctalia V5 e tela de login greetd com noctalia-greeter.</li>
-<li><strong>Instalador visual em 10 etapas</strong>, aberto no navegador a partir do ambiente live. Ele mostra o progresso real da instalação.</li>
-<li><strong>Instalação rápida offline</strong>, a opção padrão, que copia o sistema a partir do pendrive sem precisar de internet.</li>
+<li>Arch Linux rolling em ISO live para computadores <code>x86_64</code>.</li>
+<li>Desktop Wayland com compositor Umbriel, shell Noctalia V5 e tela de login greetd com noctalia-greeter.</li>
+<li>Instalador visual em 10 etapas, com progresso real da instalação.</li>
+<li>Instalação rápida offline ou instalação completa online com <code>pacstrap</code> e componentes AUR.</li>
+<li>Sistemas de arquivos ext4 ou btrfs, criptografia opcional LUKS2, perfis gráficos e opções para instalação ao lado de outro sistema.</li>
+<li>NLinux Software como aplicativo nativo, com busca, categorias, autenticação do sistema, catálogo local, suporte a pacotes Arch e AUR, sete idiomas e temas claro e escuro.</li>
 </ul>
-<a target="_blank" rel="noopener noreferrer" href="https://private-user-images.githubusercontent.com/22534130/664861106-298f0c84-a0ff-4bb1-a3e5-981b83c32736.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4Mjc4MDIsIm5iZiI6MTc5MzgyNzUwMiwicGF0aCI6Ii8yMjUzNDEzMC82NjQ4NjExMDYtMjk4ZjBjODQtYTBmZi00YmIxLWEzZTUtOTgxYjgzYzMyNzM2LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIxMjUwMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTExYTRlY2Y5YzQ4MDRjZjc2NjBlN2VhYzBjYjNmYWRiNDFkMTVhNzY1NzhhYTQzYzliYzI5NGVhZmIzMTRlMGMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.yyRa2E7z4cqABeu53d4kvwXwlOW6arb1YPKpzbTcdyk"><img width="1366" height="768" alt="nlinux-instalador-17" src="https://private-user-images.githubusercontent.com/22534130/664861106-298f0c84-a0ff-4bb1-a3e5-981b83c32736.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4Mjc4MDIsIm5iZiI6MTc5MzgyNzUwMiwicGF0aCI6Ii8yMjUzNDEzMC82NjQ4NjExMDYtMjk4ZjBjODQtYTBmZi00YmIxLWEzZTUtOTgxYjgzYzMyNzM2LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIxMjUwMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTExYTRlY2Y5YzQ4MDRjZjc2NjBlN2VhYzBjYjNmYWRiNDFkMTVhNzY1NzhhYTQzYzliYzI5NGVhZmIzMTRlMGMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.yyRa2E7z4cqABeu53d4kvwXwlOW6arb1YPKpzbTcdyk" content-type-secured-asset="image/png" style="max-width: 100%; height: auto; max-height: 768px;"></a>
-- **Instalação completa online**, que instala os pacotes com `pacstrap` e compila os componentes AUR necessários.
-- **Escolha de ext4 ou btrfs**. No btrfs, o instalador cria subvolumes para raiz, home, logs e cache de pacotes.
-- **Criptografia opcional com LUKS2**.
-- **Opções de instalação** para apagar o disco ou instalar ao lado de outro sistema, incluindo Windows.
-- **Seleção de perfil gráfico**.
-<h2>🧭 Instalador</h2>
-<p>O assistente reúne as principais escolhas em um fluxo guiado:<br>
-<a target="_blank" rel="noopener noreferrer" href="https://private-user-images.githubusercontent.com/22534130/692587413-26f4f92c-459a-4d38-8b28-8933e82efa47.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4Mjc4MDIsIm5iZiI6MTc5MzgyNzUwMiwicGF0aCI6Ii8yMjUzNDEzMC82OTI1ODc0MTMtMjZmNGY5MmMtNDU5YS00ZDM4LThiMjgtODkzM2U4MmVmYTQ3LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIxMjUwMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTExMTE5ZjBjZTcyOTIxMGU5NGRlMzYzM2I4NDVhMTJmZGM3MjUzZTRlYjZkYzhiZWUyOWYzYTc2OGYyOTViM2ImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.312ct3rE1jpJxYH-z03Urm43KBHxlevitJrVmlfTMAY"><img width="1366" height="768" alt="nlinux-instalador-01" src="https://private-user-images.githubusercontent.com/22534130/692587413-26f4f92c-459a-4d38-8b28-8933e82efa47.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4Mjc4MDIsIm5iZiI6MTc5MzgyNzUwMiwicGF0aCI6Ii8yMjUzNDEzMC82OTI1ODc0MTMtMjZmNGY5MmMtNDU5YS00ZDM4LThiMjgtODkzM2U4MmVmYTQ3LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIxMjUwMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTExMTE5ZjBjZTcyOTIxMGU5NGRlMzYzM2I4NDVhMTJmZGM3MjUzZTRlYjZkYzhiZWUyOWYzYTc2OGYyOTViM2ImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.312ct3rE1jpJxYH-z03Urm43KBHxlevitJrVmlfTMAY" content-type-secured-asset="image/png" style="max-width: 100%; height: auto; max-height: 768px;"></a></p>
-<ol>
-<li>Idioma, teclado e fuso horário.</li>
-<li>Disco de destino.</li>
-<li>Instalação apagando o disco ou ao lado de outro sistema.</li>
-<li>Sistema de arquivos: ext4 ou btrfs.</li>
-<li>Espelho de pacotes.</li>
-<li>Instalação rápida offline ou completa online.</li>
-<li>Criptografia LUKS2 opcional.</li>
-<li>Perfil gráfico.</li>
-<li>Usuário, nome da máquina e senha.</li>
-<li>Revisão das escolhas e confirmação.</li>
-</ol>
-<p>A instalação rápida copia o sistema do pendrive e pode ser feita sem rede. A instalação online baixa os pacotes e precisa de conexão. O painel de progresso acompanha a execução; se a janela ou o navegador for fechado, a instalação continua em segundo plano e pode ser retomada no painel.</p>
-<h2>🛍️ NLinux Software</h2>
-<a target="_blank" rel="noopener noreferrer" href="https://private-user-images.githubusercontent.com/22534130/692588023-955ef258-b585-499d-bece-c93cf00d93be.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4Mjc4MDIsIm5iZiI6MTc5MzgyNzUwMiwicGF0aCI6Ii8yMjUzNDEzMC82OTI1ODgwMjMtOTU1ZWYyNTgtYjU4NS00OTlkLWJlY2UtYzkzY2YwMGQ5M2JlLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIxMjUwMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTQ3ZDZmZTRkYTk1YzczMGYxZTkwZWIyYzE1YmUzZWJiMGI0YjRlYWRlNzI2OGE4MmYyMWJiMWQ1ODc0YzY2YTAmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.m6OBczXlI1s7K8Z_b-beO7PMLYl_u3ld1p2TV5q5pqo"><img width="1366" height="768" alt="nlinux-instalador-23" src="https://private-user-images.githubusercontent.com/22534130/692588023-955ef258-b585-499d-bece-c93cf00d93be.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTM4Mjc4MDIsIm5iZiI6MTc5MzgyNzUwMiwicGF0aCI6Ii8yMjUzNDEzMC82OTI1ODgwMjMtOTU1ZWYyNTgtYjU4NS00OTlkLWJlY2UtYzkzY2YwMGQ5M2JlLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjExMDQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMTA0VDIxMjUwMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTQ3ZDZmZTRkYTk1YzczMGYxZTkwZWIyYzE1YmUzZWJiMGI0YjRlYWRlNzI2OGE4MmYyMWJiMWQ1ODc0YzY2YTAmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.m6OBczXlI1s7K8Z_b-beO7PMLYl_u3ld1p2TV5q5pqo" content-type-secured-asset="image/png" style="max-width: 100%; height: auto; max-height: 768px;"></a>
-<p>A loja acompanha a distro como aplicativo nativo, não como uma aba de navegador. Ela oferece:</p>
+<h2>Instalador</h2>
+<p>O fluxo de instalação reúne idioma, teclado e fuso horário; disco e sistema de arquivos; espelho de pacotes; modo offline ou online; criptografia; perfil gráfico; conta de usuário; e confirmação final. A instalação rápida funciona sem rede; a instalação online requer conexão.</p>
+<h2>Sistema instalado</h2>
 <ul>
-<li>Busca, categorias, filtro de aplicativos instalados e detalhes dos pacotes.</li>
-<li>Instalação com autenticação do sistema e progresso da transação.</li>
-<li>Aplicativos dos repositórios do Arch e opções AUR compatíveis com <code>paru</code> ou <code>yay</code>.</li>
-<li>Catálogo e mídias armazenados localmente, para continuar abrindo sem conexão.</li>
-<li>Atualização automática do catálogo quando uma nova versão é publicada.</li>
-<li>Verificação SHA-256 dos assets do catálogo e assinatura GPG do pacote da loja.</li>
-<li>Interface em português, inglês, espanhol, francês, alemão, italiano e japonês.</li>
-<li>Tema claro e escuro.</li>
-</ul>
-<h2>🌐 Idiomas</h2>
-<p>O instalador permite selecionar entre Brasil, Estados Unidos, Portugal, Reino Unido, Espanha, França, Alemanha, Itália e Japão. A escolha configura conjuntamente o idioma do sistema, o teclado, o fuso horário e o idioma do instalador.</p>
-<p>A interface da loja está disponível em sete idiomas: português, inglês, espanhol, francês, alemão, italiano e japonês.</p>
-<h2>💾 Requisitos e instalação</h2>
-<ul>
-<li>Arquitetura: <code>x86_64</code>.</li>
-<li>ISO: aproximadamente 2,9 GB.</li>
-<li>Pendrive recomendado: 8 GB ou maior.</li>
-<li><strong>UEFI é necessário para instalar.</strong> A ISO também inclui opções de boot BIOS para experimentar o ambiente live, mas o instalador exige UEFI.</li>
-<li>Para dual boot, é necessária uma partição EFI FAT32 existente e mais de 5 GiB livres. O instalador pode oferecer o redimensionamento de partição NTFS quando necessário.</li>
-<li>Como referência, 20 GB ou mais de espaço em disco deixam margem para o sistema, aplicativos e atualizações.</li>
-<li>Internet: opcional na instalação rápida offline; necessária na instalação completa online.</li>
-</ul>
-<blockquote>
-<p>Antes de alterar partições ou redimensionar NTFS, faça backup dos dados. Em dual boot com Windows, desative o BitLocker e a Inicialização Rápida/hibernação antes de prosseguir. No modo de apagar o disco, os dados do disco selecionado serão removidos.</p>
-</blockquote>
-<h2>⚙️ Sistema instalado</h2>
-<ul>
-<li>Boot com systemd-boot e suporte a LUKS2 no initramfs quando a criptografia é escolhida.</li>
-<li>Swap em zram, configurado até metade da memória RAM, com limite de 4 GB.</li>
-<li>Repositórios <code>core</code>, <code>extra</code> e <code>multilib</code>; multilib vem habilitado.</li>
-<li>NetworkManager como gerenciador de rede, Bluetooth e sincronização de horário.</li>
+<li>systemd-boot e suporte a LUKS2 no initramfs quando a criptografia é escolhida.</li>
+<li>Swap em zram; repositórios <code>core</code>, <code>extra</code> e <code>multilib</code>; NetworkManager e Bluetooth.</li>
 <li><code>yay</code> incluído para tarefas relacionadas à AUR.</li>
-<li>Atualize o sistema com <code>sudo pacman -Syu</code>.</li>
+<li>Atualize com <code>sudo pacman -Syu</code>.</li>
 </ul>
-<h2>📝 Destaques desta primeira versão</h2>
+<h2>Requisitos</h2>
 <ul>
-<li>Atualização do sistema com indicação do progresso real.</li>
-<li>Catálogo da loja disponível no ambiente live, inclusive sem conexão.</li>
-<li>Multilib habilitado por padrão.</li>
-<li>Som de notificação próprio do NLinux e ajustes no áudio da interface.</li>
-<li>Melhorias no boot UEFI, incluindo compatibilidade com firmwares que não mantêm variáveis de boot na NVRAM.</li>
-<li>Barra superior reorganizada, relógio com segundos e indicadores de sistema simplificados.</li>
+<li>Arquitetura <code>x86_64</code>; ISO de aproximadamente 2,9 GB; pendrive recomendado de 8 GB ou maior.</li>
+<li>UEFI necessário para instalar. A ISO também inclui opções BIOS para experimentar o ambiente live.</li>
+<li>Para dual boot, use uma partição EFI FAT32 e faça backup antes de alterar partições. Em dual boot com Windows, desative BitLocker, Inicialização Rápida e hibernação.</li>
+<li>A instalação rápida funciona offline; a completa requer internet.</li>
 </ul>
-<h2>📚 Documentação</h2>
+<h2>Documentação</h2>
 <ul>
 <li><a href="https://nilsonlinux.github.io/docs.html" rel="nofollow">Documentação do NLinux</a></li>
-<li><a href="https://nilsonlinux.github.io/recursos.html" rel="nofollow">Recursos da distribuição</a></li>
-<li><a href="https://nilsonlinux.github.io/loja.html" rel="nofollow">Loja NLinux Software</a></li>
+<li><a href="https://nilsonlinux.github.io/recursos.html" rel="nofollow">Recursos</a></li>
+<li><a href="https://nilsonlinux.github.io/loja.html" rel="nofollow">NLinux Software</a></li>
 <li><a href="https://github.com/Nilsonlinux/nlinux-iso-build">Código e instruções para compilar a ISO</a></li>
 </ul>]]></content:encoded>
     </item>
