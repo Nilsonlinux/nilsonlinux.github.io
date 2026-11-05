@@ -7,8 +7,8 @@
     <language>pt-BR</language>
     <copyright>© Nilsonlinux</copyright>
     <ttl>360</ttl>
-    <lastBuildDate>Tue, 03 Nov 2026 14:33:11 +0000</lastBuildDate>
-    <pubDate>Tue, 03 Nov 2026 14:33:11 +0000</pubDate>
+    <lastBuildDate>Thu, 05 Nov 2026 12:19:09 +0000</lastBuildDate>
+    <pubDate>Thu, 05 Nov 2026 12:19:09 +0000</pubDate>
     <generator>scripts/update_feed.py</generator>
     <atom:link href="https://nilsonlinux.github.io/feed.xml" rel="self" type="application/rss+xml"/>
     <image>
@@ -17,23 +17,22 @@
       <link>https://nilsonlinux.github.io/changelog.html</link>
     </image>
     <item>
-      <title>NLinux 2026.11.03</title>
-      <link>https://github.com/Nilsonlinux/nlinux-iso-build/releases/tag/2026.11.03</link>
-      <guid isPermaLink="true">https://github.com/Nilsonlinux/nlinux-iso-build/releases/tag/2026.11.03</guid>
-      <pubDate>Tue, 03 Nov 2026 14:33:11 +0000</pubDate>
-      <description><![CDATA[<h1>NLinux — release 2026.11.03</h1>
-<p>Terceira release pública do NLinux, com a identidade da distribuição consolidada no sistema, no instalador, na loja, nos serviços, na documentação e nos repositórios.</p>
+      <title>NLinux 2026.11.05</title>
+      <link>https://github.com/Nilsonlinux/nlinux-iso-build/releases/tag/2026.11.05</link>
+      <guid isPermaLink="true">https://github.com/Nilsonlinux/nlinux-iso-build/releases/tag/2026.11.05</guid>
+      <pubDate>Thu, 05 Nov 2026 12:19:09 +0000</pubDate>
+      <description><![CDATA[<h1>NLinux — release 2026.11.05</h1>
 <h2>Download</h2>
-<p><a href="https://drive.google.com/file/d/1OwX09j8_L7ikGAhdyWwYPVtuHDfo1CtK/view?usp=sharing" rel="nofollow">Baixar a ISO NLinux no Google Drive</a> — ISO live para <code>x86_64</code>, aproximadamente 2,9 GB.</p>
-<p>SHA-256: <code>92ce5f420d335d23f4bf64ec6fe61886166163e7eb48fe1af459b9cec2754551</code></p>
+<p><a href="https://drive.google.com/file/d/1fllkqBJmYWshmXiQydkkjDAWxXW-pV4i/view?usp=sharing" rel="nofollow">Baixar a ISO NLinux no Google Drive</a> — ISO live para <code>x86_64</code>, aproximadamente 3,0 GiB.</p>
+<p>SHA-256: <code>b115c14221fda008864d8834ed8b7c3c23c251044db7c75d0f5834d87fdec8b5</code></p>
 <h2>Novidades</h2>
 <ul>
-<li>Identidade NLinux aplicada ao sistema, ao usuário live (<code>nlinux</code>), ao hostname, ao instalador, à loja, aos serviços e aos arquivos de configuração.</li>
-<li>Visual atualizado no menu de boot, no fastfetch, na tela de boas-vindas, no instalador e nos ícones.</li>
-<li>Timeshift incluído para snapshots e restauração do sistema.</li>
-<li>Integração MPRIS do mpv para controles de mídia.</li>
-<li>Ajustes visuais no Noctalia e catálogo da loja com 63 aplicativos.</li>
-<li>Site oficial atualizado com a comunidade NLinux no Telegram.</li>
+<li><strong>Identidade NLinux consolidada</strong> no instalador, na loja, nos atalhos, no fastfetch, nos temas de som e na arte do sistema; referências antigas foram removidas.</li>
+<li><strong>Instalador com btrfs e modo Rápido offline como padrão</strong>, mantendo as opções de ext4 e instalação Completa online.</li>
+<li><strong>MOTD da NLinux</strong> renderizado com FIGlet.</li>
+<li><strong>Arte de boot atualizada</strong>, com nova imagem de splash e branding do menu de boot.</li>
+<li><strong>Catálogo da loja</strong> na revisão <strong>374</strong>.</li>
+<li><strong>Assinatura GPG das releases</strong> configurada para os próximos builds.</li>
 </ul>
 <h2>Requisitos e instalação</h2>
 <ul>
@@ -41,7 +40,7 @@
 <li>UEFI necessário para instalar. A ISO também oferece opções BIOS para experimentar o ambiente live.</li>
 <li>A instalação rápida funciona offline; a instalação completa requer internet.</li>
 <li>Login do ambiente live: usuário <code>nlinux</code>, senha <code>nlinux</code>.</li>
-<li>Para conferir o download: <code>sha256sum nlinux-2026.11.03-x86_64.iso</code>.</li>
+<li>Para conferir o download: <code>sha256sum nlinux-2026.11.05-x86_64.iso</code>.</li>
 </ul>
 <p>Faça backup antes de alterar partições. Em dual boot com Windows, desative BitLocker, Inicialização Rápida e hibernação antes de prosseguir.</p>
 <h2>Documentação</h2>
@@ -49,22 +48,26 @@
 <li><a href="https://nilsonlinux.github.io/docs.html" rel="nofollow">Documentação do NLinux</a></li>
 <li><a href="https://nilsonlinux.github.io/changelog.html" rel="nofollow">Changelog</a></li>
 <li><a href="https://nilsonlinux.github.io/recursos.html" rel="nofollow">Recursos</a></li>
-<li><a href="https://nilsonlinux.github.io/loja.html" rel="nofollow">NLinux Software</a></li>
+<li><a href="https://nilsonlinux.github.io/loja.html" rel="nofollow">Loja NLinux Software</a></li>
 <li><a href="https://github.com/Nilsonlinux/nlinux-iso-build">Código e instruções para compilar a ISO</a></li>
+</ul>
+<h2>Versões anteriores</h2>
+<ul>
+<li><a href="https://github.com/Nilsonlinux/nlinux-iso-build/releases/tag/2026.10.15">NLinux 2026.10.15</a> — opencode incluído, GPL-3.0 explícito e atualização sem interrupções.</li>
+<li><a href="https://github.com/Nilsonlinux/nlinux-iso-build/releases/tag/2026.10.09">NLinux 2026.10.09</a> — primeira release pública.</li>
 </ul>]]></description>
-      <content:encoded><![CDATA[<h1>NLinux — release 2026.11.03</h1>
-<p>Terceira release pública do NLinux, com a identidade da distribuição consolidada no sistema, no instalador, na loja, nos serviços, na documentação e nos repositórios.</p>
+      <content:encoded><![CDATA[<h1>NLinux — release 2026.11.05</h1>
 <h2>Download</h2>
-<p><a href="https://drive.google.com/file/d/1OwX09j8_L7ikGAhdyWwYPVtuHDfo1CtK/view?usp=sharing" rel="nofollow">Baixar a ISO NLinux no Google Drive</a> — ISO live para <code>x86_64</code>, aproximadamente 2,9 GB.</p>
-<p>SHA-256: <code>92ce5f420d335d23f4bf64ec6fe61886166163e7eb48fe1af459b9cec2754551</code></p>
+<p><a href="https://drive.google.com/file/d/1fllkqBJmYWshmXiQydkkjDAWxXW-pV4i/view?usp=sharing" rel="nofollow">Baixar a ISO NLinux no Google Drive</a> — ISO live para <code>x86_64</code>, aproximadamente 3,0 GiB.</p>
+<p>SHA-256: <code>b115c14221fda008864d8834ed8b7c3c23c251044db7c75d0f5834d87fdec8b5</code></p>
 <h2>Novidades</h2>
 <ul>
-<li>Identidade NLinux aplicada ao sistema, ao usuário live (<code>nlinux</code>), ao hostname, ao instalador, à loja, aos serviços e aos arquivos de configuração.</li>
-<li>Visual atualizado no menu de boot, no fastfetch, na tela de boas-vindas, no instalador e nos ícones.</li>
-<li>Timeshift incluído para snapshots e restauração do sistema.</li>
-<li>Integração MPRIS do mpv para controles de mídia.</li>
-<li>Ajustes visuais no Noctalia e catálogo da loja com 63 aplicativos.</li>
-<li>Site oficial atualizado com a comunidade NLinux no Telegram.</li>
+<li><strong>Identidade NLinux consolidada</strong> no instalador, na loja, nos atalhos, no fastfetch, nos temas de som e na arte do sistema; referências antigas foram removidas.</li>
+<li><strong>Instalador com btrfs e modo Rápido offline como padrão</strong>, mantendo as opções de ext4 e instalação Completa online.</li>
+<li><strong>MOTD da NLinux</strong> renderizado com FIGlet.</li>
+<li><strong>Arte de boot atualizada</strong>, com nova imagem de splash e branding do menu de boot.</li>
+<li><strong>Catálogo da loja</strong> na revisão <strong>374</strong>.</li>
+<li><strong>Assinatura GPG das releases</strong> configurada para os próximos builds.</li>
 </ul>
 <h2>Requisitos e instalação</h2>
 <ul>
@@ -72,7 +75,7 @@
 <li>UEFI necessário para instalar. A ISO também oferece opções BIOS para experimentar o ambiente live.</li>
 <li>A instalação rápida funciona offline; a instalação completa requer internet.</li>
 <li>Login do ambiente live: usuário <code>nlinux</code>, senha <code>nlinux</code>.</li>
-<li>Para conferir o download: <code>sha256sum nlinux-2026.11.03-x86_64.iso</code>.</li>
+<li>Para conferir o download: <code>sha256sum nlinux-2026.11.05-x86_64.iso</code>.</li>
 </ul>
 <p>Faça backup antes de alterar partições. Em dual boot com Windows, desative BitLocker, Inicialização Rápida e hibernação antes de prosseguir.</p>
 <h2>Documentação</h2>
@@ -80,8 +83,13 @@
 <li><a href="https://nilsonlinux.github.io/docs.html" rel="nofollow">Documentação do NLinux</a></li>
 <li><a href="https://nilsonlinux.github.io/changelog.html" rel="nofollow">Changelog</a></li>
 <li><a href="https://nilsonlinux.github.io/recursos.html" rel="nofollow">Recursos</a></li>
-<li><a href="https://nilsonlinux.github.io/loja.html" rel="nofollow">NLinux Software</a></li>
+<li><a href="https://nilsonlinux.github.io/loja.html" rel="nofollow">Loja NLinux Software</a></li>
 <li><a href="https://github.com/Nilsonlinux/nlinux-iso-build">Código e instruções para compilar a ISO</a></li>
+</ul>
+<h2>Versões anteriores</h2>
+<ul>
+<li><a href="https://github.com/Nilsonlinux/nlinux-iso-build/releases/tag/2026.10.15">NLinux 2026.10.15</a> — opencode incluído, GPL-3.0 explícito e atualização sem interrupções.</li>
+<li><a href="https://github.com/Nilsonlinux/nlinux-iso-build/releases/tag/2026.10.09">NLinux 2026.10.09</a> — primeira release pública.</li>
 </ul>]]></content:encoded>
     </item>
     <item>
