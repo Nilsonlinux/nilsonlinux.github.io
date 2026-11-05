@@ -19,7 +19,7 @@ ao vivo que boota direto no desktop e instala por uma interface web no navegador
 | Arquitetura | `x86_64` |
 | Data | 5 de novembro de 2026 |
 | Download | [Google Drive](https://drive.google.com/file/d/1fllkqBJmYWshmXiQydkkjDAWxXW-pV4i/view?usp=sharing) |
-| sha256 | `b115c14221fda008864d8834ed8b7c3c23c251044db7c75d0f5834d87fdec8b5` |
+| sha256 | `956247602eb4beefd30c2e3ec6dfae042c96819c975e7962f610e4cb183b2c7c` |
 
 ### O que a ISO contém
 
@@ -57,7 +57,7 @@ ao vivo que boota direto no desktop e instala por uma interface web no navegador
 
 ```bash
 sha256sum nlinux-2026.11.05-x86_64.iso
-# b115c14221fda008864d8834ed8b7c3c23c251044db7c75d0f5834d87fdec8b5
+# 956247602eb4beefd30c2e3ec6dfae042c96819c975e7962f610e4cb183b2c7c
 ```
 
 ---

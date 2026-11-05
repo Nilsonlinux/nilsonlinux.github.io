@@ -22,7 +22,7 @@
    ============================================================ */
 const NLINUX_ISO_URL = 'https://drive.google.com/file/d/1fllkqBJmYWshmXiQydkkjDAWxXW-pV4i/view?usp=sharing';
 const NLINUX_ISO_DATE = '2026-11-05';
-const NLINUX_ISO_SHA256 = 'b115c14221fda008864d8834ed8b7c3c23c251044db7c75d0f5834d87fdec8b5';
+const NLINUX_ISO_SHA256 = '956247602eb4beefd30c2e3ec6dfae042c96819c975e7962f610e4cb183b2c7c';
 
 document.querySelectorAll('[data-iso-download]').forEach(link => {
 	link.href = NLINUX_ISO_URL;
