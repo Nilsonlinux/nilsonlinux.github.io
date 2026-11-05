@@ -7,8 +7,8 @@
     <language>pt-BR</language>
     <copyright>© Nilsonlinux</copyright>
     <ttl>360</ttl>
-    <lastBuildDate>Thu, 05 Nov 2026 12:19:09 +0000</lastBuildDate>
-    <pubDate>Thu, 05 Nov 2026 12:19:09 +0000</pubDate>
+    <lastBuildDate>Thu, 05 Nov 2026 12:36:21 +0000</lastBuildDate>
+    <pubDate>Thu, 05 Nov 2026 12:36:21 +0000</pubDate>
     <generator>scripts/update_feed.py</generator>
     <atom:link href="https://nilsonlinux.github.io/feed.xml" rel="self" type="application/rss+xml"/>
     <image>
@@ -20,7 +20,7 @@
       <title>NLinux 2026.11.05</title>
       <link>https://github.com/Nilsonlinux/nlinux-iso-build/releases/tag/2026.11.05</link>
       <guid isPermaLink="true">https://github.com/Nilsonlinux/nlinux-iso-build/releases/tag/2026.11.05</guid>
-      <pubDate>Thu, 05 Nov 2026 12:19:09 +0000</pubDate>
+      <pubDate>Thu, 05 Nov 2026 12:36:21 +0000</pubDate>
       <description><![CDATA[<h1>NLinux — release 2026.11.05</h1>
 <h2>Download</h2>
 <p><a href="https://drive.google.com/file/d/1fllkqBJmYWshmXiQydkkjDAWxXW-pV4i/view?usp=sharing" rel="nofollow">Baixar a ISO NLinux no Google Drive</a> — ISO live para <code>x86_64</code>, aproximadamente 3,0 GiB.</p>
