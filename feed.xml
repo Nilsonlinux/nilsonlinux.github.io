@@ -6,7 +6,7 @@
     <description>Novas versões do NLinux: notas de release, download da ISO e checksum sha256.</description>
     <language>pt-BR</language>
     <copyright>© Nilsonlinux</copyright>
-    <ttl>360</ttl>
+    <ttl>60</ttl>
     <lastBuildDate>Thu, 05 Nov 2026 12:36:21 +0000</lastBuildDate>
     <pubDate>Thu, 05 Nov 2026 12:36:21 +0000</pubDate>
     <generator>scripts/update_feed.py</generator>

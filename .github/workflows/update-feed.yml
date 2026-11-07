@@ -2,9 +2,8 @@ name: Update RSS feed
 
 on:
   schedule:
-    # A cada 6 horas. O feed só muda quando há release nova no
-    # nlinux-iso-build, então o workflow evita commits desnecessários.
-    - cron: "41 */6 * * *"
+    # Verifica releases novas a cada hora; só publica quando o feed muda.
+    - cron: "17 * * * *"
   workflow_dispatch:
 
 permissions:

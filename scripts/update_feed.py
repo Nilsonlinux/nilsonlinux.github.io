@@ -137,7 +137,7 @@ def main() -> None:
         "download da ISO e checksum sha256.</description>",
         "    <language>pt-BR</language>",
         "    <copyright>© Nilsonlinux</copyright>",
-        "    <ttl>360</ttl>",
+        "    <ttl>60</ttl>",
         f"    <lastBuildDate>{format_datetime(latest)}</lastBuildDate>",
         f"    <pubDate>{format_datetime(latest)}</pubDate>",
         "    <generator>scripts/update_feed.py</generator>",

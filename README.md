@@ -71,7 +71,7 @@ As releases também ficam disponíveis em **RSS 2.0**:
 
 O `feed.xml` é gerado por `scripts/update_feed.py`, que lê as releases do GitHub
 (o Atom entrega as notas já renderizadas em HTML) e é executado pelo workflow
-`.github/workflows/update-feed.yml` a cada 6 horas. Para atualizar à mão:
+`.github/workflows/update-feed.yml` a cada hora. Para atualizar à mão:
 
 ```bash
 python3 scripts/update_feed.py
@@ -91,7 +91,8 @@ changelog.html      releases, puxadas da API do GitHub
 feed.xml            RSS 2.0 das releases (gerado por scripts/update_feed.py)
 docs.html           documentação da distro
 recursos.html       recursos do sistema
-about-en.html       resumo do projeto em inglês (submissão ao DistroWatch)
+sobre.html          resumo do projeto em português (submissão ao DistroWatch)
+about-en.html       redireciona para sobre.html (URL antiga)
 loja.html           catálogo da loja NLinux Software
 compilar.html       como compilar a ISO
 plugins.html        plugins públicos do projeto
