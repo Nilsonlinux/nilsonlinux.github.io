@@ -936,6 +936,8 @@
 		'Distribuição Base Arch Linux do Nilsonlinux: compositor Umbriel, login greetd e shell Noctalia V5, com ISO ao vivo, instalador web e a loja nativa NLinux Software — tudo open source.': 'Nilsonlinux’s Arch Linux-based distribution: Umbriel compositor, greetd login, and Noctalia V5 shell, with a live ISO, web installer, and the native NLinux Software store — all open source.',
 		'Projeto': 'Project',
 		'Download ISO': 'Download ISO',
+		'NLinux · live e instalador': 'NLinux · live system and installer',
+		'ISO ao vivo · instalador web em 10 passos': 'Live ISO · 10-step web installer',
 		'Sobre': 'About',
 		'NLinux — Arch, Umbriel e Noctalia V5.': 'NLinux — Arch, Umbriel, and Noctalia V5.',
 		'base archlinux · compositor greetd/umbriel · shell noctalia v5': 'Arch base · greetd/umbriel compositor · Noctalia V5 shell',
@@ -953,6 +955,17 @@
 	const languageButton = document.querySelector('#languageToggle');
 	const description = 'NLinux is an Arch Linux-based distribution featuring the Umbriel compositor, greetd, Noctalia V5, a live ISO, web installer, and the native NLinux Software store.';
 
+	function translateText(node, english) {
+		if (node.parentElement?.closest('script,style')) return;
+		if (!originalText.has(node)) originalText.set(node, node.textContent);
+		const source = originalText.get(node);
+		const match = source.match(/^(\s*)([\s\S]*?)(\s*)$/);
+		const key = match[2].replace(/\s+/g, ' ');
+		const translated = english ? translations[key] : null;
+		const next = translated ? match[1] + translated + match[3] : source;
+		if (node.textContent !== next) node.textContent = next;
+	}
+
 	function applyLanguage(language) {
 		const english = language === 'en';
 		document.documentElement.lang = english ? 'en' : 'pt-BR';
@@ -963,14 +976,7 @@
 
 		const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
 		let node;
-		while ((node = walker.nextNode())) {
-			if (!originalText.has(node)) originalText.set(node, node.textContent);
-			const source = originalText.get(node);
-			const match = source.match(/^(\s*)([\s\S]*?)(\s*)$/);
-			const key = match[2].replace(/\s+/g, ' ');
-			const translated = english ? translations[key] : null;
-			node.textContent = translated ? match[1] + translated + match[3] : source;
-		}
+		while ((node = walker.nextNode())) translateText(node, english);
 
 		document.querySelectorAll('[aria-label], [title], [alt]').forEach(element => {
 			for (const attribute of ['aria-label', 'title', 'alt']) {
@@ -998,6 +1004,22 @@
 	});
 
 	applyLanguage(document.documentElement.lang === 'en' ? 'en' : 'pt-BR');
+
+	const observer = new MutationObserver(records => {
+		const english = document.documentElement.lang === 'en';
+		for (const record of records) {
+			if (record.type === 'characterData') translateText(record.target, english);
+			for (const added of record.addedNodes) {
+				if (added.nodeType === Node.TEXT_NODE) translateText(added, english);
+				else if (added.nodeType === Node.ELEMENT_NODE) {
+					const walker = document.createTreeWalker(added, NodeFilter.SHOW_TEXT);
+					let text;
+					while ((text = walker.nextNode())) translateText(text, english);
+				}
+			}
+		}
+	});
+	observer.observe(document.body, { childList: true, characterData: true, subtree: true });
 })();
 </script>
 
