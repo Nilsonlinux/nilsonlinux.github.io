@@ -30,18 +30,21 @@ document.querySelectorAll('[data-iso-download]').forEach(link => {
 
 /* "2026-09-29" → "segunda-feira, 29 de setembro de 2026". A data é montada
    na mão (ano/mês/dia) para o fuso não escorregar para o dia anterior. */
-const isoDateBr = iso => {
+const isoDate = iso => {
 	const [y, m, d] = String(iso).split('-').map(Number);
 	if (!y || !m || !d) return iso;
-	return new Intl.DateTimeFormat('pt-BR', {
+	const locale = document.documentElement.lang === 'en' ? 'en-US' : 'pt-BR';
+	return new Intl.DateTimeFormat(locale, {
 		weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
 	}).format(new Date(y, m - 1, d));
 };
 
-document.querySelectorAll('[data-iso-date]').forEach(el => {
-	el.textContent = isoDateBr(NLINUX_ISO_DATE);
+const paintIsoDates = () => document.querySelectorAll('[data-iso-date]').forEach(el => {
+	el.textContent = isoDate(NLINUX_ISO_DATE);
 	el.setAttribute('datetime', NLINUX_ISO_DATE);
 });
+paintIsoDates();
+document.addEventListener('nlinux:languagechange', paintIsoDates);
 
 document.querySelectorAll('[data-iso-sha256]').forEach(el => {
 	el.textContent = NLINUX_ISO_SHA256;

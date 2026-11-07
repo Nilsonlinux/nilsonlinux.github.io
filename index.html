@@ -7,6 +7,10 @@
 			if (t !== 'light' && t !== 'dark')
 				t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 			document.documentElement.setAttribute('data-theme', t);
+			try {
+				if (localStorage.getItem('nlinux-language') === 'en')
+					document.documentElement.lang = 'en';
+			} catch {}
 		})();
 	</script>
 	<meta charset="utf-8" />
@@ -124,6 +128,7 @@
 		}
 		.main-nav a:hover { background: color-mix(in srgb, var(--surface-2) 80%, transparent); color: var(--accent); }
 		.main-nav a.active { background: var(--surface-2); color: var(--accent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 22%, transparent); }
+		.language-toggle { width: auto; min-width: 2.5rem; padding: 0 .55rem; font-size: .75rem; font-weight: 700; }
 		a.has-badge { position: relative; }
 		.nav-badge {
 			position: absolute; top: .3rem; right: .05rem; pointer-events: none;
@@ -596,7 +601,7 @@
 	</script>
 	<!-- variáveis do site (link único de download da ISO em js/site.js).
 	     Ao mexer no site.js, suba o ?v= do src para furar o cache dos navegadores. -->
-	<script src="js/site.js?v=5" defer></script>
+	<script src="js/site.js?v=6" defer></script>
 	<!-- efeito de montagem do nome no hero (canvas). Ao mexer no arquivo,
 	     suba o ?v= para furar o cache dos navegadores. -->
 	<script src="js/hero-name.js?v=24" defer></script>
@@ -628,6 +633,7 @@
 				<div class="header-actions">
 					<a class="icon-btn icon-btn-telegram" href="https://t.me/NLinuxCommunity" target="_blank" rel="noopener noreferrer" aria-label="Canal do Telegram NLinux" title="Telegram NLinux"><i class="ti ti-brand-telegram"></i></a>
 					<a class="icon-btn icon-btn-gh" href="https://github.com/Nilsonlinux" target="_blank" rel="noopener noreferrer" aria-label="GitHub do NLinux" title="GitHub"><i class="ti ti-brand-github"></i></a>
+					<button type="button" class="icon-btn language-toggle" id="languageToggle" aria-label="Mudar para inglês" title="Mudar para inglês"><span aria-hidden="true">EN</span></button>
 					<button type="button" class="icon-btn" id="themeToggle" aria-label="Alternar tema" title="Tema"><i class="ti ti-sun-moon"></i></button>
 					<a class="btn-primary" href="baixar.html"><i class="ti ti-download"></i><span class="btn-label">Baixar ISO</span></a>
 					<button type="button" class="icon-btn nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false" title="Menu"><i class="ti ti-menu-2"></i></button>
@@ -868,6 +874,134 @@
 
 <script>
 (() => {
+	const translations = {
+		'Páginas do site': 'Site pages',
+		'Páginas do site (menu móvel)': 'Site pages (mobile menu)',
+		'Canal do Telegram NLinux': 'NLinux Telegram channel',
+		'GitHub do NLinux': 'NLinux on GitHub',
+		'Voltar ao topo': 'Back to top',
+		'Deixe uma estrela no repositório do build da ISO': 'Star the ISO build repository',
+		'Forks do repositório do build da ISO': 'Forks of the ISO build repository',
+		'Issues e pull requests abertos do build da ISO': 'Open issues and pull requests for the ISO build',
+		'Arte do NLinux': 'NLinux artwork',
+		'Logo do NLinux': 'NLinux logo',
+		'Baixar': 'Download',
+		'Baixar ISO': 'Download ISO',
+		'Baixar a ISO': 'Download the ISO',
+		'Recursos': 'Features',
+		'Loja': 'Store',
+		'Loja NLinux Software': 'NLinux Software Store',
+		'~3,0 GB': '~3.0 GB',
+		'Compilar': 'Build',
+		'Documentação': 'Documentation',
+		'Compilar a ISO': 'Build the ISO',
+		'Build da ISO (GitHub)': 'ISO build (GitHub)',
+		'Loja (GitHub)': 'Store (GitHub)',
+		'Repositórios': 'Repositories',
+		'Feed RSS': 'RSS feed',
+		'Seu sistema operacional pronto em minutos:': 'Your operating system, ready in minutes:',
+		'e instalador web de': 'and a web installer with',
+		'10 passos': '10 steps',
+		'— direto do pendrive.': '— straight from a USB drive.',
+		'Ver as 23 telas': 'View all 23 screenshots',
+		'Loja nativa NLinux Software': 'Native NLinux Software store',
+		'catálogo': 'catalog',
+		'estrela': 'star',
+		'issues abertas': 'open issues',
+		'Especificação': 'Specifications',
+		'Compositor': 'Compositor',
+		'Criptografia': 'Encryption',
+		'Shell usuário': 'User shell',
+		'Idioma': 'Language',
+		'Páginas': 'Pages',
+		'cada uma no seu lugar': 'everything in its place',
+		'A ISO ao vivo, o que conferir antes de gravar no pendrive e para onde ir depois do download. Atualizada em': 'The live ISO, what to check before flashing it to a USB drive, and what to do after downloading. Updated on',
+		'Ir para Baixar': 'Go to Downloads',
+		'Os 10 destaques da distribuição: instalador web, instalação offline, LUKS2 e btrfs, Noctalia V5 com Umbriel e as 9 traduções.': 'The distribution’s 10 highlights: web installer, offline installation, LUKS2 and btrfs, Noctalia V5 with Umbriel, and 9 translations.',
+		'Ir para Recursos': 'Explore Features',
+		'instalador': 'installer',
+		'A NLinux Software por dentro: como o catálogo é curado, como a assinatura GPG protege o pacote e por que a atualização chega sem reinstalar a ISO.': 'Inside NLinux Software: how the catalog is curated, how GPG signatures protect packages, and why updates arrive without reinstalling the ISO.',
+		'Ir para Loja': 'Go to Store',
+		'Pacotes': 'Packages',
+		'listas': 'lists',
+		'ferramentas do instalador': 'installer tools',
+		'mesmos apps do desktop': 'same desktop apps',
+		'Quer experimentar o NLinux?': 'Want to try NLinux?',
+		'Baixe a ISO ao vivo, grave no pendrive e aproveite o instalador web de 10 passos — com a': 'Download the live ISO, flash it to a USB drive, and enjoy the 10-step web installer — with the',
+		'loja NLinux Software': 'NLinux Software store',
+		'já instalada.': 'pre-installed.',
+		'Plugins Noctalia': 'Noctalia plugins',
+		'ISO atualizada em': 'ISO updated on',
+		'Apoie o projeto': 'Support the project',
+		'Distribuição Base Arch Linux do Nilsonlinux: compositor Umbriel, login greetd e shell Noctalia V5, com ISO ao vivo, instalador web e a loja nativa NLinux Software — tudo open source.': 'Nilsonlinux’s Arch Linux-based distribution: Umbriel compositor, greetd login, and Noctalia V5 shell, with a live ISO, web installer, and the native NLinux Software store — all open source.',
+		'Projeto': 'Project',
+		'Download ISO': 'Download ISO',
+		'NLinux — Arch, Umbriel e Noctalia V5.': 'NLinux — Arch, Umbriel, and Noctalia V5.',
+		'base archlinux · compositor greetd/umbriel · shell noctalia v5': 'Arch base · greetd/umbriel compositor · Noctalia V5 shell',
+		'Alternar para tema claro': 'Switch to light theme',
+		'Alternar para tema escuro': 'Switch to dark theme',
+		'Alternar tema': 'Toggle theme',
+		'Tema': 'Theme',
+		'Abrir menu': 'Open menu',
+		'Fechar menu': 'Close menu',
+		'Menu': 'Menu',
+		'quinta-feira, 5 de novembro de 2026': 'Thursday, November 5, 2026'
+	};
+	const originalText = new WeakMap();
+	const originalAttributes = new WeakMap();
+	const languageButton = document.querySelector('#languageToggle');
+	const description = 'NLinux is an Arch Linux-based distribution featuring the Umbriel compositor, greetd, Noctalia V5, a live ISO, web installer, and the native NLinux Software store.';
+
+	function applyLanguage(language) {
+		const english = language === 'en';
+		document.documentElement.lang = english ? 'en' : 'pt-BR';
+		document.querySelector('meta[name="description"]').content = english ? description : 'NLinux · distribuição Arch Linux com compositor Umbriel, greetd, shell Noctalia V5 e a loja nativa NLinux Software.';
+		document.querySelector('meta[property="og:description"]').content = english ? description : 'NLinux · distribuição Arch Linux com compositor Umbriel, greetd, shell Noctalia V5 e a loja nativa NLinux Software.';
+		document.querySelector('meta[name="twitter:description"]').content = english ? description : 'NLinux · distribuição Arch Linux com compositor Umbriel, greetd, shell Noctalia V5 e a loja nativa NLinux Software.';
+		document.querySelector('meta[property="og:image:alt"]').content = english ? 'NLinux logo' : 'Logo do NLinux';
+
+		const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+		let node;
+		while ((node = walker.nextNode())) {
+			if (!originalText.has(node)) originalText.set(node, node.textContent);
+			const source = originalText.get(node);
+			const match = source.match(/^(\s*)([\s\S]*?)(\s*)$/);
+			const key = match[2].replace(/\s+/g, ' ');
+			const translated = english ? translations[key] : null;
+			node.textContent = translated ? match[1] + translated + match[3] : source;
+		}
+
+		document.querySelectorAll('[aria-label], [title], [alt]').forEach(element => {
+			for (const attribute of ['aria-label', 'title', 'alt']) {
+				if (!element.hasAttribute(attribute)) continue;
+				if (!originalAttributes.has(element)) originalAttributes.set(element, {});
+				const originals = originalAttributes.get(element);
+				if (originals[attribute] === undefined) originals[attribute] = element.getAttribute(attribute);
+				const source = originals[attribute];
+				element.setAttribute(attribute, english ? (translations[source] || source) : source);
+			}
+		});
+
+		languageButton.querySelector('span').textContent = english ? 'PT' : 'EN';
+		languageButton.setAttribute('aria-label', english ? 'Switch to Portuguese' : 'Mudar para inglês');
+		languageButton.title = english ? 'Switch to Portuguese' : 'Mudar para inglês';
+		document.dispatchEvent(new CustomEvent('nlinux:languagechange'));
+	}
+
+	languageButton.addEventListener('click', () => {
+		const next = document.documentElement.lang === 'en' ? 'pt-BR' : 'en';
+		applyLanguage(next);
+		try {
+			localStorage.setItem('nlinux-language', next === 'en' ? 'en' : 'pt');
+		} catch {}
+	});
+
+	applyLanguage(document.documentElement.lang === 'en' ? 'en' : 'pt-BR');
+})();
+</script>
+
+<script>
+(() => {
 	const $ = s => document.querySelector(s);
 
 	const themeBtn = $('#themeToggle');
@@ -875,7 +1009,10 @@
 	function syncThemeIcon() {
 		const dark = document.documentElement.getAttribute('data-theme') === 'dark';
 		themeIcon().className = dark ? 'ti ti-sun' : 'ti ti-moon';
-		themeBtn.setAttribute('aria-label', dark ? 'Alternar para tema claro' : 'Alternar para tema escuro');
+		const english = document.documentElement.lang === 'en';
+		themeBtn.setAttribute('aria-label', dark
+			? (english ? 'Switch to light theme' : 'Alternar para tema claro')
+			: (english ? 'Switch to dark theme' : 'Alternar para tema escuro'));
 	}
 	themeBtn.addEventListener('click', () => {
 		const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
@@ -893,13 +1030,24 @@
 	function closeMenu() {
 		mobileMenu.classList.remove('open');
 		navToggle.setAttribute('aria-expanded', 'false');
-		navToggle.setAttribute('aria-label', 'Abrir menu');
+		navToggle.setAttribute('aria-label', document.documentElement.lang === 'en' ? 'Open menu' : 'Abrir menu');
 		menuIcon().className = 'ti ti-menu-2';
 	}
+	document.addEventListener('nlinux:languagechange', () => {
+		syncThemeIcon();
+		const english = document.documentElement.lang === 'en';
+		const open = navToggle.getAttribute('aria-expanded') === 'true';
+		navToggle.setAttribute('aria-label', open
+			? (english ? 'Close menu' : 'Fechar menu')
+			: (english ? 'Open menu' : 'Abrir menu'));
+	});
 	navToggle.addEventListener('click', () => {
 		const open = mobileMenu.classList.toggle('open');
 		navToggle.setAttribute('aria-expanded', String(open));
-		navToggle.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+		const english = document.documentElement.lang === 'en';
+		navToggle.setAttribute('aria-label', open
+			? (english ? 'Close menu' : 'Fechar menu')
+			: (english ? 'Open menu' : 'Abrir menu'));
 		menuIcon().className = open ? 'ti ti-x' : 'ti ti-menu-2';
 	});
 	mobileMenu.addEventListener('click', e => { if (e.target.closest('a')) closeMenu(); });
