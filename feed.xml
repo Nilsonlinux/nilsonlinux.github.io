@@ -21,10 +21,7 @@
       <link>https://github.com/Nilsonlinux/nlinux-iso-build/releases/tag/2026.11.11</link>
       <guid isPermaLink="true">https://github.com/Nilsonlinux/nlinux-iso-build/releases/tag/2026.11.11</guid>
       <pubDate>Wed, 11 Nov 2026 13:02:24 +0000</pubDate>
-      <description><![CDATA[<h2>Download</h2>
-<p><a href="https://drive.google.com/file/d/19AFQc_u4TaD-PAH7WHgdEQNH8sDqHf4N/view?usp=drive_link" rel="nofollow">Baixar a ISO NLinux no Google Drive</a> — ISO live para <code>x86_64</code>, arquivo <code>nlinux-2026.11.11-x86_64.iso</code>, 3.287.056.384 bytes (~3,06 GiB).</p>
-<p>SHA-256: <code>4e047cabfbca1848bf393cde1e31b9a5a93f17becd6c4112ab2d5c4f07e5d3e0</code></p>
-<h2>Novidades</h2>
+      <description><![CDATA[<h2>Novidades</h2>
 <ul>
 <li>Stack GStreamer completa incluída no ambiente live e na instalação.</li>
 <li>Painel para configurar a limpeza automática da lixeira e de arquivos temporários.</li>
@@ -34,6 +31,9 @@
 <li>Limpeza de arquivos temporários sem dependência do GNOME.</li>
 </ul>
 <p>Esta release substitui a <code>2026.11.10</code> e reúne as novidades e correções dela com as atualizações acima.</p>
+<h2>Download</h2>
+<p><a href="https://drive.google.com/file/d/19AFQc_u4TaD-PAH7WHgdEQNH8sDqHf4N/view?usp=drive_link" rel="nofollow">Baixar a ISO NLinux no Google Drive</a> — ISO live para <code>x86_64</code>, arquivo <code>nlinux-2026.11.11-x86_64.iso</code>, 3.287.056.384 bytes (~3,06 GiB).</p>
+<p>SHA-256: <code>4e047cabfbca1848bf393cde1e31b9a5a93f17becd6c4112ab2d5c4f07e5d3e0</code></p>
 <h2>Requisitos e instalação</h2>
 <ul>
 <li>Arquitetura <code>x86_64</code>; pendrive de 8 GB ou mais.</li>
@@ -55,10 +55,7 @@
 <ul>
 <li><a href="https://github.com/Nilsonlinux/nlinux-iso-build/releases/tag/2026.11.05">NLinux 2026.11.05</a> — identidade consolidada, instalação rápida offline e assinatura GPG configurada.</li>
 </ul>]]></description>
-      <content:encoded><![CDATA[<h2>Download</h2>
-<p><a href="https://drive.google.com/file/d/19AFQc_u4TaD-PAH7WHgdEQNH8sDqHf4N/view?usp=drive_link" rel="nofollow">Baixar a ISO NLinux no Google Drive</a> — ISO live para <code>x86_64</code>, arquivo <code>nlinux-2026.11.11-x86_64.iso</code>, 3.287.056.384 bytes (~3,06 GiB).</p>
-<p>SHA-256: <code>4e047cabfbca1848bf393cde1e31b9a5a93f17becd6c4112ab2d5c4f07e5d3e0</code></p>
-<h2>Novidades</h2>
+      <content:encoded><![CDATA[<h2>Novidades</h2>
 <ul>
 <li>Stack GStreamer completa incluída no ambiente live e na instalação.</li>
 <li>Painel para configurar a limpeza automática da lixeira e de arquivos temporários.</li>
@@ -68,6 +65,9 @@
 <li>Limpeza de arquivos temporários sem dependência do GNOME.</li>
 </ul>
 <p>Esta release substitui a <code>2026.11.10</code> e reúne as novidades e correções dela com as atualizações acima.</p>
+<h2>Download</h2>
+<p><a href="https://drive.google.com/file/d/19AFQc_u4TaD-PAH7WHgdEQNH8sDqHf4N/view?usp=drive_link" rel="nofollow">Baixar a ISO NLinux no Google Drive</a> — ISO live para <code>x86_64</code>, arquivo <code>nlinux-2026.11.11-x86_64.iso</code>, 3.287.056.384 bytes (~3,06 GiB).</p>
+<p>SHA-256: <code>4e047cabfbca1848bf393cde1e31b9a5a93f17becd6c4112ab2d5c4f07e5d3e0</code></p>
 <h2>Requisitos e instalação</h2>
 <ul>
 <li>Arquitetura <code>x86_64</code>; pendrive de 8 GB ou mais.</li>
@@ -96,9 +96,6 @@
       <guid isPermaLink="true">https://github.com/Nilsonlinux/nlinux-iso-build/releases/tag/2026.11.05</guid>
       <pubDate>Thu, 05 Nov 2026 12:36:21 +0000</pubDate>
       <description><![CDATA[<h1>NLinux — release 2026.11.05</h1>
-<h2>Download</h2>
-<p><a href="https://drive.google.com/file/d/1fllkqBJmYWshmXiQydkkjDAWxXW-pV4i/view?usp=sharing" rel="nofollow">Baixar a ISO NLinux no Google Drive</a> — ISO live para <code>x86_64</code>, aproximadamente 3,0 GiB.</p>
-<p>SHA-256: <code>956247602eb4beefd30c2e3ec6dfae042c96819c975e7962f610e4cb183b2c7c</code></p>
 <h2>Novidades</h2>
 <ul>
 <li><strong>Identidade NLinux consolidada</strong> no instalador, na loja, nos atalhos, no fastfetch, nos temas de som e na arte do sistema; referências antigas foram removidas.</li>
@@ -108,6 +105,9 @@
 <li><strong>Catálogo da loja</strong> na revisão <strong>374</strong>.</li>
 <li><strong>Assinatura GPG das releases</strong> configurada para os próximos builds.</li>
 </ul>
+<h2>Download</h2>
+<p><a href="https://drive.google.com/file/d/1fllkqBJmYWshmXiQydkkjDAWxXW-pV4i/view?usp=sharing" rel="nofollow">Baixar a ISO NLinux no Google Drive</a> — ISO live para <code>x86_64</code>, aproximadamente 3,0 GiB.</p>
+<p>SHA-256: <code>956247602eb4beefd30c2e3ec6dfae042c96819c975e7962f610e4cb183b2c7c</code></p>
 <h2>Requisitos e instalação</h2>
 <ul>
 <li>Arquitetura <code>x86_64</code>; pendrive de 8 GB ou mais.</li>
@@ -131,9 +131,6 @@
 <li><a href="https://github.com/Nilsonlinux/nlinux-iso-build/releases/tag/2026.10.09">NLinux 2026.10.09</a> — primeira release pública.</li>
 </ul>]]></description>
       <content:encoded><![CDATA[<h1>NLinux — release 2026.11.05</h1>
-<h2>Download</h2>
-<p><a href="https://drive.google.com/file/d/1fllkqBJmYWshmXiQydkkjDAWxXW-pV4i/view?usp=sharing" rel="nofollow">Baixar a ISO NLinux no Google Drive</a> — ISO live para <code>x86_64</code>, aproximadamente 3,0 GiB.</p>
-<p>SHA-256: <code>956247602eb4beefd30c2e3ec6dfae042c96819c975e7962f610e4cb183b2c7c</code></p>
 <h2>Novidades</h2>
 <ul>
 <li><strong>Identidade NLinux consolidada</strong> no instalador, na loja, nos atalhos, no fastfetch, nos temas de som e na arte do sistema; referências antigas foram removidas.</li>
@@ -143,6 +140,9 @@
 <li><strong>Catálogo da loja</strong> na revisão <strong>374</strong>.</li>
 <li><strong>Assinatura GPG das releases</strong> configurada para os próximos builds.</li>
 </ul>
+<h2>Download</h2>
+<p><a href="https://drive.google.com/file/d/1fllkqBJmYWshmXiQydkkjDAWxXW-pV4i/view?usp=sharing" rel="nofollow">Baixar a ISO NLinux no Google Drive</a> — ISO live para <code>x86_64</code>, aproximadamente 3,0 GiB.</p>
+<p>SHA-256: <code>956247602eb4beefd30c2e3ec6dfae042c96819c975e7962f610e4cb183b2c7c</code></p>
 <h2>Requisitos e instalação</h2>
 <ul>
 <li>Arquitetura <code>x86_64</code>; pendrive de 8 GB ou mais.</li>
@@ -173,9 +173,6 @@
       <pubDate>Fri, 16 Oct 2026 01:08:55 +0000</pubDate>
       <description><![CDATA[<h1>NLinux — release 2026.10.15</h1>
 <p>Segunda release pública do NLinux, baseada em Arch Linux, com desktop Wayland Umbriel, shell Noctalia V5, instalador visual em 10 etapas e NLinux Software.</p>
-<h2>Download</h2>
-<p><a href="https://drive.google.com/file/d/1OGHENI3Fs6Up4eLDzPFMtUIGkut3XqV2/view?usp=sharing" rel="nofollow">Baixar a ISO NLinux no Google Drive</a> — ISO live para <code>x86_64</code>, aproximadamente 2,9 GB.</p>
-<p>SHA-256: <code>ec807478bfe6ef9b1b9bb837de6213e1b08ab32b7abf2a3ff29caff762ebe55b</code></p>
 <h2>Novidades</h2>
 <ul>
 <li><strong>opencode incluído</strong> no ambiente live e no sistema instalado, com atalho no menu de aplicativos.</li>
@@ -186,6 +183,9 @@
 <li>Chave pública GPG e instruções para verificar commits e tags.</li>
 <li>Atalhos de sessão desativados na tela de bloqueio do Noctalia.</li>
 </ul>
+<h2>Download</h2>
+<p><a href="https://drive.google.com/file/d/1OGHENI3Fs6Up4eLDzPFMtUIGkut3XqV2/view?usp=sharing" rel="nofollow">Baixar a ISO NLinux no Google Drive</a> — ISO live para <code>x86_64</code>, aproximadamente 2,9 GB.</p>
+<p>SHA-256: <code>ec807478bfe6ef9b1b9bb837de6213e1b08ab32b7abf2a3ff29caff762ebe55b</code></p>
 <h2>Requisitos</h2>
 <ul>
 <li>Arquitetura <code>x86_64</code>; pendrive de 8 GB ou mais.</li>
@@ -203,9 +203,6 @@
 </ul>]]></description>
       <content:encoded><![CDATA[<h1>NLinux — release 2026.10.15</h1>
 <p>Segunda release pública do NLinux, baseada em Arch Linux, com desktop Wayland Umbriel, shell Noctalia V5, instalador visual em 10 etapas e NLinux Software.</p>
-<h2>Download</h2>
-<p><a href="https://drive.google.com/file/d/1OGHENI3Fs6Up4eLDzPFMtUIGkut3XqV2/view?usp=sharing" rel="nofollow">Baixar a ISO NLinux no Google Drive</a> — ISO live para <code>x86_64</code>, aproximadamente 2,9 GB.</p>
-<p>SHA-256: <code>ec807478bfe6ef9b1b9bb837de6213e1b08ab32b7abf2a3ff29caff762ebe55b</code></p>
 <h2>Novidades</h2>
 <ul>
 <li><strong>opencode incluído</strong> no ambiente live e no sistema instalado, com atalho no menu de aplicativos.</li>
@@ -216,6 +213,9 @@
 <li>Chave pública GPG e instruções para verificar commits e tags.</li>
 <li>Atalhos de sessão desativados na tela de bloqueio do Noctalia.</li>
 </ul>
+<h2>Download</h2>
+<p><a href="https://drive.google.com/file/d/1OGHENI3Fs6Up4eLDzPFMtUIGkut3XqV2/view?usp=sharing" rel="nofollow">Baixar a ISO NLinux no Google Drive</a> — ISO live para <code>x86_64</code>, aproximadamente 2,9 GB.</p>
+<p>SHA-256: <code>ec807478bfe6ef9b1b9bb837de6213e1b08ab32b7abf2a3ff29caff762ebe55b</code></p>
 <h2>Requisitos</h2>
 <ul>
 <li>Arquitetura <code>x86_64</code>; pendrive de 8 GB ou mais.</li>
@@ -239,7 +239,7 @@
       <pubDate>Sat, 03 Oct 2026 21:11:32 +0000</pubDate>
       <description><![CDATA[<h1>NLinux — primeira release pública</h1>
 <p>A primeira release pública do NLinux: distribuição baseada em Arch Linux, com desktop Wayland Umbriel, shell Noctalia V5, instalador visual e NLinux Software.</p>
-<h2>O que vem no NLinux</h2>
+<h2>Novidades</h2>
 <ul>
 <li>Arch Linux rolling em ISO live para computadores <code>x86_64</code>.</li>
 <li>Desktop Wayland com compositor Umbriel, shell Noctalia V5 e tela de login greetd com noctalia-greeter.</li>
@@ -273,7 +273,7 @@
 </ul>]]></description>
       <content:encoded><![CDATA[<h1>NLinux — primeira release pública</h1>
 <p>A primeira release pública do NLinux: distribuição baseada em Arch Linux, com desktop Wayland Umbriel, shell Noctalia V5, instalador visual e NLinux Software.</p>
-<h2>O que vem no NLinux</h2>
+<h2>Novidades</h2>
 <ul>
 <li>Arch Linux rolling em ISO live para computadores <code>x86_64</code>.</li>
 <li>Desktop Wayland com compositor Umbriel, shell Noctalia V5 e tela de login greetd com noctalia-greeter.</li>
