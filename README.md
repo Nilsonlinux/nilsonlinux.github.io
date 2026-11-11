@@ -18,8 +18,8 @@ ao vivo que boota direto no desktop e instala por uma interface web no navegador
 | Tamanho | 3 287 056 384 bytes (~3,06 GiB) |
 | Arquitetura | `x86_64` |
 | Data | 11 de novembro de 2026 |
-| Download | [Google Drive](https://drive.google.com/file/d/19AFQc_u4TaD-PAH7WHgdEQNH8sDqHf4N/view?usp=drive_link) |
-| sha256 | `4e047cabfbca1848bf393cde1e31b9a5a93f17becd6c4112ab2d5c4f07e5d3e0` |
+| Download | [Google Drive](https://drive.google.com/file/d/1XBB8sFhZFXLc6pGqsJN1N_mw_SGuEUiz/view?usp=sharing) |
+| sha256 | `69c4595c4be8352dcad61572860407f69d79e35a6b8a3accc129cd767ea53762` |
 
 ### O que a ISO contém
 
@@ -57,7 +57,7 @@ ao vivo que boota direto no desktop e instala por uma interface web no navegador
 
 ```bash
 sha256sum nlinux-2026.11.11-x86_64.iso
-# 4e047cabfbca1848bf393cde1e31b9a5a93f17becd6c4112ab2d5c4f07e5d3e0
+# 69c4595c4be8352dcad61572860407f69d79e35a6b8a3accc129cd767ea53762
 ```
 
 ---
