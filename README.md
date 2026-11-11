@@ -10,16 +10,16 @@ ao vivo que boota direto no desktop e instala por uma interface web no navegador
 
 ---
 
-## A ISO — release `2026.11.05`
+## A ISO — release `2026.11.11`
 
 | | |
 |---|---|
-| Arquivo | `nlinux-2026.11.05-x86_64.iso` |
-| Tamanho | 3 264 249 856 bytes (~3,0 GiB) |
+| Arquivo | `nlinux-2026.11.11-x86_64.iso` |
+| Tamanho | 3 287 056 384 bytes (~3,06 GiB) |
 | Arquitetura | `x86_64` |
-| Data | 5 de novembro de 2026 |
-| Download | [Google Drive](https://drive.google.com/file/d/1fllkqBJmYWshmXiQydkkjDAWxXW-pV4i/view?usp=sharing) |
-| sha256 | `956247602eb4beefd30c2e3ec6dfae042c96819c975e7962f610e4cb183b2c7c` |
+| Data | 11 de novembro de 2026 |
+| Download | [Google Drive](https://drive.google.com/file/d/19AFQc_u4TaD-PAH7WHgdEQNH8sDqHf4N/view?usp=drive_link) |
+| sha256 | `4e047cabfbca1848bf393cde1e31b9a5a93f17becd6c4112ab2d5c4f07e5d3e0` |
 
 ### O que a ISO contém
 
@@ -56,8 +56,8 @@ ao vivo que boota direto no desktop e instala por uma interface web no navegador
 ### Como conferir o download
 
 ```bash
-sha256sum nlinux-2026.11.05-x86_64.iso
-# 956247602eb4beefd30c2e3ec6dfae042c96819c975e7962f610e4cb183b2c7c
+sha256sum nlinux-2026.11.11-x86_64.iso
+# 4e047cabfbca1848bf393cde1e31b9a5a93f17becd6c4112ab2d5c4f07e5d3e0
 ```
 
 ---
