@@ -105,16 +105,12 @@
 <li><strong>Catálogo da loja</strong> na revisão <strong>374</strong>.</li>
 <li><strong>Assinatura GPG das releases</strong> configurada para os próximos builds.</li>
 </ul>
-<h2>Download</h2>
-<p><a href="https://drive.google.com/file/d/1fllkqBJmYWshmXiQydkkjDAWxXW-pV4i/view?usp=sharing" rel="nofollow">Baixar a ISO NLinux no Google Drive</a> — ISO live para <code>x86_64</code>, aproximadamente 3,0 GiB.</p>
-<p>SHA-256: <code>956247602eb4beefd30c2e3ec6dfae042c96819c975e7962f610e4cb183b2c7c</code></p>
 <h2>Requisitos e instalação</h2>
 <ul>
 <li>Arquitetura <code>x86_64</code>; pendrive de 8 GB ou mais.</li>
 <li>UEFI necessário para instalar. A ISO também oferece opções BIOS para experimentar o ambiente live.</li>
 <li>A instalação rápida funciona offline; a instalação completa requer internet.</li>
 <li>Login do ambiente live: usuário <code>nlinux</code>, senha <code>nlinux</code>.</li>
-<li>Para conferir o download: <code>sha256sum nlinux-2026.11.05-x86_64.iso</code>.</li>
 </ul>
 <p>Faça backup antes de alterar partições. Em dual boot com Windows, desative BitLocker, Inicialização Rápida e hibernação antes de prosseguir.</p>
 <h2>Documentação</h2>
@@ -140,16 +136,12 @@
 <li><strong>Catálogo da loja</strong> na revisão <strong>374</strong>.</li>
 <li><strong>Assinatura GPG das releases</strong> configurada para os próximos builds.</li>
 </ul>
-<h2>Download</h2>
-<p><a href="https://drive.google.com/file/d/1fllkqBJmYWshmXiQydkkjDAWxXW-pV4i/view?usp=sharing" rel="nofollow">Baixar a ISO NLinux no Google Drive</a> — ISO live para <code>x86_64</code>, aproximadamente 3,0 GiB.</p>
-<p>SHA-256: <code>956247602eb4beefd30c2e3ec6dfae042c96819c975e7962f610e4cb183b2c7c</code></p>
 <h2>Requisitos e instalação</h2>
 <ul>
 <li>Arquitetura <code>x86_64</code>; pendrive de 8 GB ou mais.</li>
 <li>UEFI necessário para instalar. A ISO também oferece opções BIOS para experimentar o ambiente live.</li>
 <li>A instalação rápida funciona offline; a instalação completa requer internet.</li>
 <li>Login do ambiente live: usuário <code>nlinux</code>, senha <code>nlinux</code>.</li>
-<li>Para conferir o download: <code>sha256sum nlinux-2026.11.05-x86_64.iso</code>.</li>
 </ul>
 <p>Faça backup antes de alterar partições. Em dual boot com Windows, desative BitLocker, Inicialização Rápida e hibernação antes de prosseguir.</p>
 <h2>Documentação</h2>
